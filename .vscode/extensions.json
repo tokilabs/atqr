@@ -3,6 +3,17 @@
     "nrwl.angular-console",
     "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "firsttris.vscode-jest-runner"
+    "firsttris.vscode-jest-runner",
+    "johnpapa.angular2",
+    "natewallace.angular2-inline",
+    "editorconfig.editorconfig",
+    "eamodio.gitlens",
+    "xabikos.javascriptsnippets",
+    "ms-vsliveshare.vsliveshare",
+    "jebbs.plantuml",
+    "humao.rest-client",
+    "rbbit.typescript-hero",
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-portuguese"
   ]
 }

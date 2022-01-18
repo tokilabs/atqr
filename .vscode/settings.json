@@ -1,0 +1,10 @@
+{
+  "prettier.useTabs": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "plantuml.diagramsRoot": "/uml/src",
+  "plantuml.exportFormat": "svg",
+  "plantuml.exportOutDir": "/uml/lib",
+  "cSpell.words": ["atqr"]
+}
