@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "api": "apps/api",
     "core-domain": "libs/core/domain",
     "core-ui": "libs/core/ui",
     "core-util": "libs/core/util",

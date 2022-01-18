@@ -63,7 +63,8 @@
       },
       "defaultConfiguration": "development",
       "options": {
-        "port": 3100
+        "port": 3100,
+        "proxyConfig": "apps/web/proxy.conf.json"
       }
     },
     "extract-i18n": {
