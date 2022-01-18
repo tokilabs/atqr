@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@core/domain": ["libs/core/domain/src/index.ts"],
-      "@core/ui": ["libs/core/ui/src/index.ts"]
+      "@core/ui": ["libs/core/ui/src/index.ts"],
+      "@core/util": ["libs/core/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
