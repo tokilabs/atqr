@@ -3,6 +3,8 @@
   "projects": {
     "core-domain": "libs/core/domain",
     "core-ui": "libs/core/ui",
-    "core-util": "libs/core/util"
+    "core-util": "libs/core/util",
+    "web": "apps/web",
+    "web-e2e": "apps/web-e2e"
   }
 }
