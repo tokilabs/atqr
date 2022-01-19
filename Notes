@@ -1,0 +1,19 @@
+Endpoints:
+	- Create challenge
+	- Add Payment info to challenge
+	- Complete challenge
+
+	- Serve public page??
+
+Pages:
+	- Main page
+	- Add payment info
+	- Complete challenge
+
+Tasks:
+	- Uml ??
+	- Payment service
+	- Pages - Blocked by design
+
+Business Rules:
+	- Make sure the user has enough credit to pay the challenge, by pre authorizing the charge and then deleting the pre auth

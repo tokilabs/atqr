@@ -1,11 +1,9 @@
 {
   "version": 2,
   "projects": {
-    "api": "apps/api",
-    "core-domain": "libs/core/domain",
-    "core-ui": "libs/core/ui",
-    "core-util": "libs/core/util",
-    "web": "apps/web",
-    "web-e2e": "apps/web-e2e"
+    "api": "apps/atqr/api",
+    "atqr-domain": "libs/atqr/domain",
+    "web": "apps/atqr/web",
+    "web-e2e": "apps/atqr/web-e2e"
   }
 }
