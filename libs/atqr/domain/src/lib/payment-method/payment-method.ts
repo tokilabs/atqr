@@ -1,7 +1,8 @@
+import { Controller, Get, Post } from "@nestjs/common"
 import { Guid } from "guid-typescript"
 
 export interface CardData {
-    type: 'credit' | 'debit'
+    type: 'credit' | 'debit' 
     number: string 
     holder_name: string 
     exp_month: number
@@ -13,15 +14,20 @@ export interface CardData {
 }
 
 export enum PaymentMethodEnum {
+    
+    
 
     'creditCard'='creditCard', 
     'debitCard'='debitCard'    
 
 }
 
+const cardType = PaymentMethodEnum
+
 export class PaymentMethodEntity implements CardData{
     id: Guid
     method: PaymentMethodEnum
+    paymentService: `pagar.me` | `pagseguro`
 
     type: 'credit' | 'debit'
     number: string 
@@ -32,19 +38,28 @@ export class PaymentMethodEntity implements CardData{
     country: string
     cpf: string
     zipCode: string
+    token: string
+    
  
-    constructor (id: Guid, number: string, holder_name: string, exp_month: number, exp_year: number, cvv: string, cpf: string)
+    constructor (id: Guid, method: PaymentMethodEnum, paymentService: `pagar.me` | `pagseguro`, token: string)
     {
         this.id = id 
-        this.number = number 
-        this.holder_name = holder_name
-        this.exp_month = exp_month
-        this.exp_year = exp_year
-        this.cvv = cvv
-        this.cpf = cpf
+        this.method = method
+        this.paymentService = paymentService
+        this.token = token
     }
 
+    
+    @Get()
     getCreditCard() {
         return this.id 
     }
+    
+    @Post()
+    setNewCreditCard(newCardData: CardData) {
+        newCardData = new PaymentMethodEntity (this.id, this.method, this.paymentService, this.token)
+   }
+
+
+    
 }
