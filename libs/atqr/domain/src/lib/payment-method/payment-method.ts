@@ -1,25 +1,10 @@
 import { Get, Post } from '@nestjs/common';
 import { Guid } from 'guid-typescript';
 
-// export interface CardData {
-//     type: 'credit' | 'debit'
-//     number: string
-//     holder_name: string
-//     exp_month: number
-//     exp_year: number
-//     cvv: string
-//     country: string
-//     cpf: string
-//     zipCode: string
-// }
-
 export enum PaymentMethodEnum {
   'creditCard' = 'creditCard',
   'debitCard' = 'debitCard',
 }
-
-//const cardType = PaymentMethodEnum
-
 export class PaymentMethodEntity {
   id: Guid;
   method: PaymentMethodEnum;
@@ -38,18 +23,7 @@ export class PaymentMethodEntity {
     this.token = token;
   }
 
-  @Get()
-  getCreditCard() {
-    return this.id;
-  }
-
-  @Post()
-  setNewCreditCard(newCardData: PaymentMethodEntity) {
-    newCardData = new PaymentMethodEntity(
-      this.id,
-      this.method,
-      this.paymentService,
-      this.token
-    );
+  getToken() {
+    return this.token;
   }
 }
