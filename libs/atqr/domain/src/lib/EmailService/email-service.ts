@@ -1,6 +1,7 @@
 import * as nodemailer from 'nodemailer';
 import configs from './configs';
 
+
 export class EmailService {
   email: string; // it ill be type playerEmail | supervisorEmail (?)
   player: string; // ill be type Player from class  Player
