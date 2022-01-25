@@ -1,5 +1,5 @@
 import { Get, Post } from '@nestjs/common';
-import { Guid } from 'guid-typescript';
+import { Guid } from '@tokilabs/lang';
 
 export enum PaymentMethodEnum {
   'creditCard' = 'creditCard',
