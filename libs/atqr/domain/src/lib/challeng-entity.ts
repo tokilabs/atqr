@@ -1,5 +1,5 @@
-import { Guid } from "guid-typescript";
-import { PaymentMethod, Player} from './';
+import { Guid } from '@tokilabs/lang/';
+import { PaymentMethod, Player} from '';
 
 export enum PriceEnum {
   firstValue = 25,
@@ -84,7 +84,7 @@ export class Challenge {
 
   changePaymentMethod(paymentMethod: PaymentMethod, newPaymentMethod: PaymentMethod){
     newPaymentMethod = new paymentMethod;
-    paymentMethod = newPaymentMethod;
+    this.#paymentMethod = newPaymentMethod;
 
   }
 }
