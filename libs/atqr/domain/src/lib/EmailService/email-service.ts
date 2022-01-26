@@ -1,6 +1,6 @@
 import * as nodemailer from 'nodemailer';
+import { from } from 'rxjs';
 import configs from './configs';
-
 
 export class EmailService {
   email: string; // it ill be type playerEmail | supervisorEmail (?)
@@ -9,28 +9,29 @@ export class EmailService {
 
 export class Email {
   constructor(
-    public to?: string,
-    public subject?: string,
-    public message?: string
+    private _from: string,
+    private _to: string,
+    private _subject: string,
+    private _message?: string
   ) {}
 
-  sendMail() {
+    sendMail() {
     let mailOptions = {
-      from: '',
-      to: this.to,
-      subject: this.subject,
-      html: this.message,
+      from: this._from,
+      to: this._to,
+      subject: this._subject,
+      message: this._message,
     };
 
     const transporter = nodemailer.createTransport({
       host: configs.host,
       port: configs.port,
-      secure: false,
+      secure: true,
       auth: {
         user: configs.user,
         pass: configs.password,
       },
-      tls: { rejectUnauthorized: false },
+      tls: { rejectUnauthorized: true },
     });
 
     console.log(mailOptions);
@@ -45,16 +46,16 @@ export class Email {
   }
 }
 
-export default new Email();
+export default new Email(); // ????
 
 export class ChallengeStarted extends Email {
   to: string; // It ill be type playerEmail from class Player
   subject: 'Seu desafio do ATQR começou !';
   message: 'Text of welcome to the game';
-  from: string; //atqr email
+  private from: string; //atqr email
 
   constructor(to: string, subject: string, message: string, from: string) {
-    super();
+    super('');
   }
 }
 
