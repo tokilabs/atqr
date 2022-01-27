@@ -2,23 +2,23 @@ import { Guid } from "@tokilabs/lang";
 export class Player{
 
 
-  constructor(private id: Guid, private name: string, private  email: string, private challenges:challenge[]) {}
+    constructor(private _id: Guid, private _name: string, private  _email: string, private _challenges: challenge[]) {}
 
-  get _id() {
-    return this.id;
+    get id() {
+      return this._id;
+    }
+
+    get name() {
+      return this._name;
+    }
+
+    get email() {
+      return this._email;
+    }
+
+    get challenges() {
+      return this._challenges;
   }
 
-  get _name() {
-    return this.name;
-  }
-
-  get _email() {
-    return this.email;
-  }
-
-  get _challenges() {
-    return this.challenges;
-  }
-  
 }
 
