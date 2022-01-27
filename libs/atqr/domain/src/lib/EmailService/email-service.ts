@@ -1,11 +1,37 @@
 import * as nodemailer from 'nodemailer';
-import { from } from 'rxjs';
+
 import configs from './configs';
 
 export class EmailService {
   email: string; // it ill be type playerEmail | supervisorEmail (?)
   player: string; // ill be type Player from class  Player
+  
+  
+  const transporter = nodemailer.createTransport({
+    host: configs.host,
+    port: 587,
+    secure: false,
+    requireTLS: true,
+    auth: {
+      user: configs.user,
+      pass: configs.password,
+    },
+    logger: true
+  });
+ 
+  
+  const info = await this.transporter.sendMail({
+    from: '"Sender Name" <from@example.net>',
+    to: "to@example.com",
+    subject: "Hello from node",
+    text: "Hello world?",
+    html: "<strong>Hello world?</strong>",
+    headers: { 'x-myheader': 'test header' }
+  });
+
+  
 }
+
 
 export class Email {
   constructor(
@@ -15,39 +41,14 @@ export class Email {
     private _message?: string
   ) {}
 
-    sendMail() {
+    async mailOptions() {
     let mailOptions = {
       from: this._from,
       to: this._to,
       subject: this._subject,
       message: this._message,
     };
-
-    const transporter = nodemailer.createTransport({
-      host: configs.host,
-      port: configs.port,
-      secure: true,
-      auth: {
-        user: configs.user,
-        pass: configs.password,
-      },
-      tls: { rejectUnauthorized: true },
-    });
-
-    console.log(mailOptions);
-
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return error;
-      } else {
-        return 'E-mail enviado com sucesso!';
-      }
-    });
-  }
 }
-
-export default new Email(); // ????
-
 export class ChallengeStarted extends Email {
   to: string; // It ill be type playerEmail from class Player
   subject: 'Seu desafio do ATQR começou !';
@@ -55,7 +56,8 @@ export class ChallengeStarted extends Email {
   private from: string; //atqr email
 
   constructor(to: string, subject: string, message: string, from: string) {
-    super('');
+    super()
+    ;
   }
 }
 
