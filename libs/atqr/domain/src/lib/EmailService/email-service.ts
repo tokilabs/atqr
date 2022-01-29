@@ -1,5 +1,6 @@
-import { Email } from './email.interface';
+import { Email, EmailAddress } from './email.interface';
 import { EmailTransporter } from './emailTransporter.interface';
+
 
 export const configs = {
   host = '',
@@ -8,17 +9,7 @@ export const configs = {
   password = '',
 };
 
-/* transporter = nodemailer.createTransport({
-  host: configs.host,
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: configs.user,
-    pass: configs.password,
-  },
-  logger: true,
-}); */
+
 
 export class EmailService {
   email: string; // it ill be type playerEmail | supervisorEmail (?)
@@ -44,37 +35,57 @@ export class EmailService {
 }
 
 export class ChallengeStarted implements Email {
-  to: string; // It ill be type playerEmail from class Player
   subject: 'Seu desafio do ATQR começou !';
   message: 'Text of welcome to the game';
+  
+  constructor (
+    public to: EmailAddress
+  ) {}
 }
 
 export class SupConfirmation implements Email {
-  to: string; // It ill be type SupervisorEmail from class Player
+  
   subject: 'Você foi convidado a ser supervisor de ${playerName}...';
   message: 'Explicação do jogo';
+
+  constructor (
+    public to: EmailAddress 
+  ) {}
 }
 
 export class PayThePrice implements Email {
-  to: string; // It ill be type playerEmail from class Player
+  
   subject: 'Não cumpriu o desafio';
   message: ' .... ';
+
+  constructor (
+    public to: EmailAddress 
+  ) {}
 }
 
 export class Congrats implements Email {
-  to: string; // It ill be type playerEmail from class Player
   subject: 'Cumpriu o desafio';
   message: ' .... ';
+
+  constructor (
+    public to: EmailAddress 
+  ) {}
 }
 
 export class YouWereChallenged implements Email {
-  to: string; // It ill be type playerEmail from class Player
   subject: 'Você foi desafiado';
   message: ' .... ';
+
+  constructor (
+    public to: EmailAddress 
+  ) {}
 }
 
 export class DeadLineEmail implements Email {
-  to: string; // It ill be type supervisorEmail from class Player
   subject: 'E aí?';
   message: ' .... ';
+
+  constructor (
+    public to: EmailAddress 
+  ) {}
 }
