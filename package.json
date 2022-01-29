@@ -13,6 +13,7 @@
     "@nestjs/core": "8.0.0",
     "@nestjs/platform-express": "8.0.0",
     "@tokilabs/lang": "1.0.3",
+    "class-validator": "0.13.2",
     "guid-typescript": "1.0.9",
     "reflect-metadata": "0.1.13",
     "tslib": "2.0.0",
