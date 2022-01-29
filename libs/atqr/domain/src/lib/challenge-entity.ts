@@ -12,75 +12,57 @@ export enum PriceEnum {
   sixthValue = 1000,
 }
 export class Challenge {
-  #id: Guid;
-  #goal: string;
-  #deadline: Date;
-  #price: PriceEnum;
-  #supervisorName: string;
-  #supervisorEmail: string;
-  #player: Player;
-  #paymentMethod: PaymentMethodEntity;
-  #newPaymentMethod: PaymentMethodEntity;
+  constructor(
+    private _id: Guid,
+    private _goal: string,
+    private _deadline: Date,
+    private _price: PriceEnum,
+    private _supervisorName: string,
+    private _supervisorEmail: string,
+    private _player: Player,
+    private _paymentMethod: PaymentMethodEntity,
+    private _newPaymentMethod: PaymentMethodEntity
+  ) {}
 
   get id() {
-    return this.#id;
+    return this._id;
   }
 
   get goal() {
-    return this.#goal;
+    return this._goal;
   }
 
   get deadline() {
-    return this.#deadline;
+    return this._deadline;
   }
 
   get price() {
-    return this.#price;
+    return this._price;
   }
 
   get supervisorName() {
-    return this.#supervisorName;
+    return this._supervisorName;
   }
 
   get supervisorEmail() {
-    return this.#supervisorEmail;
+    return this._supervisorEmail;
   }
 
   get player() {
-    return this.#player;
+    return this._player;
   }
 
   get paymentMethod() {
-    return this.#paymentMethod;
+    return this._paymentMethod;
   }
 
   get newPaymentMethod() {
-    return this.#newPaymentMethod;
-  }
-
-  constructor(
-    id: Guid,
-    goal: string,
-    deadline: Date,
-    price: PriceEnum,
-    supervisorName: string,
-    supervisorEmail: string,
-    player: Player,
-    paymentMethod: PaymentMethodEntity
-  ) {
-    this.#id = id;
-    this.#goal = goal;
-    this.#deadline = deadline;
-    this.#price = price;
-    this.#supervisorName = supervisorName;
-    this.#supervisorEmail = supervisorEmail;
-    this.#player = player;
-    this.#paymentMethod = paymentMethod;
+    return this._newPaymentMethod;
   }
 
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
-    this.#supervisorName = newSupervisorName;
-    this.#supervisorEmail = newSupervisorEmail;
+    this._supervisorName = newSupervisorName;
+    this._supervisorEmail = newSupervisorEmail;
   }
 
   changePaymentMethod(
@@ -88,6 +70,6 @@ export class Challenge {
     newPaymentMethod: PaymentMethodEntity
   ) {
     newPaymentMethod = new paymentMethod();
-    this.#paymentMethod = newPaymentMethod;
+    this._paymentMethod = newPaymentMethod;
   }
 }
