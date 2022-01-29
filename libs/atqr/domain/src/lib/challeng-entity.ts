@@ -53,13 +53,13 @@ export class Challenge {
       private _player: Player,
       private _paymentMethod: PaymentMethod) {
   }
+  // não vai ter mais? e se tiver podemos trocar só o email ou só o nome?
+  // changeSupervisor(newSupervisorName:string, newSupervisorEmail:string){
+  //   this._supervisorName = newSupervisorName;
+  //   this._supervisorEmail = newSupervisorEmail;
+  // }
 
-  changeSupervisor(newSupervisorName:string, newSupervisorEmail:string){
-    this._supervisorName = newSupervisorName;
-    this._supervisorEmail = newSupervisorEmail;
-  }
-
-  changePaymentMethod(paymentMethod: PaymentMethod){
-    this._paymentMethod = new paymentMethod();
+  changePaymentMethod(){
+    this._paymentMethod = new PaymentMethod();
   }
 }
