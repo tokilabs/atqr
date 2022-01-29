@@ -1,0 +1,157 @@
+openapi: 3.1.0
+info:
+  title: ATQR
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /challenge:
+    post:
+      summary: ''
+      operationId: post-challenge
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  challengeId:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+        '500':
+          description: Internal Server Error
+      description: |-
+        Endpoint for creating a challenge to yourself or others.
+
+        To do:
+          - Security params,
+          - Header params
+      requestBody:
+        $ref: '#/components/requestBodies/CreateChallenge'
+  '/challenge/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-challenge-id
+      description: Operations on a specific challenge
+    patch:
+      summary: ''
+      operationId: patch-challenge-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Challenge'
+      description: Updates a challenge.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                creditCardToken:
+                  type: string
+components:
+  schemas:
+    Challenge:
+      title: Challenge
+      type: object
+      description: Challenge model
+      properties:
+        id:
+          type: string
+        challengeDescription:
+          type: string
+        playerName:
+          type: string
+        playerEmail:
+          type: string
+        supervisorName:
+          type: string
+        challenge:
+          type: string
+        supervisorEmail:
+          type: string
+        status:
+          type: string
+        price:
+          type: string
+  requestBodies:
+    CreateChallenge:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              challenge:
+                type: string
+                maxLength: 120
+                example: Finish my paper
+              price:
+                type: number
+                minimum: 25
+              playerName:
+                type: string
+              playerEmail:
+                type: string
+                format: email
+              supervisorName:
+                type: string
+              supervisorEmail:
+                type: string
+                format: email
+              creditCardToken:
+                type: string
+            required:
+              - challenge
+              - price
+              - playerName
+              - playerEmail
+              - supervisorName
+              - supervisorEmail
+          examples:
+            Example:
+              value:
+                challenge: Finish my paper
+                price: 25
+                playerName: string
+                playerEmail: user@example.com
+                supervisorName: string
+                supervisorEmail: user@example.com
+                creditCardToken: string
+                '': string
