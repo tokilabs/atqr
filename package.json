@@ -5,8 +5,7 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test",
-    "postinstall": "ngcc --properties es2015 browser module main"
+    "test": "nx test"
   },
   "private": true,
   "dependencies": {
@@ -16,6 +15,7 @@
     "nodemailer": "^6.7.2",
     "@tokilabs/lang": "^1.0.3",
     "guid-typescript": "^1.0.9",
+    "@tokilabs/lang": "^1.0.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
