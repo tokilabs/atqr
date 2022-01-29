@@ -1,4 +1,5 @@
 import { Guid } from '@tokilabs/lang';
+import { Challenge } from './challenge-entity';
 export class Player {
   constructor(
     private _id: Guid,
