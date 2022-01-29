@@ -1,127 +1,80 @@
-import * as nodemailer from 'nodemailer';
-
-
+import { Email } from './email.interface';
+import { EmailTransporter } from './emailTransporter.interface';
 
 export const configs = {
-  public host = '',
-  public port = '',
-  public user = '',
-  public password = '',
+  host = '',
+  port = '',
+  user = '',
+  password = '',
+};
 
-}
-
-
-
+/* transporter = nodemailer.createTransport({
+  host: configs.host,
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: configs.user,
+    pass: configs.password,
+  },
+  logger: true,
+}); */
 
 export class EmailService {
   email: string; // it ill be type playerEmail | supervisorEmail (?)
   player: string; // ill be type Player from class  Player
   configs: object;
-  
-  
-  const transporter = nodemailer.createTransport({
-    host: configs.host,
-    port: 587,
-    secure: false,
-    requireTLS: true,
-    auth: {
-      user: configs.user,
-      pass: configs.password,
-    },
-    logger: true
-  });
 
-  
- 
-  
-  const info =  await this.transporter.sendMail({
-    from: '"Sender Name" <from@example.net>',
-    to: "to@example.com",
-    subject: "Hello from node",
-    text: "Hello world?",
-    html: "<strong>Hello world?</strong>",
-    headers: { 'x-myheader': 'test header' }
-  });
+  constructor(private mailTransporter: EmailTransporter) {}
 
-  
-}
-
-
-export class Email {
-  constructor(
-    private _from: string,
-    private _to: string,
-    private _subject: string,
-    private _message?: string
-  ) {}
-
-    async mailOptions() {
-    let mailOptions = {
-      from: this._from,
-      to: this._to,
-      subject: this._subject,
-      message: this._message,
-    };
-}
-
-
-export class ChallengeStarted extends Email {
-  private to: string; // It ill be type playerEmail from class Player
-  private subject: 'Seu desafio do ATQR começou !';
-  private message: 'Text of welcome to the game';
-  private from: string; //atqr email
-
-  constructor(from: string, to: string, subject: string, message?: string):Email {
-    super(to, subject, message, from) 
+  sendMail() {
+    try {
+      this.mailTransporter.sendMail({
+        to: 'to@example.com',
+        from: '"Sender Name" <from@example.net>',
+        subject: 'Hello from node',
+        text: 'Hello world?',
+        html: '<strong>Hello world?</strong>',
+        headers: { 'x-myheader': 'test header' },
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }
 
-export class SupConfirmation extends Email {
+export class ChallengeStarted implements Email {
+  to: string; // It ill be type playerEmail from class Player
+  subject: 'Seu desafio do ATQR começou !';
+  message: 'Text of welcome to the game';
+}
+
+export class SupConfirmation implements Email {
   to: string; // It ill be type SupervisorEmail from class Player
   subject: 'Você foi convidado a ser supervisor de ${playerName}...';
   message: 'Explicação do jogo';
-
-  constructor(to: string, subject: string, message: string){
-    super(to, subject, message)
-  }
 }
 
-export class PayThePrice extends Email {
+export class PayThePrice implements Email {
   to: string; // It ill be type playerEmail from class Player
   subject: 'Não cumpriu o desafio';
   message: ' .... ';
-
-  constructor(to: string, subject: string, message: string){
-    super(to, subject, message)
-  }
 }
 
-export class Congrats extends Email {
+export class Congrats implements Email {
   to: string; // It ill be type playerEmail from class Player
   subject: 'Cumpriu o desafio';
   message: ' .... ';
-
-  constructor(to: string, subject: string, message: string){
-    super(to, subject, message)
-  }
 }
 
-export class YouWereChallenged extends Email {
-  to: string  // It ill be type playerEmail from class Player
+export class YouWereChallenged implements Email {
+  to: string; // It ill be type playerEmail from class Player
   subject: 'Você foi desafiado';
   message: ' .... ';
-
-  constructor(to: string, subject: string, message: string){
-    super(to, subject, message)
-  }
 }
 
-export class DeadLineEmail extends Email {
+export class DeadLineEmail implements Email {
   to: string; // It ill be type supervisorEmail from class Player
   subject: 'E aí?';
   message: ' .... ';
-
-  constructor(to: string, subject: string, message: string){
-    super(to, subject, message)
-  }
 }
