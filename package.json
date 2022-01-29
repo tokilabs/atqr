@@ -14,6 +14,8 @@
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "nodemailer": "^6.7.2",
+    "@tokilabs/lang": "^1.0.3",
+    "guid-typescript": "^1.0.9",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
