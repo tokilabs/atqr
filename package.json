@@ -13,8 +13,8 @@
     "@nestjs/core": "8.0.0",
     "@nestjs/platform-express": "8.0.0",
     "@tokilabs/lang": "1.0.3",
-    "class-validator": "^0.13.2",
-    "email-validator": "^2.0.4",
+    "class-validator": "0.13.2",
+    "email-validator": "2.0.4",
     "guid-typescript": "1.0.9",
     "mailgun": "^0.5.0",
     "reflect-metadata": "0.1.13",
@@ -23,6 +23,7 @@
     "zone.js": "0.11.4"
   },
   "devDependencies": {
+    "@nestjs/config": "1.1.6",
     "@nestjs/schematics": "8.0.0",
     "@nestjs/testing": "8.0.0",
     "@nrwl/cli": "13.4.5",
