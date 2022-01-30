@@ -5,18 +5,23 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "migrate:atqr": "yarn prisma migrate dev --schema ./apps/atqr/api/prisma/schema.prisma",
+    "prisma:format": "yarn prisma format --schema ./apps/atqr/api/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "8.0.0",
     "@nestjs/core": "8.0.0",
     "@nestjs/platform-express": "8.0.0",
+    "@prisma/client": "3.8.1",
+    "@supabase/supabase-js": "1.29.4",
     "@tokilabs/lang": "1.0.3",
     "class-validator": "0.13.2",
     "email-validator": "2.0.4",
     "guid-typescript": "1.0.9",
-    "mailgun": "^0.5.0",
+    "mailgun": "0.5.0",
+    "prisma": "3.8.1",
     "reflect-metadata": "0.1.13",
     "ts-mailgun": "^0.5.1",
     "tslib": "2.0.0",
