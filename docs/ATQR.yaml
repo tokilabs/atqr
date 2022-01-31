@@ -7,7 +7,7 @@ servers:
 paths:
   /challenge:
     post:
-      summary: ''
+      summary: Create Challenge
       operationId: post-challenge
       responses:
         '201':
