@@ -3,10 +3,10 @@ import { EmailTransporter } from './emailTransporter.interface';
 
 
 export const configs = {
-  host = '',
-  port = '',
-  user = '',
-  password = '',
+  host: '',
+  port: '',
+  user: '',
+  password: '',
 };
 
 
