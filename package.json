@@ -6,8 +6,9 @@
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test",
-    "migrate:atqr": "yarn prisma migrate dev --schema ./apps/atqr/api/prisma/schema.prisma",
-    "prisma:format": "yarn prisma format --schema ./apps/atqr/api/prisma/schema.prisma"
+    "atqr:migrate": "yarn prisma migrate dev --schema ./apps/atqr/api/prisma/schema.prisma",
+    "atqr:format": "yarn prisma format --schema ./apps/atqr/api/prisma/schema.prisma",
+    "atqr:generate": "yarn prisma generate --schema ./apps/atqr/api/prisma/schema.prisma"
   },
   "private": true,
   "dependencies": {
