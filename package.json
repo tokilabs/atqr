@@ -28,7 +28,7 @@
     "zone.js": "0.11.4"
   },
   "devDependencies": {
-    "@nestjs/config": "1.1.6",
+    "@nestjs/config": "^1.1.6",
     "@nestjs/schematics": "8.0.0",
     "@nestjs/testing": "8.0.0",
     "@nrwl/angular": "13.5.2",
