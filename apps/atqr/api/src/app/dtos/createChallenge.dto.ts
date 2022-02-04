@@ -1,9 +1,19 @@
-import { IsEmail, IsString, MaxLength, Min, MinLength } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsString,
+  MaxLength,
+  Min,
+  MinLength,
+} from 'class-validator';
 
 export class CreateChallengeDto {
   @IsString()
   @MaxLength(120)
-  challenge: string;
+  goal: string;
+
+  @IsDate()
+  deadline: Date;
 
   // This values should come from a .env with other business related values
   @Min(25)

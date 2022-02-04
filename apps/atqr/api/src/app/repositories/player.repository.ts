@@ -1,4 +1,4 @@
-import { Player } from '@atqr/domain';
+import { EmailAddress, Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 
@@ -8,13 +8,19 @@ import { PrismaService } from '../infra/database/prisma.service';
 export class PlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  findUnique(id: Guid) {
+  findUnique(id: Guid): Player {
     return this.prismaService.player.findUnique({
       where: { id: id.valueOf() },
     });
   }
 
-  create(player: Player) {
+  findByEmail(email: EmailAddress): Player {
+    return this.prismaService.player.findUnique({
+      where: { email: email.email },
+    });
+  }
+
+  create(player: Player): Player {
     this.prismaService.player.create({
       data: {
         id: player.id.valueOf(),

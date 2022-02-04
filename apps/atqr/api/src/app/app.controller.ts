@@ -3,6 +3,9 @@ import {
   ChallengeStarted,
   EmailAddress,
   EmailService,
+  PaymentMethodEntity,
+  PaymentMethodEnum,
+  Player,
   SupConfirmation,
 } from '@atqr/domain';
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
@@ -24,22 +27,51 @@ export class AppController {
 
   @Post('challenge')
   async createChallenge(
-    @Body() createChallenge: CreateChallengeDto
+    @Body() challengeDto: CreateChallengeDto
   ): Promise<Challenge> {
-      const challenge = new Challenge()
     try {
-      if (createChallenge.creditCardToken) {
-        //Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
-        const emailAddress = new EmailAddress(createChallenge.supervisorEmail);
+      let player = this.playerRepository.findByEmail(
+        new EmailAddress(challengeDto.playerEmail)
+      );
+
+      if (!player) {
+        player = new Player(challengeDto.playerName, challengeDto.playerEmail);
+      }
+
+      const challenge = new Challenge(
+        challengeDto.goal,
+        challengeDto.deadline,
+        challengeDto.price,
+        challengeDto.supervisorName,
+        challengeDto.supervisorEmail,
+        player
+      );
+
+      if (challengeDto.creditCardToken) {
+        const paymentMethod = new PaymentMethodEntity(
+          PaymentMethodEnum.creditCard,
+          'pagseguro',
+          challengeDto.creditCardToken
+        );
+
+        // Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
+
+        challenge.changePaymentMethod(paymentMethod);
+
+        this.challengeRepository.create(challenge);
+
+        const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
         const email = new ChallengeStarted(emailAddress);
         this.emailService.sendMail(email);
+
+        return challenge;
       } else {
-        const emailAddress = new EmailAddress(createChallenge.playerEmail);
+        this.challengeRepository.create(challenge);
+
+        const emailAddress = new EmailAddress(challengeDto.playerEmail);
         const email = new SupConfirmation(emailAddress);
         this.emailService.sendMail(email);
       }
-
-      //Salvar os dados no banco de dados.
     } catch (error) {
       //Pegar os erros e resolver. (Usar try catch)
     }
