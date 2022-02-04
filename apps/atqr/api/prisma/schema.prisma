@@ -27,6 +27,12 @@ model Challenge {
 model Player {
   id        String      @id @db.Uuid
   name      String
-  email     String
+  email     String  @unique
   Challenge Challenge[]
+}
+
+enum ChallengeStatus  {
+  Ongoing
+  Completed
+  Failed
 }

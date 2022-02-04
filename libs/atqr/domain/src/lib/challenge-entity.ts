@@ -16,6 +16,7 @@ export class Challenge {
     private _id: Guid,
     private _goal: string,
     private _deadline: Date,
+    private _status: string,
     private _price: PriceEnum,
     private _supervisorName: string,
     private _supervisorEmail: string,
@@ -30,6 +31,10 @@ export class Challenge {
 
   get goal() {
     return this._goal;
+  }
+
+  public get status() {
+    return this._status;
   }
 
   get deadline() {
