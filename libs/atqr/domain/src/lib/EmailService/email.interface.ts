@@ -1,12 +1,9 @@
-import { isEmail } from 'class-validator';
 import * as EmailValidator from 'email-validator';
-import { EmailService } from './email-service';
 
 export interface Email {
-  // from: string;
   to: EmailAddress;
   subject: string;
-  message: string;
+  body: string;
 }
 
 export class EmailAddress {
@@ -21,4 +18,9 @@ export class EmailAddress {
       throw new Error('Invalid Email');
     }
   }
+}
+
+export interface EmailTransporter {
+  // eslint-disable-next-line no-empty-pattern
+  sendMail(email: Email): void;
 }
