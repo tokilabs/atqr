@@ -37,29 +37,29 @@ export class EmailService {
 export class ChallengeStarted implements Email {
   subject: 'Seu desafio do ATQR começou !';
   message: 'Text of welcome to the game';
-  
+
   constructor (
     public to: EmailAddress
   ) {}
 }
 
 export class SupConfirmation implements Email {
-  
+
   subject: 'Você foi convidado a ser supervisor de ${playerName}...';
   message: 'Explicação do jogo';
 
   constructor (
-    public to: EmailAddress 
+    public to: EmailAddress
   ) {}
 }
 
 export class PayThePrice implements Email {
-  
+
   subject: 'Não cumpriu o desafio';
   message: ' .... ';
 
   constructor (
-    public to: EmailAddress 
+    public to: EmailAddress
   ) {}
 }
 
@@ -68,7 +68,7 @@ export class Congrats implements Email {
   message: ' .... ';
 
   constructor (
-    public to: EmailAddress 
+    public to: EmailAddress
   ) {}
 }
 
@@ -77,7 +77,7 @@ export class YouWereChallenged implements Email {
   message: ' .... ';
 
   constructor (
-    public to: EmailAddress 
+    public to: EmailAddress
   ) {}
 }
 
@@ -86,6 +86,6 @@ export class DeadLineEmail implements Email {
   message: ' .... ';
 
   constructor (
-    public to: EmailAddress 
+    public to: EmailAddress
   ) {}
 }
