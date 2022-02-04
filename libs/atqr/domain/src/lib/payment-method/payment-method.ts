@@ -12,12 +12,11 @@ export class PaymentMethodEntity {
   token: string;
 
   constructor(
-    id: Guid,
     method: PaymentMethodEnum,
     paymentService: `pagar.me` | `pagseguro`,
     token: string
   ) {
-    this.id = id;
+    this.id = new Guid();
     this.method = method;
     this.paymentService = paymentService;
     this.token = token;

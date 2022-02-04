@@ -12,19 +12,21 @@ export enum PriceEnum {
   sixthValue = 1000,
 }
 export class Challenge {
+  private _id: Guid;
   constructor(
-    private _id: Guid,
     private _goal: string,
     private _deadline: Date,
-    private _status: string,
     private _price: PriceEnum,
-    private _notifiedSupervisor: boolean,
     private _supervisorName: string,
     private _supervisorEmail: string,
     private _player: Player,
-    private _paymentMethod: PaymentMethodEntity,
-    private _newPaymentMethod: PaymentMethodEntity
-  ) {}
+    private _paymentMethod?: PaymentMethodEntity,
+
+    private _status: string = 'Verifying',
+    private _notifiedSupervisor: boolean = false
+  ) {
+    this._id = new Guid();
+  }
 
   get id() {
     return this._id;
@@ -49,7 +51,7 @@ export class Challenge {
   get notifiedSupervisor() {
     return this._notifiedSupervisor;
   }
-  
+
   get supervisorName() {
     return this._supervisorName;
   }
