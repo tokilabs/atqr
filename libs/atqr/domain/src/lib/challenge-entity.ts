@@ -18,6 +18,7 @@ export class Challenge {
     private _deadline: Date,
     private _status: string,
     private _price: PriceEnum,
+    private _notifiedSupervisor: boolean,
     private _supervisorName: string,
     private _supervisorEmail: string,
     private _player: Player,
@@ -45,6 +46,10 @@ export class Challenge {
     return this._price;
   }
 
+  get notifiedSupervisor() {
+    return this._notifiedSupervisor;
+  }
+  
   get supervisorName() {
     return this._supervisorName;
   }
@@ -69,12 +74,7 @@ export class Challenge {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
   }
-
-  changePaymentMethod(
-    paymentMethod: PaymentMethodEntity,
-    newPaymentMethod: PaymentMethodEntity
-  ) {
-    newPaymentMethod = new paymentMethod();
-    this._paymentMethod = newPaymentMethod;
+  changePaymentMethod(paymentMethod: PaymentMethodEntity) {
+    this._paymentMethod = paymentMethod;
   }
 }
