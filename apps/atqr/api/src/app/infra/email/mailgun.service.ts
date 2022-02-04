@@ -1,31 +1,48 @@
 import { EmailTransporter } from '@atqr/domain';
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NodeMailgun } from 'ts-mailgun';
 
 @Injectable()
-export class MailgunService implements EmailTransporter {
-  email: string;
-  player: string;
+export class MailgunService
+  implements EmailTransporter, OnApplicationBootstrap
+{
+  apiKey = 'apiKeyToken'; // Set your API key
+  domain = ''; // Set the domain you registered earlier
+  fromEmail = 'noreply@my-sample-app.com'; // Set your from email
+  fromTitle = 'My Sample App'; // Set the name you would like to send from
+  mailer: NodeMailgun;
+  constructor(private readonly configService: ConfigService) {}
+  onApplicationBootstrap() {
+    this.apiKey = this.configService.get<string>('MAILGUN_API_KEY');
+    this.domain = this.configService.get<string>('MAILGUN_DOMAIN');
+
+    this.mailer = new NodeMailgun(this.apiKey, this.domain);
+  }
   configs: object;
   sendMail(): void {
+    this.mailer.send()
     throw new Error('Method not implemented.');
   }
 }
 
-import { NodeMailgun } from 'ts-mailgun';
+export class Mailer extends NodeMailgun implements OnApplicationBootstrap {
+  apiKey = 'apiKeyToken'; // Set your API key
+  domain = ''; // Set the domain you registered earlier
+  fromEmail = 'noreply@my-sample-app.com'; // Set your from email
+  fromTitle = 'My Sample App'; // Set the name you would like to send from
 
-export class Mailer extends NodeMailgun {
-  constructor(
-    apiKey: 'pubkey-0c464eb59a5d70b50dc5a23f25cd0637', // Set your API key
-    domain: 'sandbox825e4611e5e84e93b848c175df8b6b60.mailgun.org', // Set the domain you registered earlier
-    fromEmail: 'noreply@my-sample-app.com', // Set your from email
-    fromTitle: 'My Sample App' // Set the name you would like to send from
-  ) {
+  constructor(private readonly configService: ConfigService) {
     super();
   }
+  onApplicationBootstrap() {
+    this.apiKey = this.configService.get<string>('MAILGUN_API_KEY');
+  }
 }
+
 let mailer = new Mailer(
-  'pubkey-0c464eb59a5d70b50dc5a23f25cd0637',
-  'sandbox825e4611e5e84e93b848c175df8b6b60.mailgun.org',
+  'MAILGUN_API_KEY',
+  '',
   'noreply@my-sample-app.com',
   'My Sample App'
 );
