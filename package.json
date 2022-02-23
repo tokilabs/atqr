@@ -9,6 +9,7 @@
     "atqr:migrate": "yarn prisma migrate dev --schema ./apps/atqr/api/prisma/schema.prisma",
     "atqr:format": "yarn prisma format --schema ./apps/atqr/api/prisma/schema.prisma",
     "atqr:generate": "yarn prisma generate --schema ./apps/atqr/api/prisma/schema.prisma"
+
   },
   "private": true,
   "dependencies": {
@@ -25,6 +26,7 @@
     "prisma": "3.8.1",
     "reflect-metadata": "0.1.13",
     "ts-mailgun": "^0.5.1",
+    "rxjs": "7.4.0",
     "tslib": "2.0.0",
     "zone.js": "0.11.4"
   },
