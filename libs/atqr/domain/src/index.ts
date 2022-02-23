@@ -1,1 +1,1 @@
-export * from './lib/atqr-domain';
+export * from './lib/player';
