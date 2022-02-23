@@ -6,5 +6,12 @@
   "plantuml.diagramsRoot": "/uml/src",
   "plantuml.exportFormat": "svg",
   "plantuml.exportOutDir": "/uml/lib",
-  "cSpell.words": ["atqr", "tokilabs"]
+  "cSpell.words": [
+    "atqr",
+    "dtos",
+    "mailgun",
+    "supabase",
+    "Supabase",
+    "tokilabs"
+  ]
 }
