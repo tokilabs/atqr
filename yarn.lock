@@ -830,6 +830,16 @@
     ts-node "^9.1.1"
     tsconfig-paths "^3.9.0"
 
+"@nrwl/express@^13.5.2":
+  version "13.5.2"
+  resolved "https://registry.npmjs.org/@nrwl/express/-/express-13.5.2.tgz"
+  integrity sha512-/Rl1jeLaWHmO5kEWdd1B74UtKf4CHNGzC54MDxEs7Ktc3ZRTEgrcIWll1JTErI7QpoQR2uQlsTCTf5O2k7C95Q==
+  dependencies:
+    "@nrwl/devkit" "13.5.2"
+    "@nrwl/jest" "13.5.2"
+    "@nrwl/node" "13.5.2"
+    "@nrwl/workspace" "13.5.2"
+
 "@nrwl/jest@13.4.5":
   version "13.4.5"
   resolved "https://registry.npmjs.org/@nrwl/jest/-/jest-13.4.5.tgz"
