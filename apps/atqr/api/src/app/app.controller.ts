@@ -2,19 +2,30 @@ import {
   Challenge,
   ChallengeStarted,
   EmailAddress,
-  EmailService,
   PaymentMethodEntity,
   PaymentMethodEnum,
   Player,
   SupConfirmation,
 } from '@atqr/domain';
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
+import { Mailer } from './infra/email/mailgun.service';
 import { AppService } from './app.service';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
+import ValidationErrors, {
+  ValidationErrorTypes,
+} from './errors/validationErrors';
 
 @Controller()
 export class AppController {
@@ -22,7 +33,7 @@ export class AppController {
     private readonly appService: AppService,
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
-    private readonly emailService: EmailService
+    private readonly emailService: Mailer
   ) {}
 
   @Post('challenge')
@@ -35,7 +46,10 @@ export class AppController {
       );
 
       if (!player) {
-        player = new Player(challengeDto.playerName, challengeDto.playerEmail);
+        player = new Player(
+          challengeDto.playerName,
+          new EmailAddress(challengeDto.playerEmail)
+        );
       }
 
       const challenge = new Challenge(
@@ -61,7 +75,7 @@ export class AppController {
         this.challengeRepository.create(challenge);
 
         const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
-        const email = new ChallengeStarted(emailAddress);
+        const email = new ChallengeStarted(player);
         this.emailService.sendMail(email);
 
         return challenge;
@@ -69,10 +83,23 @@ export class AppController {
         this.challengeRepository.create(challenge);
 
         const emailAddress = new EmailAddress(challengeDto.playerEmail);
-        const email = new SupConfirmation(emailAddress);
+        const email = new SupConfirmation(player);
         this.emailService.sendMail(email);
       }
     } catch (error) {
+      if (error instanceof ValidationErrors) {
+        switch (error.type) {
+          case ValidationErrorTypes.InvalidValue:
+            throw new HttpException(error, HttpStatus.BAD_REQUEST);
+
+          default:
+            throw new HttpException(
+              { message: "We don't know what happen'd", error },
+              HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+      }
+
       //Pegar os erros e resolver. (Usar try catch)
     }
   }
@@ -89,7 +116,4 @@ export class AppController {
   ): Promise<Challenge> {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
   }
-}
-function then(arg0: (result: any) => void) {
-  throw new Error('Function not implemented.');
 }

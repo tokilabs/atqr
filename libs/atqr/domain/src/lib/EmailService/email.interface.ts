@@ -1,7 +1,8 @@
 import * as EmailValidator from 'email-validator';
+import { Player } from '../player';
 
-export interface Email {
-  to: EmailAddress;
+export interface IEmail {
+  to: Player;
   subject: string;
   body: string;
 }
@@ -9,18 +10,13 @@ export interface Email {
 export class EmailAddress {
   email: string;
 
-  constructor(emailText: string) {
-    const isValidEmail = EmailValidator.validate(emailText);
+  constructor(email: string) {
+    const isValidEmail = EmailValidator.validate(email);
 
     if (isValidEmail) {
-      this.email = emailText;
+      this.email = email;
     } else {
       throw new Error('Invalid Email');
     }
   }
-}
-
-export interface EmailTransporter {
-  // eslint-disable-next-line no-empty-pattern
-  sendMail(email: Email): void;
 }
