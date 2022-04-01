@@ -21,11 +21,11 @@ export class PlayerRepository {
   }
 
   create(player: Player): Player {
-    this.prismaService.player.create({
+    return this.prismaService.player.create({
       data: {
         id: player.id.valueOf(),
         name: player.name,
-        email: player.email,
+        email: player.emailAddress,
       },
     });
   }

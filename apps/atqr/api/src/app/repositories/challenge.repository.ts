@@ -15,7 +15,7 @@ export class ChallengeRepository {
         deadline: challenge.deadline,
         goal: challenge.goal,
         price: challenge.price.toString(),
-        paymentMethod, // Resolve entity
+        //paymentMethod, // Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
         status: challenge.status,
@@ -23,12 +23,12 @@ export class ChallengeRepository {
         player: {
           connectOrCreate: {
             where: {
-              email: challenge.player.email,
+              email: challenge.player.emailAddress,
             },
             create: {
               id: challenge.player.id.valueOf(),
               name: challenge.player.name,
-              email: challenge.player.email,
+              email: challenge.player.emailAddress,
             },
           },
         },

@@ -1,60 +1,86 @@
-import { Email, EmailAddress } from './email.interface';
+import { IEmail } from '.';
+import { Player } from '../player';
+import * as EmailValidator from 'email-validator';
 
-// export class EmailService {
-//   constructor(private mailTransporter: EmailTransporter) {}
+export class EmailAddress  {
+  email: any;
 
-//   sendMail(email: Email) {
-//     try {
-//       this.mailTransporter.sendMail(email);
-//     } catch (error) {
-//       throw new Error(error);
-//     }
-//   }
-// }
-
-export class ChallengeStarted implements Email {
-  subject = 'Seu desafio do ATQR começou !';
-  body = 'Text of welcome to the game';
-
-  constructor(public to: EmailAddress) {}
+  constructor(email: any) {
+    const isValidEmail = EmailValidator.validate(email);
+    
+    if (isValidEmail) {
+      this.email = email;
+    } else {
+      throw new Error('Invalid Email');
+    }
+  }
 }
-
-export class SupConfirmation implements Email {
-  subject = `Olá ${this.supervisorName}.
-    Você foi convidado a ser supervisor de ${this.playerName}...`;
-  body = 'Explicação do jogo';
-
+export class Email implements IEmail {
   constructor(
-    public to: EmailAddress,
-    public playerName: string,
-    public supervisorName: string
-  ) {}
+    public to: Player,
+    public subject: string,
+    public message?: string
+  ) {
+    this.to = to;
+    this.subject = subject;
+    this.message = message;
+  }
+
+  public get playerEmail() {
+    return this.to.emailAddress.email;
+  }
+
+  public get from() {
+    return process.env.FROM_EMAIL;
+  }
+
+  public get Subject() {
+    return this.subject;
+  }
+
+  public get Message() {
+    return this.message;
+  }
+
+ 
 }
 
-export class PayThePrice implements Email {
-  subject = 'Não cumpriu o desafio';
-  body = ' .... ';
-
-  constructor(public to: EmailAddress) {}
+export class ChallengeStarted extends Email {
+  constructor(to: Player) {
+    super(to, 'Seu desafio começou', 'Mensagem de boas vindas');
+  }
 }
 
-export class Congrats implements Email {
-  subject = 'Cumpriu o desafio';
-  body = ' .... ';
-
-  constructor(public to: EmailAddress) {}
+export class SupConfirmation extends Email {
+  constructor(to: Player) {
+    super(
+      to,
+      'Você foi convidado a ser supervisor de ${playerName}...',
+      'Explicação do jogo'
+    );
+  }
 }
 
-export class YouWereChallenged implements Email {
-  subject = 'Você foi desafiado';
-  body = ' .... ';
-
-  constructor(public to: EmailAddress) {}
+export class PayThePrice extends Email {
+  constructor(to: Player) {
+    super(to, 'Não cumpriu o desafio', ' .... ');
+  }
 }
 
-export class DeadLineEmail implements Email {
-  subject = 'E aí?';
-  body = ' .... ';
+export class Congrats extends Email {
+  constructor(to: Player) {
+    super(to, 'Cumpriu o desafio', ' .... ');
+  }
+}
 
-  constructor(public to: EmailAddress) {}
+export class YouWereChallenged extends Email {
+  constructor(to: Player) {
+    super(to, 'Você foi desafiado', ' .... ');
+  }
+}
+
+export class DeadLineEmail extends Email {
+  constructor(to: Player) {
+    super(to, 'E aí?', ' .... ');
+  }
 }

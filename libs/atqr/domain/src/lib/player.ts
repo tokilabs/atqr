@@ -1,12 +1,13 @@
 import { Guid } from '@tokilabs/lang';
+import { EmailAddress, IEmail } from '..';
 
 import { Challenge } from './challenge-entity';
 
 export class Player {
   private _id: Guid;
   constructor(
-    private _name: string,
-    private _email: string,
+    private _name,
+    private _email: EmailAddress,
     private _challenges: Challenge[] = []
   ) {
     this._id = new Guid();
@@ -20,7 +21,7 @@ export class Player {
     return this._name;
   }
 
-  get email() {
+  get emailAddress() {
     return this._email;
   }
 

@@ -1,9 +1,58 @@
 {
   "version": 2,
   "projects": {
-    "api": "apps/atqr/api",
-    "atqr-domain": "libs/atqr/domain",
-    "web": "apps/atqr/web",
-    "web-e2e": "apps/atqr/web-e2e"
+    "api": {
+      "root": "apps/atqr/api",
+      "sourceRoot": "apps/atqr/api/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/atqr/api",
+            "main": "apps/atqr/api/src/main.ts",
+            "tsConfig": "apps/atqr/api/tsconfig.app.json",
+            "assets": ["apps/atqr/api/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/atqr/api/src/environments/environment.ts",
+                  "with": "apps/atqr/api/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "api:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/atqr/api/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/atqr/api"],
+          "options": {
+            "jestConfig": "apps/atqr/api/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "domain": "libs/atqr/domain"
   }
 }

@@ -12,6 +12,7 @@
     "mailgun",
     "supabase",
     "Supabase",
-    "tokilabs"
+    "tokilabs",
+    "nestjs"
   ]
 }

@@ -68,10 +68,6 @@ export class Challenge {
     return this._paymentMethod;
   }
 
-  get newPaymentMethod() {
-    return this._newPaymentMethod;
-  }
-
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
