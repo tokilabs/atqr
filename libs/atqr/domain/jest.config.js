@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'atqr-domain',
-  preset: '../../../jest.preset.js',
+  preset: 'ts-jest',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
