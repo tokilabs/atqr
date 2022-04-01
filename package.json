@@ -35,7 +35,17 @@
     "rxjs": "^7.0.0",
     "ts-mailgun": "^0.5.1",
     "tslib": "2.0.0",
-    "zone.js": "0.11.4"
+    "zone.js": "0.11.4",
+    "@nestjs/common": "^8.0.0",
+    "@nestjs/core": "^8.0.0",
+    "@nestjs/platform-express": "^8.0.0",
+    "@tokilabs/lang": "^1.0.3",
+    "cron": "^1.8.2",
+    "guid-typescript": "^1.0.9",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "~7.4.0",
+    "tslib": "^2.0.0",
+    "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@nestjs/config": "^1.1.6",

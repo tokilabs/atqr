@@ -44,7 +44,12 @@ export class Challenge {
     return this._deadline;
   }
   get price() {
-    return this._price
+    if (this._price > 24) {
+      return this._price;
+    } else {
+      new Error('Selecione um valor acima de 25 reais');
+    }
+    return this._price;
   }
   get notifiedSupervisor() {
     return this._notifiedSupervisor;
