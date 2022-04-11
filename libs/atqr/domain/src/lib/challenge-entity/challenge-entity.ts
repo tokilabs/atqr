@@ -1,14 +1,22 @@
 import { Guid } from '@tokilabs/lang/';
-import { PaymentMethodEntity } from './payment-method/payment-method';
-import { Player } from './player';
-// export enum PriceEnum {
-//   firstValue = 25,
-//   secondValue = 50,
-//   thirdValue = 75,
-//   fourthValue = 100,
-//   fifthValue = 250,
-//   sixthValue = 1000,
-// }
+import { PaymentMethodEntity } from '../payment-method';
+import { Player } from '../player';
+import { dateDiff } from './date-difference';
+
+export enum SupervisorEnum {
+  'notInvited',
+  'invited',
+  'accepted',
+  'askedIfTheGoalIsComplish',
+  'repliedIfTheGoalWasComplish',
+}
+
+export enum StatusEnum {
+  Ongoing,
+  Completed,
+  Failed,
+}
+
 export class Challenge {
   private _id: Guid;
   private _price: number;
@@ -21,15 +29,15 @@ export class Challenge {
     id: Guid,
     price: number,
     private _paymentMethod?: PaymentMethodEntity,
-    private _status: string = 'Verifying',
-    private _notifiedSupervisor: boolean = false //testar - ver se uso email-service da gabi//
+    private _status?: StatusEnum,
+    private _statusSupervisor: SupervisorEnum = SupervisorEnum.notInvited
   ) {
     this._id = new Guid();
-    this._id = id;
     if (price >= 25) {
-     this._price = price } else {
-        throw new Error('Selecione um valor acima de 25 reais')
-      }
+      this._price = price;
+    } else {
+      throw new Error('Selecione um valor acima de 25 reais');
+    }
   }
   get id() {
     return this._id;
@@ -41,7 +49,13 @@ export class Challenge {
     return this._status;
   }
   get deadline() {
-    return this._deadline;
+    const today = new Date();
+    const deadline = this._deadline;
+    if (dateDiff(today, deadline) > 1) {
+      return this._deadline;
+    } else {
+      new Error('Selecione uma data futura');
+    }
   }
   get price() {
     if (this._price > 24) {
@@ -51,8 +65,9 @@ export class Challenge {
     }
     return this._price;
   }
-  get notifiedSupervisor() {
-    return this._notifiedSupervisor;
+
+  get statusSupervisor() {
+    return this._statusSupervisor;
   }
   get supervisorName() {
     return this._supervisorName;

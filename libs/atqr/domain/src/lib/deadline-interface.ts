@@ -1,6 +1,7 @@
 import { Guid } from "@tokilabs/lang";
+import { Challenge } from "..";
 
 export interface DeadlineInterface {
-  challengeId: Guid;
+  id: Guid;
   deadline: Date;
 }

@@ -8,11 +8,12 @@
   "plantuml.exportOutDir": "/uml/lib",
   "cSpell.words": [
     "atqr",
+    "Complish",
     "dtos",
     "mailgun",
+    "nestjs",
     "supabase",
     "Supabase",
-    "tokilabs",
-    "nestjs"
+    "tokilabs"
   ]
 }
