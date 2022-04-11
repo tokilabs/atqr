@@ -71,11 +71,11 @@ export class Congrats extends Email {
   }
 }
 
-export class YouWereChallenged extends Email {
-  constructor(to: Player) {
-    super(to, 'Você foi desafiado', ' .... ');
-  }
-}
+// export class YouWereChallenged extends Email {
+//   constructor(to: Player) {
+//     super(to, 'Você foi desafiado', ' .... ');
+//   }
+// }
 
 export class DeadLineEmail extends Email {
   constructor(to: Player) {
