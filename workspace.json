@@ -53,6 +53,104 @@
       },
       "tags": []
     },
+    "atqr-web": {
+      "projectType": "application",
+      "root": "apps/atqr/web",
+      "sourceRoot": "apps/atqr/web/src",
+      "tags": [],
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:webpack",
+          "outputs": ["{options.outputPath}"],
+          "defaultConfiguration": "production",
+          "options": {
+            "outputPath": "dist/apps/atqr/web",
+            "compiler": "babel",
+            "index": "apps/atqr/web/src/index.html",
+            "baseHref": "/",
+            "main": "apps/atqr/web/src/main.ts",
+            "polyfills": "apps/atqr/web/src/polyfills.ts",
+            "tsConfig": "apps/atqr/web/tsconfig.app.json",
+            "assets": [
+              "apps/atqr/web/src/favicon.ico",
+              "apps/atqr/web/src/assets"
+            ],
+            "styles": ["apps/atqr/web/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/atqr/web/src/environments/environment.ts",
+                  "with": "apps/atqr/web/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "atqr-web:build"
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "atqr-web:build:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/atqr/web/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/atqr/web"],
+          "options": {
+            "jestConfig": "apps/atqr/web/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "atqr-web-e2e": {
+      "root": "apps/atqr/web-e2e",
+      "sourceRoot": "apps/atqr/web-e2e/src",
+      "projectType": "application",
+      "targets": {
+        "e2e": {
+          "executor": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/atqr/web-e2e/cypress.json",
+            "devServerTarget": "atqr-web:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "atqr-web:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/atqr/web-e2e/**/*.{js,ts}"]
+          }
+        }
+      },
+      "tags": [],
+      "implicitDependencies": ["atqr-web"]
+    },
     "domain": "libs/atqr/domain"
   }
 }
