@@ -20,14 +20,15 @@ export enum StatusEnum {
 export class Challenge {
   private _id: Guid;
   private _price: number;
+  private _deadline: Date;
   constructor(
-    private _goal: string, //numero maximo-min de caracteres?
-    private _deadline: Date, //
+    private _goal: string, 
     private _supervisorName: string,
     private _supervisorEmail: string,
     private _player: Player,
-    id: Guid,
+    _id: Guid,
     price: number,
+    deadline: Date,
     private _paymentMethod?: PaymentMethodEntity,
     private _status?: StatusEnum,
     private _statusSupervisor: SupervisorEnum = SupervisorEnum.notInvited
@@ -37,6 +38,12 @@ export class Challenge {
       this._price = price;
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
+    }
+    const today = new Date();
+    if (dateDiff(today, deadline) > 1) {
+      this._deadline = deadline;
+    } else {
+      throw Error('Selecione uma data futura');
     }
   }
   get id() {
@@ -49,20 +56,9 @@ export class Challenge {
     return this._status;
   }
   get deadline() {
-    const today = new Date();
-    const deadline = this._deadline;
-    if (dateDiff(today, deadline) > 1) {
-      return this._deadline;
-    } else {
-      new Error('Selecione uma data futura');
-    }
+    return this._deadline;
   }
   get price() {
-    if (this._price > 24) {
-      return this._price;
-    } else {
-      new Error('Selecione um valor acima de 25 reais');
-    }
     return this._price;
   }
 

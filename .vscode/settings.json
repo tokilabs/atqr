@@ -12,6 +12,8 @@
     "dtos",
     "mailgun",
     "nestjs",
+    "pagar",
+    "pagseguro",
     "supabase",
     "Supabase",
     "tokilabs"
