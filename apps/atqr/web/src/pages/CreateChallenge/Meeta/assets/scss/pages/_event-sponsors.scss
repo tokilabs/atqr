@@ -1,0 +1,139 @@
+/*--
+/*  06 - Event Sponsors CSS
+/*----------------------------------------*/
+
+.meeta-event-sponsors{
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
+    
+    &::before{
+        position: absolute;
+        content: '';
+        background-color: #250449;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.9;
+    }
+}
+
+// Home Style Two
+
+.meeta-event-sponsors-2 {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+}
+
+// Home Style Three
+
+.meeta-event-sponsors-3 {
+
+    & .meeta-sponsor-wrap {
+        margin-top: -30px;
+        & .meeta-sponsor-logo {
+            background: #fafafa;
+            padding: 30px;
+            margin-top: 30px;
+            height: 130px;
+            line-height: 65px;
+            text-align: center;
+            transition: $transition-default;
+
+            &:hover {
+                box-shadow: 0 0 30px rgba(0,0,0,0.10);
+
+                & a {
+
+                    & img {
+                        opacity: 0.75;  
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Home Style Four
+
+.meeta-event-sponsors-4 {
+
+    & .meeta-sponsor-wrap {
+        position: relative;
+        padding-top: 15px;
+
+        &::before {
+            content: "";
+            background: #ebebeb;
+            width: 100%;
+            margin: auto;
+            height: 1px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+        }
+        & .meeta-sponsor-item-box {
+            border-right: 1px solid #ebebeb;
+            @media #{$tablet-device} {
+                border-right: 0;
+            }
+
+            &.sponsor-box-1 {
+                padding-right: 20px;
+            }
+            &.sponsor-box-2 {
+                padding-right: 20px;
+            }
+            &.sponsor-box-3 {
+                padding-right: 20px;
+            }
+            &.sponsor-box-4 {
+                padding-right: 20px;
+                border-right: 0;
+            }
+            & .meeta-sponsor-logo {
+                height: 130px;
+                line-height: 120px;
+                text-align: center;
+                
+            }
+        }
+    }
+    
+    
+}
+
+.meeta-event-sponsors-4 {
+    @media #{$tablet-device} {
+        & .meeta-sponsor-wrap {
+            padding-top: 0px;
+    
+            &::before {
+                display: none;
+            }
+            & .meeta-sponsor-item-box {
+                border-right: 0;
+    
+                &.sponsor-box-1 {
+                    padding-right: 0px;
+                }
+                &.sponsor-box-2 {
+                    padding-right: 0px;
+                }
+                &.sponsor-box-3 {
+                    padding-right: 0px;
+                }
+                &.sponsor-box-4 {
+                    padding-right: 0px;
+                    border-right: 0;
+                }
+            }
+        }
+    }
+}
