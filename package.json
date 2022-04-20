@@ -49,6 +49,7 @@
     "reflect-metadata": "^0.1.13",
     "regenerator-runtime": "0.13.7",
     "rxjs": "~7.4.0",
+    "sass": "^1.50.1",
     "stripe": "^8.203.0",
     "ts-mailgun": "^0.5.1",
     "tslib": "^2.0.0",
