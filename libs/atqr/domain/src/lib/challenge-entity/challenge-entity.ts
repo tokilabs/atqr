@@ -7,8 +7,8 @@ export enum SupervisorEnum {
   'notInvited',
   'invited',
   'accepted',
-  'askedIfTheGoalIsComplish',
-  'repliedIfTheGoalWasComplish',
+  'askedIfTheGoalIsAccomplished',
+  'repliedIfTheGoalWasAccomplished',
 }
 
 export enum StatusEnum {
@@ -22,7 +22,7 @@ export class Challenge {
   private _price: number;
   private _deadline: Date;
   constructor(
-    private _goal: string, 
+    private _goal: string,
     private _supervisorName: string,
     private _supervisorEmail: string,
     private _player: Player,
@@ -31,7 +31,7 @@ export class Challenge {
     deadline: Date,
     private _paymentMethod?: PaymentMethodEntity,
     private _status?: StatusEnum,
-    private _statusSupervisor: SupervisorEnum = SupervisorEnum.notInvited
+    private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
   ) {
     this._id = new Guid();
     if (price >= 25) {
@@ -62,8 +62,8 @@ export class Challenge {
     return this._price;
   }
 
-  get statusSupervisor() {
-    return this._statusSupervisor;
+  get supervisorStatus() {
+    return this._supervisorStatus;
   }
   get supervisorName() {
     return this._supervisorName;

@@ -14,6 +14,5 @@
     "**/*.spec.js",
     "**/*.test.jsx",
     "**/*.spec.jsx",
-    "**/*.d.ts"
-, "src/lib/__mocks__/challenge-entity-mock.ts"  ]
+    "**/*.d.ts", ]
 }
