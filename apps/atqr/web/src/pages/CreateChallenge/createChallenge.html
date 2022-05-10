@@ -76,8 +76,8 @@
       <div class="container">
         <!-- Section Title Start -->
         <div class="meeta-section-title-2 text-center">
-          <h4 class="sub-title">Event Schedule</h4>
-          <h2 class="main-title">Follow event schedule</h2>
+          <h4 class="sub-title">Ajoelhou tem que rezar</h4>
+          <h2 class="main-title">Crie Um Desafio !</h2>
         </div>
         <!-- Section Title End -->
 
@@ -90,19 +90,11 @@
                 <li data-tab-target="#tab1" class="active">
                   <div class="meeta-event-schedule-time">
                     <h4 class="meeta-event-schedule-day">Se Desafie !</h4>
-                    <p>Oct 08, 2022</p>
                   </div>
                 </li>
                 <li data-tab-target="#tab2" class="tab">
                   <div class="meeta-event-schedule-time">
                     <h4 class="meeta-event-schedule-day">Desafie Alguém</h4>
-                    <p>Oct 09, 2022</p>
-                  </div>
-                </li>
-                <li data-tab-target="#tab3" class="tab">
-                  <div class="meeta-event-schedule-time">
-                    <h4 class="meeta-event-schedule-day">Desafie Alguém</h4>
-                    <p>Oct 09, 2022</p>
                   </div>
                 </li>
               </ul>
@@ -120,9 +112,6 @@
                       <div class="contact-wrap">
                         <div class="row justify-content-center">
                           <div class="col-lg-10">
-                            <div class="form-title text-center">
-                              <h2 class="title">Sent Us A Message</h2>
-                            </div>
                             <!-- Contact Form Wrap Start -->
                             <div class="contact-form-wrap">
                               <form action="#">
@@ -131,9 +120,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                        id="seu-nome"
                                         class="form-control"
                                         type="text"
-                                        placeholder="Your Name"
+                                        placeholder="Seu Nome"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -142,9 +132,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                        id="seu-email"
                                         class="form-control"
                                         type="email"
-                                        placeholder="Your Email"
+                                        placeholder="Seu Email"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -153,9 +144,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                        id="nome-supervisor"
                                         class="form-control"
                                         type="text"
-                                        placeholder="Your Number"
+                                        placeholder="Nome do Supervisor"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -164,9 +156,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                        id="email-supervisor"
                                         class="form-control"
                                         type="text"
-                                        placeholder="Subject"
+                                        placeholder="Email do Supervisor"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -175,8 +168,9 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <textarea
+                                        id="descricao"
                                         class="form-control"
-                                        placeholder="Write A Message"
+                                        placeholder="Descreva Seu Desafio"
                                       ></textarea>
                                     </div>
                                     <!-- Single Form End -->
@@ -188,7 +182,7 @@
                                         class="btn btn-primary"
                                         type="submit"
                                       >
-                                        Submit Now
+                                        Próximo Passo
                                       </button>
                                     </div>
                                     <!--  Single Form End -->
@@ -213,9 +207,7 @@
                       <div class="contact-wrap">
                         <div class="row justify-content-center">
                           <div class="col-lg-10">
-                            <div class="form-title text-center">
-                              <h2 class="title">Sent Us A Message</h2>
-                            </div>
+                            
                             <!-- Contact Form Wrap Start -->
                             <div class="contact-form-wrap">
                               <form action="#">
@@ -224,9 +216,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                        id="nome-desafiado"
                                         class="form-control"
                                         type="text"
-                                        placeholder="Your Name"
+                                        placeholder="Nome"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -235,9 +228,10 @@
                                     <!-- Single Form Start -->
                                     <div class="single-form">
                                       <input
+                                      id="email-desafiado"
                                         class="form-control"
                                         type="email"
-                                        placeholder="Your Email"
+                                        placeholder="Email"
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -248,7 +242,7 @@
                                       <input
                                         class="form-control"
                                         type="text"
-                                        placeholder="Your Number"
+                                        placeholder=""
                                       />
                                     </div>
                                     <!-- Single Form End -->
@@ -330,5 +324,6 @@
 
     <!-- Main JS -->
     <script src="/apps/atqr/web/src/pages/Meeta/assets/js/main.js"></script>
+    <script src="/apps/atqr/web/src/pages/CreateChallenge/createChallenge.js"></script>
   </body>
 </html>
