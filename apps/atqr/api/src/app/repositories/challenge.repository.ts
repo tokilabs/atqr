@@ -1,6 +1,7 @@
+
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity';
+import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity/challenge-entity';
 
 import { PrismaService } from '../infra/database/prisma.service';
 
@@ -36,6 +37,21 @@ export class ChallengeRepository {
     });
   }
 
+
+  findLastChallenges(challenge: Challenge){
+    return this.prismaService.challenge.findMany({
+      orderBy: [
+        {
+          id: 'desc',
+        },
+       ]
+      
+    })
+  }
+  
+  
+  
+  
   findMany(numberOfResults = 100) {
     // Cursor or Offset based pagination?
     // As the change is quite easy i'll implement Offset based pagination and will change later if need arises
