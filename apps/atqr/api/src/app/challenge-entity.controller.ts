@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Patch,
 } from '@nestjs/common';
+import { Guid } from '@tokilabs/lang';
 
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { ChallengeRepository } from './repositories/challenge.repository';
@@ -25,8 +26,7 @@ import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationErrors';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
-
-import { PrismaService } from './infra/database/prisma.service';
+import { lastValueFrom } from 'rxjs';
 
 // @POST new challenge
 
@@ -55,14 +55,14 @@ export class ChallengeController {
           new EmailAddress(challengeDto.playerEmail)
         );
 
-        this.playerRepository.create(player)
+        this.playerRepository.create(player);
       }
 
       const challenge = new Challenge(
         challengeDto.goal,
         challengeDto.supervisorName,
         challengeDto.supervisorEmail,
-        player,
+        challengeDto.player,
         challengeDto.id,
         challengeDto.price,
         challengeDto.deadline,
@@ -113,11 +113,9 @@ export class ChallengeController {
   }
 
   // @GET last challenges
- 
+
   @Get('last-challenges')
   getLastChallenges(amount: number) {
-    // this.challengeRepository.findLastChallenges(amount);
-
     return this.challengeRepository.findLastChallenges(amount);
   }
 
