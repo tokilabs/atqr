@@ -19,6 +19,7 @@ import { Player } from '@atqr/domain';
 import ValidationErrors, { ValidationErrorTypes } from './errors/validationErrors';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import { lastValueFrom } from 'rxjs';
+import { PrismaService } from './infra/database/prisma.service';
 
 // @POST new challenge
 
@@ -108,14 +109,12 @@ export class ChallengeController {
   
    
   // @GET last challenges
+   prismaService = new PrismaService()
+   challengeRepo = new ChallengeRepository(this.prismaService)
   @Get()
-  getLastChallenges(challengeRepository: ChallengeRepository, id: Guid){
-    return challengeRepository.findLastChallenges
+  getLastChallenges(amount: number){
+    return this.challengeRepo.findLastChallenges(amount)
   }
-  
-  
-  
-
 
  
 
