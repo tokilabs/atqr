@@ -1,0 +1,98 @@
+/*--
+/*  21 - Page Banner CSS
+/*----------------------------------------*/
+
+
+.page-banner-section {
+    min-height: 645px;
+    background-image: url(../images/page-banner.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    position: relative;
+    z-index: 1;
+    @media #{$desktop-device} {
+        min-height: 520px;
+    }
+    @media #{$tablet-device} {
+        min-height: 450px;
+    }
+    @media #{$large-mobile} {
+        min-height: 350px;
+        padding-top: 70px;
+    }
+    @media #{$small-mobile} {
+        padding-top: 50px;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba(#0541da, 0.7);
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-image: url(../images/shape/banner-shape.png);
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+}
+
+.page-banner {
+
+    & .title {
+        font-size: 60px;
+        line-height: 70px;
+        font-family: $heading-font2;
+        font-weight: 700;
+        color: $white;
+        @media #{$desktop-device} {
+            font-size: 48px;
+            line-height: 1.25;
+        }
+        @media #{$large-mobile} {
+            font-size: 30px;
+            line-height: 40px;
+        }
+    }
+
+    & .breadcrumb {
+        background: $heading-color;
+        max-width: 225px;
+        margin: 0 auto;
+        height: 45px;
+        line-height: 43px;
+        padding: 0 20px;
+        margin-top: 15px;
+        & .breadcrumb-item {
+            font-size: 18px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $white;
+            @media #{$large-mobile} {
+                font-size: 16px;
+            }
+
+            & + .breadcrumb-item {
+
+                &::before {
+                    color: $white;
+                }
+            }
+        }
+    }
+}

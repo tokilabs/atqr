@@ -1,0 +1,124 @@
+/*--
+/*  02.1 - Mini Cart CSS
+/*----------------------------------------*/
+
+.meeta-mini-cart-box {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 375px;
+    min-height: 20%;
+    max-height: calc(100% - 30px);
+    border-radius: 10px;
+    padding: 34px 34px 24px;
+    box-shadow: 11px 10px 38px 0 rgba(46, 63, 99, 0.15);
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    overscroll-behavior-y: contain;
+    transform: translateX(calc(100% + 20px));        
+    transition: $transition-default;
+    scrollbar-width: none;
+    background-color: $white;
+    z-index: 95;
+
+    & .mini-cart-items {
+
+        & .mini-cart-item {
+            display: flex;
+            position: relative;
+            align-items: center;
+    
+            &+.mini-cart-item {
+                margin-top: 30px;
+            }
+    
+            & .btn-close {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 12px;
+                height: 12px;
+            }
+
+            & .mini-cart-item-image {
+                flex-shrink: 0;
+        
+                & img {
+                    width: 75px;
+                    height: 75px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    object-position: center;
+                }
+            }
+
+            & .mini-cart-item-content {
+                flex-grow: 1;
+                padding: 0 20px;
+            }
+
+            & .mini-cart-title {
+                font-size: 15px;
+                font-weight: 700;
+        
+            }
+        
+            & .mini-cart-quantity {
+                font-size: 14px;
+                font-weight: 700;
+                color: $primary;
+                margin-top: 5px;
+            }
+        }
+    }
+
+
+    & .mini-cart-sub-total {
+        padding-top: 20px;
+
+        & p {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            color: $heading-color;
+
+            & strong {
+                font-weight: 600;
+            }
+        }
+    }
+
+    & .mini-cart-amount {
+        color: $primary;
+        font-weight: 600;
+    }
+
+    & .mini-cart-sub-btn {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 18px;
+
+        & .btn {
+            width: 48%;
+        }
+    }
+}
+
+
+
+.off-canvas{
+    position: absolute;
+    z-index: 95;
+
+    &.show {
+        & .meeta-mini-cart-box{
+            transform: translateX(0);
+        }
+    }
+}
+
+
+
+
+/*# sourceMappingURL=off-canvas-menu.css.map */
