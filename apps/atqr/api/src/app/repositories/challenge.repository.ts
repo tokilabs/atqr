@@ -38,7 +38,7 @@ export class ChallengeRepository {
   }
 
 
-  findLastChallenges(challenge: Challenge){
+  findLastChallenges(amount: number){
     return this.prismaService.challenge.findMany({
       orderBy: [
         {
