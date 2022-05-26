@@ -1,7 +1,8 @@
-
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
+import { plainToInstance } from 'class-transformer';
 import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity/challenge-entity';
+import { Challenge as PrismaChallenge } from '@prisma/client';
 
 import { PrismaService } from '../infra/database/prisma.service';
 
@@ -9,66 +10,72 @@ import { PrismaService } from '../infra/database/prisma.service';
 export class ChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(challenge: Challenge) {
+  create(challenge: Challenge): void {
     this.prismaService.challenge.create({
       data: {
         id: challenge.id.valueOf(),
         deadline: challenge.deadline,
         goal: challenge.goal,
         price: challenge.price.toString(),
-        //paymentMethod, // Resolve entity
+        paymentMethod: 'asdasd', // Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
-        status: challenge.status,
+        status: challenge.status.toString(),
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
-          connectOrCreate: {
-            where: {
-              email: challenge.player.emailAddress,
-            },
-            create: {
-              id: challenge.player.id.valueOf(),
-              name: challenge.player.name,
-              email: challenge.player.emailAddress,
-            },
+          connect: {
+            email: challenge.player.emailAddress.email,
           },
         },
       },
     });
   }
 
+  async findLastChallenges(amount: number): Promise<Challenge[]> {
+    const plainChallenges: PrismaChallenge[] =
+      await this.prismaService.challenge.findMany({
+        orderBy: [
+          {
+            id: 'desc',
+          },
+        ],
+      });
 
-  findLastChallenges(amount: number){
-    return this.prismaService.challenge.findMany({
-      orderBy: [
-        {
-          id: 'desc',
-        },
-       ]
-      
-    })
+    return plainChallenges.map((challenge) => {
+      return plainToInstance(Challenge, challenge);
+    });
   }
-  
-  
-  
-  
-  findMany(numberOfResults = 100) {
+
+  async findMany(numberOfResults = 100): Promise<Challenge[]> {
     // Cursor or Offset based pagination?
     // As the change is quite easy i'll implement Offset based pagination and will change later if need arises
-    return this.prismaService.challenge.findMany({
-      take: numberOfResults,
+
+    const plainChallenges: PrismaChallenge[] =
+      await this.prismaService.challenge.findMany({
+        take: numberOfResults,
+      });
+
+    return plainChallenges.map((challenge) => {
+      return plainToInstance(Challenge, challenge);
     });
   }
 
-  findUnique(id: Guid) {
-    return this.prismaService.challenge.findUnique({
-      where: { id: id.valueOf() },
-      include: { player: true },
-    });
+  async findUnique(id: Guid): Promise<Challenge> {
+    return plainToInstance(
+      Challenge,
+      await this.prismaService.challenge.findUnique({
+        where: { id: id.valueOf() },
+        include: { player: true },
+      })
+    );
   }
 
-  findOngoingChallenges(deadline: Date, numberOfResults = 100, skip = 0) {
-    return this.prismaService.challenge.findMany({
+  async findOngoingChallenges(
+    deadline: Date,
+    numberOfResults = 100,
+    skip = 0
+  ): Promise<Challenge[]> {
+    const plainChallenges = await this.prismaService.challenge.findMany({
       take: numberOfResults,
       skip,
       where: {
@@ -78,14 +85,17 @@ export class ChallengeRepository {
         status: { equals: 'Ongoing' },
       },
     });
+    return plainChallenges.map((challenge) => {
+      return plainToInstance(Challenge, challenge);
+    });
   }
 
-  update(challenge: Challenge) {
+  update(challenge: Challenge): void {
     this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),
-        status: challenge.status,
+        status: challenge.status.toString(),
       },
     });
   }
