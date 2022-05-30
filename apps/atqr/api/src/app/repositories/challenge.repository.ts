@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Get, Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity/challenge-entity';
@@ -16,7 +16,7 @@ export class ChallengeRepository {
         id: challenge.id.valueOf(),
         deadline: challenge.deadline,
         goal: challenge.goal,
-        price: challenge.price.toString(),
+        price: challenge.price,
         paymentMethod: 'asdasd', // Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
@@ -34,11 +34,9 @@ export class ChallengeRepository {
   async findLastChallenges(amount: number): Promise<Challenge[]> {
     const plainChallenges: PrismaChallenge[] =
       await this.prismaService.challenge.findMany({
-        orderBy: [
-          {
-            id: 'desc',
-          },
-        ],
+        orderBy: {
+          id: 'desc',
+        },
       });
 
     return plainChallenges.map((challenge) => {

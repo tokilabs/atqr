@@ -62,7 +62,7 @@ export class ChallengeController {
         challengeDto.goal,
         challengeDto.supervisorName,
         challengeDto.supervisorEmail,
-        player
+        player,
         challengeDto.id,
         challengeDto.price,
         challengeDto.deadline,
@@ -113,9 +113,8 @@ export class ChallengeController {
   }
 
   // @GET last challenges
-  prismaService = new PrismaService();
-  challengeRepo = new ChallengeRepository(this.prismaService);
-  @Get()
+ 
+  @Get('last-challenges')
   getLastChallenges(amount: number) {
     // this.challengeRepository.findLastChallenges(amount);
 
