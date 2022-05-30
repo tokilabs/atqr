@@ -14,7 +14,7 @@ model Challenge {
   id              String   @id @db.Uuid
   goal            String
   deadline        DateTime
-  price           String
+  price           Int
   player          Player   @relation(fields: [playerId], references: [id])
   playerId        String   @db.Uuid
   supervisorName  String
@@ -27,11 +27,11 @@ model Challenge {
 model Player {
   id        String      @id @db.Uuid
   name      String
-  email     String  @unique
+  email     String      @unique
   Challenge Challenge[]
 }
 
-enum ChallengeStatus  {
+enum ChallengeStatus {
   Ongoing
   Completed
   Failed
