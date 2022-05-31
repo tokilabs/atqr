@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './infra/database/prisma.service';
+import { Mailer } from './infra/email/mailer-sevice';
 import { StripeService } from './infra/payment/stripe.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
@@ -17,6 +18,7 @@ import { PlayerRepository } from './repositories/player.repository';
     PlayerRepository,
     ConfigService,
     StripeService,
+    Mailer,
   ],
 })
 export class AppModule {
