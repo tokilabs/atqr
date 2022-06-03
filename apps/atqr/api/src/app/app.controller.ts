@@ -20,6 +20,7 @@ import {
 import { Mailer } from './infra/email/mailgun.service';
 import { AppService } from './app.service';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
+import { CompleteChallengeDto } from './dtos/completChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
@@ -103,7 +104,21 @@ export class AppController {
       //Pegar os erros e resolver. (Usar try catch)
     }
   }
-
+  @Patch('challenge/complete-challenge')
+  async completeChallenge(
+    @Body() completeChallengeDto: CompleteChallengeDto
+  ): Promise<string> {
+    try {
+      return this.challengeRepository.completeChallenge(completeChallengeDto);
+    } catch (error) {
+      if (error instanceof ValidationErrors) {
+        throw new HttpException(
+          { message: "We don't know what happen'd", error },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
+      }
+    }
+  }
   @Get('challenge/:id')
   getChallenge(@Param('id') id: string): Challenge {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
