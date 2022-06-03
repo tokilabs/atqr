@@ -1,7 +1,7 @@
 import { Guid } from '@tokilabs/lang/';
 import { PaymentMethodEntity } from '../payment-method';
 import { Player } from '../player';
-import { dateDiff } from './date-difference';
+import { dateDiff } from '../../utils/date-difference';
 
 export enum SupervisorEnum {
   'notInvited',

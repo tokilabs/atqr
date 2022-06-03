@@ -1,4 +1,4 @@
-import { Challenge } from './challenge-entity';
+import { Challenge } from './challenge.entity';
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
 import { EmailAddress } from '../..';

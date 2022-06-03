@@ -1,6 +1,6 @@
 import { Guid } from '@tokilabs/lang';
 import { EmailAddress, IEmail } from '..';
-import { Challenge } from './challenge-entity/challenge-entity'
+import { Challenge } from './challenge-entity/challenge.entity'
 
 export class Player {
   private _id: Guid;
