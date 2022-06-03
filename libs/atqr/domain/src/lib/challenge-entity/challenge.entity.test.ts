@@ -39,7 +39,7 @@ describe('Challenge', () => {
     expect(challenge.paymentMethod).toBeInstanceOf(PaymentMethodEntity);
   });
 
-  test('should throws a error if price is less than 24', () => {
+  test('Should throw a error if price is less than 24', () => {
     expect(
       () =>
         new Challenge(
@@ -54,7 +54,7 @@ describe('Challenge', () => {
     ).toThrow('Selecione um valor acima de 25 reais');
   });
 
-  test('should throws a error if the deadline entry is a past date', () => {
+  test('Should throw a error if the deadline entry is a past date', () => {
     const email = new EmailAddress('fulano@hotmai.com');
     const player = new Player('fulano', email);
     const deadline1 = new Date(2000, 11, 12);
@@ -73,7 +73,7 @@ describe('Challenge', () => {
     ).toThrow('Selecione uma data futura');
   });
 
-  test('should correctly change the payment method when given the data needed', () => {
+  test('Should correctly change the payment method when given the data needed', () => {
     //arrange
     const creditCard = PaymentMethodEnum.creditCard;
     const debitCard = PaymentMethodEnum.debitCard;
