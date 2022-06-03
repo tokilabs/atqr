@@ -9,6 +9,11 @@ import { Player } from './player';
 //   fifthValue = 250,
 //   sixthValue = 1000,
 // }
+export enum StatusEnum {
+  Ongoing,
+  Completed,
+  Failed,
+}
 export class Challenge {
   private _id: Guid;
   private _price: number;
