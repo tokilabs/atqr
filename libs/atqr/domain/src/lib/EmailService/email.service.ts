@@ -2,19 +2,7 @@ import { IEmail } from '.';
 import { Player } from '../player/player.entity';
 import * as EmailValidator from 'email-validator';
 
-export class EmailAddress {
-  email: any;
 
-  constructor(email: any) {
-    const isValidEmail = EmailValidator.validate(email);
-
-    if (isValidEmail) {
-      this.email = email;
-    } else {
-      throw new Error('Invalid Email');
-    }
-  }
-}
 export class Email implements IEmail {
   constructor(
     public to: Player,
