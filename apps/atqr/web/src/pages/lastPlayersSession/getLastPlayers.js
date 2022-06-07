@@ -9,5 +9,5 @@ async function getLastChallenges() {
     console.error(error);
   }
 }
-
 getLastChallenges();
+module.exports = {getLastChallenges}
