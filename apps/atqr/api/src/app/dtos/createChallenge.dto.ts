@@ -1,3 +1,4 @@
+import { PaymentMethodEntity, Player } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -6,6 +7,8 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
+
+import { Guid } from '@tokilabs/lang';
 
 export class CreateChallengeDto {
   @IsString()
@@ -20,7 +23,7 @@ export class CreateChallengeDto {
   price: number;
 
   @MinLength(3)
-  playerName: string;
+  player: Player;
 
   @IsEmail()
   playerEmail: string;
@@ -32,4 +35,8 @@ export class CreateChallengeDto {
   supervisorEmail: string;
 
   creditCardToken?: string;
+
+  id: Guid;
+
+  paymentMethod: PaymentMethodEntity;
 }
