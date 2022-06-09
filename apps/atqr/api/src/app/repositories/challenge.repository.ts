@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity';
-
+import axios from 'axios'
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
 export class ChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  @Post('chellenge/create')
   create(challenge: Challenge) {
     this.prismaService.challenge.create({
       data: {
@@ -36,6 +37,7 @@ export class ChallengeRepository {
     });
   }
 
+  @Get('challenge/find-many/:id')
   findMany(numberOfResults = 100) {
     // Cursor or Offset based pagination?
     // As the change is quite easy i'll implement Offset based pagination and will change later if need arises
@@ -44,6 +46,7 @@ export class ChallengeRepository {
     });
   }
 
+  @Get('challenge/find-unique/:id')
   findUnique(id: Guid) {
     return this.prismaService.challenge.findUnique({
       where: { id: id.valueOf() },
@@ -51,6 +54,7 @@ export class ChallengeRepository {
     });
   }
 
+  @Get('challenge/ongoing/:id')
   findOngoingChallenges(deadline: Date, numberOfResults = 100, skip = 0) {
     return this.prismaService.challenge.findMany({
       take: numberOfResults,
@@ -64,6 +68,7 @@ export class ChallengeRepository {
     });
   }
 
+  @Put('challenge/update/:id')
   update(challenge: Challenge) {
     this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
