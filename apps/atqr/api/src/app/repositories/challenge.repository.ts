@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Redirect } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
+import { Post, Get, Put } from '@nestjs/common';
+import { create } from 'domain';
 import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity';
-import axios from 'axios'
+import { CreateChallengeDto } from '../dtos/createChallenge.dto';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
@@ -35,6 +37,17 @@ export class ChallengeRepository {
         },
       },
     });
+  }
+
+  challengeSomeone(challenge: Challenge) {
+    if (create()) {
+      const id = challenge.id;
+    }
+    return this.id;
+  }
+
+  get id() {
+    return this.challengeSomeone(this.id);
   }
 
   @Get('challenge/find-many/:id')
