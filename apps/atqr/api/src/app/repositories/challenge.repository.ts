@@ -39,16 +39,7 @@ export class ChallengeRepository {
     });
   }
 
-  challengeSomeone(challenge: Challenge) {
-    if (create()) {
-      const id = challenge.id;
-    }
-    return this.id;
-  }
-
-  get id() {
-    return this.challengeSomeone(this.id);
-  }
+  
 
   @Get('challenge/find-many/:id')
   findMany(numberOfResults = 100) {
