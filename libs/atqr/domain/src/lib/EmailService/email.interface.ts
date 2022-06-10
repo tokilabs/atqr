@@ -1,5 +1,5 @@
 
-import { Player } from '../player';
+import { Player } from '../player/player.entity';
 
 export interface IEmail {
  to: Player;
