@@ -140,24 +140,3 @@ describe('Mailer', () => {
     //   // Invalid Content
   });
 });
-
-// Mailgun Api Error
-interface APIErrorOptions {
-  headers: {
-    [key: string]: any;
-  };
-  status: number | string;
-  message: string;
-  body: any;
-  url: string;
-  statusText: string;
-}
-
-export default class APIError extends Error {
-  status: number | string;
-  stack: string;
-  details: string;
-  constructor({ status, statusText, message, body }: APIErrorOptions) {
-    super(message);
-  }
-}
