@@ -10,16 +10,22 @@ datasource db {
   url      = env("SUPABASE_DATABASE_URL")
 }
 
+enum ChallengeStatus {
+  Ongoing
+  Completed
+  Failed
+}
+
 model Challenge {
-  id              String   @id @db.Uuid
+  id              String          @id @db.Uuid
   goal            String
   deadline        DateTime
-  price           Int
-  player          Player   @relation(fields: [playerId], references: [id])
-  playerId        String   @db.Uuid
+  price           Int // in cents
+  player          Player          @relation(fields: [playerId], references: [id])
+  playerId        String          @db.Uuid
   supervisorName  String
   supervisorEmail String
-  status          String
+  status          ChallengeStatus @default(Ongoing)
   paymentMethod   String
   creditCardToken String?
 }
@@ -29,10 +35,4 @@ model Player {
   name      String
   email     String      @unique
   Challenge Challenge[]
-}
-
-enum ChallengeStatus {
-  Ongoing
-  Completed
-  Failed
 }

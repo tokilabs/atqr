@@ -1,4 +1,4 @@
-import { Get, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity/challenge-entity';
@@ -20,7 +20,7 @@ export class ChallengeRepository {
         paymentMethod: 'asdasd', // Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
-        status: challenge.status.toString(),
+        status: challenge.status,
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
           connect: {
@@ -96,5 +96,19 @@ export class ChallengeRepository {
         status: challenge.status.toString(),
       },
     });
+
+    async function main() {
+      // await this.create({ data: {} })
+    };
+
+    try {
+
+    }
+    catch(e) {
+
+    }
+    finally {
+      
+    }
   }
 }

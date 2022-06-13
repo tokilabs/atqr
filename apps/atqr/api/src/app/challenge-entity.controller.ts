@@ -16,6 +16,7 @@ import { PlayerRepository } from './repositories/player.repository';
 import {
   Challenge,
   ChallengeStarted,
+  ChallengeStatus,
   EmailAddress,
   PaymentMethodEntity,
   PaymentMethodEnum,
@@ -62,12 +63,13 @@ export class ChallengeController {
         challengeDto.goal,
         challengeDto.supervisorName,
         challengeDto.supervisorEmail,
-        challengeDto.player,
-        challengeDto.id,
+        player,
         challengeDto.price,
         challengeDto.deadline,
-        challengeDto.paymentMethod
+        null // paymentMethod
       );
+
+      // @todo: paramos aqui!
 
       if (challengeDto.creditCardToken) {
         const paymentMethod = new PaymentMethodEntity(
@@ -108,7 +110,7 @@ export class ChallengeController {
         }
       }
 
-      //Pegar os erros e resolver. (Usar try catch)
+      // @todo Tratar outros erros
     }
   }
 
