@@ -17,5 +17,19 @@
     "supabase",
     "Supabase",
     "tokilabs"
-  ]
+  ],
+  "todo-tree.general.statusBar": "total",
+  "todo-tree.general.enableFileWatcher": true,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]",
+    "QUESTION"
+  ],
+  "todo-tree.tree.showCountsInTree": true,
+  "todo-tree.regex.regexCaseSensitive": false
 }
