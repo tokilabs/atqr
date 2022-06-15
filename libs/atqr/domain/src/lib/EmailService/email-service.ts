@@ -2,12 +2,12 @@ import { IEmail } from '.';
 import { Player } from '../player';
 import * as EmailValidator from 'email-validator';
 
-export class EmailAddress  {
+export class EmailAddress {
   email: any;
 
   constructor(email: any) {
     const isValidEmail = EmailValidator.validate(email);
-    
+
     if (isValidEmail) {
       this.email = email;
     } else {
@@ -41,8 +41,6 @@ export class Email implements IEmail {
   public get Message() {
     return this.message;
   }
-
- 
 }
 
 export class ChallengeStarted extends Email {

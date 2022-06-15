@@ -96,19 +96,5 @@ export class ChallengeRepository {
         status: challenge.status.toString(),
       },
     });
-
-    async function main() {
-      // await this.create({ data: {} })
-    };
-
-    try {
-
-    }
-    catch(e) {
-
-    }
-    finally {
-      
-    }
   }
 }
