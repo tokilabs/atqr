@@ -1,3 +1,4 @@
+declare const axios: typeof import('axios').default
 async function getLastChallenges() {
   try {
     const { data } = await axios("https://jsonplaceholder.typicode.com/posts");
@@ -10,4 +11,4 @@ async function getLastChallenges() {
   }
 }
 getLastChallenges();
-module.exports = {getLastChallenges}
+
