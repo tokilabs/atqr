@@ -50,7 +50,7 @@ export class ChallengeRepository {
     });
   }
 
-  @Get('challenge/find-unique/:id')
+  @Get('challenge/:id')
   findUnique(id: Guid) {
     return this.prismaService.challenge.findUnique({
       where: { id: id.valueOf() },
