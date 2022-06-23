@@ -13,6 +13,7 @@ export class Challenge {
   private _id: Guid;
   private _price: number;
   constructor(
+    private _description: string,
     private _goal: string, //numero maximo-min de caracteres?
     private _deadline: Date, //
     private _supervisorName: string,
@@ -27,9 +28,10 @@ export class Challenge {
     this._id = new Guid();
     this._id = id;
     if (price >= 25) {
-     this._price = price } else {
-        throw new Error('Selecione um valor acima de 25 reais')
-      }
+      this._price = price;
+    } else {
+      throw new Error('Selecione um valor acima de 25 reais');
+    }
   }
   get id() {
     return this._id;
@@ -51,6 +53,11 @@ export class Challenge {
     }
     return this._price;
   }
+
+  get description() {
+    return this._description;
+  }
+
   get notifiedSupervisor() {
     return this._notifiedSupervisor;
   }
