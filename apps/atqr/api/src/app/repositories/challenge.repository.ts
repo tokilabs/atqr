@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
-import { Challenge } from 'libs/atqr/domain/src/lib/challenge-entity/challenge-entity';
+import { Challenge } from '@atqr/domain';
 import { Challenge as PrismaChallenge } from '@prisma/client';
 
 import { PrismaService } from '../infra/database/prisma.service';
@@ -17,7 +17,7 @@ export class ChallengeRepository {
         deadline: challenge.deadline,
         goal: challenge.goal,
         price: challenge.price,
-        paymentMethod: 'asdasd', // Resolve entity
+        paymentMethod: 'Not Finished', // Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
         status: challenge.status,
@@ -93,7 +93,7 @@ export class ChallengeRepository {
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),
-        status: challenge.status.toString(),
+        status: challenge.status,
       },
     });
   }
