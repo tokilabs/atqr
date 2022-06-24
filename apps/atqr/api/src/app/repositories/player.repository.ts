@@ -15,11 +15,10 @@ export class PlayerRepository {
       await this.prismaService.player.findUnique({
         where: { id: id.valueOf() },
         include: {
-          // @todo Rename to Challenges in Prisma schema
-          Challenge: true,
+          Challenges: true,
         },
       }),
-      // @todo check the right syntax for targetMaps
+      // TODO check the right syntax for targetMaps
       {
         targetMaps: [
           {
@@ -31,7 +30,7 @@ export class PlayerRepository {
           {
             target: () => {},
             properties: {
-              Challenge: (value) => plainToInstance(Challenge, value),
+              Challenges: (value) => plainToInstance(Challenge, value),
             },
           },
         ],
