@@ -1,45 +1,38 @@
 import {
-  Controller,
-  Get,
-  Param,
-  Post,
-  Body,
-  HttpException,
-  HttpStatus,
-  Patch,
-} from '@nestjs/common';
-import { Guid } from '@tokilabs/lang';
-
-import { CreateChallengeDto } from './dtos/createChallenge.dto';
-import { ChallengeRepository } from './repositories/challenge.repository';
-import { PlayerRepository } from './repositories/player.repository';
-import {
   Challenge,
   ChallengeStarted,
-  ChallengeStatus,
   EmailAddress,
   PaymentMethodEntity,
-  PaymentMethodEnum,
+  Player,
   SupConfirmation,
 } from '@atqr/domain';
-import { Player } from '@atqr/domain';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
+
+import { CreateChallengeDto } from './dtos/createChallenge.dto';
+import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationErrors';
-import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
-import { lastValueFrom } from 'rxjs';
-
-// @POST new challenge
+import { Mailer } from './infra/email/mailer-sevice';
+import { ChallengeRepository } from './repositories/challenge.repository';
+import { PlayerRepository } from './repositories/player.repository';
 
 @Controller('challenge')
 export class ChallengeController {
-  emailService: any;
   constructor(
-    //private readonly appService: AppService,
+    private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository
   ) {}
-  // @POST new challenge
 
   @Post('challenge')
   async createChallenge(
@@ -69,16 +62,16 @@ export class ChallengeController {
         null // paymentMethod
       );
 
-      // @todo: paramos aqui!
+      // TODO: paramos aqui!
 
-      if (challengeDto.creditCardToken) {
+      if (challengeDto.paymentMethod) {
         const paymentMethod = new PaymentMethodEntity(
-          PaymentMethodEnum.creditCard,
-          'pagseguro',
-          challengeDto.creditCardToken
+          challengeDto.paymentMethod.method,
+          challengeDto.paymentMethod.paymentService,
+          challengeDto.paymentMethod.token
         );
 
-        // Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
+        // TODO Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
 
         challenge.changePaymentMethod(paymentMethod);
 
@@ -110,7 +103,7 @@ export class ChallengeController {
         }
       }
 
-      // @todo Tratar outros erros
+      // TODO Handle other errors
     }
   }
 
@@ -124,7 +117,7 @@ export class ChallengeController {
   // @GET certain challenge to change payment method
   @Get('challenge/:id')
   changePayment(@Param('id') id: string): Challenge {
-    return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
+    return {} as Challenge; // TODO Implement change payment endpoint and fix return
   }
 
   @Patch('challenge/:id')
@@ -132,13 +125,13 @@ export class ChallengeController {
     @Param('id') id: string,
     @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
   ): Promise<Challenge> {
-    return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
+    return {} as Challenge; // // TODO Implement update challenge endpoint and fix return
   }
 
   // @GET certain challenge to change supervisor
 
   @Get('challenge/:id')
   changeSupervisor(@Param('id') id: string): Challenge {
-    return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
+    return {} as Challenge; // TODO Implement change supervisor endpoint and fix return
   }
 }
