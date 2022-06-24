@@ -31,8 +31,8 @@ model Challenge {
 }
 
 model Player {
-  id        String      @id @db.Uuid
-  name      String
-  email     String      @unique
-  Challenge Challenge[]
+  id         String      @id @db.Uuid
+  name       String
+  email      String      @unique
+  Challenges Challenge[]
 }
