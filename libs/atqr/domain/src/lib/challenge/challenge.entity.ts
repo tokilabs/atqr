@@ -13,9 +13,9 @@ export enum SupervisorEnum {
 }
 
 export enum ChallengeStatus {
-  Ongoing,
-  Completed,
-  Failed,
+  Ongoing = 'Ongoing',
+  Completed = 'Completed',
+  Failed = 'Failed',
 }
 
 export class Challenge {
