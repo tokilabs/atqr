@@ -1,0 +1,160 @@
+/*--
+/*  22 - Event Single CSS
+/*----------------------------------------*/
+
+.event-single-content {
+
+    & .meeta-video-section-2 {
+
+        & .video-img {
+            padding-top: 120px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 0;
+
+            & .section-title-4 {
+
+                & .main-title {
+                    font-size: 30px;
+                    line-height: 36px;
+                }
+            }
+        }
+    }
+
+    & p {
+        font-size: 16px;
+        line-height: 30px;
+        margin-top: 35px;
+    }
+
+    & .event-single-item {
+        margin-top: 40px;
+        & .title {
+            font-size: 30px;
+            line-height: 1;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+        }
+
+        & .speakers-content-wrap {
+
+            & .single-speker-3 {
+
+                & .speker-img {
+
+                    & .speker-content {
+
+                        & .name {
+                            font-size: 16px;
+                            line-height: 18px;
+                        }
+                        & .designation {
+                            font-size: 12px;
+                            line-height: 18px;
+                        }
+                    }
+                }
+            }
+        }
+
+        & .meeta-event-sponsors-3 {
+
+            & .meeta-sponsor-wrap {
+                margin-top: 0;
+                & .meeta-sponsor-logo {
+                    height: 90px;
+                    line-height: 55px;
+                    padding: 15px;
+                }
+            }
+        }
+        
+    }
+    
+}
+
+.event-single-sidebar {
+    padding-left: 40px;
+    @media #{$tablet-device} {
+        padding-left: 0px;
+        margin-top: 50px;
+    }
+    & .btn-price {
+        display: flex;
+        align-items: center;
+
+        & .btn {
+            font-size: 14px;
+            height: 50px;
+            padding: 0 20px;
+        }
+        & .price {
+            margin-left: 20px;
+            & span {
+                font-size: 30px;
+                line-height: 1;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $primary;
+            }
+            & sup {
+                font-size: 14px;
+                top: -15px;
+            }
+        }
+    }
+
+    & .sidebar-item {
+
+        & .sidebar-title {
+            font-size: 24px;
+            line-height: 30px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+            margin-bottom: 30px;
+        }
+
+        & .event-details {
+            margin-top: 40px;
+            & ul {
+
+                & li {
+
+                    & .title {
+                        font-size: 14px;
+                        line-height: 24px;
+                        font-family: $heading-font2;
+                        font-weight: 600;
+                        color: $heading-color; 
+                    }
+                    & p {
+                        font-size: 14px;
+                        line-height: 18px;
+                    }
+
+                    & + li {
+                        border-top: 1px solid #ebebeb;
+                        padding-top: 10px;
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+
+        & .event-map {
+            margin-top: 60px;
+            & .google-map {
+
+                & iframe {
+                    width: 100%;
+                    height: 180px;
+                    display: block;
+                    filter: brightness(100%) contrast(100%) saturate(0%) blur(0px) hue-rotate(0deg);
+                }
+            }
+        }
+    }
+}

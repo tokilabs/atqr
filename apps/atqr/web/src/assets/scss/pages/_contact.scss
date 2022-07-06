@@ -1,0 +1,159 @@
+/*--
+/*  24 - Contact CSS
+/*----------------------------------------*/
+
+
+// Contact Form Section
+.contact-form-section {
+
+    & .contact-wrap {
+        background-image: url(../images/shape/contact-map.png);
+        background-position: center bottom;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-top: -10px;
+        & .form-title {
+
+            & .title {
+                font-size: 54px;
+                line-height: 54px;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $heading-color;
+                @media #{$tablet-device} {
+                    font-size: 30px;
+                    line-height: 40px;
+                }
+            }
+        }
+
+        & .contact-form-wrap {
+            padding-top: 30px;
+            & .single-form {
+                margin-top: 20px;
+                & .form-control {
+                    border: 1px solid transparent;
+                    height: 50px;
+                    padding: 10px 25px;
+                    background: #f6f7f9;
+                    color: #415674;
+                    border-radius: 0;
+                    @include placeholder{
+                        opacity: 0.95;
+                        font-size: 16px;
+                        color: #a7a5c6;
+                        font-weight: 400;
+                    }
+                    &:focus{
+                        outline: none;
+                        box-shadow: none;
+                        border-color: $primary;
+                    }
+                }
+                & textarea {
+                    &.form-control {
+                        height: 135px;
+                        color: #415674;
+                        padding: 10px 25px;
+                        padding-top: 15px;
+                        resize: none;
+                        &:focus{
+                            outline: none;
+                            box-shadow: none;
+                        }
+                    }
+                }
+            }
+            & .form-btn {
+
+                & .btn {
+                    font-size: 14px;
+                    padding: 0 60px;
+                    margin-top: 35px;
+                }
+            }
+        }
+    }
+}
+
+// Contact Info Wrap
+
+.contact-info-section {
+
+    & .contact-info-wrap {
+        margin-top: -10px;
+        margin-bottom: -90px;
+        position: relative;
+        z-index: 1;
+        @media #{$desktop-device} {
+            margin-top: -30px;
+        }
+        & .single-contact-info {
+            background: $white;
+            box-shadow: 0px 0px 100px 0px rgba(0, 0, 0, 0.11);
+            padding: 55px;
+            margin-top: 70px;
+            @media #{$desktop-device} {
+                padding: 40px;
+            }
+            & .info-icon {
+                    width: 80px;
+                    height: 80px;
+                    line-height: 80px;
+                    color: $white;
+                    border-radius: 50%;
+                    margin: 0 auto;
+                    margin-top: -95px;
+                    @media #{$desktop-device} {
+                        width: 80px;
+                        height: 80px;
+                        line-height: 80px;
+                        margin-top: -80px;
+                    }
+
+                & i {
+                    font-size: 35px;
+                    @media #{$desktop-device} {
+                        font-size: 30px;
+                    }  
+                }
+            }
+            & .info-content {
+
+                & .title {
+                    font-size: 22px;
+                    line-height: 30px;
+                    font-family: $heading-font2;
+                    font-weight: 700;
+                    color: $heading-color;
+                    margin-top: 15px; 
+                }
+                & p {
+                    font-size: 20px;
+                    line-height: 30px;
+                    margin-top: 10px;
+                    @media #{$desktop-device} {
+                        font-size: 16px;
+                    }
+                    @media #{$tablet-device} {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Contact Map
+.contact-map-section {
+
+    & .contact-map-wrap {
+        margin-bottom: -7px;
+    
+        & iframe {
+            height: 430px;
+            width: 100%;
+            filter: brightness( 100% ) contrast( 100% ) saturate( 0% ) blur( 0px ) hue-rotate( 0deg );
+        }
+    }
+}
