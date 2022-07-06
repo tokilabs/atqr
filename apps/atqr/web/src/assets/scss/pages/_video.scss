@@ -1,0 +1,233 @@
+/*--
+/*  13 - Video CSS
+/*----------------------------------------*/
+
+.meeta-video-section {
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-image: url(../images/shape/video-bg.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+}
+
+.meeta-video-content {
+    background: $white;
+    box-shadow: 0px 0px 131px 0px rgba(0, 0, 0, 0.08);
+    padding: 70px 70px;
+    margin-top: 35px;
+    position: relative;
+    z-index: 5;
+    @media #{$desktop-device}{
+        padding: 70px 35px;
+    }
+    @media #{$tablet-device}{
+        padding: 60px;
+    }
+    @media #{$small-mobile}{
+        padding: 30px;
+    }
+
+    & .main-title {
+        font-size: 40px;
+        line-height: 48px;
+        font-family: $heading-font2;
+        font-weight: 700;
+        color: $heading-color;
+        @media #{$small-mobile}{
+            font-size: 30px;
+            line-height: 40px;
+        }
+    }
+
+    & .video-info {
+        margin-top: 35px;
+        & .video-info-item {
+            padding-right: 10px;
+            & i {
+                font-size: 26px;
+                color: $primary;
+            }
+            & .title {
+                font-size: 18px;
+                line-height: 36px;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $heading-color;
+                margin-top: 10px;
+            }
+            & p {
+                font-size: 16px;
+                line-height: 26px;
+                margin-top: 5px;
+            }
+        }
+    }
+    
+}
+
+.meeta-video-img {
+    padding: 215px 0px;
+    width: 642px;
+    margin-left: -70px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+    @media #{$desktop-device}{
+        width: 537px;
+    }
+    @media #{$tablet-device}{
+        width: 100%;
+        margin-left: 0;
+        margin-top: 50px;
+        padding: 180px 0;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: linear-gradient( -180deg, rgb(246,115,13) 0%, rgb(217,8,69) 100%);
+        opacity: 0.5;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+    }
+}
+
+.popup-video {
+    width: 100px;
+    height: 100px;
+    background: $white;
+    display: inline-block;
+    line-height: 100px;
+    text-align: center;
+    font-size: 14px;
+    color: $primary;
+    position: relative;
+    border-radius: 50%;
+    transition: $transition-default;
+    z-index: 5;
+    @media #{$large-mobile}{
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+    }
+
+    &::before {
+        position: absolute;
+        content: "";
+        left: 50%;
+        top: 50%;
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        animation: pulse 1500ms ease-out infinite;
+    }
+
+    &:hover {
+        background: $primary;
+        color: $white;
+    }
+}
+
+
+
+
+@keyframes pulse {
+
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 1);
+    }
+    70% {
+        box-shadow: 0 0 0 30px rgba(255, 31, 89, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 31, 89, 0);
+    }
+}
+
+// Home Style Four
+
+.meeta-video-section-2  {
+
+    & .video-img {
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+        padding-top: 190px;
+        padding-bottom: 210px;
+        position: relative;
+        z-index: 5;
+        margin-bottom: -310px;
+        @media #{$desktop-device} {
+            padding-top: 130px;
+            padding-bottom: 170px;
+            margin-bottom: -260px;
+        }
+        @media #{$tablet-device} {
+            margin-bottom: -275px;
+        }
+        @media #{$large-mobile} {
+            padding-top: 80px;
+            padding-bottom: 110px;
+            margin-bottom: -190px;
+        }
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(#191263, 0.2);
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-image: url(../images/shape/video-shape.png);
+            background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center center;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        & .section-title-4 {
+            margin-bottom: 30px;
+
+            & .main-title {
+                color: $white;
+            }
+        }
+
+        & .popup-video {
+            background: $primary;
+            color: $white;
+            
+            &:hover {
+                background: $white;
+                color: $primary;
+            }
+        }
+    }
+}

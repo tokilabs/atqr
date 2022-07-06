@@ -1,0 +1,564 @@
+/*--
+/*  08 - Speaker CSS
+/*----------------------------------------*/
+
+//  Speaker Image
+.meeta-speakers-row{
+
+    & [class*="col-"] {
+        &:nth-child(4n+1){
+            & .single-speaker{
+                & .speaker-image{
+                    & img{
+                        background-color: #f9d464;
+                    }
+                }
+            }
+        }
+        &:nth-child(4n+2){
+            & .single-speaker{
+                & .speaker-image{
+                    & img{
+                        background-color: #00acee;
+                    }
+                }
+            }
+        }
+        &:nth-child(4n+3){
+            & .single-speaker{
+                & .speaker-image{
+                    & img{
+                        background-color: #fc097c;
+                    }
+                }
+            }
+        }
+        &:nth-child(4n+4){
+            & .single-speaker{
+                & .speaker-image{
+                    & img{
+                        background-color: #554bb9;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// Single Speaker
+.single-speaker{
+    text-align: center;
+    &:hover {
+        & .speaker-image{
+            & img{
+                transform: scale(1.05);  
+            }
+        }
+    }
+
+    & .speaker-image{
+        
+        & img{
+            border-radius: 50%;
+            padding: 10px; 
+        }
+    }
+
+    & .speaker-content{
+        margin-top: 30px;
+        position: relative;
+        z-index: 1;
+        background-color: $white;
+        padding-bottom: 15px;
+        
+        &::before{
+            content: '';
+            width: 170px;
+            height: 60px;
+            background-image: url(../images/shape/shape-7.png);
+            background-position: center center;
+            background-size: cover;
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: -1;
+        }
+
+        & .speaker-content-box{
+            position: relative;
+            background-color: $white;
+            padding-bottom: 10px;
+            padding-top: 10px;
+            max-width: 120px;
+            margin: 0 auto;
+
+            & .speaker-name{
+                font-size: 22px;
+                font-weight: 700;
+                line-height: 1.1;
+            }
+            & .speaker-designation{
+                font-size: 14px;
+                color: $body-color;
+            }
+        }
+
+        & .speaker-shape-1{
+            width: 29px;
+            position: absolute;
+            top: -12px;
+            right: 27%;
+            z-index: -1;
+        }
+        & .speaker-shape-2{
+            width: 35px;
+            height: 35px;
+            background-color: #fc097c;
+            border-radius: 50%;
+            position: absolute;
+            left: 25%;
+            bottom: 0px;
+            z-index: -1;        
+        }
+    }
+}
+
+// Home Style Two
+
+.meeta-speakers-2 {
+    background: #311a79;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: url(../images/bg/speaker-bg-2.png);
+        background-position: center center;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+}
+
+.meeta-speakers-content-wrap-2 {
+    margin-top: -20px;
+}
+
+.single-speaker-2 {
+    padding: 60px 0px 45px 0px;
+    background: #fc097c;
+    margin-top: 30px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    & .shape-2 {
+        position: absolute;
+        right: -20px;
+        bottom: -8px;
+        z-index: -1;
+    }
+
+    &.color-1 {
+        background: #00acee;
+    }
+    &.color-2 {
+        background: #554bb9;
+    }
+    &.color-3 {
+        background: #f9d464;
+    }
+    &.color-4 {
+        background: #fc097c;
+    }
+    &.color-5 {
+        background: #44d7b6;
+    }
+    &.color-6 {
+        background: #00acee;
+    }
+
+    & .speaker-image {
+        position: relative;
+        z-index: 1;
+
+
+        & .shape-1 {
+            position: absolute;
+            top: -27px;
+            left: 40px;
+            z-index: -1;
+            transition: all .3s linear;
+        }
+
+        & .image{
+            & img {
+                object-fit: cover;
+                border-radius: 50%;
+                transition: $transition-default;
+            }
+        }
+
+        &:hover {
+            & .image{
+                & img {
+                    transform: scale(0.98);
+                }
+            }
+        }
+    }
+
+    & .speaker-content {
+        margin-top: 45px;
+        & .speaker-name {
+            font-size: 24px;
+            line-height: 25px;
+            font-family: $heading-font2;
+            font-weight: 700;
+
+            & a {
+                color: #1a0a1e;
+                background: $white;
+                padding: 0 10px;
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+        & .speaker-designation {
+            font-size: 14px;
+            line-height: 25px;
+            color: #1a0a1e;
+            background: $white;
+            display: inline-block;
+            padding: 0 10px;
+        }
+        
+    }
+
+    &:hover {
+        & .speaker-image {
+            & .shape-1 {
+                animation: rotate-style 40s linear infinite;
+            }
+        }
+    }
+}
+
+.single-speaker-2 {
+    @media #{$desktop-device} {
+        padding: 60px 10px 45px 10px;
+        & .speaker-image {
+
+            & .shape-1 {
+                top: -20px;
+                left: 0px;
+            }
+        }
+    }
+    @media #{$tablet-device} {
+        padding: 60px 10px 45px 10px;
+        & .speaker-image {
+
+            & .shape-1 {
+                top: -28px;
+                left: 15px;
+            }
+        }
+    }
+    @media #{$large-mobile} {
+        
+        & .speaker-image {
+            & .image {
+
+                & img {
+                    max-width: 85%;
+                }
+            }
+            & .shape-1 {
+                top: -18px;
+                left: 2px;
+            }
+        }
+    }
+    @media #{$small-mobile} {
+        
+        & .speaker-image {
+            & .image {
+
+                & img {
+                    max-width: 100%;
+                }
+            }
+            & .shape-1 {
+                display: none;
+            }
+        }
+    }
+}
+
+// Home Style Three
+
+.meeta-speakers-3 {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient( 90deg, rgb(246,115,13) 0%, rgb(217,8,69) 100%);
+        opacity: 0.8;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    & .meeta-speakers-content-wrap {
+        margin-top: -15px;
+    }
+}
+ 
+.single-speker-3 {
+    margin-top: 30px;
+
+    & .speker-img {
+        overflow: hidden;
+        position: relative;
+        border-radius: 5px;
+        & a {
+            display: block;
+            position: relative;
+
+            &::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background: $primary;
+                width: 100%;
+                height: 255px;
+                clip-path: polygon(0 71%, 100% 48%, 100% 100%, 0% 100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: $transition-default;
+            }
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                background: $primary;
+                width: 100%;
+                height: 295px;
+                clip-path: polygon(0 71%, 100% 48%, 100% 100%, 0% 100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: $transition-default;
+            }
+            & img {
+                width: 100%;
+            }
+        }
+        & .speker-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            transform: translateY(0);
+            opacity: 0;
+            visibility: visible;
+            transition: $transition-default;
+
+            & .name {
+                font-size: 20px;
+                line-height: 22px;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $white;
+            }
+            & .designation {
+                font-size: 14px;
+                line-height: 24px;
+                font-family: $body-font;
+                font-weight: 400;
+                color: $white;
+            }
+        }
+    }
+
+    &:hover {
+        & .speker-img {
+            & a {
+                &::before {
+                    opacity: 1;
+                    visibility: visible;
+                }
+                &::after {
+                    opacity: 0.4;
+                    visibility: visible;
+                }
+            }
+            & .speker-content {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(-20px);
+            }
+        }
+    }
+}
+
+// Home Style Four
+
+.meeta-speakers-4 {
+    padding-top: 460px;
+    background: #554bc0;
+    position: relative;
+    z-index: 1;
+    @media #{$desktop-device} {
+       padding-top: 350px;
+    }
+
+    @media #{$large-mobile} {
+        padding-top: 265px;
+    }
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform: translateY(-120px);
+        background-image: url(../images/shape/speaker-shape-4.png);
+        background-position: center top;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+}
+.single-speaker-4 {
+    background: $white;
+
+    &.grey-bg {
+        background: #f9fafc;
+    }
+
+    & .speaker-image {
+        overflow: hidden;
+        & a {
+            display: block;
+            & img {
+                width: 100%;
+                transition: $transition-default;
+            }
+        }
+    }
+
+    & .speaker-content {
+        padding: 20px;
+        & .speaker-name {
+            font-size: 24px;
+            line-height: 25px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+        }
+        & .speaker-designation {
+            font-size: 14px;
+            line-height: 25px;
+            color: $heading-color;
+        } 
+    }
+
+
+    &:hover {
+        & .speaker-image {
+
+            & a {
+                
+                & img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+
+}
+
+
+@keyframes rotate-style {
+    0% {
+    transform: rotate(0deg);
+    }
+    100% {
+    transform: rotate(360deg);
+    }
+}
+
+// About Page
+
+.meeta-speakers-5 {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: url(../images/bg/speaker-bg-2.png);
+        background-position: center top;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+
+    & .single-speaker {
+
+        & .speaker-content {
+            background: none;
+
+            & .speaker-content-box {
+                max-width: 130px;
+                & .speaker-name{
+                    font-size: 18px;
+                    font-family: $heading-font2;
+                    font-weight: 700;
+                    line-height: 1.1;
+                }
+                & .speaker-designation{
+                    font-size: 14px;
+                    color: $body-color;
+                }
+            }
+        }
+    }
+    
+}
+
+// Speakers Two
+
+.meeta-speakers-6 {
+
+    & .meeta-speakers-wrap {
+        margin-top: -30px;
+    }
+}
