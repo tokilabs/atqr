@@ -17,5 +17,6 @@
     "supabase",
     "Supabase",
     "tokilabs"
-  ]
+  ],
+  "liveServer.settings.port": 5501
 }

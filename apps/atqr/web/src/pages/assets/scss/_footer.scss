@@ -1,0 +1,78 @@
+/*--
+/* 26. Footer CSS
+/*----------------------------------------*/
+
+// Footer Section
+.meeta-footer-section{
+    background-color: #311a79;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 100px 0;
+    @media #{$tablet-device}{
+        padding: 80px 0;
+    }
+}
+
+
+
+
+// Back Button
+.progress-wrap {
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+    height: 45px;
+    width: 45px;
+    cursor: pointer;
+    display: block;
+    border-radius: 50px;
+    box-shadow: inset 0 0 0 2px rgba(#fc097c,0.2);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(130%);
+    z-index: 99;
+    transition: all 200ms linear;
+
+    &::after {
+        position: absolute;
+        content: "\f108";
+        font-family: flaticon !important;
+        text-align: center;
+        line-height: 45px;
+        font-size: 18px;
+        color: $primary;
+        left: 0;
+        top: 0;
+        height: 46px;
+        width: 46px;
+        transform: rotate(90deg);
+        cursor: pointer;
+        display: block;
+        z-index: 1;
+    }
+
+    & svg {
+
+        & path {
+            fill: none;
+        }
+
+        &.progress-circle {
+
+            & path {
+                stroke: $primary;
+                stroke-width: 4;
+                box-sizing: border-box;
+            }
+        }
+    }
+
+    &.active-progress {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(0);
+    }
+}
+
+
