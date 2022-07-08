@@ -5,12 +5,13 @@ import { AppService } from './app.service';
 import { ChallengeController } from './challenge.controller';
 import { PrismaService } from './infra/database/prisma.service';
 import { Mailer } from './infra/email/mailer-sevice';
+import { StripeModule } from './infra/payment/stripe.module';
 import { StripeService } from './infra/payment/stripe.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true })],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), StripeModule],
   controllers: [ChallengeController],
   providers: [
     AppService,
@@ -22,6 +23,4 @@ import { PlayerRepository } from './repositories/player.repository';
     Mailer,
   ],
 })
-export class AppModule {
-  constructor(private configService: ConfigService) {}
-}
+export class AppModule {}
