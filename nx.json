@@ -42,6 +42,17 @@
     },
     "@nrwl/angular:component": {
       "style": "scss"
+    },
+    "@nrwl/web:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/web:library": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     }
   },
   "defaultProject": "api"
