@@ -1,13 +1,30 @@
-import { Controller, Get, Headers, HttpCode, Post } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Headers,
+  HttpCode,
+  OnApplicationBootstrap,
+  Post,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { RawBody } from '../../../utils/decorators/rawBody.decorator';
 import { StripeService } from './stripe.service';
 
 @Controller('stripe')
-export class StripeController {
-  private endpointSecret =
-    'whsec_fea9e7f1f14a57c5787145cc819decf2c9cbbf7e5889400e2e5fe25e4577eba7';
-  constructor(private readonly stripeService: StripeService) {}
+export class StripeController implements OnApplicationBootstrap {
+  private endpointSecret: string;
+
+  constructor(
+    private readonly stripeService: StripeService,
+    private readonly configService: ConfigService
+  ) {}
+
+  onApplicationBootstrap() {
+    this.endpointSecret = this.configService.get<string>(
+      'STRIPE_WEBHOOK_ENDPOINT_SECRET'
+    );
+  }
 
   @Get('public-key')
   getPublicKey(): string {
