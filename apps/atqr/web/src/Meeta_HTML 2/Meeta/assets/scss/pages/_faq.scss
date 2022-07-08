@@ -1,0 +1,149 @@
+/*--
+/*  25 - FAQ CSS
+/*----------------------------------------*/
+
+// Faq Accordian Wrapper
+.faq-accordion-wrapper {
+    display: flex;
+    padding-top: 60px;
+    @media #{$tablet-device}{
+        display: block;
+    }
+    & .faq-col {
+        width: 50%;
+        @media #{$tablet-device}{
+            width: 100%;
+        }
+        &:first-child {
+            padding-right: 25px;
+            @media #{$tablet-device}{
+                padding-right: 0px;
+            }
+        }
+
+        &:last-child {
+            padding-left: 25px;
+            @media #{$tablet-device}{
+                padding-left: 0px;
+            }
+        }
+    }
+}
+
+// Faq Accordian Item
+.faq-accordion {
+
+
+    & .accordion-item {
+        border: 0;
+        margin-bottom: 10px;
+        border-top: 1px solid #e5e5e5;
+
+        &:first-of-type {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            & .accordion-button {
+                border-top-left-radius: 0;
+                border-top-right-radius: 0;
+            }
+        }
+
+        & .accordion-header {
+            padding-top: 30px;
+            padding-bottom: 30px;
+
+            & .accordion-button {
+                padding: 0;
+                font-size: 20px;
+                line-height: 30px;
+                font-family: $body-font;
+                color: $heading-color;
+                font-weight: 700;
+                padding-right: 45px;
+                position: relative;
+                transition: $transition-default;
+
+                &::after{
+                   display: none;    
+                }
+
+                & .faq-button {
+                    position: absolute;
+                    right: 0;
+                    height: 32px;
+                    width: 32px;
+                    color: $primary;
+                    border: 1px solid #e5e5e5;
+                    text-align: center;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    transform: rotate(90deg);
+                    transition: $transition-default;
+
+                    & i {
+                        font-size: 15px;
+                    }
+                }
+
+                &:focus {
+                    border: 0;
+                    box-shadow: none;
+                }
+    
+                &:not(.collapsed) {
+                    color: $heading-color;
+                    background: $white;
+                    box-shadow: none;
+
+                    & .faq-button {
+                        position: absolute;
+                        right: 0;
+                        height: 32px;
+                        width: 32px;
+                        color: $primary;
+                        border: 1px solid #e5e5e5;
+                        text-align: center;
+                        border-radius: 50%;
+                        transform: rotate(-90deg);
+                        transition: $transition-default;
+    
+                        & i {
+                            font-size: 15px;
+                        }
+                    }
+                }
+
+                &:hover {
+                    color: $primary;
+                }
+            }
+        }
+
+        
+
+        & .accordion-body {
+            padding: 0;
+            padding-bottom: 20px;
+
+            & p {
+                font-size: 16px;
+                line-height: 30px;
+                color: #415674;
+            }
+        }
+
+        &:hover {
+
+            & .accordion-button {
+
+                & .faq-button {
+                    transform: rotate(-90deg);
+                }
+            }
+        }
+    }
+}
+
+

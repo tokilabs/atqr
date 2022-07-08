@@ -1,0 +1,82 @@
+/*--
+/*  14 - Conference CSS
+/*----------------------------------------*/
+
+.meeta-conference-wrap {
+    margin-top: -25px;
+}
+
+.single-item {
+    margin-top: 30px;
+    & .conference-image {
+        overflow: hidden;
+        position: relative;
+        & a {
+            display: block;
+            & img {
+                width: 100%;
+                transition: $transition-default;
+            }
+        }
+        & .conference-top-meta {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            & .date {
+                font-size: 13px;
+                font-family: $body-font;
+                font-weight: 400;
+                display: inline-block;
+                background: $primary;
+                color: $white;
+                height: 25px;
+                line-height: 25px;
+                border-radius: 5px;
+                padding: 0 15px;
+
+                &.color-2 {
+                    background: #f9d464;
+                }
+                &.color-3 {
+                    background: #0db0ef;
+                }
+            }
+        }
+    }
+
+    & .conference-content {
+        padding-top: 30px;
+        padding-right: 50px;
+        & .meta {
+            font-size: 13px;
+            line-height: 30px;
+            font-family: $body-font;
+            font-weight: 400;
+            & i {
+                color: $primary;
+                margin-right: 5px;
+            }
+        }
+
+        & .title {
+            font-size: 22px;
+            line-height: 30px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+            margin-top: 10px;
+        }
+
+    }
+
+    &:hover {
+        & .conference-image {
+            & a {
+                
+                & img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
