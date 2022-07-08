@@ -5,19 +5,23 @@ import Stripe from 'stripe';
 
 @Injectable()
 export class StripeService implements OnApplicationBootstrap {
-  private processor: Stripe;
+  private stripeClient: Stripe;
 
   constructor(private readonly configService: ConfigService) {}
 
   onApplicationBootstrap() {
-    const apiKey = this.configService.get<string>('STRIPE_API_KEY');
-    this.processor = new Stripe(apiKey, {
+    const apiKey = this.configService.get<string>('STRIPE_SECRET_KEY');
+    this.stripeClient = new Stripe(apiKey, {
       apiVersion: '2020-08-27',
     });
   }
 
   get publicKey() {
-    return this.configService.get<string>('STRIPE_PUBLISHABLE_KEY');
+    return this.configService.get<string>('STRIPE_PUBLIC_KEY');
+  }
+
+  get endpointSecret() {
+    return this.configService.get<string>('STRIPE_WEBHOOK_ENDPOINT_SECRET');
   }
   /*
     When user is prompted for their card info for the first time, the following should happen before any user interaction
@@ -37,7 +41,7 @@ export class StripeService implements OnApplicationBootstrap {
   async retrieveCustomer(
     customerId: string
   ): Promise<Stripe.Response<Stripe.Customer | Stripe.DeletedCustomer>> {
-    const customer = await this.processor.customers.retrieve(customerId);
+    const customer = await this.stripeClient.customers.retrieve(customerId);
     if (customer.deleted) {
       throw new Error('User was deleted');
     }
@@ -45,19 +49,27 @@ export class StripeService implements OnApplicationBootstrap {
   }
 
   async getPaymentMethod(customerId): Promise<Stripe.PaymentMethod> {
-    const paymentMethods = await this.processor.paymentMethods.list({
+    const paymentMethods = await this.stripeClient.paymentMethods.list({
       customer: customerId,
       type: 'card',
     });
     return paymentMethods.data[0];
   }
 
-  async createSetupIntent(): Promise<Stripe.Response<Stripe.SetupIntent>> {
-    const customer = await this.processor.customers.create();
+  async createSetupIntent(
+    challengedId?: string
+  ): Promise<Stripe.Response<Stripe.SetupIntent>> {
+    const customer = await this.stripeClient.customers.create(
+      challengedId && {
+        metadata: {
+          challengedId,
+        },
+      }
+    );
 
-    return await this.processor.setupIntents.create({
+    return await this.stripeClient.setupIntents.create({
       customer: customer.id,
-      payment_method_types: ['cards'],
+      payment_method_types: ['card'],
     });
   }
 
@@ -186,7 +198,7 @@ export class StripeService implements OnApplicationBootstrap {
     amount: number,
     confirm = false
   ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
-    return await this.processor.paymentIntents.create({
+    return await this.stripeClient.paymentIntents.create({
       amount,
       currency: 'brl',
       payment_method: paymentMethod.id,
@@ -194,5 +206,22 @@ export class StripeService implements OnApplicationBootstrap {
       off_session: true,
       confirm,
     });
+  }
+
+  constructEvent(evtBody, signature): Stripe.Event {
+    console.log('Constructing Event');
+    return this.stripeClient.webhooks.constructEvent(
+      evtBody,
+      signature,
+      this.endpointSecret
+    );
+  }
+
+  handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
+    throw new Error('Method not implemented.');
+  }
+
+  handlePaymentMethodAttached(paymentMethod: Stripe.PaymentMethod) {
+    throw new Error('Method not implemented.');
   }
 }
