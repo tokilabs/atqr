@@ -1,0 +1,104 @@
+// Font Family
+$body-font: 'Open Sans', sans-serif;
+$heading-font: 'Big Shoulders Display', cursive;
+$heading-font2: 'Archivo', sans-serif;
+
+$fontawesome: 'FontAwesome';
+
+
+// Colors ---------------
+
+$white: #ffffff;
+$black: #000000;
+$grey: #f7f8f8;
+
+// Body Color
+$body-color: #666666;
+$body-light: #999999;
+
+// Heading Color
+$heading-color: #1a0a1e;
+
+
+// Template Colors
+$primary: #fc097c;
+$secondary: #6c757d;
+$success: #4CAF50;
+$danger: #F44336;
+$warning: #FFC107;
+$info: #17a2b8;
+$light: #f8f9fa;
+$dark: #343a40;
+
+
+$transition-default: all .5s cubic-bezier(.645,.045,.355,1);
+
+// Socail Color
+$android: #7AC157;
+$apple: #B8B8B8;
+$behance: #1869FF;
+$codepen: $black;
+$dribbble: #EA4C8A;
+$dropbox: #007EE5;
+$evernote: #78D525;
+$facebook: #4867AA;
+$github: #313131;
+$google-drive: #1DA462;
+$google-earth: #4285F4;
+$google-glass: #EA4335;
+$google-maps: #5083C3;
+$google-play: #01B9FD;
+$google-plus: #DD5144;
+$google: #4285F4;
+$instagram: #B23A94;
+$css3: #0277BD;
+$html5: #E44D26;
+$javascript: #F9DC3D;
+$python: #0C9DBF;
+$lastfm: #E31B23;
+$linkedin: #007BB6;
+$paypal: #002F86;
+$pinterest: #BD081B;
+$pocket: #EF3E56;
+$polymer: #F87292;
+$rss: #F99C3A;
+$share: #2C9CFF;
+$stackoverflow: #F38024;
+$steam: #15497B;
+$twitter: #1DA1F2;
+$vk: #5181B8;
+$wikipedia: #E9E9E9;
+$windows: #0078D6;
+$s500px: $black;
+$s8tracks: #122D4B;
+$amazon: #F79B34;
+$blogger: #F06A35;
+$delicious: #0000FE;
+$disqus: #2E9EFE;
+$flattr: #7AB831;
+$flickr: #FE0084;
+$odnoklassniki: #F58220;
+$outlook: #0072C6;
+$playstation: #07418E;
+$reddit: #FF4500;
+$skype: #00A9F0;
+$slideshare: #0077B5;
+$soundcloud: #FE4900;
+$tumblr: #36465D;
+$twitch: #6441A4;
+$vimeo: #1AB7EA;
+$whatsapp: #189D0E;
+$xbox: #107C0F;
+$yahoo: #4101AF;
+$youtube: #FE0000;
+
+// Responsive Variables
+$extraBig-device : 'only screen and (min-width: 1600px)';
+$medium-device : 'only screen and (min-width: 1400px) and (max-width: 1599px)';
+$laptop-device : 'only screen and (max-width: 1399px)';
+$desktop-device : 'only screen and (max-width: 1199px)';
+$tablet-device:'only screen and (max-width: 991px)';
+$large-mobile:'only screen and (max-width: 767px)';
+$small-mobile: 'only screen and (max-width: 575px)';
+$extra-small-mobile: 'only screen and (max-width: 449px)';
+
