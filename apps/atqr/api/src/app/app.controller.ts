@@ -20,12 +20,14 @@ import {
 import { Mailer } from './infra/email/mailgun.service';
 import { AppService } from './app.service';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
+import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationErrors';
+import { Guid } from '@tokilabs/lang/';
 
 @Controller()
 export class AppController {
@@ -103,7 +105,26 @@ export class AppController {
       //Pegar os erros e resolver. (Usar try catch)
     }
   }
-
+  @Patch('challenge/:id/complete-challenge')
+  async completeChallenge(
+    @Param('id') id: Guid,
+    @Body() completeChallengeDto: CompleteChallengeDto
+  ): Promise<void> {
+    try {
+      const challenge = await this.challengeRepository.findUnique(id);
+      const completedChallenge = await challenge.completeChallenge(completeChallengeDto);
+      const challengeUpdated = await this.challengeRepository.update(completedChallenge);
+      return challengeUpdated;
+ }
+ catch (error) {
+      if (error instanceof ValidationErrors) {
+        throw new HttpException(
+          { message: "We don't know what happen'd", error },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
+      }
+    }
+  }
   @Get('challenge/:id')
   getChallenge(@Param('id') id: string): Challenge {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR

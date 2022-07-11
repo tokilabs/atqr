@@ -10,9 +10,9 @@ import { Player } from './player';
 //   sixthValue = 1000,
 // }
 export enum StatusEnum {
-  Ongoing,
-  Completed,
-  Failed,
+  Ongoing = 'Ongoing',
+  Completed = 'Completed',
+  Failed = 'Failed',
 }
 export class Challenge {
   private _id: Guid;
@@ -77,5 +77,8 @@ export class Challenge {
   }
   changePaymentMethod(paymentMethod: PaymentMethodEntity) {
     this._paymentMethod = paymentMethod;
+  }
+  completeChallenge(newStatus: string){
+    this._status = newStatus;
   }
 }
