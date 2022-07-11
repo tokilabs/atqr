@@ -1,0 +1,153 @@
+/*--
+/*  11 - Testimonial CSS
+/*----------------------------------------*/
+
+// Testimonial
+.meeta-testimonial{
+    position: relative;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 1;
+    overflow: hidden;
+
+        &::before{
+            position: absolute;
+            content: '';
+            width: 100%;
+            height: 100%;
+            background-color: $white;
+            top: 0;
+            left: 0;
+            opacity: 0.95;
+            z-index: -1;
+        }
+
+    & .testimonial-shape-01{
+        position: absolute;
+        top: 23%;
+        left: -140px;
+        width: 275px;
+        height: 275px;
+        border: 30px solid #00acee;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    & .testimonial-shape-02{
+        position: absolute;
+        top: 16%;
+        right: -95px;
+        animation: round-01 5s linear infinite;
+    }
+}
+
+// Single Testimonial
+.single-testimonial{
+    padding: 70px 90px;
+    background-color: $white;
+    text-align: center;
+    margin-top: 40px;
+
+    @media #{$desktop-device}{
+        padding: 50px 60px;
+    }
+    @media #{$small-mobile}{
+        padding: 70px 30px 30px;
+    }
+
+    & p{
+        font-size: 28px;
+        font-weight: 700;
+        font-family: $heading-font;
+        color: $heading-color;
+        line-height: 1.4;
+        text-decoration: underline;
+        text-decoration-thickness: 1px;
+        text-decoration-color: $primary;
+        margin-top: 40px;
+
+        @media #{$small-mobile}{
+            font-size: 20px;
+        }
+    }
+
+    & .testimonial-quote{
+        position: relative;
+        z-index: 1;
+        margin-top: -60px;
+    
+        & img{
+            width: 69px;
+    
+            @media #{$small-mobile}{
+                width: 58px;
+            }
+        }
+
+        & .testimonial-shape{
+            width: 130px;
+            position: absolute;
+            top: -50px;
+            left: 45%;
+            transform: translateX(-50%);
+            z-index: -1;
+        
+            @media #{$small-mobile}{
+                width: 100px;
+            }
+        }
+    }
+
+    & .testimonial-name{
+        font-size: 24px;
+        font-weight: 700;
+        margin-top: 15px;
+    
+        @media #{$small-mobile}{
+            font-size: 20px;
+        }
+    
+        & span{
+            font-size: 14px;
+            font-family: $body-font;
+            font-weight: 400;
+            color: $body-color;
+            margin-left: 10px;
+        }
+    }
+}
+
+// Testimonial Arrow
+.meeta-testimonial-active{
+    & .swiper-button-next{
+        right: 0;
+    }
+    & .swiper-button-prev{
+        left: 0;
+    }
+
+    & .swiper-button-next,
+    & .swiper-button-prev{
+        transition: $transition-default;
+        opacity: 0;
+        visibility: hidden;
+
+        &::after{
+            font-size: 28px;
+            color: $primary;
+        }
+    }
+
+    &:hover{
+        & .swiper-button-next{
+            right: 10px;
+            opacity: 1;
+            visibility: visible;
+        }
+        & .swiper-button-prev{
+            left: 10px;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}

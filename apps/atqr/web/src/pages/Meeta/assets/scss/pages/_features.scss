@@ -1,0 +1,241 @@
+/*--
+/*  15 - Features CSS
+/*----------------------------------------*/
+
+//  Home Style Five
+.meeta-featured-section {
+    background: #fafcff;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    & .shape-1 {
+        width: 900px;
+        height: 900px;
+        background: #f9edf8;
+        border-radius: 50%;
+        position: absolute;
+        top: -25%;
+        left: -18%;
+        z-index: -1;
+        @media #{$desktop-device}{
+            width: 700px;
+            height: 700px;
+        }
+        @media #{$large-mobile}{
+            width: 500px;
+            height: 500px;
+            top: -12%;
+            left: -30%;
+        }
+        @media #{$small-mobile}{
+            width: 390px;
+            height: 390px;
+            top: -5%;
+            left: -40%;
+        }
+    }
+    & .shape-2 {
+        width: 105px;
+        height: 105px;
+        background: #e1f6fd;
+        border-radius: 50%;
+        position: absolute;
+        top: 105px;
+        right: 15%;
+        z-index: -1;
+        @media #{$small-mobile}{
+            width: 90px;
+            height: 90px;
+            right: 5%;
+        }
+    }
+    & .meeta-featured-wrap {
+
+        & .section-title-4 {
+
+            & .main-title {
+                & .title-shape-1 {
+
+                    &::before {
+                        left: 35px;
+                        bottom: -55px;
+                        @media #{$small-mobile}{
+                            left: 10px;
+                            bottom: -40px;
+                        }
+                    }
+                }
+            }
+        }
+        
+
+        & .meeta-event-featured {
+            margin-top: -10px;
+
+            & .single-item {
+
+                & .featured-img {
+                   
+                    & .top-meta {
+                        position: absolute;
+                        top: 15px;
+                        left: 15px;
+                        & .date {
+                            width: 50px;
+                            height: 50px;
+                            line-height: 20px;
+                            font-size: 12px;
+                            padding: 12px;
+        
+                            & span {
+                                font-size: 18px;
+                                line-height: 12px;
+                            }
+                        }
+                    }
+                }
+        
+                & .featured-content {
+                    padding: 0 35px 35px 20px;
+                    & .category  {
+                        font-size: 12px;
+                        font-weight: 700;
+                        height: 25px;
+                        line-height: 23px;
+                        padding: 0 15px;
+                    }
+                    & .title {
+                        font-size: 16px;
+                        line-height: 22px;
+                    }
+                    & .meta {
+                        font-size: 13px;
+                        line-height: 12px;
+                    }
+                }
+            }
+        }
+        & .featured-more {
+            margin-top: 50px;
+            & .btn-2 {
+                border-radius: 5px;
+
+                &:hover {
+                    background: transparent;
+
+                    &::before {
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+.meeta-features-section {
+    background: #f9fafc;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        background-image: url(../images/shape/features-bg.png);
+        background-position: center center;
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    & .shape-1 {
+        position: absolute;
+        top: 13%;
+        left: -150px;
+        width: 275px;
+        height: 275px;
+        border: 30px solid #00acee;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    & .shape-2 {
+        position: absolute;
+        top: 8%;
+        right: -60px;
+        z-index: -1;
+    }
+}
+
+.meeta-features-wrap {
+
+    & .meeta-section-title-2 {
+        @media #{$tablet-device} {
+            text-align: center;
+        }
+    }
+}
+
+.feature-item {
+    background: $white;
+    box-shadow: 0px 0px 84px 0px rgba(0, 0, 0, 0.05);
+    padding: 40px 45px 50px;
+    & .feature-icon {
+
+        & img {
+            transition: $transition-default;
+        }
+    }
+    & .feature-content {
+        margin-top: 40px;
+        & .title {
+            font-size: 22px;
+            line-height: 30px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+        }
+        & p {
+            font-size: 16px;
+            line-height: 30px;
+            margin-top: 20px;
+        }
+    }
+
+    &.feature-1 {
+        margin-top: 115px;
+        @media #{$tablet-device} {
+            margin-top: 50px;
+        }
+    }
+    &.feature-2 {
+        @media #{$tablet-device} {
+            margin-top: 30px;
+        }
+    }
+    &.feature-3 {
+        margin-top: 30px;
+    }
+    &.feature-4 {
+        margin-top: 80px;
+        @media #{$tablet-device} {
+            margin-top: 30px;
+        }
+    }
+
+    &:hover {
+        & .feature-icon {
+
+            & img {
+                transform: scale(-1) rotate(180deg);
+            }
+        }
+    }
+}
+
+
+  
