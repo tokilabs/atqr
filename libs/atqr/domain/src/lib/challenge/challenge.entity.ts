@@ -1,7 +1,8 @@
 import { Guid } from '@tokilabs/lang/';
+import { Transform } from 'class-transformer';
+import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../payment-method/payment-method';
 import { Player } from '../player/player.entity';
-import { dateDiff } from '../../utils/date-difference';
 
 export enum SupervisorEnum {
   'notInvited',
@@ -11,26 +12,28 @@ export enum SupervisorEnum {
   'repliedIfTheGoalWasAccomplished',
 }
 
-export enum StatusEnum {
-  Ongoing,
-  Completed,
-  Failed,
+export enum ChallengeStatus {
+  Ongoing = 'Ongoing',
+  Completed = 'Completed',
+  Failed = 'Failed',
 }
 
 export class Challenge {
   private _id: Guid;
   private _price: number;
   private _deadline: Date;
+  @Transform(({ value }) => ChallengeStatus[value])
+  private _status?: ChallengeStatus;
+
   constructor(
     private _goal: string,
     private _supervisorName: string,
     private _supervisorEmail: string,
     private _player: Player,
-    _id: Guid,
     price: number,
     deadline: Date,
     private _paymentMethod?: PaymentMethodEntity,
-    private _status?: StatusEnum,
+    _status: ChallengeStatus = ChallengeStatus.Ongoing,
     private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
   ) {
     this._id = new Guid();
@@ -39,12 +42,15 @@ export class Challenge {
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
     }
+
     const today = new Date();
     if (dateDiff(today, deadline) > 1) {
       this._deadline = deadline;
     } else {
       throw Error('Selecione uma data futura');
     }
+
+    this._status = _status;
   }
   get id() {
     return this._id;

@@ -2,7 +2,7 @@ import { IEmail } from '.';
 import { Player } from '../player/player.entity';
 import * as EmailValidator from 'email-validator';
 
-export class EmailAddress  {
+export class EmailAddress {
   email: any;
 
   constructor(email: any) {
@@ -41,8 +41,6 @@ export class Email implements IEmail {
   public get Message() {
     return this.message;
   }
-
-
 }
 
 export class ChallengeStarted extends Email {

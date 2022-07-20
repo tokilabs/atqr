@@ -16,5 +16,4 @@ export default class ValidationErrors extends Exception {
 
 export enum ValidationErrorTypes {
   'InvalidValue',
-
 }

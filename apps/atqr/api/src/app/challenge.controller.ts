@@ -3,7 +3,6 @@ import {
   ChallengeStarted,
   EmailAddress,
   PaymentMethodEntity,
-  PaymentMethodEnum,
   Player,
   SupConfirmation,
 } from '@atqr/domain';
@@ -11,29 +10,27 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Patch,
   Post,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
-import { Mailer } from './infra/email/mailgun.service';
-import { AppService } from './app.service';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
-import { ChallengeRepository } from './repositories/challenge.repository';
-import { PlayerRepository } from './repositories/player.repository';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationErrors';
+import { Mailer } from './infra/email/mailer-sevice';
+import { ChallengeRepository } from './repositories/challenge.repository';
+import { PlayerRepository } from './repositories/player.repository';
 
-@Controller()
-export class AppController {
+@Controller('challenge')
+export class ChallengeController {
   constructor(
-    private readonly appService: AppService,
+    private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
-    private readonly playerRepository: PlayerRepository,
-    private readonly emailService: Mailer
+    private readonly playerRepository: PlayerRepository
   ) {}
 
   @Post('challenge')
@@ -50,30 +47,37 @@ export class AppController {
           challengeDto.playerName,
           new EmailAddress(challengeDto.playerEmail)
         );
+
+        this.playerRepository.create(player);
       }
 
       const challenge = new Challenge(
         challengeDto.goal,
-        challengeDto.deadline,
-        challengeDto.price,
         challengeDto.supervisorName,
         challengeDto.supervisorEmail,
-        player
+        player,
+        challengeDto.price,
+        challengeDto.deadline,
+        null // paymentMethod
       );
 
-      if (challengeDto.creditCardToken) {
+      // TODO: paramos aqui!
+
+      if (challengeDto.paymentMethod) {
         const paymentMethod = new PaymentMethodEntity(
-          PaymentMethodEnum.creditCard,
-          'pagseguro',
-          challengeDto.creditCardToken
+          challengeDto.paymentMethod.method,
+          challengeDto.paymentMethod.paymentService,
+          challengeDto.paymentMethod.token
         );
 
-        // Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
+        // TODO Verificar se o token do cartão tem limite para o desafio.(Faz uma cobrança e estorna)
 
         challenge.changePaymentMethod(paymentMethod);
 
         this.challengeRepository.create(challenge);
 
+        // TODO Finalize implementation
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
         const email = new ChallengeStarted(player);
         this.emailService.sendMail(email);
@@ -82,6 +86,8 @@ export class AppController {
       } else {
         this.challengeRepository.create(challenge);
 
+        // TODO Finalize implementation
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const emailAddress = new EmailAddress(challengeDto.playerEmail);
         const email = new SupConfirmation(player);
         this.emailService.sendMail(email);
@@ -100,13 +106,18 @@ export class AppController {
         }
       }
 
-      //Pegar os erros e resolver. (Usar try catch)
+      // TODO Handle other errors
     }
   }
 
+  @Get('last-challenges')
+  getLastChallenges(amount: number) {
+    return this.challengeRepository.findLastChallenges(amount);
+  }
+
   @Get('challenge/:id')
-  getChallenge(@Param('id') id: string): Challenge {
-    return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
+  changePayment(@Param('id') id: string): Challenge {
+    return {} as Challenge; // TODO Implement change payment endpoint and fix return
   }
 
   @Patch('challenge/:id')
@@ -114,6 +125,11 @@ export class AppController {
     @Param('id') id: string,
     @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
   ): Promise<Challenge> {
-    return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
+    return {} as Challenge; // // TODO Implement update challenge endpoint and fix return
+  }
+
+  @Get('challenge/:id')
+  changeSupervisor(@Param('id') id: string): Challenge {
+    return {} as Challenge; // TODO Implement change supervisor endpoint and fix return
   }
 }

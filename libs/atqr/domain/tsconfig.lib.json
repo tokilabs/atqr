@@ -7,5 +7,5 @@
     "types": ["node"]
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts", "src/lib/EmailService/configs.ts.env", "src/lib/EmailService/email-service.ts"]
+  "include": ["**/*.ts", "src/lib/EmailService/configs.ts.env", "src/lib/EmailService/email-service.ts", "../../../apps/atqr/api/src/app/challenge-entity.controller.ts"]
 }

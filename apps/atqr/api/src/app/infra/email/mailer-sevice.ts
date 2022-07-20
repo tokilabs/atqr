@@ -5,7 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 
 import Client from 'mailgun.js/client';
-const formData = require('form-data');
+import * as formData from 'form-data';
 @Injectable()
 export class Mailer implements OnApplicationBootstrap {
   private mailgun: Mailgun;
@@ -37,6 +37,7 @@ export class Mailer implements OnApplicationBootstrap {
       message: email.Message,
     };
 
+    // eslint-disable-next-line no-useless-catch
     try {
       await this.client.messages.create(this.domain, messageData);
       console.log(messageData);

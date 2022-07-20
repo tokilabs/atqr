@@ -1,3 +1,4 @@
+import { PaymentMethodEnum } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -15,7 +16,7 @@ export class CreateChallengeDto {
   @IsDate()
   deadline: Date;
 
-  // This values should come from a .env with other business related values
+  // TODO This values should come from a .env with other business related values
   @Min(25)
   price: number;
 
@@ -31,5 +32,9 @@ export class CreateChallengeDto {
   @IsEmail()
   supervisorEmail: string;
 
-  creditCardToken?: string;
+  paymentMethod?: {
+    method: PaymentMethodEnum;
+    paymentService: `pagar.me` | `pagseguro`;
+    token: string;
+  };
 }
