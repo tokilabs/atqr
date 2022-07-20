@@ -2,11 +2,12 @@
 // Strategy, mock the lib and see if the mock is called
 
 import { ConfigService } from '@nestjs/config';
-import { Mailer } from './mailer-sevice';
+import { Mailer } from './mailer.service';
 import { Email, EmailAddress, Player } from '@atqr/domain';
 import * as EmailValidator from 'email-validator';
 import { Test, TestingModule } from '@nestjs/testing';
 import Mailgun from 'mailgun.js';
+// import APIError from 'mailgun.js/lib/error';
 
 describe('Mailer', () => {
   let configService: ConfigService;
@@ -43,10 +44,7 @@ describe('Mailer', () => {
 
   describe('Constructor', () => {
     it('Should build correctly', () => {
-      // Arrange
       const mailer = new Mailer(configService);
-      // Act
-      // Assert
       expect(mailer).toBeDefined();
     });
 
@@ -66,11 +64,20 @@ describe('Mailer', () => {
   });
 
   describe('sendMail()', () => {
-    it('Should call nodemailer when called', async () => {
-      // Arrange
+    it('Should call Mailgun when called', async () => {
       const mailer = new Mailer(configService);
 
       mailer.onApplicationBootstrap();
+      jest
+        .spyOn(mailer['client']['messages'], 'create')
+        .mockImplementation((domain: string, data: any): Promise<any> => {
+          return new Promise((resolve) => {
+            resolve({
+              message: 'Queued. Thank you.',
+              id: '<20111114174239.25659.5817@samples.mailgun.org>',
+            });
+          });
+        });
 
       jest.spyOn(mailer, 'sendMail');
 
@@ -80,16 +87,14 @@ describe('Mailer', () => {
       const myEmail = new Email(player, 'subject');
       await mailer.sendMail(myEmail);
 
-      // Assert
-
-      // Expect Nodemailer to be called
-
-      // Expect Nodemailer to be called with correct arguments
-
-      expect(mailer.sendMail).toBeCalledWith(
-        'gabi@toki.life',
-        'subject',
-        undefined
+      expect(mailer['client'].messages.create).toBeCalledWith(
+        process.env.MAILGUN_DOMAIN,
+        {
+          from: process.env.FROM_EMAIL,
+          to: 'gabi@toki.life',
+          subject: 'subject',
+          message: undefined,
+        }
       );
     });
 
@@ -101,7 +106,7 @@ describe('Mailer', () => {
       expect(isValidEmail.valueOf).toThrow(Error);
     });
 
-    //   //  Invalid Mail
+    //  Invalid Mail
     it('should throw email error', async () => {
       const mailer = new Mailer(configService);
 
@@ -111,14 +116,52 @@ describe('Mailer', () => {
       const player = new Player('Gabriela', emailAddress);
       const myEmail = new Email(player, 'subject');
 
+      jest
+        .spyOn(mailer['client'].messages, 'create')
+        .mockImplementation((domain, data) => {
+          return new Promise((resolve, reject) => {
+            reject(
+              new APIError({
+                status: 401,
+                statusText: '',
+                message: '',
+                headers: {},
+                body: {},
+                url: '',
+              })
+            );
+          });
+        });
+
       async function myFunc() {
         return await mailer.sendMail(myEmail);
       }
 
       //await mailer.sendMail(myEmail);
 
-      expect(myFunc).toThrow();
+      await expect(myFunc()).rejects.toThrow();
     });
     //   // Invalid Content
   });
 });
+
+// Mailgun Api Error
+interface APIErrorOptions {
+  headers: {
+    [key: string]: any;
+  };
+  status: number | string;
+  message: string;
+  body: any;
+  url: string;
+  statusText: string;
+}
+
+export default class APIError extends Error {
+  status: number | string;
+  stack: string;
+  details: string;
+  constructor({ status, statusText, message, body }: APIErrorOptions) {
+    super(message);
+  }
+}
