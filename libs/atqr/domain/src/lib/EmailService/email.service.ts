@@ -13,7 +13,7 @@ export class Email implements IEmail {
   }
 
   public get playerEmail() {
-    return this.to.emailAddress.email;
+    return this.to.emailAddress.value;
   }
 
   public get from() {
