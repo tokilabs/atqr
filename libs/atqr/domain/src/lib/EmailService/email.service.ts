@@ -1,7 +1,5 @@
 import { IEmail } from '.';
 import { Player } from '../player/player.entity';
-import * as EmailValidator from 'email-validator';
-
 
 export class Email implements IEmail {
   constructor(

@@ -3,10 +3,11 @@
 
 import { ConfigService } from '@nestjs/config';
 import { Mailer } from './mailer.service';
-import { Email, EmailAddress, Player } from '@atqr/domain';
+import { Email, Player, EmailAddress } from '@atqr/domain';
 import * as EmailValidator from 'email-validator';
 import { Test, TestingModule } from '@nestjs/testing';
 import Mailgun from 'mailgun.js';
+
 // import APIError from 'mailgun.js/lib/error';
 
 describe('Mailer', () => {
@@ -43,11 +44,6 @@ describe('Mailer', () => {
   });
 
   describe('Constructor', () => {
-    it('Should build correctly', () => {
-      const mailer = new Mailer(configService);
-      expect(mailer).toBeDefined();
-    });
-
     it('Should correctly instantiate the node-mailgun lib', () => {
       // Act
       const mailer = new Mailer(configService);
@@ -98,7 +94,7 @@ describe('Mailer', () => {
       );
     });
 
-    // Should Throw error on invalid data
+    //  Invalid Mail
     it('should throw data error', () => {
       // const emailAddress = new EmailAddress('gabi@toki.life'); // TODO: Rework test
       const isValidEmail = EmailValidator.validate('gab');
@@ -106,8 +102,8 @@ describe('Mailer', () => {
       expect(isValidEmail.valueOf).toThrow(Error);
     });
 
-    //  Invalid Mail
-    it('should throw email error', async () => {
+    // Should Throw error on invalid data
+    it('should throw email error when create func is rejected', async () => {
       const mailer = new Mailer(configService);
 
       mailer.onApplicationBootstrap();
@@ -137,7 +133,7 @@ describe('Mailer', () => {
         return await mailer.sendMail(myEmail);
       }
 
-      //await mailer.sendMail(myEmail);
+      
 
       await expect(myFunc()).rejects.toThrow();
     });

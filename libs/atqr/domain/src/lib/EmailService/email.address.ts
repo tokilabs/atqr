@@ -1,5 +1,6 @@
+import * as EmailValidator from 'email-validator';
 export class EmailAddress {
-  email: any;
+  email: string;
 
   constructor(email: any) {
     const isValidEmail = EmailValidator.validate(email);

@@ -6,7 +6,7 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 
 import Client from 'mailgun.js/client';
 import * as formData from 'form-data';
-import MailgunError from '../../errors/mailgunErrors';
+import MailgunError from '../../errors/mailgunError';
 
 @Injectable()
 export class Mailer implements OnApplicationBootstrap {
@@ -44,7 +44,6 @@ export class Mailer implements OnApplicationBootstrap {
     try {
       await this.client.messages.create(this.domain, messageData);
     } catch (error) {
-      // console.log(error);
       switch (error.status) {
         case 401:
           throw MailgunError.ConfigurationError(error);

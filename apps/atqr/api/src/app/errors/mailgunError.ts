@@ -4,7 +4,7 @@ export default class MailgunError extends Exception {
   private constructor(
     message: string,
     public error: Error,
-    public type: ValidationErrorTypes
+    public type: MailgunValidationErrorTypes
   ) {
     super(message);
   }
@@ -13,11 +13,11 @@ export default class MailgunError extends Exception {
     return new MailgunError(
       'A configuration error on the server has happened.',
       error,
-      ValidationErrorTypes.InvalidValue
+      MailgunValidationErrorTypes.InvalidValue
     );
   }
 }
 
-export enum ValidationErrorTypes {
+export enum MailgunValidationErrorTypes {
   'InvalidValue',
 }
