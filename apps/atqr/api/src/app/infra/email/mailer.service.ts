@@ -6,6 +6,8 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 
 import Client from 'mailgun.js/client';
 import * as formData from 'form-data';
+import MailgunError from '../../errors/mailgunErrors';
+
 @Injectable()
 export class Mailer implements OnApplicationBootstrap {
   private mailgun: Mailgun;
@@ -33,6 +35,7 @@ export class Mailer implements OnApplicationBootstrap {
   async sendMail(email: Email) {
     const messageData = {
       from: this.fromEmail,
+      to: email.playerEmail,
       subject: email.Subject,
       message: email.Message,
     };
@@ -40,9 +43,15 @@ export class Mailer implements OnApplicationBootstrap {
     // eslint-disable-next-line no-useless-catch
     try {
       await this.client.messages.create(this.domain, messageData);
-      console.log(messageData);
     } catch (error) {
-      throw error;
+      // console.log(error);
+      switch (error.status) {
+        case 401:
+          throw MailgunError.ConfigurationError(error);
+
+        default:
+          throw error;
+      }
     }
   }
 }
