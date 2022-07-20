@@ -21,7 +21,7 @@ import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationErrors';
-import { Mailer } from './infra/email/mailer-sevice';
+import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 
