@@ -1,14 +1,14 @@
 // Goal Test if email service calls node mailgun correctly
 // Strategy, mock the lib and see if the mock is called
-
+import { Email, EmailAddress, Player } from '@atqr/domain';
 import { ConfigService } from '@nestjs/config';
-import { Mailer } from './mailer.service';
-import { Email, Player, EmailAddress } from '@atqr/domain';
-import * as EmailValidator from 'email-validator';
 import { Test, TestingModule } from '@nestjs/testing';
 import Mailgun from 'mailgun.js';
+import APIError from 'mailgun.js/lib/error';
 
-// import APIError from 'mailgun.js/lib/error';
+import { Mailer } from './mailer.service';
+
+// import APIError from './mailgunApiErrors';
 
 describe('Mailer', () => {
   let configService: ConfigService;
@@ -50,7 +50,6 @@ describe('Mailer', () => {
       mailer.onApplicationBootstrap();
 
       // Assert
-      expect(mailer).toBeDefined();
 
       expect(mailer.fromEmail).toBe(
         'contato@sandbox560ae9d2b6fa4d38a47d084825797bd8.mailgun.org'
@@ -94,14 +93,6 @@ describe('Mailer', () => {
       );
     });
 
-    //  Invalid Mail
-    it('should throw data error', () => {
-      // const emailAddress = new EmailAddress('gabi@toki.life'); // TODO: Rework test
-      const isValidEmail = EmailValidator.validate('gab');
-
-      expect(isValidEmail.valueOf).toThrow(Error);
-    });
-
     // Should Throw error on invalid data
     it('should throw email error when create func is rejected', async () => {
       const mailer = new Mailer(configService);
@@ -132,8 +123,6 @@ describe('Mailer', () => {
       async function myFunc() {
         return await mailer.sendMail(myEmail);
       }
-
-      
 
       await expect(myFunc()).rejects.toThrow();
     });
