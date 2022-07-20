@@ -5,7 +5,7 @@
 
 */
 -- CreateEnum
-CREATE TYPE "ChallengeStatus" AS ENUM ('Ongoing', 'Completed', 'Failed');
+CREATE TYPE "ChallengeStatus" AS ENUM ('ONGOING', 'COMPLETED', 'FAILED');
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Player_email_key" ON "Player"("email");

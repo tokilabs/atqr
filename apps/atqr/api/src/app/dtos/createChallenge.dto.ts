@@ -7,7 +7,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Guid } from '@tokilabs/lang';
-import { PaymentMethodEntity } from '@atqr/domain';
+import { PaymentMethodEntity, PaymentMethodEnum } from '@atqr/domain';
 
 export class CreateChallengeDto {
   @IsString()
@@ -33,7 +33,9 @@ export class CreateChallengeDto {
   @IsEmail()
   supervisorEmail: string;
 
-  creditCardToken?: string;
-  id: Guid;
-  paymentMethod: PaymentMethodEntity;
+  paymentMethod?: {
+    method: PaymentMethodEnum;
+    paymentService: `pagar.me` | `pagseguro`;
+    token: string;
+  };
 }

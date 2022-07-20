@@ -1,8 +1,7 @@
-import { EmailAddress, Player } from '@atqr/domain';
+import { Challenge, EmailAddress, Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 
-import { Player as PrismaPlayer } from '@prisma/client';
 import { PrismaService } from '../infra/database/prisma.service';
 import { plainToInstance } from 'class-transformer';
 
@@ -15,7 +14,28 @@ export class PlayerRepository {
       Player,
       await this.prismaService.player.findUnique({
         where: { id: id.valueOf() },
-      })
+        include: {
+          // @todo Rename to Challenges in Prisma schema
+          Challenge: true,
+        },
+      }),
+      // @todo check the right syntax for targetMaps
+      {
+        targetMaps: [
+          {
+            target: () => EmailAddress,
+            properties: {
+              email: (value) => new EmailAddress(value),
+            },
+          },
+          {
+            target: () => {},
+            properties: {
+              Challenge: (value) => plainToInstance(Challenge, value),
+            },
+          },
+        ],
+      }
     );
   }
 
