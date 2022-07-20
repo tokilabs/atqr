@@ -9,7 +9,7 @@ export function dateDiff(a, b) {
   return Math.floor((utc2 - utc1) / _MS_PER_DAY)
 }
 
-// const today = new Date()
+const today = new Date()
 // const deadline = new Date(2022, 7, 23)
 
 // function getDeadline() {
