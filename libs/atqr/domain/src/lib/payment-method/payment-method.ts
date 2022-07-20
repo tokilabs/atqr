@@ -1,4 +1,3 @@
-import { Get, Post } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 
 export enum PaymentMethodEnum {

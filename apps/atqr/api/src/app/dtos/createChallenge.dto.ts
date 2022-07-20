@@ -1,3 +1,4 @@
+import { PaymentMethodEnum } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -6,8 +7,6 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { Guid } from '@tokilabs/lang';
-import { PaymentMethodEntity, PaymentMethodEnum } from '@atqr/domain';
 
 export class CreateChallengeDto {
   @IsString()
@@ -17,7 +16,7 @@ export class CreateChallengeDto {
   @IsDate()
   deadline: Date;
 
-  // This values should come from a .env with other business related values
+  // TODO This values should come from a .env with other business related values
   @Min(25)
   price: number;
 
