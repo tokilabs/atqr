@@ -1,9 +1,9 @@
 import { Challenge, EmailAddress, Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-
-import { PrismaService } from '../infra/database/prisma.service';
 import { plainToInstance } from 'class-transformer';
+import { PrismaService } from '../infra/database/prisma.service';
+
 
 @Injectable()
 export class PlayerRepository {
@@ -28,6 +28,7 @@ export class PlayerRepository {
             },
           },
           {
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
             target: () => {},
             properties: {
               Challenges: (value) => plainToInstance(Challenge, value),

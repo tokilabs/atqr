@@ -1,10 +1,10 @@
+import { Challenge } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
+import { Challenge as PrismaChallenge } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
-import { Challenge } from '@atqr/domain';
-import { Challenge as PrismaChallenge } from '@prisma/client';
-
 import { PrismaService } from '../infra/database/prisma.service';
+
 
 @Injectable()
 export class ChallengeRepository {
@@ -34,6 +34,7 @@ export class ChallengeRepository {
   async findLastChallenges(amount: number): Promise<Challenge[]> {
     const plainChallenges: PrismaChallenge[] =
       await this.prismaService.challenge.findMany({
+        take: amount,
         orderBy: {
           id: 'desc',
         },

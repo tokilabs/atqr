@@ -16,7 +16,6 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import ValidationErrors, {
@@ -77,6 +76,8 @@ export class ChallengeController {
 
         this.challengeRepository.create(challenge);
 
+        // TODO Finalize implementation
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
         const email = new ChallengeStarted(player);
         this.emailService.sendMail(email);
@@ -85,6 +86,8 @@ export class ChallengeController {
       } else {
         this.challengeRepository.create(challenge);
 
+        // TODO Finalize implementation
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const emailAddress = new EmailAddress(challengeDto.playerEmail);
         const email = new SupConfirmation(player);
         this.emailService.sendMail(email);
@@ -107,14 +110,11 @@ export class ChallengeController {
     }
   }
 
-  // @GET last challenges
-
   @Get('last-challenges')
   getLastChallenges(amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  // @GET certain challenge to change payment method
   @Get('challenge/:id')
   changePayment(@Param('id') id: string): Challenge {
     return {} as Challenge; // TODO Implement change payment endpoint and fix return
@@ -127,8 +127,6 @@ export class ChallengeController {
   ): Promise<Challenge> {
     return {} as Challenge; // // TODO Implement update challenge endpoint and fix return
   }
-
-  // @GET certain challenge to change supervisor
 
   @Get('challenge/:id')
   changeSupervisor(@Param('id') id: string): Challenge {
