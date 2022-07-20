@@ -1,12 +1,14 @@
 // Goal Test if email service calls node mailgun correctly
 // Strategy, mock the lib and see if the mock is called
-
-import { ConfigService } from '@nestjs/config';
-import { Mailer } from './mailer-sevice';
 import { Email, EmailAddress, Player } from '@atqr/domain';
-import * as EmailValidator from 'email-validator';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import Mailgun from 'mailgun.js';
+import APIError from 'mailgun.js/lib/error';
+
+import { Mailer } from './mailer.service';
+
+// import APIError from './mailgunApiErrors';
 
 describe('Mailer', () => {
   let configService: ConfigService;
@@ -42,21 +44,12 @@ describe('Mailer', () => {
   });
 
   describe('Constructor', () => {
-    it('Should build correctly', () => {
-      // Arrange
-      const mailer = new Mailer(configService);
-      // Act
-      // Assert
-      expect(mailer).toBeDefined();
-    });
-
     it('Should correctly instantiate the node-mailgun lib', () => {
       // Act
       const mailer = new Mailer(configService);
       mailer.onApplicationBootstrap();
 
       // Assert
-      expect(mailer).toBeDefined();
 
       expect(mailer.fromEmail).toBe(
         'contato@sandbox560ae9d2b6fa4d38a47d084825797bd8.mailgun.org'
@@ -66,11 +59,20 @@ describe('Mailer', () => {
   });
 
   describe('sendMail()', () => {
-    it('Should call nodemailer when called', async () => {
-      // Arrange
+    it('Should call Mailgun when called', async () => {
       const mailer = new Mailer(configService);
 
       mailer.onApplicationBootstrap();
+      jest
+        .spyOn(mailer['client']['messages'], 'create')
+        .mockImplementation((domain: string, data: any): Promise<any> => {
+          return new Promise((resolve) => {
+            resolve({
+              message: 'Queued. Thank you.',
+              id: '<20111114174239.25659.5817@samples.mailgun.org>',
+            });
+          });
+        });
 
       jest.spyOn(mailer, 'sendMail');
 
@@ -80,29 +82,19 @@ describe('Mailer', () => {
       const myEmail = new Email(player, 'subject');
       await mailer.sendMail(myEmail);
 
-      // Assert
-
-      // Expect Nodemailer to be called
-
-      // Expect Nodemailer to be called with correct arguments
-
-      expect(mailer.sendMail).toBeCalledWith(
-        'gabi@toki.life',
-        'subject',
-        undefined
+      expect(mailer['client'].messages.create).toBeCalledWith(
+        process.env.MAILGUN_DOMAIN,
+        {
+          from: process.env.FROM_EMAIL,
+          to: 'gabi@toki.life',
+          subject: 'subject',
+          message: undefined,
+        }
       );
     });
 
     // Should Throw error on invalid data
-    it('should throw data error', () => {
-      // const emailAddress = new EmailAddress('gabi@toki.life'); // TODO: Rework test
-      const isValidEmail = EmailValidator.validate('gab');
-
-      expect(isValidEmail.valueOf).toThrow(Error);
-    });
-
-    //   //  Invalid Mail
-    it('should throw email error', async () => {
+    it('should throw email error when create func is rejected', async () => {
       const mailer = new Mailer(configService);
 
       mailer.onApplicationBootstrap();
@@ -111,13 +103,28 @@ describe('Mailer', () => {
       const player = new Player('Gabriela', emailAddress);
       const myEmail = new Email(player, 'subject');
 
+      jest
+        .spyOn(mailer['client'].messages, 'create')
+        .mockImplementation((domain, data) => {
+          return new Promise((resolve, reject) => {
+            reject(
+              new APIError({
+                status: 401,
+                statusText: '',
+                message: '',
+                headers: {},
+                body: {},
+                url: '',
+              })
+            );
+          });
+        });
+
       async function myFunc() {
         return await mailer.sendMail(myEmail);
       }
 
-      //await mailer.sendMail(myEmail);
-
-      expect(myFunc).toThrow();
+      await expect(myFunc()).rejects.toThrow();
     });
     //   // Invalid Content
   });

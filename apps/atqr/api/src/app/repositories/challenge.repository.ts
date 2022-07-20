@@ -5,7 +5,6 @@ import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
-
 @Injectable()
 export class ChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
@@ -24,7 +23,7 @@ export class ChallengeRepository {
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
           connect: {
-            email: challenge.player.emailAddress.email,
+            email: challenge.player.emailAddress.value,
           },
         },
       },

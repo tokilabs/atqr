@@ -4,7 +4,6 @@ import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
-
 @Injectable()
 export class PlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
@@ -43,7 +42,7 @@ export class PlayerRepository {
     return plainToInstance(
       Player,
       this.prismaService.player.findUnique({
-        where: { email: email.email },
+        where: { email: email.value },
       })
     );
   }
@@ -54,7 +53,7 @@ export class PlayerRepository {
       data: {
         id: player.id.valueOf(),
         name: player.name,
-        email: player.emailAddress.email,
+        email: player.emailAddress.value,
       },
     });
   }
