@@ -1,12 +1,13 @@
 import * as EmailValidator from 'email-validator';
-export class EmailAddress {
-  email: string;
 
-  constructor(email: any) {
+export class EmailAddress {
+  value: string;
+
+  constructor(email: string) {
     const isValidEmail = EmailValidator.validate(email);
 
     if (isValidEmail) {
-      this.email = email;
+      this.value = email;
     } else {
       throw new Error('Invalid Email');
     }
