@@ -17,7 +17,20 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
     ConfigService,
     StripeService,
     Mailer,
-    DeadlineMonitorService
+    {
+      provide: NotificationService,
+      inject: [Mailer, ChallengeRepository],
+      useFactory: (Mailer, ChallengeRepository) => {
+        return new NotificationService(Mailer, ChallengeRepository);
+      },
+    },
+    {
+      provide: DeadlineMonitorService,
+      inject: [NotificationService],
+      useFactory: (NotificationService) => {
+        return new DeadlineMonitorService(NotificationService);
+      },
+    },
   ],
 })
 export class AppModule {}
