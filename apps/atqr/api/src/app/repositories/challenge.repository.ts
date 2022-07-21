@@ -16,7 +16,7 @@ export class ChallengeRepository {
         deadline: challenge.deadline,
         goal: challenge.goal,
         price: challenge.price,
-        paymentMethod: 'Not Finished', // Resolve entity
+        paymentMethod: 'Not Finished', // TODO: Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
         status: challenge.status,

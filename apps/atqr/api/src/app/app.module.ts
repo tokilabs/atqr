@@ -9,6 +9,7 @@ import { Mailer } from './infra/email/mailer.service';
 import { StripeService } from './infra/payment/stripe.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
+import { Mailer } from './infra/email/mailer-sevice';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],

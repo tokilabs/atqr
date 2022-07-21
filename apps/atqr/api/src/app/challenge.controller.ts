@@ -16,12 +16,12 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { Mailer } from 'mailgun';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
-import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 
