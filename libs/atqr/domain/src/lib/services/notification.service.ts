@@ -1,5 +1,5 @@
 import { Exception } from '@tokilabs/lang';
-import { Email, EmailAddress, IMailer } from '../EmailService';
+import { Email, IMailer } from '../EmailService';
 import { IChallengeRepository } from '../repository.interfaces';
 
 export class NotificationService {
@@ -14,12 +14,8 @@ export class NotificationService {
         challenges.map((c) => {
           if (c.updateOverdueStatus() === true) {
             try {
-              // @todo: Raquel, please instantiate the correct Email subclass instance
-              const email = new Email(
-                new EmailAddress('temp@temp.com'),
-                '',
-                ''
-              );
+              const player = c.player
+              const email = new Email(player, 'OverdueChallenge', 'Your time is over' );
               this.mailer.sendMail(email);
               this.challengeRepository.update(c);
             } catch (err) {

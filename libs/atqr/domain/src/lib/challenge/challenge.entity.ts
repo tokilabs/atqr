@@ -17,8 +17,8 @@ export enum ChallengeStatus {
   Ongoing = 'Ongoing',
   Completed = 'Completed',
   Failed = 'Failed',
+  Overdue = 'Overdue',
 }
-
 export class Challenge {
   private _id: Guid;
   private _price: number;
@@ -96,6 +96,11 @@ export class Challenge {
    * Checks if the challenge became overdue and returns true if the status changes
    */
   updateOverdueStatus(): boolean {
-    // @todo: implement Challenge.updateOverdueStatus()
+    if (this.deadline < new Date()) {
+      this._status = ChallengeStatus.Overdue;
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -10,7 +10,7 @@ import { StripeService } from './infra/payment/stripe.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 import { Mailer } from './infra/email/mailer-sevice';
-import { DeadlineMonitorService } from './deadlineMonitor.service';
+import { DeadlineMonitorService } from '../../../../../libs/atqr/domain/src/lib/services/deadlineMonitor.service';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],

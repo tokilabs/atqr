@@ -5,7 +5,7 @@ export class DeadlineMonitorService {
   // private _cron: CronJob;
 
   constructor(private notificationService: NotificationService) {
-    var job = () => this.notifyOverdueChallenges();
+    const job = () => this.notifyOverdueChallenges();
 
     new CronJob('* * * 0 * *', job, null, true, 'America/Los_Angeles');
   }
@@ -16,4 +16,5 @@ export class DeadlineMonitorService {
   private notifyOverdueChallenges() {
     this.notificationService.notifyOverdueChallenges();
   }
+
 }

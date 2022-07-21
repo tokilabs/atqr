@@ -79,10 +79,11 @@ export class ChallengeRepository {
           },
           status: { equals: 'Ongoing' },
         },
+        include: { player: true },
       })
       .then((prismaChallenges) => {
         return prismaChallenges.map((pc) => {
-          // @todo: Raquel, make this real
+          plainToInstance(Challenge, prismaChallenges);
           return pc as any as Challenge;
         });
       });
