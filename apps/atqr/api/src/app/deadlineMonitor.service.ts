@@ -1,29 +1,19 @@
 import { CronJob } from 'cron';
-import { ChallengeRepository } from './repositories/challenge.repository'
-
+import { NotificationService } from '@atqr/domain';
 
 export class DeadlineMonitorService {
-  private _cron: CronJob;
-  getChallengeOnGoing: ChallengeRepository;
+  // private _cron: CronJob;
 
-  constructor() {
-    this._cron = new CronJob(
-      '* * * 0 * *',
-      this.passedDeadline,
-      null,
-      true,
-      'America/Los_Angeles'
-    );
+  constructor(private notificationService: NotificationService) {
+    var job = () => this.notifyOverdueChallenges();
+
+    new CronJob('* * * 0 * *', job, null, true, 'America/Los_Angeles');
   }
 
-  get cron(){
-    return this._cron;
-  }
-
-
-  private passedDeadline() {
-    this.getChallengeOnGoing.findOngoingChallenges(new Date())
-
+  /**
+   * Finds all overdue Challenges and notify them
+   */
+  private notifyOverdueChallenges() {
+    this.notificationService.notifyOverdueChallenges();
   }
 }
-

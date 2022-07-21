@@ -91,4 +91,11 @@ export class Challenge {
   changePaymentMethod(paymentMethod: PaymentMethodEntity) {
     this._paymentMethod = paymentMethod;
   }
+
+  /**
+   * Checks if the challenge became overdue and returns true if the status changes
+   */
+  updateOverdueStatus(): boolean {
+    // @todo: implement Challenge.updateOverdueStatus()
+  }
 }

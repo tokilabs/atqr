@@ -68,24 +68,24 @@ export class ChallengeRepository {
     );
   }
 
-  async findOngoingChallenges(
-    deadline: Date,
-    numberOfResults = 100,
-    skip = 0
-  ): Promise<Challenge[]> {
-    const plainChallenges = await this.prismaService.challenge.findMany({
-      take: numberOfResults,
-      skip,
-      where: {
-        deadline: {
-          gt: deadline,
+  findOverdueChallenges(numberOfResults = 100, skip = 0): Promise<Challenge[]> {
+    return this.prismaService.challenge
+      .findMany({
+        take: numberOfResults,
+        skip,
+        where: {
+          deadline: {
+            lt: new Date(),
+          },
+          status: { equals: 'Ongoing' },
         },
-        status: { equals: 'Ongoing' },
-      },
-    });
-    return plainChallenges.map((challenge) => {
-      return plainToInstance(Challenge, challenge);
-    });
+      })
+      .then((prismaChallenges) => {
+        return prismaChallenges.map((pc) => {
+          // @todo: Raquel, make this real
+          return pc as any as Challenge;
+        });
+      });
   }
 
   update(challenge: Challenge): void {

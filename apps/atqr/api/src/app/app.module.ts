@@ -10,6 +10,7 @@ import { StripeService } from './infra/payment/stripe.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
 import { Mailer } from './infra/email/mailer-sevice';
+import { DeadlineMonitorService } from './deadlineMonitor.service';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],
@@ -21,6 +22,7 @@ import { Mailer } from './infra/email/mailer-sevice';
     ConfigService,
     StripeService,
     Mailer,
+    DeadlineMonitorService
   ],
 })
 export class AppModule {}
