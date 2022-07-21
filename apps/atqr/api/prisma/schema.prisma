@@ -1,0 +1,38 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("SUPABASE_DATABASE_URL")
+}
+
+model Challenge {
+  id              String   @id @db.Uuid
+  goal            String
+  deadline        DateTime
+  price           String
+  player          Player   @relation(fields: [playerId], references: [id])
+  playerId        String   @db.Uuid
+  supervisorName  String
+  supervisorEmail String
+  status          String
+  paymentMethod   String
+  creditCardToken String?
+}
+
+model Player {
+  id        String      @id @db.Uuid
+  name      String
+  email     String  @unique
+  Challenge Challenge[]
+}
+
+enum ChallengeStatus  {
+  Ongoing
+  Completed
+  Failed
+}
