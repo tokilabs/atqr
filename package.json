@@ -15,6 +15,7 @@
   },
   "private": true,
   "dependencies": {
+    "@nestjs/cli": "^8.2.5",
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
