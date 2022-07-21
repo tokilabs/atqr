@@ -1,32 +1,36 @@
-import { Challenge } from './challenge-entity';
 import { CronJob } from 'cron';
 import { DeadlineInterface } from './deadline-interface';
+import { ChallengeRepository } from '../../../../../apps/atqr/api/src/app/repositories/challenge.repository'
 
+const createChallenge: ChallengeRepository;
+createChallenge.create()
 
 export class DeadlineMonitorService {
   private _cron: CronJob;
+  // _deadline: DeadlineInterface;
+  getChallengeOnGoing: ChallengeRepository;
 
   constructor() {
     this._cron = new CronJob(
       '* * * 0 * *',
-      this.callEmail,
+      this.passedDeadline,
       null,
       true,
       'America/Los_Angeles'
     );
   }
 
+  // get deadline() {
+  //   return this._deadline
+  // };
+
   get cron(){
     return this._cron;
   }
 
-  addToQueue(ongoing: DeadlineInterface[]) {
-    //pegar toda challenge que for criada e adicionar nessa lista!
 
-  }
-
-  private callEmail() {
-    console.log('')
+  private passedDeadline() {
+    this.getChallengeOnGoing.findOngoingChallenges(new Date())
 
     //procurar no banco de dados os deadlines que ja passaram nas challenges,
     //receber as challenges que ja passaram mas ainda não mandamos email, chamar o serviço de email
