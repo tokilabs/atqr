@@ -9,5 +9,5 @@
     "target": "es2015"
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "../../../libs/atqr/domain/src/lib/services/deadlineMonitor.service.ts"]
 }

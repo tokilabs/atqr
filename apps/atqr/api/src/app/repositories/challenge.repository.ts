@@ -1,6 +1,6 @@
 import { Challenge } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
-import { Challenge as PrismaChallenge } from '@prisma/client';
+import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
@@ -16,10 +16,10 @@ export class ChallengeRepository {
         deadline: challenge.deadline,
         goal: challenge.goal,
         price: challenge.price,
-        paymentMethod: 'Not Finished', // Resolve entity
+        paymentMethod: 'Not Finished', // TODO: Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
-        status: challenge.status,
+        status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
           connect: {
@@ -68,24 +68,25 @@ export class ChallengeRepository {
     );
   }
 
-  async findOngoingChallenges(
-    deadline: Date,
-    numberOfResults = 100,
-    skip = 0
-  ): Promise<Challenge[]> {
-    const plainChallenges = await this.prismaService.challenge.findMany({
-      take: numberOfResults,
-      skip,
-      where: {
-        deadline: {
-          gt: deadline,
+  findOverdueChallenges(numberOfResults = 100, skip = 0): Promise<Challenge[]> {
+    return this.prismaService.challenge
+      .findMany({
+        take: numberOfResults,
+        skip,
+        where: {
+          deadline: {
+            lt: new Date(),
+          },
+          status: { equals: 'Ongoing' },
         },
-        status: { equals: 'Ongoing' },
-      },
-    });
-    return plainChallenges.map((challenge) => {
-      return plainToInstance(Challenge, challenge);
-    });
+        include: { player: true },
+      })
+      .then((prismaChallenges) => {
+        return prismaChallenges.map((pc) => {
+          plainToInstance(Challenge, prismaChallenges);
+          return pc as any as Challenge;
+        });
+      });
   }
 
   update(challenge: Challenge): void {
@@ -93,7 +94,7 @@ export class ChallengeRepository {
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),
-        status: challenge.status,
+        status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
       },
     });
   }

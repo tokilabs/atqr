@@ -1,22 +1,26 @@
 import { Challenge, EmailAddress, Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-import { plainToInstance } from 'class-transformer';
+import { Player as PrismaPlayer } from '@prisma/client';
 import { PrismaService } from '../infra/database/prisma.service';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findUnique(id: Guid): Promise<Player> {
-    return plainToInstance(
-      Player,
+    const prismaPlayer: PrismaPlayer =
       await this.prismaService.player.findUnique({
         where: { id: id.valueOf() },
         include: {
           Challenges: true,
         },
-      }),
+      });
+
+    return plainToInstance(
+      Player,
+      prismaPlayer,
       // TODO check the right syntax for targetMaps
       {
         targetMaps: [

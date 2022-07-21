@@ -1,5 +1,5 @@
 import Mailgun from 'mailgun.js';
-import { Email } from '@atqr/domain';
+import { Email, IMailer } from '@atqr/domain';
 
 import { ConfigService } from '@nestjs/config';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
@@ -9,7 +9,7 @@ import * as formData from 'form-data';
 import MailgunError from '../../errors/mailgunError';
 
 @Injectable()
-export class Mailer implements OnApplicationBootstrap {
+export class Mailer implements OnApplicationBootstrap, IMailer {
   private mailgun: Mailgun;
   private client: Client;
   private domain: string;

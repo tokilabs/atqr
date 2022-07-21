@@ -1,6 +1,10 @@
 import { IEmail } from '.';
 import { Player } from '../player/player.entity';
 
+export interface IMailer {
+  sendMail(email: Email): Promise<unknown>;
+}
+
 export class Email implements IEmail {
   constructor(
     public to: Player,

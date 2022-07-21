@@ -1,4 +1,5 @@
-export * from './lib/player/player.entity';
-export * from './lib/challenge/challenge.entity';
+export * from './lib/challenge/';
 export * from './lib/EmailService';
 export * from './lib/PaymentMethod';
+export * from './lib/player/';
+export * from './lib/services';

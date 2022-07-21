@@ -17,8 +17,8 @@ export enum ChallengeStatus {
   Ongoing = 'Ongoing',
   Completed = 'Completed',
   Failed = 'Failed',
+  Overdue = 'Overdue',
 }
-
 export class Challenge {
   private _id: Guid;
   private _price: number;
@@ -90,5 +90,17 @@ export class Challenge {
   }
   changePaymentMethod(paymentMethod: PaymentMethodEntity) {
     this._paymentMethod = paymentMethod;
+  }
+
+  /**
+   * Checks if the challenge became overdue and returns true if the status changes
+   */
+  updateOverdueStatus(): boolean {
+    if (this.deadline < new Date()) {
+      this._status = ChallengeStatus.Overdue;
+      return true;
+    } else {
+      return false;
+    }
   }
 }
