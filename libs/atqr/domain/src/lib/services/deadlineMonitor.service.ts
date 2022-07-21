@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { NotificationService } from '@atqr/domain';
+import { NotificationService } from './notification.service';
 
 export class DeadlineMonitorService {
   // private _cron: CronJob;

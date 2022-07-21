@@ -1,6 +1,6 @@
 import { Challenge } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
-import { Challenge as PrismaChallenge } from '@prisma/client';
+import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
