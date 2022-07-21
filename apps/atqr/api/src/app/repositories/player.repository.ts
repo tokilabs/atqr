@@ -10,14 +10,17 @@ export class PlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findUnique(id: Guid): Promise<Player> {
-    return plainToInstance(
-      Player,
+    const prismaPlayer: PrismaPlayer =
       await this.prismaService.player.findUnique({
         where: { id: id.valueOf() },
         include: {
           Challenges: true,
         },
-      }),
+      });
+
+    return plainToInstance(
+      Player,
+      prismaPlayer,
       // TODO check the right syntax for targetMaps
       {
         targetMaps: [

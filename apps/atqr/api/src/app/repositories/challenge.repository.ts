@@ -19,7 +19,7 @@ export class ChallengeRepository {
         paymentMethod: 'Not Finished', // TODO: Resolve entity
         supervisorName: challenge.supervisorName,
         supervisorEmail: challenge.supervisorEmail,
-        status: challenge.status,
+        status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
           connect: {
@@ -94,7 +94,7 @@ export class ChallengeRepository {
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),
-        status: challenge.status,
+        status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
       },
     });
   }

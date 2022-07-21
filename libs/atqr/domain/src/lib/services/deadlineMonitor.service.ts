@@ -7,7 +7,10 @@ export class DeadlineMonitorService {
   constructor(private notificationService: NotificationService) {
     const job = () => this.notifyOverdueChallenges();
 
-    new CronJob('* * * 0 * *', job, null, true, 'America/Los_Angeles');
+    // NOTE: Pattern changed from * * * 0 * *, since it has 6 digits and wont allow module to compile
+    // TODO: Rewrite cron pattern
+
+    new CronJob('0 0 * * *', job, null, true, 'America/Los_Angeles');
   }
 
   /**
@@ -16,5 +19,4 @@ export class DeadlineMonitorService {
   private notifyOverdueChallenges() {
     this.notificationService.notifyOverdueChallenges();
   }
-
 }
