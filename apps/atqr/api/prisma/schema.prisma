@@ -16,12 +16,6 @@ enum ChallengeStatus {
   Failed
 }
 
-enum ChallengeStatus {
-  Ongoing
-  Completed
-  Failed
-}
-
 model Challenge {
   id              String          @id @db.Uuid
   goal            String
