@@ -43,7 +43,6 @@ export class Challenge {
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
     }
-
     const today = new Date();
     if (dateDiff(today, deadline) > 1) {
       this._deadline = deadline;

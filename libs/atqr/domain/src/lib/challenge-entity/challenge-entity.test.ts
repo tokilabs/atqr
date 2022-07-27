@@ -1,10 +1,10 @@
-import { Challenge } from './challenge-entity';
+
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
-import { EmailAddress } from '../..';
+import { Challenge, EmailAddress } from '../..';
 import { PaymentMethodEntity, PaymentMethodEnum } from '../payment-method';
 
-//arrange, act and assert => organizar, fazer a ação do teste e criar expectativas sobre o resultado daquilo
+// arrange, act and assert
 describe('Challenge', () => {
   test('Create and call a new challenge', () => {
     const email = new EmailAddress('fulano@hotmai.com');
@@ -134,3 +134,4 @@ describe('Challenge', () => {
     );
   });
 });
+
