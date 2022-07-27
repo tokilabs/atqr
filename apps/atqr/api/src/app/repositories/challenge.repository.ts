@@ -97,5 +97,19 @@ export class ChallengeRepository {
         status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
       },
     });
+
+    async function main() {
+      // await this.create({ data: {} })
+    };
+
+    try {
+
+    }
+    catch(e) {
+
+    }
+    finally {
+
+    }
   }
 }

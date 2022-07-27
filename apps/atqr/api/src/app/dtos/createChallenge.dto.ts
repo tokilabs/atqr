@@ -8,7 +8,7 @@ import {
   MinLength,
 } from 'class-validator';
 import { Guid } from '@tokilabs/lang';
-import { PaymentMethodEntity } from '@atqr/domain';
+import { PaymentMethodEntity, PaymentMethodEnum } from '@atqr/domain';
 
 export class CreateChallengeDto {
   @IsString()
