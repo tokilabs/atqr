@@ -4,9 +4,9 @@ import { Guid } from '@tokilabs/lang/';
 import { EmailAddress } from '../..';
 import { PaymentMethodEntity, PaymentMethodEnum } from '../payment-method';
 
-// arrange, act and assert
+//arrange, act and assert => organizar, fazer a ação do teste e criar expectativas sobre o resultado daquilo
 describe('Challenge', () => {
-  test('Should correctly be instantiated when given the correct data', () => {
+  test('Create and call a new challenge', () => {
     const email = new EmailAddress('fulano@hotmai.com');
     const player = new Player('fulano', email);
     const date = new Date(2022, 11, 12);
