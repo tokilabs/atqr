@@ -1,0 +1,168 @@
+doctype html
+
+head
+  meta(charset='utf-8')
+  meta(http-equiv='x-ua-compatible' content='ie=edge')
+  title Meeta - Event &amp; Conference HTML5 Template
+  meta(name='robots' content='noindex, follow')
+  meta(name='description' content='')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  // Favicon
+  link(rel='shortcut icon' type='image/x-icon' href='assets/images/favicon.png')
+  // Google Fonts
+  link(rel='preconnect' href='https://fonts.googleapis.com')
+  link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+  link(href='https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@300;400;500;600;700;800&family=Open+Sans:wght@300;400;500;600;700;800&display=swap' rel='stylesheet')
+  link(href='https://fonts.googleapis.com/css?family=Archivo:wght@300;400;500;600;700&display=swap' rel='stylesheet')
+  //
+    CSS
+    ============================================
+  // Icon Font CSS
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/all.min.css ')
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/flaticon.css')
+  // Plugins CSS
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/bootstrap.min.css')
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/swiper-bundle.min.css')
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/magnific-popup.css')
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/aos.css')
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/nice-select.css')
+  // Main Style CSS
+  link(rel='stylesheet' href='/apps/atqr/web/src/pages/Meeta/assets/css/style.css')
+.meeta-event-schedule.meeta-event-schedule-2.section-padding
+  .container
+    // Section Title Start
+    .meeta-section-title-2.text-center
+      h4.sub-title Ajoelhou tem que rezar
+      h2.main-title Crie Um Desafio !
+    // Section Title End
+    .row.gy-5.justify-content-between
+      .col-lg-12
+        // Event Schedule Tabs Start
+        .meeta-event-schedule-tabs
+          // Event Schedule Tabs Menu Start
+          ul.meeta-event-schedule-tabs-menu
+            li.active(data-tab-target='#tab1')
+              .meeta-event-schedule-time
+                h4.meeta-event-schedule-day Se Desafie !
+            li.tab(data-tab-target='#tab2')
+              .meeta-event-schedule-time
+                h4.meeta-event-schedule-day Desafie Algu&eacute;m
+          // Event Schedule Tabs Menu End
+          // Event Schedule Tabs Content Start
+          .meeta-event-schedule-tab-content
+            #tab1.meeta-event-schedule-tab-pane.active
+              // Event Accordion Start
+              // Contact Form Start
+              .contact-form-section.section-padding
+                .container
+                  // Contact Wrap Start
+                  .contact-wrap
+                    .row.justify-content-center
+                      .col-lg-10
+                        // Contact Form Wrap Start
+                        .contact-form-wrap
+                          form(action='#')
+                            .row
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#seu-nome.form-control(type='text' placeholder='Seu Nome')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#seu-email.form-control(type='email' placeholder='Seu Email')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#nome-supervisor.form-control(type='text' placeholder='Nome do Supervisor')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#email-supervisor.form-control(type='text' placeholder='Email do Supervisor')
+                                // Single Form End
+                              .col-md-12
+                                // Single Form Start
+                                .single-form
+                                  textarea#descricao.form-control(placeholder='Descreva Seu Desafio')
+                                // Single Form End
+                              .col-md-12
+                                // Single Form Start
+                                .form-btn.text-center
+                                  button.btn.btn-primary(type='submit')
+                                    | Pr&oacute;ximo Passo
+                                // Single Form End
+                        // Contact Form Wrap End
+                  // Contact Wrap End
+              // Event Accordion End
+            #tab2.meeta-event-schedule-tab-pane
+              // Contact Form Start
+              .contact-form-section.section-padding
+                .container
+                  // Contact Wrap Start
+                  .contact-wrap
+                    .row.justify-content-center
+                      .col-lg-10
+                        // Contact Form Wrap Start
+                        .contact-form-wrap
+                          form(action='#')
+                            .row
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#nome-desafiado.form-control(type='text' placeholder='Nome')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input#email-desafiado.form-control(type='email' placeholder='Email')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input.form-control(type='text' placeholder='')
+                                // Single Form End
+                              .col-md-6
+                                // Single Form Start
+                                .single-form
+                                  input.form-control(type='text' placeholder='Subject')
+                                // Single Form End
+                              .col-md-12
+                                // Single Form Start
+                                .single-form
+                                  textarea.form-control(placeholder='Write A Message')
+                                // Single Form End
+                              .col-md-12
+                                // Single Form Start
+                                .form-btn.text-center
+                                  button.btn.btn-primary(type='submit')
+                                    | Submit Now
+                                // Single Form End
+                        // Contact Form Wrap End
+                  // Contact Wrap End
+              // Event Accordion End
+          // Event Schedule Tabs Content End
+        // Event Schedule Tabs End
+// Event Schedule End
+//
+  JS
+  ============================================
+// Modernizer & jQuery JS
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/vendor/modernizr-3.11.7.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/vendor/jquery-1.12.4.min.js')
+// Bootstrap JS
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/popper.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/bootstrap.min.js')
+// Plugins JS
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/swiper-bundle.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/back-to-top.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/jquery.magnific-popup.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/jquery.counterup.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/waypoints.min.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/aos.js')
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/jquery.nice-select.min.js')
+// Main JS
+script(src='/apps/atqr/web/src/pages/Meeta/assets/js/main.js')
+script(src='/apps/atqr/web/src/pages/CreateChallenge/createChallenge.js')

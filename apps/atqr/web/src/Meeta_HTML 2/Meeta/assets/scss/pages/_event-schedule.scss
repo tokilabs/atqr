@@ -1,0 +1,710 @@
+/*--
+/*  07. - Event Schedule CSS
+/*----------------------------------------*/
+
+.meeta-event-schedule{
+    background-color: #311a79;
+    position: relative;
+    z-index: 1;
+
+    &::before{
+        position: absolute;
+        content: '';
+        background-image: url(../images/shape/shape-6.png);
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.6;
+    }
+}
+
+.meeta-event-schedule-banner{
+    height: 510px;
+    padding: 70px 40px;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 1;
+    
+    &::before{
+        position: absolute;
+        content: '';
+        background-color: #1a0a1e;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.6;
+    }
+}
+
+.meeta-event-schedule-tabs{
+    display: flex;
+    gap: 30px;
+
+    @media #{$small-mobile}{
+        flex-direction: column;
+    }
+}
+.meeta-event-schedule-tabs-menu{
+    flex-shrink: 0;
+
+    @media #{$small-mobile}{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    & li{
+        & + li{
+            margin-top: 10px;
+
+            @media #{$small-mobile}{
+                margin-top: 0;
+            }
+        }
+    }
+
+    & .active{
+        & .meeta-event-schedule-time{
+            background-color: $primary;
+            border-color: $primary;
+        }
+    }
+}
+.meeta-event-schedule-time{
+    width: 165px;
+    padding: 20px 0;
+    border: 1px dashed $white;
+    text-align: center;
+    border-radius: 8px;
+    transition: $transition-default;
+    cursor: pointer;
+
+    @media #{$large-mobile}{
+        width: 120px;
+        padding: 10px 0;
+    }
+
+    & p{
+        color: $white;
+    }
+}
+.meeta-event-schedule-day{
+    font-size: 30px;
+    font-weight: 700;
+    color: $white;
+    margin-bottom: 3px;
+
+    @media #{$large-mobile}{
+        font-size: 24px;
+    }
+}
+
+.meeta-event-schedule-tab-content{
+    flex-grow: 1;
+}
+
+.meeta-event-schedule-tab-pane{
+    display: none;
+
+    &.active{
+        display: block;
+    }        
+}
+
+.meeta-event-accordion{}
+.meeta-event-accordion-item{
+    background-color: $white;
+    padding: 20px 30px 25px;
+    border-radius: 8px;
+
+    & + .meeta-event-accordion-item{
+        margin-top: 10px;
+    }
+
+    &.active{
+        & .meeta-event-accordion-body{
+            display: block;
+        }
+    }
+}
+
+.meeta-event-accordion-toggle{
+    cursor: pointer;
+    position: relative;
+
+    &::before{
+        content: '+';
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: $heading-color;
+        font-size: 36px;
+        font-family: $heading-font;
+        font-weight: 300;
+        transition: $transition-default;
+    }
+
+    &.active{
+        &::before{
+            content: '-';
+        }
+    }
+
+    & .time{
+        font-family: $body-font;
+        font-weight: 400;
+        font-size: 14px;
+        color: $body-color;
+        display: block;
+    }
+    & .title{
+        font-size: 22px;
+        font-weight: 700;
+        display: block;
+    }
+}
+
+.meeta-event-accordion-body{
+    padding-top: 15px;
+    display: none;
+    overflow: hidden;
+
+    &.open{
+        display: block;
+    }
+
+    & p{
+    }
+}
+
+// Home Style Two
+
+.meeta-event-schedule-2 {
+    background: #fefefe;
+    position: relative;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: url(../images/bg/schedule-2-bg.png);
+        background-position: center bottom;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+    & .meeta-event-schedule-tabs {
+        display: inherit;
+        & .meeta-event-schedule-tabs-menu {
+            display: flex;
+            justify-content: center;
+
+            & li {
+                margin-top: 0;
+                background: #f9fafc;
+                position: relative;
+                transition: $transition-default;
+
+                    &::before {
+                        position: absolute;
+                        content: '';
+                        width: 0;
+                        height: 0;
+                        border-left: 20px solid transparent;
+                        border-right: 20px solid transparent;
+                        border-top: 15px solid $primary;
+                        left: 50%;
+                        bottom: 0px;
+                        transform: translateX(-50%);
+                        opacity: 0;
+                        visibility: hidden;
+                        transition: $transition-default;
+                        z-index: 1;
+                    }
+
+                & .meeta-event-schedule-time {
+                    width: 286.5px;
+                    border: 0;
+                    border-radius: 0;
+                    padding: 13px 0;
+
+                    & .meeta-event-schedule-day {
+                        font-family: $heading-font2;
+                        color: #1a0a1e;
+                        margin-bottom: 0;
+                    }
+                    & p {
+                        color: #1a0a1e;
+                    }
+                }
+
+                &:hover {
+                    background: $primary;
+                    & .meeta-event-schedule-time {
+    
+                        & .meeta-event-schedule-day {
+                            color: $white;
+                        }
+                        & p {
+                            color: $white;
+                        }
+                    }
+                }
+
+                &.active {
+                    &::before {
+                        opacity: 1;
+                        visibility: visible;
+                        bottom: -15px;
+                    }
+                    & .meeta-event-schedule-time {
+    
+                        & .meeta-event-schedule-day {
+                            color: $white;
+                        }
+                        & p {
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+
+        & .meeta-event-schedule-tab-content {
+            background: $white;
+            box-shadow: 0px 0px 136px 0px rgba(0, 0, 0, 0.17);
+            padding: 35px 90px 25px;
+            margin-top: 40px;
+
+            & .meeta-event-schedule-tab-pane  {
+
+                & .meeta-event-accordion {
+
+                    & .meeta-event-accordion-item {
+                        border-radius: 0;
+                        padding-top: 30px;
+                        
+
+                        & .meeta-event-accordion-toggle {
+                            display: flex;
+                            align-items: center;
+
+                            &::before {
+                                font-size: 45px;
+                                color: $primary;
+                                top: 20px;
+                            }
+
+                            & .image {
+                                margin-right: 40px;
+
+                                & img {
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                }
+                            }
+
+                            & .event-title {
+                                flex: 1;
+                                & .time {
+                                    font-family: $heading-font2;
+                                    font-weight: 700;
+                                    color: $primary;
+                                }
+                                & .title {
+                                    font-family: $heading-font2;
+                                }
+                            }
+                        }
+
+                        & .meeta-event-accordion-body {
+                            padding-left: 128px;
+                        }
+
+                        & + .meeta-event-accordion-item {
+                            border-top: 1px solid $primary;
+                            margin-top: 10px;
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+}
+
+.meeta-event-schedule-2 {
+    @media #{$desktop-device} {
+        & .meeta-event-schedule-tabs {
+            & .meeta-event-schedule-tabs-menu {
+    
+                & li {
+    
+                    & .meeta-event-schedule-time {
+                        width: 233.5px;
+                        padding: 13px 0;
+                    }
+                }
+            }
+        }
+    }
+    @media #{$tablet-device} {
+        & .meeta-event-schedule-tabs {
+            & .meeta-event-schedule-tabs-menu {
+    
+                & li {
+    
+                    & .meeta-event-schedule-time {
+                        width: 173.5px;
+                        padding: 10px 0;
+                    }
+                }
+            }
+            & .meeta-event-schedule-tab-content {
+                padding: 35px 50px 25px;
+            }
+        }
+    }
+    @media #{$large-mobile} {
+        & .meeta-event-schedule-tabs {
+            & .meeta-event-schedule-tabs-menu {
+                flex-wrap: wrap;
+                & li {
+    
+                    & .meeta-event-schedule-time {
+                        width: 173.5px;
+                        padding: 10px 0;
+                    }
+                }
+            }
+            & .meeta-event-schedule-tab-content {
+                padding: 35px 20px 25px;
+
+                & .meeta-event-schedule-tab-pane {
+                    & .meeta-event-accordion {
+                        & .meeta-event-accordion-item {
+                            & .meeta-event-accordion-toggle {
+                                &::before {
+                                    top: 5px;
+                                }
+                                & .image {
+                                    margin-right: 30px;
+                                }
+                            }
+                            & .meeta-event-accordion-body  {
+                                padding-left: 120px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media #{$extra-small-mobile} {
+        & .meeta-event-schedule-tabs {
+
+            & .meeta-event-schedule-tab-content {
+
+                & .meeta-event-schedule-tab-pane {
+                    & .meeta-event-accordion {
+                        & .meeta-event-accordion-item {
+                            & .meeta-event-accordion-toggle {
+                                display: block;
+
+                                & .image {
+                                    margin-right: 0;
+                                    margin-bottom: 20px;
+                                }
+                            }
+                            & .meeta-event-accordion-body  {
+                                padding-left: 0px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Home Style Four
+
+.meeta-event-schedule-4 {
+
+    &::before {
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: url(../images/bg/schedule-bg-4.jpg);
+        background-position: center bottom;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 1;
+    }
+
+    & .meeta-event-schedule-tabs {
+        
+        & .meeta-event-schedule-tabs-menu {
+
+            & li {
+
+                    &::before {
+                        transition: none;
+                    }
+
+                & .meeta-event-schedule-time {
+                    background: $primary;
+
+                    & .meeta-event-schedule-day {
+                        color: $white;
+                    }
+                    & p {
+                        color: $white;
+                    }
+
+                    &.color-1 {
+                        background: #f9d464;
+                    }
+                    &.color-2 {
+                        background: #0db0ef;
+                    }
+                    &.color-3 {
+                        background: #554bb9;
+                    }
+                }
+
+                &:nth-child(2) {
+                    &.active {
+                        &::before {
+                            border-top: 15px solid #f9d464;
+                        }
+                    }
+                }
+                &:nth-child(3) {
+                    &.active {
+                        &::before {
+                            border-top: 15px solid #0db0ef;
+                        }
+                    }
+                }
+                &:nth-child(4) {
+                    &.active {
+                        &::before {
+                            border-top: 15px solid #554bb9;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// Schedule Inner Page
+
+.schedule-section {
+
+    & .schedule-tag {
+        & ul {
+
+            & li {
+                display: inline-block;
+                margin-top: 10px;
+                padding: 0 3px;
+
+                & a {
+                    border: 1px solid #e1e1e1;
+                    border-radius: 30px;
+                    font-size: 14px;
+                    color: $heading-color;
+                    height: 35px;
+                    line-height: 30px;
+                    padding: 0 15px;
+                    display: block;
+
+                    &:hover {
+                        color: $primary;
+                        border-color: $primary;
+                    }
+                }
+            }
+        }
+    }
+    & .schedule-table {
+        margin-top: 35px;
+        & .table-bordered {
+            margin-bottom: 0;
+            
+            & thead {
+                
+                & tr {
+                   
+                    & th {
+                        text-align: center;
+                        padding: 27px 0;
+                        vertical-align: middle;
+                        color: $white;
+                        background-color: transparent;
+                        text-transform: capitalize;
+                        font-size: 12px;
+                        font-family: $heading-font2;
+                        font-weight: 700;
+
+                        &.color-1 {
+                            background: #554bb9;
+                        }
+                        &.color-2 {
+                            background: #00acee;
+                        }
+                        &.color-3 {
+                            background: #fc097c;
+                        }
+                        &.color-4 {
+                            background: #f9d464;
+                        }
+                        &.day {
+                            min-width: 105px;
+                        }
+                    }
+                }
+            }
+            & tbody {
+                border-top: 0;
+                & tr {
+                   
+                    & .hour {
+                        text-align: center; 
+                        padding: 30px 0;
+                        vertical-align: middle;
+                        font-size: 14px;
+                        font-family: $body-font;
+                        font-weight: 600;
+                        color: $heading-color;
+                        background: #f9fafc;
+                    }
+                    & .schedule-text {
+                        text-align: center;
+                        & .time {
+                            font-size: 10px;
+                            line-height: 22px;
+                            font-family: $body-font;
+                            font-weight: 700;
+                            color: $primary;
+                        }
+                        & .title {
+                            font-size: 14px;
+                            line-height: 20px;
+                            font-family: $heading-font2;
+                            font-weight: 700;
+                            color: $heading-color;
+                        }
+                        & p {
+                            font-size: 10px;
+                            line-height: 22px;
+                            color: $body-color;
+                        }
+                    }
+
+                    & .bg-1 {
+                        background: #fff1f7;
+                    }
+                    & .bg-2 {
+                        background: #edf9fe;
+                    }
+                    & .bg-3 {
+                        background: #fffcf4;
+                    }
+                    & .bg-4 {
+                        background: #f3f2fa;
+                    }
+                }
+            }
+        }
+    } 
+}
+
+.schedule-sidebar-wrap {
+    padding-left: 40px;
+    padding-top: 35px;
+    @media #{$tablet-device} {
+        padding-left: 0;
+    }
+    & .schedule-sidebar {
+        margin-top: 40px;
+        & .main-title {
+            font-size: 18px;
+            line-height: 30px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+            margin-bottom: 20px;
+        }
+
+        & .schedule-post {
+
+            & ul {
+
+                & li {
+
+                    & + li {
+                        margin-top: 20px;
+                    }
+                    & .post-link {
+                        display: flex;
+                        align-items: center;
+
+                        & .post-thumb {
+                            margin-right: 20px;
+                            & img {
+                                image-rendering: crisp-edges;
+                            }
+                        }
+                        & .post-text {
+                            flex: 1;
+
+                            & .title {
+                                font-size: 16px;
+                                line-height: 20px;
+                                font-family: $heading-font2;
+                                font-weight: 700;
+                                color: $heading-color;
+                            }
+                            & .time {
+                                font-size: 12px;
+                                line-height: 20px;
+                                font-family: $body-font;
+                                font-weight: 600;
+                                color: $primary;
+                            }
+                            & span {
+                                font-size: 12px;
+                                line-height: 20px;
+                                color: #666;
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+

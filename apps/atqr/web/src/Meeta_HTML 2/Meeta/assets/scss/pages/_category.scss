@@ -1,0 +1,99 @@
+/*--
+/*  24 - Category CSS
+/*----------------------------------------*/
+
+.meeta-category-section {
+
+    & .meeta-category-wrap {
+
+        & .col {
+            
+            & .category-item {
+                height: 195px;
+                width: 195px;
+                line-height: 110px;
+                padding: 20px;
+                text-align: center;
+                border: 2px dashed red;
+                border-radius: 50%;
+                margin: 0 auto;
+                margin-top: 30px;
+                & a {
+            
+                    & img {
+                        transition: $transition-default;
+                    }
+                    & span {
+                        font-size: 21px;
+                        line-height: 30px;
+                        font-family: $heading-font2;
+                        font-weight: 700;
+                        color: $heading-color;
+                        display: block;
+                        transition: $transition-default;
+                    }
+                }
+
+                &.cat-1 {
+                   border-color: #7fd5f6; 
+                }
+                &.cat-2 {
+                    border-color: $primary; 
+                 }
+                &.cat-3 {
+                    border-color: #554bb9; 
+                }
+                &.cat-4 {
+                    border-color: #00acee; 
+                }
+
+                &:hover {
+                    & a {
+            
+                        & img {
+                            transform: scale(-1) rotate(180deg);
+                        }
+                        
+                        & span {
+                            color: #fad003;
+                        }
+                    }
+                    &.cat-1 {
+                        & a {
+                            
+                            & span {
+                                color: #7fd5f6;
+                            }
+                        }
+                    }
+                    &.cat-2 {
+                        & a {
+                            
+                            & span {
+                                color: $primary;
+                            }
+                        }
+                    }
+                    &.cat-3 {
+                        & a {
+                            
+                            & span {
+                                color: #554bb9;
+                            }
+                        }
+                    }
+                    &.cat-4 {
+                        & a {
+                            
+                            & span {
+                                color: #00acee;
+                            }
+                        }
+                    }
+                }
+
+            }
+            
+        }
+    }
+}

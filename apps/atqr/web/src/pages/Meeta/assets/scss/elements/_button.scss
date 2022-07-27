@@ -1,0 +1,452 @@
+/*--
+/*  2.2 - Button CSS
+/*----------------------------------------*/
+
+.btn-margin{
+	margin-top: 40px;
+}
+
+// Button
+.btn {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	background-color: transparent;
+	border-color: transparent;
+	color: $body-color;
+	border-radius: 0px;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: $heading-font2;
+	height: 50px;
+	line-height: 50px;
+	padding: 0px 35px;
+	border-width: 0;
+	border-style: solid;
+	box-shadow: none;
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
+	z-index: 1;
+	white-space: nowrap;
+	
+	@media #{$small-mobile}{
+		height: 45px;
+		line-height: 45px;
+		font-size: 14px;
+	}
+
+	&.btn-3 {
+		font-family: $heading-font;
+	}
+
+	&::before{
+		position: absolute;
+		content: '';
+		width: 75px;
+		height: 75px;
+		background-color: $black;
+		border-radius: 50%;
+		left: 0;
+		bottom: 0;
+		transform: translate(-50%, 50%);
+		z-index: -1;
+		opacity: 0.1;
+		transition: $transition-default;
+	}
+
+	&:focus,
+	&:focus:active{
+		box-shadow: none;
+	}
+	
+	&:hover{
+		box-shadow: none;
+
+		&::before{
+			width: 420px;
+			height: 420px;
+		}
+	}
+}
+
+.btn-2 {
+	display: inline-block;
+	position: relative;
+	overflow: hidden;
+	background: $primary;
+	border-color: transparent;
+	color: $white;
+	border-radius: 0px;
+	font-size: 16px;
+	font-weight: 700;
+	font-family: $heading-font2;
+	height: 50px;
+	line-height: 50px;
+	padding: 0px 35px;
+	border-width: 0;
+	border-style: solid;
+	box-shadow: none;
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
+	z-index: 1;
+	white-space: nowrap;
+	
+	@media #{$small-mobile}{
+		height: 45px;
+		line-height: 45px;
+		font-size: 14px;
+	}
+
+	&::before{
+		position: absolute;
+		left: 0;
+		top: 0;
+		height: 100%;
+		width: 100%;
+		content: "";
+		background-color: #ffffff;
+		color: $primary;
+		transform: scale(0, 1);
+		transform-origin: top right;
+		transition: transform 500ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+		transition-timing-function: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+		z-index: -1;
+	}
+
+	&:focus,
+	&:focus:active{
+		box-shadow: none;
+	}
+	
+	&:hover{
+		color: $primary;
+		box-shadow: 0 10px 30px rgba(0,0,0,0.10);
+
+		&::before{
+			transform-origin: bottom left;
+			transform: scale(1, 1);
+		}
+	}
+}
+
+
+
+// Button Colors
+.btn-primary {
+	background-color: $primary;
+	border-color: $primary;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $primary;
+		border-color: $primary;
+	}
+}
+.btn-secondary {
+	background-color: $secondary;
+	border-color: $secondary;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $secondary;
+		border-color: $secondary;
+	}
+}
+.btn-success {
+	background-color: $success;
+	border-color: $success;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $success;
+		border-color: $success;
+	}
+}
+.btn-danger {
+	background-color: $danger;
+	border-color: $danger;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $danger;
+		border-color: $danger;
+	}
+}
+.btn-warning {
+	background-color: $warning;
+	border-color: $warning;
+	color: $heading-color;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $warning;
+		border-color: $warning;
+	}
+}
+.btn-info {
+	background-color: $info;
+	border-color: $info;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $info;
+		border-color: $info;
+	}
+}
+.btn-light {
+	background-color: $light;
+	border-color: $light;
+	color: $heading-color;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $light;
+		border-color: $light;
+	}
+}
+.btn-dark {
+	background-color: $dark;
+	border-color: $dark;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $dark;
+		border-color: $dark;
+	}
+}
+.btn-white {
+	background-color: $white;
+	border-color: $white;
+	color: $heading-color;
+	box-shadow: 5px 10px 38px 0 rgba(46, 63, 99, 0.3);
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $white;
+		border-color: $white;
+	}
+}
+.btn-heading-color {
+	background-color: $heading-color;
+	border-color: $heading-color;
+	color: $white;
+
+	&:active,
+	&:focus,
+	&:hover {
+		background-color: $heading-color;
+		border-color: $heading-color;
+	}
+}
+
+
+
+// Button  Colors
+[class*="btn-outline-"] {
+	border: 2px solid transparent;
+	line-height: calc(50px + -2px);
+
+	@media #{$small-mobile}{
+		line-height: calc(45px + -2px);
+	}
+
+	&::before{
+		width: 0;
+		height: 0;
+	}
+}
+.btn-outline-primary {
+	border-color: $primary;
+	color: $heading-color;
+
+	&:hover {
+		background-color: $primary;
+		border-color: $primary;
+		color: $white;
+	}
+}
+.btn-outline-secondary {
+	border-color: $secondary;
+	color: $secondary;
+
+	&:hover {
+		background-color: $secondary;
+		border-color: $secondary;
+		color: $white;
+	}
+}
+.btn-outline-success {
+	border-color: $success;
+	color: $success;
+	
+	&:hover {
+		background-color: $success;
+		border-color: $success;
+		color: $white;
+	}
+}
+.btn-outline-danger {
+	border-color: $danger;
+	color: $danger;
+	
+	&:hover {
+		background-color: $danger;
+		border-color: $danger;
+		color: $white;
+	}
+}
+.btn-outline-warning {
+	border-color: $warning;
+	color: $warning;
+	
+	&:hover {
+		background-color: $warning;
+		border-color: $warning;
+		color: $heading-color;
+	}
+}
+.btn-outline-info {
+	border-color: $info;
+	color: $info;
+	
+	&:hover {
+		background-color: $info;
+		border-color: $info;
+		color: $white;
+	}
+}
+.btn-outline-light {
+	border-color: $light;
+	color: $light;
+	
+	&:hover {
+		background-color: $light;
+		border-color: $light;
+		color: $heading-color;
+	}
+}
+.btn-outline-dark {
+	border-color: $dark;
+	color: $dark;
+	
+	&:hover {
+		background-color: $dark;
+		border-color: $dark;
+		color: $white;
+	}
+}
+.btn-outline-white {
+	border-color: $white;
+	color: $white;
+	
+	&:hover {
+		background-color: $white;
+		border-color: $white;
+		color: $heading-color;
+	}
+}
+.btn-outline-heading-color {
+	border-color: $heading-color;
+	color: $heading-color;
+	
+	&:hover {
+		background-color: $heading-color;
+		border-color: $heading-color;
+		color: $white;
+	}
+}
+
+
+// Button Colors
+.btn-hover-primary {
+	&:hover {
+		background-color: $primary;
+		border-color: $primary;
+		color: $white;
+	}
+}
+.btn-hover-secondary {
+	&:hover {
+		background-color: $secondary;
+		border-color: $secondary;
+		color: $white;
+	}
+}
+.btn-hover-success {
+	&:hover {
+		background-color: $success;
+		border-color: $success;
+		color: $white;
+	}
+}
+.btn-hover-danger {
+	&:hover {
+		background-color: $danger;
+		border-color: $danger;
+		color: $white;
+	}
+}
+.btn-hover-warning {
+	&:hover {
+		background-color: $warning;
+		border-color: $warning;
+		color: $heading-color;
+	}
+}
+.btn-hover-info {
+	&:hover {
+		background-color: $info;
+		border-color: $info;
+		color: $white;
+	}
+}
+.btn-hover-light {
+	&:hover {
+		background-color: $light;
+		border-color: $light;
+		color: $heading-color;
+	}
+}
+.btn-hover-dark {
+	&:hover {
+		background-color: $dark;
+		border-color: $dark;
+		color: $white;
+	}
+}
+.btn-hover-white {
+	&:hover {
+		background-color: $white;
+		border-color: $white;
+		color: $heading-color;
+		box-shadow: 11px 10px 38px 0 rgba(46, 63, 99, 0.15);
+	}
+}
+.btn-hover-heading-color {
+	&:hover {
+		background-color: $heading-color;
+		border-color: $heading-color;
+		color: $white;
+	}
+}
+
+// Button Socail
+
+
+
+

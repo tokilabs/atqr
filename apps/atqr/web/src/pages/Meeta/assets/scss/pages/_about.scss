@@ -1,0 +1,623 @@
+/*--
+/*  05 - About CSS
+/*----------------------------------------*/
+
+.meeta-about-section {
+    overflow: hidden;
+}
+
+// About Images
+.meeta-about-images{
+    padding: 75px 100px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @media #{$desktop-device, $tablet-device, $large-mobile}{
+        padding: 55px 70px;
+    }
+    @media #{$small-mobile}{
+        padding: 25px 30px;
+    }
+
+    & .image{}
+}
+
+// About Title
+.meeta-about-title {
+    background-color: $white;
+    padding: 45px 65px;
+    margin-left: -260px;
+    
+    @media #{$tablet-device, $large-mobile}{
+        padding: 0;
+        margin-left: 0;
+    }
+}
+
+// About Content
+.meeta-about-content {
+    padding: 0 30px;
+
+    @media #{$tablet-device, $large-mobile}{
+        padding: 0;
+    }
+
+    & p{
+        margin-top: 30px;
+    }
+}
+
+// About Counter Items
+.meeta-about-counter-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 60px;
+    margin-top: 45px;
+    padding: 0 30px;
+
+    @media #{$desktop-device, $large-mobile}{
+        gap: 40px;
+    }
+    @media #{$tablet-device, $large-mobile}{
+        padding: 0;
+    }
+    @media #{$small-mobile}{
+        gap: 30px;
+        margin-top: 30px;
+    }
+
+    & .single-about-counter{
+
+        & .about-count{
+            font-size: 40px;
+            font-weight: 700;
+            font-family: $heading-font;
+            color: $heading-color;
+            display: block;
+            line-height: 1.1;
+            transition: $transition-default;
+        }
+        & .about-text{
+            margin-top: 3px;
+        }
+    }
+}
+
+// Home Style Two
+
+.meeta-about-section-2 {
+
+    & .meeta-about-images-2 {
+        position: relative;
+        padding: 0px 75px;
+
+        & .shape-1 {
+            position: absolute;
+            z-index: -1;
+            top: -55px;
+            right: 25px;
+        }
+        & .image {
+
+            & img {
+                border-radius: 50%;
+            }
+        }
+
+        & .play-btn {
+            position: absolute;
+            top: 70px;
+            right: 40px;
+
+            & a {
+                width: 80px;
+                height: 80px;
+                line-height: 68px;
+                font-size: 15px;
+                display: inline-block;
+                text-align: center;
+                border-radius: 50%;
+                border: 6px solid #fff;
+                background: $primary;
+                color: $white;
+                transition: $transition-default;
+
+                &:hover {
+                    background: #311a79;
+                    color: $white;
+                }
+            }
+        }
+    }
+
+    & .about-2-content-wrap {
+        padding-left: 20px;
+        & .meeta-section-title-2 {
+            margin-bottom: 40px;
+        }
+        & .meeta-about-content {
+            padding: 0 0;
+            padding-right: 50px;
+            
+            & p {
+               font-size: 16px; 
+            }
+
+            & .about-list {
+                padding-top: 15px;
+                max-width: 425px;
+                & ul {
+                    display: flex;
+                    flex-wrap: wrap;
+                    & .about-list-item {
+                        display: flex;
+                        align-items: center;
+                        width: 50%;
+                        border-bottom: 1px solid #000;
+                        max-width: 190px;
+                        padding-bottom: 10px;
+                        margin-top: 30px;
+
+                        & .about-icon {
+
+                            & img {
+                                transition: all 400ms ease;
+                            }
+                        }
+                        & .about-text {
+
+                            & .title {
+                                font-size: 18px;
+                                line-height: 22px;
+                                font-family: $heading-font2;
+                                font-weight: 700;
+                                color: #1a0a1e;
+                                margin-left: 20px;
+                            }
+                        }
+                        
+                        &:nth-child(1) {
+                            margin-right: 35px;
+                            border-color: #00acee;
+                        }
+                        &:nth-child(2) {
+                            border-color: #f9d464;
+                        }
+                        &:nth-child(3) {
+                            margin-right: 35px;
+                            border-color: #554bb9;
+                        }
+                        &:nth-child(4) {
+                            border-color: #fc097c;
+                        }
+
+                        &:hover {
+                            & .about-icon {
+
+                                & img {
+                                    transform: scale(-1) rotate(180deg);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.meeta-about-section-2 {
+    @media #{$desktop-device}{
+
+        & .meeta-about-images-2 {
+            padding: 0 60px; 
+        }
+        & .about-2-content-wrap {
+            padding-left: 0;
+
+            & .meeta-about-content {
+                padding-right: 0px;
+            }
+        }
+    }
+    @media #{$tablet-device}{
+
+        & .meeta-about-images-2 {
+            padding: 60px 60px;
+
+            & .shape-1 {
+                top: 0px;
+                right: 40px;
+            }
+            & .image {
+                text-align: center;
+            }
+
+            & .play-btn {
+                top: 150px;
+                right: 85px;
+            }
+        }
+        & .about-2-content-wrap {
+            margin-top: 40px;
+        }
+    }
+    @media #{$large-mobile} {
+        & .meeta-about-images-2 {
+            & .play-btn {
+                right: 30px;
+            } 
+        }
+        & .about-2-content-wrap {
+            margin-top: 20px;
+        }
+    }
+    @media #{$small-mobile} {
+        & .meeta-about-images-2 {
+            padding: 20px 20px;
+            & .shape-1 {
+                top: -5px;
+                right: 0px;
+            }
+            & .play-btn {
+                top: 90px;
+                right: -5px;
+            } 
+        }
+        & .about-2-content-wrap {
+            margin-top: 30px;
+        }
+    }
+}
+
+// Home Style Three
+
+.meeta-about-section-3 {
+
+    & .about-images-3-wrap {
+        display: flex;
+        align-items: center;
+        position: relative;
+
+        & .shape-1 {
+            position: absolute;
+            top: 0px;
+            left: 45px;
+            z-index: -1;
+        }
+        & .shape-2 {
+            position: absolute;
+            bottom: 0;
+            left: 185px;
+            z-index: -1;
+        }
+        & .about-img-big {
+            padding-right: 12px;
+
+            & img {
+                border-radius: 15px;
+                width: 100%;
+            }
+        }
+        & .about-img-small {
+            padding-left: 12px;
+
+            & .image-1 {
+                margin-bottom: 24px;
+
+                & img {
+                    border-radius: 15px;
+                }
+            }
+            & .image-2 {
+
+                & img {
+                    border-radius: 15px;
+                }
+            }
+        }
+    } 
+
+    & .about-content-3-wrap {
+        padding-left: 95px;
+        & .meeta-section-title-2 {
+            margin-bottom: 30px;
+            & .main-title {
+                font-size: 40px;
+                line-height: 48px;
+            }
+        }
+
+        & .about-content-3 {
+
+            & .text {
+                font-size: 18px;
+                line-height: 30px;
+                font-family: $body-font;
+                font-weight: 600;
+                color: $heading-color;
+                margin-bottom: 15px;
+            }
+
+            & p {
+                font-size: 16px;
+            }
+
+            & .btn-2 {
+                font-size: 16px;
+                padding: 0 50px;
+                border-radius: 5px;
+                margin-top: 40px;
+                transition: $transition-default;
+            }
+        }
+    }
+}
+
+.meeta-about-section-3 {
+    @media #{$desktop-device} {
+        & .about-images-3-wrap {
+            & .shape-2 {
+                position: absolute;
+                bottom: 0;
+                left: 137px;
+                z-index: -1;
+            }
+        }
+        & .about-content-3-wrap  {
+            padding-left: 40px;
+        }
+    }
+    @media #{$tablet-device} {
+        & .about-images-3-wrap {
+            justify-content: center;
+            & .shape-1 {
+                left: 135px;
+            }
+            & .shape-2 {
+                left: 255px;
+            }
+        }
+        & .about-content-3-wrap  {
+            padding-left: 0px;
+            margin-top: 50px;
+        }
+    }
+    @media #{$large-mobile} {
+        & .about-images-3-wrap {
+            justify-content: center;
+            & .shape-1 {
+                left: 50px;
+            }
+            & .shape-2 {
+                left: 168px;
+            }
+        }
+    }
+    @media #{$small-mobile} {
+        & .about-images-3-wrap {
+            display: block;
+            text-align: center;
+            & .shape-1 {
+                display: none;
+            }
+            & .shape-2 {
+                display: none;
+            }
+
+            & .about-img-small {
+                padding-left: 0px;
+    
+                & .image-1 {
+                    display: none;
+                }
+                & .image-2 {
+                    display: none;
+                }
+            }
+        }
+        & .about-content-3-wrap {
+            & .meeta-section-title-2 {
+                & .main-title {
+                    font-size: 30px;
+                    line-height: 40px;
+                }
+            }
+        }
+    }
+}
+
+// Home Style Four
+
+.meeta-about-section-4 {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+
+    & .shape-1 {
+        position: absolute;
+        left: -50px;
+        top: 5px;
+        z-index: -1;
+        animation: round-01 5s linear infinite;
+    }
+    & .shape-2 {
+        position: absolute;
+        top: 0;
+        right: 130px;
+        z-index: -1;
+        animation: rotate-style 10s linear infinite;
+    }
+    & .shape-3 {
+        position: absolute;
+        top: 60px;
+        right: -50px;
+        z-index: -1;
+        animation: round-01 5s linear infinite;
+    }
+    & .meeta-about-counter-wrap {
+        position: relative;
+        & .single-about-counter {
+            width: 215px;
+            height: 215px;
+            line-height: 35px;
+            background: #f9d464;
+            border-radius: 50%;
+            padding: 60px 30px;
+            
+            & .value {
+                font-size: 58px;
+                line-height: 60px;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $white;
+            }
+            & .text {
+                font-size: 18px;
+                line-height: 24px;
+                font-family: $body-font;
+                color: $white;
+            }
+
+            &:nth-child(2) {
+                background: rgba(#19b4f0, 0.9);
+                position: absolute;
+                top: 135px;
+                left: 135px;
+            }
+            &:nth-child(3) {
+                background: rgba($primary, 0.9);
+                position: absolute;
+                top: -50px;
+                left: 190px;
+            }
+        }
+    }
+
+    & .meeta-about-content-wrap {
+        margin-top: -30px;
+        & .meeta-section-title-2 {
+            margin-bottom: 25px;
+        }
+    
+        & .meeta-about-content-4 {
+    
+            & p {
+    
+            }
+    
+            & .about-list {
+                margin-top: 15px;
+                & ul {
+                    display: flex;
+                    flex-wrap: wrap;
+                    & .about-list-item {
+                        display: flex;
+                        width: 50%;
+                        margin-top: 25px;
+                        @media #{$desktop-device} {
+                            width: 100%;
+                        }
+                        & .about-icon {
+        
+                        }
+                        & .about-text {
+                            flex: 1;
+                            margin-left: 20px;
+                            & .title {
+                                font-size: 22px;
+                                line-height: 22px;
+                                font-family: $heading-font2;
+                                font-weight: 700;
+                                color: $heading-color;
+                            }
+                            & p {
+                                font-size: 18px;
+                                line-height: 24px;
+                                margin-top: 15px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+ 
+.meeta-about-section-4 {
+    @media #{$tablet-device} {
+        & .meeta-about-counter-wrap {
+            position: relative;
+            max-width: 355px;
+            margin: auto;
+            & .single-about-counter {
+                width: 190px;
+                height: 190px;
+                line-height: 35px;
+                
+                & .value {
+                    font-size: 50px;
+                    line-height: 50px;
+                }
+    
+                &:nth-child(2) {
+                    top: 122px;
+                    left: 110px;
+                }
+                &:nth-child(3) {
+                    top: -35px;
+                    left: 160px;
+                }
+            }
+        }
+        & .meeta-about-content-wrap {
+            margin-top: 160px;
+        }
+    }
+    @media #{$large-mobile} {
+        & .meeta-about-counter-wrap {
+            position: relative;
+            top: 20px;
+            & .single-about-counter {
+                width: 190px;
+                height: 190px;
+                line-height: 35px;
+            }
+        }
+        & .meeta-about-content-wrap {
+            margin-top: 180px;
+        }
+    }
+    @media #{$small-mobile} {
+        & .meeta-about-counter-wrap {
+            position: relative;
+            top: 35px;
+            & .single-about-counter {
+                width: 165px;
+                height: 165px;
+                line-height: 30px;
+                padding: 50px 30px;
+
+                & .value {
+                    font-size: 40px;
+                    line-height: 40px;
+                }
+                & .text {
+                    font-size: 16px;
+                }
+    
+                &:nth-child(2) {
+                    top: 110px;
+                    left: 90px;
+                }
+                &:nth-child(3) {
+                    top: -25px;
+                    left: 140px;
+                }
+            }
+        }
+    }
+}
+
+
