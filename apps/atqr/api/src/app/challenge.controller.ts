@@ -122,13 +122,15 @@ export class ChallengeController {
   ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
+      /* TODO: Fix the following code @albnunes:
+
       const completedChallenge = await challenge.completeChallenge(
         completeChallengeDto
       );
       const challengeUpdated = await this.challengeRepository.update(
         completedChallenge
       );
-      return challengeUpdated;
+      return challengeUpdated; */
     } catch (error) {
       if (error instanceof ValidationErrors) {
         throw new HttpException(
