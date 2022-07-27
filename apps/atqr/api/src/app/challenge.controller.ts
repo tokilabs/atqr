@@ -16,7 +16,9 @@ import {
   Patch,
   Post
 } from '@nestjs/common';
+import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
+import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
 import ValidationErrors, { ValidationErrorTypes } from './errors/validationError';
 import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository, PlayerRepository } from './repositories';
@@ -111,6 +113,26 @@ export class ChallengeController {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
+  @Patch('challenge/:id/complete-challenge')
+  async completeChallenge(
+    @Param('id') id: Guid,
+    @Body() completeChallengeDto: CompleteChallengeDto
+  ): Promise<void> {
+    try {
+      const challenge = await this.challengeRepository.findUnique(id);
+      const completedChallenge = await challenge.completeChallenge(completeChallengeDto);
+      const challengeUpdated = await this.challengeRepository.update(completedChallenge);
+      return challengeUpdated;
+ }
+ catch (error) {
+      if (error instanceof ValidationErrors) {
+        throw new HttpException(
+          { message: "We don't know what happen'd", error },
+          HttpStatus.INTERNAL_SERVER_ERROR
+        );
+      }
+    }
+  }
   @Get('challenge/:id')
   changePayment(@Param('id') id: string): Challenge {
     return {} as Challenge; // TODO Implement change payment endpoint and fix return
