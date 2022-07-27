@@ -44,7 +44,7 @@ export class ChallengeController {
 
       if (!player) {
         player = new Player(
-          challengeDto.playerName,
+          challengeDto.player.name,
           new EmailAddress(challengeDto.playerEmail)
         );
 
