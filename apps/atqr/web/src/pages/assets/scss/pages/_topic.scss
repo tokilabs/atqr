@@ -1,0 +1,87 @@
+/*--
+/*  16 - Topic CSS
+/*----------------------------------------*/
+
+.meeta-topics-section {
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        position: absolute;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: url(../images/bg/topics-bg.jpg);
+        background-position: center bottom;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+    }
+}
+
+.meeta-topics-content-wrap {
+    margin-top: -15px;
+}
+
+.topic-item {
+    background: $white;
+    box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    & .topic-img {
+        overflow: hidden;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        & a {
+            display: block;
+            & img {
+                width: 100%;
+                transition: $transition-default;
+            }
+        }
+    }
+    & .topic-content {
+        padding: 40px 45px 55px 40px;
+        background-repeat: no-repeat;
+        background-position: 40% -45%;
+
+        
+        & .title {
+            font-size: 22px;
+            line-height: 30px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: $heading-color;
+        }
+        & p{
+            font-size: 16px;
+            line-height: 30px;
+            margin-top: 15px;
+        }
+    }
+
+    &:hover {
+        & .topic-img {
+
+            & a {
+                
+                & img {
+                    transform: scale(1.1);
+                }
+            }
+        }
+    }
+}
+ 
+.topic-item {
+    @media #{$desktop-device} {
+        & .topic-content {
+            padding: 40px 30px 50px;
+            background-repeat: no-repeat;
+            background-position: 40% -45%;
+        }
+    }
+}

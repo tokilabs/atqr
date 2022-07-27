@@ -31,5 +31,6 @@
     "QUESTION"
   ],
   "todo-tree.tree.showCountsInTree": true,
-  "todo-tree.regex.regexCaseSensitive": false
+  "todo-tree.regex.regexCaseSensitive": false,
+  "liveServer.settings.port": 5501
 }
