@@ -6,7 +6,7 @@ import { PaymentMethodEntity, PaymentMethodEnum } from '../payment-method';
 
 // arrange, act and assert
 describe('Challenge', () => {
-  test('Create and call a new challenge', () => {
+  test('Should correctly be instantiated when given the correct data', () => {
     const email = new EmailAddress('fulano@hotmai.com');
     const player = new Player('fulano', email);
     const date = new Date(2022, 11, 12);
@@ -134,4 +134,3 @@ describe('Challenge', () => {
     );
   });
 });
-
