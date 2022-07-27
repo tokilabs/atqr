@@ -7,7 +7,7 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],
-  controllers: [ ChallengeController],
+  controllers: [ChallengeController],
   providers: [
     PrismaService,
     ChallengeRepository,

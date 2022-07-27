@@ -2,7 +2,6 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
-
 @Injectable()
 export class StripeService implements OnApplicationBootstrap {
   private stripeClient: Stripe;

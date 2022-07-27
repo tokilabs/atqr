@@ -24,9 +24,8 @@ import {
 import { Player } from '@atqr/domain';
 import ValidationErrors, {
   ValidationErrorTypes,
-} from './errors/validationErrors';
+} from './errors/validationError';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
-
 
 // @POST new challenge
 

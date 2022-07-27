@@ -4,7 +4,7 @@ import {
   EmailAddress,
   PaymentMethodEntity,
   Player,
-  SupConfirmation
+  SupConfirmation,
 } from '@atqr/domain';
 import {
   Body,
@@ -14,12 +14,14 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post
+  Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
 import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
-import ValidationErrors, { ValidationErrorTypes } from './errors/validationError';
+import ValidationErrors, {
+  ValidationErrorTypes,
+} from './errors/validationError';
 import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository, PlayerRepository } from './repositories';
 
@@ -120,11 +122,14 @@ export class ChallengeController {
   ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      const completedChallenge = await challenge.completeChallenge(completeChallengeDto);
-      const challengeUpdated = await this.challengeRepository.update(completedChallenge);
+      const completedChallenge = await challenge.completeChallenge(
+        completeChallengeDto
+      );
+      const challengeUpdated = await this.challengeRepository.update(
+        completedChallenge
+      );
       return challengeUpdated;
- }
- catch (error) {
+    } catch (error) {
       if (error instanceof ValidationErrors) {
         throw new HttpException(
           { message: "We don't know what happen'd", error },

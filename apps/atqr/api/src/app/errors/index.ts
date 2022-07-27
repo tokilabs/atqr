@@ -1,2 +1,2 @@
-export * from "./mailgunError"
-export * from "./validationError"
+export * from './mailgunError';
+export * from './validationError';
