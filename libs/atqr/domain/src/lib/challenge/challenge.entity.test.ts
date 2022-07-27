@@ -1,8 +1,7 @@
 import { Challenge } from './challenge.entity';
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
-import { EmailAddress } from '../..';
-import { PaymentMethodEntity, PaymentMethodEnum } from '../payment-method';
+import { EmailAddress, PaymentMethodEntity, PaymentMethodEnum } from '../..';
 
 // arrange, act and assert
 describe('Challenge', () => {

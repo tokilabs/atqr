@@ -14,8 +14,12 @@ export class NotificationService {
         challenges.map((c) => {
           if (c.updateOverdueStatus() === true) {
             try {
-              const player = c.player
-              const email = new Email(player, 'OverdueChallenge', 'Your time is over' );
+              const player = c.player;
+              const email = new Email(
+                player,
+                'OverdueChallenge',
+                'Your time is over'
+              );
               this.mailer.sendMail(email);
               this.challengeRepository.update(c);
             } catch (err) {

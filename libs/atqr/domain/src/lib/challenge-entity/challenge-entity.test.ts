@@ -1,4 +1,3 @@
-
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
 import { Challenge, EmailAddress } from '../..';

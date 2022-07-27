@@ -7,7 +7,6 @@ import Mailgun from 'mailgun.js';
 import APIError from 'mailgun.js/lib/error';
 import { Mailer } from './mailer.service';
 
-
 // import APIError from './mailgunApiErrors';
 
 describe('Mailer', () => {

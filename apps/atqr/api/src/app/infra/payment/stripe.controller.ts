@@ -4,7 +4,7 @@ import {
   Headers,
   HttpCode,
   OnApplicationBootstrap,
-  Post
+  Post,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
