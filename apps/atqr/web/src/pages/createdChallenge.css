@@ -4018,10 +4018,14 @@ label {
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul {
   display: flex;
   flex-wrap: wrap;
+  justify-content:center;
+  align-items: center;
 }
 
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul .about-list-item {
   display: flex;
+  justify-content: center;
+  align-items: center;
   width: 50%;
   margin-top: 25px;
 }
