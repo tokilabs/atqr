@@ -1,11 +1,9 @@
-import Mailgun from 'mailgun.js';
 import { Email, IMailer } from '@atqr/domain';
-
-import { ConfigService } from '@nestjs/config';
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-
-import Client from 'mailgun.js/client';
+import { ConfigService } from '@nestjs/config';
 import * as formData from 'form-data';
+import Mailgun from 'mailgun.js';
+import Client from 'mailgun.js/client';
 import MailgunError from '../../errors/mailgunError';
 
 @Injectable()

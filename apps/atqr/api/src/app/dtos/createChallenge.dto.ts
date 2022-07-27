@@ -5,7 +5,7 @@ import {
   IsString,
   MaxLength,
   Min,
-  MinLength,
+  MinLength
 } from 'class-validator';
 
 export class CreateChallengeDto {

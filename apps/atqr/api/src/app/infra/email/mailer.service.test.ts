@@ -5,8 +5,8 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import Mailgun from 'mailgun.js';
 import APIError from 'mailgun.js/lib/error';
-
 import { Mailer } from './mailer.service';
+
 
 // import APIError from './mailgunApiErrors';
 

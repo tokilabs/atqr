@@ -1,9 +1,9 @@
 import { Challenge, EmailAddress, Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
-import { Guid } from '@tokilabs/lang';
 import { Player as PrismaPlayer } from '@prisma/client';
-import { PrismaService } from '../infra/database/prisma.service';
+import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
+import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
 export class PlayerRepository {

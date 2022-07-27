@@ -4,7 +4,7 @@ import {
   EmailAddress,
   PaymentMethodEntity,
   Player,
-  SupConfirmation,
+  SupConfirmation
 } from '@atqr/domain';
 import {
   Body,
@@ -14,17 +14,17 @@ import {
   HttpStatus,
   Param,
   Patch,
-  Post,
+  Post
 } from '@nestjs/common';
-
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
 import ValidationErrors, {
-  ValidationErrorTypes,
+  ValidationErrorTypes
 } from './errors/validationError';
 import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
+
 
 @Controller('challenge')
 export class ChallengeController {
