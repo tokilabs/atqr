@@ -4,7 +4,6 @@ import {
   Param,
   Post,
   Body,
- 
   HttpException,
   HttpStatus,
   Patch,
@@ -14,14 +13,22 @@ import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto } from './dtos/createChallenge.dto';
 import { ChallengeRepository } from './repositories/challenge.repository';
 import { PlayerRepository } from './repositories/player.repository';
-import { Challenge, ChallengeStarted, EmailAddress, PaymentMethodEntity, PaymentMethodEnum, SupConfirmation } from '@atqr/domain';
+import {
+  Challenge,
+  ChallengeStarted,
+  EmailAddress,
+  PaymentMethodEntity,
+  PaymentMethodEnum,
+  SupConfirmation,
+} from '@atqr/domain';
 import { Player } from '@atqr/domain';
-import ValidationErrors, { ValidationErrorTypes } from './errors/validationErrors';
+import ValidationErrors, {
+  ValidationErrorTypes,
+} from './errors/validationErrors';
 import { UpdateCreditCardTokenDto } from './dtos/updateCreditCardToken.dto';
-import { lastValueFrom } from 'rxjs';
+
 
 // @POST new challenge
-
 
 @Controller('challenge')
 export class ChallengeController {
@@ -29,12 +36,10 @@ export class ChallengeController {
   constructor(
     //private readonly appService: AppService,
     private readonly challengeRepository: ChallengeRepository,
-    private readonly playerRepository: PlayerRepository,
-    
+    private readonly playerRepository: PlayerRepository
   ) {}
   // @POST new challenge
 
-  
   @Post('challenge')
   async createChallenge(
     @Body() challengeDto: CreateChallengeDto
@@ -46,19 +51,19 @@ export class ChallengeController {
 
       if (!player) {
         player = new Player(
-          challengeDto.playerName,
+          challengeDto.player,
           new EmailAddress(challengeDto.playerEmail)
         );
       }
 
       const challenge = new Challenge(
         challengeDto.goal,
+        challengeDto.deadline,
         challengeDto.supervisorName,
         challengeDto.supervisorEmail,
         challengeDto.player,
         challengeDto.id,
         challengeDto.price,
-        challengeDto.deadline,
         challengeDto.paymentMethod
       );
 
@@ -105,25 +110,15 @@ export class ChallengeController {
     }
   }
 
-  
-   
   // @GET last challenges
   @Get()
-  getLastChallenges(challengeRepository: ChallengeRepository, id: Guid){
-    return challengeRepository.findLastChallenges
+  getLastChallenges(challengeRepository: ChallengeRepository, id: Guid) {
+    return challengeRepository.findLastChallenges;
   }
-  
-  
-  
 
+  // @GET certain challenge to change payment method
 
- 
-
-
-
-// @GET certain challenge to change payment method
-
-@Get('challenge/:id')
+  @Get('challenge/:id')
   changePayment(@Param('id') id: string): Challenge {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
   }
@@ -131,19 +126,15 @@ export class ChallengeController {
   @Patch('challenge/:id')
   async updateChallenge(
     @Param('id') id: string,
-    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto,
-
+    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
   ): Promise<Challenge> {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
   }
 
-// @GET certain challenge to change supervisor
+  // @GET certain challenge to change supervisor
 
-@Get('challenge/:id')
+  @Get('challenge/:id')
   changeSupervisor(@Param('id') id: string): Challenge {
     return {} as Challenge; // ME DELETE QUANDO FOR IMPLEMENTAR
   }
-
-
-
 }

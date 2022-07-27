@@ -1,4 +1,4 @@
-import { PaymentMethodEnum } from '@atqr/domain';
+import { PaymentMethodEnum, Player } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -7,6 +7,7 @@ import {
   Min,
   MinLength
 } from 'class-validator';
+
 
 export class CreateChallengeDto {
   @IsString()
@@ -21,7 +22,7 @@ export class CreateChallengeDto {
   price: number;
 
   @MinLength(3)
-  playerName: string;
+  player: Player;
 
   @IsEmail()
   playerEmail: string;
