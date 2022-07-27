@@ -1,7 +1,7 @@
-import { Challenge } from './challenge-entity';
+
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
-import { EmailAddress } from '../..';
+import { Challenge, EmailAddress } from '../..';
 import { PaymentMethodEntity, PaymentMethodEnum } from '../payment-method';
 
 // arrange, act and assert
