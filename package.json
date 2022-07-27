@@ -23,6 +23,7 @@
     "@supabase/supabase-js": "1.29.4",
     "@tokilabs/lang": "^1.0.3",
     "@types/cron": "^2.0.0",
+    "@types/axios": "^0.14.0",
     "@types/nodemailer-mailgun-transport": "^1.4.3",
     "@types/url-join": "^4.0.1",
     "class-transformer": "^0.5.1",
