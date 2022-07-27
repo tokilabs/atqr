@@ -2,12 +2,12 @@ import { DeadlineMonitorService, NotificationService } from '@atqr/domain';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ChallengeController } from './challenge.controller';
-import { Mailer, PrismaService, StripeModule, StripeService } from './infra';
+import { Mailer, PrismaService, StripeService } from './infra';
 import { ChallengeRepository, PlayerRepository } from './repositories';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), StripeModule],
-  controllers: [ChallengeController],
+  imports: [ConfigModule.forRoot({ isGlobal: true })],
+  controllers: [ ChallengeController],
   providers: [
     PrismaService,
     ChallengeRepository,
