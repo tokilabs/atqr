@@ -1,8 +1,11 @@
 import {
   Challenge,
   ChallengeStarted,
+  ChallengeStatus,
+  Congrats,
   EmailAddress,
   PaymentMethodEntity,
+  PayThePrice,
   Player,
   SupConfirmation,
 } from '@atqr/domain';
@@ -19,10 +22,10 @@ import {
 import { Guid } from '@tokilabs/lang';
 
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
-import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
+import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository, PlayerRepository } from './repositories';
 
@@ -31,7 +34,8 @@ export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
-    private readonly playerRepository: PlayerRepository
+    private readonly playerRepository: PlayerRepository,
+    private readonly paymentService: StripeService
   ) {}
 
   @Post('challenge')
@@ -116,22 +120,26 @@ export class ChallengeController {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  @Patch('challenge/:id/complete-challenge')
-  async completeChallenge(
+  @Patch('challenge/:id/')
+  async updateStatus(
     @Param('id') id: Guid,
-    @Body() completeChallengeDto: CompleteChallengeDto
+    @Body() status: ChallengeStatus
   ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      /* TODO: Fix the following code @albnunes:
+      challenge.updateStatus(status);
+      this.challengeRepository.update(challenge);
 
-      const completedChallenge = await challenge.completeChallenge(
-        completeChallengeDto
-      );
-      const challengeUpdated = await this.challengeRepository.update(
-        completedChallenge
-      );
-      return challengeUpdated; */
+      if(challenge.status == ChallengeStatus.Completed){
+        const email = new Congrats(challenge.player)
+        this.emailService.sendMail(email);
+      }
+      else{
+        const email = new PayThePrice(challenge.player)
+        this.emailService.sendMail(email);
+
+        this.paymentService.chargeCard(challenge.player)
+      }
     } catch (error) {
       if (error instanceof ValidationErrors) {
         throw new HttpException(
