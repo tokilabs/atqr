@@ -102,4 +102,7 @@ export class Challenge {
       return false;
     }
   }
+  updateStatus(status: ChallengeStatus) {
+    this._status = status
+  }
 }
