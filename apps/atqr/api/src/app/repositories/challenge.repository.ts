@@ -68,25 +68,27 @@ export class ChallengeRepository {
     );
   }
 
-  findOverdueChallenges(numberOfResults = 100, skip = 0): Promise<Challenge[]> {
-    return this.prismaService.challenge
-      .findMany({
-        take: numberOfResults,
-        skip,
-        where: {
-          deadline: {
-            lt: new Date(),
-          },
-          status: { equals: 'Ongoing' },
+  async findOverdueChallenges(
+    numberOfResults = 100,
+    skip = 0
+  ): Promise<Challenge[]> {
+    const prismaChallenges = await this.prismaService.challenge.findMany({
+      take: numberOfResults,
+      skip,
+      where: {
+        deadline: {
+          lt: new Date(),
         },
-        include: { player: true },
-      })
-      .then((prismaChallenges) => {
-        return prismaChallenges.map((pc) => {
-          plainToInstance(Challenge, prismaChallenges);
-          return pc as any as Challenge;
-        });
-      });
+        status: { equals: 'Ongoing' },
+      },
+      include: { player: true },
+    });
+    return prismaChallenges.map((pc) => {
+      plainToInstance(Challenge, prismaChallenges);
+      // TODO: Finalize Conversion from prisma entity to domain entity
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return pc as any as Challenge;
+    });
   }
 
   update(challenge: Challenge): void {

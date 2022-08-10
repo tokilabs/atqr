@@ -62,16 +62,21 @@ describe('Mailer', () => {
       const mailer = new Mailer(configService);
 
       mailer.onApplicationBootstrap();
-      jest
-        .spyOn(mailer['client']['messages'], 'create')
-        .mockImplementation((domain: string, data: any): Promise<any> => {
+      jest.spyOn(mailer['client']['messages'], 'create').mockImplementation(
+        (
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          domain: string,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars , @typescript-eslint/no-explicit-any
+          data: any
+        ): Promise<{ message: string; id: string }> => {
           return new Promise((resolve) => {
             resolve({
               message: 'Queued. Thank you.',
               id: '<20111114174239.25659.5817@samples.mailgun.org>',
             });
           });
-        });
+        }
+      );
 
       jest.spyOn(mailer, 'sendMail');
 
@@ -102,9 +107,13 @@ describe('Mailer', () => {
       const player = new Player('Gabriela', emailAddress);
       const myEmail = new Email(player, 'subject');
 
-      jest
-        .spyOn(mailer['client'].messages, 'create')
-        .mockImplementation((domain, data) => {
+      jest.spyOn(mailer['client'].messages, 'create').mockImplementation(
+        (
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          domain: string,
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars , @typescript-eslint/no-explicit-any
+          data: any
+        ) => {
           return new Promise((resolve, reject) => {
             reject(
               new APIError({
@@ -117,7 +126,8 @@ describe('Mailer', () => {
               })
             );
           });
-        });
+        }
+      );
 
       async function myFunc() {
         return await mailer.sendMail(myEmail);

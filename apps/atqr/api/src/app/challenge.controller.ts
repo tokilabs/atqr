@@ -17,7 +17,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-import { IsNumber, IsString } from 'class-validator';
+
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
 import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
 import ValidationErrors, {
@@ -142,20 +142,26 @@ export class ChallengeController {
     }
   }
   @Get('challenge/:id')
+  // TODO Implement change payment endpoint and fix return
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   changePayment(@Param('id') id: string): Challenge {
-    return {} as Challenge; // TODO Implement change payment endpoint and fix return
+    return {} as Challenge;
   }
 
+  // TODO Implement update challenge endpoint and fix return
   @Patch('challenge/:id')
   async updateChallenge(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Param('id') id: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
   ): Promise<Challenge> {
-    return {} as Challenge; // // TODO Implement update challenge endpoint and fix return
+    return {} as Challenge;
   }
-
+  // TODO Implement change supervisor endpoint and fix return
   @Get('challenge/:id')
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   changeSupervisor(@Param('id') id: string): Challenge {
-    return {} as Challenge; // TODO Implement change supervisor endpoint and fix return
+    return {} as Challenge;
   }
 }

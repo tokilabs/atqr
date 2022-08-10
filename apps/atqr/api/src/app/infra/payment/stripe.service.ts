@@ -73,6 +73,7 @@ export class StripeService implements OnApplicationBootstrap {
   }
 
   async chargeCard(customerId) {
+    // TODO: Define Payment intent and Customer Types
     let paymentIntent, customer;
     try {
       // You need to attach the PaymentMethod to a Customer in order to reuse
@@ -216,10 +217,14 @@ export class StripeService implements OnApplicationBootstrap {
     );
   }
 
+  // Todo: Implement webhoook method:
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     throw new Error('Method not implemented.');
   }
 
+  // Todo: Implement webhoook method:
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlePaymentMethodAttached(paymentMethod: Stripe.PaymentMethod) {
     throw new Error('Method not implemented.');
   }
