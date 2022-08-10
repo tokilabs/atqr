@@ -17,6 +17,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
+import { IsNumber, IsString } from 'class-validator';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
 import { CompleteChallengeDto } from './dtos/completeChallenge.dto';
 import ValidationErrors, {
