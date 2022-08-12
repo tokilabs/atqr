@@ -130,15 +130,14 @@ export class ChallengeController {
       challenge.updateStatus(status);
       this.challengeRepository.update(challenge);
 
-      if(challenge.status == ChallengeStatus.Completed){
-        const email = new Congrats(challenge.player)
+      if (challenge.status == ChallengeStatus.Completed) {
+        const email = new Congrats(challenge.player);
         this.emailService.sendMail(email);
-      }
-      else{
-        const email = new PayThePrice(challenge.player)
+      } else {
+        const email = new PayThePrice(challenge.player);
         this.emailService.sendMail(email);
 
-        this.paymentService.chargeCard(challenge.player)
+        this.paymentService.chargeCard(challenge.player);
       }
     } catch (error) {
       if (error instanceof ValidationErrors) {
