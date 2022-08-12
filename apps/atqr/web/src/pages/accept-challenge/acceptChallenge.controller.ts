@@ -1,7 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-
+import axios, { AxiosError } from 'axios';
 import '../atqr/api';
-import { Controller, Get, Param, Put } from '@nestjs/common';
 
 const axiosInstance = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com/',
