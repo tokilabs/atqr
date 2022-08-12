@@ -103,6 +103,6 @@ export class Challenge {
     }
   }
   updateStatus(status: ChallengeStatus) {
-    this._status = status
+    this._status = status;
   }
 }
