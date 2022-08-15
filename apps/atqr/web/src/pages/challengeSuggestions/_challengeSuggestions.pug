@@ -27,9 +27,9 @@
                   span
                     a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestionSomeone(this)' href='#theId') Desafie alguem!
               // Single Testimonial End
-          +swiper-slide("/pages/challengeSuggestions/suggestion-1.svg", "Parar de tomar café")
-          +swiper-slide("/pages/challengeSuggestions/suggestion-2.svg", "Pular de paraquedas")
-          +swiper-slide("/pages/challengeSuggestions/suggestion-3.svg", "começar um empreendimento")
+          +swiper-slide("./challengeSuggestions/suggestion-1.svg", "Parar de tomar café")
+          +swiper-slide("./challengeSuggestions/suggestion-2.svg", "Pular de paraquedas")
+          +swiper-slide("./challengeSuggestions/suggestion-3.svg", "começar um empreendimento")
         .swiper-button-next(tabindex='0' role='button' aria-label='Next slide' aria-controls='swiper-wrapper-f82eda24dbb23354')
         .swiper-button-prev(tabindex='0' role='button' aria-label='Previous slide' aria-controls='swiper-wrapper-f82eda24dbb23354')
-script(src='/pages/challengeSuggestions/suggestionFunction.js')
+script(src='./challengeSuggestions/suggestionFunction.js')
