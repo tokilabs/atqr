@@ -1,19 +1,30 @@
-function challengeSuggestionYourself(btn: Node) {
+function challengeSuggestion(btn: Node) {
   const fatherBtn = btn.parentNode.parentNode.parentNode;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const text = fatherBtn.querySelector('p').innerText;
-  // TODO: Get actual form name @albnunes, you should be the one to tackle this problem
-  // const challengeForm = document.forms.insertNameForm;
-  // challengeForm.elements.insertNameInput.value = text;
+  if (btn.textContent == 'Se desafie!') {
+    const li = document.getElementById('yourself');
+    li.click();
+    scrollToId(li);
+    const input =
+      document.forms['formChallengeYourself']['challengeYourselfDescription'];
+    input.value = text;
+  } else {
+    const li = document.getElementById('someone');
+    li.click();
+    scrollToId(li);
+    const input =
+      document.forms['formChallengeSomeone']['challengeSomeoneDescription'];
+    input.value = text;
+  }
 }
 
-// Question: Is this function conceptually different from the previous? Can they be refactored into one function?
-function challengeSuggestionSomeone(btn: Node) {
-  const fatherBtn = btn.parentNode.parentNode.parentNode;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const text = fatherBtn.querySelector('p').innerText;
-  // const challengeForm = document.forms.insertNameForm;
-  // challengeForm.elements.insertNameInput.value = text;
+function scrollToId(form: HTMLElement) {
+  const position = form.getBoundingClientRect().y;
+  console.log(position);
+  window.scroll({
+    top: position,
+    behavior: 'smooth',
+  });
 }
 
-module.exports = { challengeSuggestionYourself, challengeSuggestionSomeone };
+module.exports = { challengeSuggestion, scrollToId };

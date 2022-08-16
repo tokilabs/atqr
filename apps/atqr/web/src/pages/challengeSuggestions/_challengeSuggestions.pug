@@ -1,6 +1,5 @@
-.meeta-testimonial.section-padding(style='background-image: url(/assets/images/testimonial-bg.jpg);')
-  .testimonial-shape-01(data-aos-delay='700' data-aos='zoom-in')
-  img.testimonial-shape-02(src='/assets/images/shape/shape-11.png' alt='Shape')
+.meeta-testimonial.section-padding()
+  img.testimonial-shape-02(src='./assets/images/shape/shape-11.png' alt='Shape')
   .container
     // Section Title Start
     .meeta-section-title.text-center
@@ -18,14 +17,14 @@
                 .testimonial-quote
                   .testimonial-shape
                     object(data=path)
-                  img(src='../assets/images/quote.svg' alt='Quote')
+                  img(src='./assets/images/quote.svg' alt='Quote')
                   p= name
                 h3.testimonial-name
                   span
-                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestionYourself(this)' href='#theId') Se desafie!
+                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestion(this)') Se desafie!
                 h3.testimonial-name
                   span
-                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestionSomeone(this)' href='#theId') Desafie alguem!
+                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestion(this)') Desafie alguem!
               // Single Testimonial End
           +swiper-slide("./challengeSuggestions/suggestion-1.svg", "Parar de tomar café")
           +swiper-slide("./challengeSuggestions/suggestion-2.svg", "Pular de paraquedas")
