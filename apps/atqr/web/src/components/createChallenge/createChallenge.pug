@@ -41,10 +41,10 @@ head
         .meeta-event-schedule-tabs
           // Event Schedule Tabs Menu Start
           ul.meeta-event-schedule-tabs-menu
-            li.active(data-tab-target='#tab1')
+            li.active(data-tab-target='#tab1' id='yourself')
               .meeta-event-schedule-time
                 h4.meeta-event-schedule-day Se Desafie !
-            li.tab(data-tab-target='#tab2')
+            li.tab(data-tab-target='#tab2' id='someone')
               .meeta-event-schedule-time
                 h4.meeta-event-schedule-day Desafie Algu&eacute;m
           // Event Schedule Tabs Menu End
@@ -61,7 +61,7 @@ head
                       .col-lg-10
                         // Contact Form Wrap Start
                         .contact-form-wrap
-                          form(action='#')
+                          form(action='#' name='formChallengeYourself')
                             .row
                               .col-md-6
                                 // Single Form Start
@@ -86,7 +86,7 @@ head
                               .col-md-12
                                 // Single Form Start
                                 .single-form
-                                  textarea#descricao.form-control(placeholder='Descreva Seu Desafio')
+                                  textarea#descricao.form-control(placeholder='Descreva Seu Desafio' name ='challengeYourselfDescription')
                                 // Single Form End
                               .col-md-12
                                 // Single Form Start
@@ -94,9 +94,9 @@ head
                                   button.btn.btn-primary(type='submit')
                                     | Pr&oacute;ximo Passo
                                 // Single Form End
-                        // Contact Form Wrap End
-                  // Contact Wrap End
-              // Event Accordion End
+                                // Contact Form Wrap End
+                                // Contact Wrap End
+                                // Event Accordion End
             #tab2.meeta-event-schedule-tab-pane
               // Contact Form Start
               .contact-form-section.section-padding
@@ -107,7 +107,7 @@ head
                       .col-lg-10
                         // Contact Form Wrap Start
                         .contact-form-wrap
-                          form(action='#')
+                          form(action='#' name='formChallengeSomeone')
                             .row
                               .col-md-6
                                 // Single Form Start
@@ -132,7 +132,7 @@ head
                               .col-md-12
                                 // Single Form Start
                                 .single-form
-                                  textarea.form-control(placeholder='Write A Message')
+                                  textarea.form-control(placeholder='Write A Message' name='challengeSomeoneDescription')
                                 // Single Form End
                               .col-md-12
                                 // Single Form Start
@@ -140,11 +140,11 @@ head
                                   button.btn.btn-primary(type='submit')
                                     | Submit Now
                                 // Single Form End
-                        // Contact Form Wrap End
-                  // Contact Wrap End
-              // Event Accordion End
-          // Event Schedule Tabs Content End
-        // Event Schedule Tabs End
+                                // Contact Form Wrap End
+                                // Contact Wrap End
+                                // Event Accordion End
+                                // Event Schedule Tabs Content End
+                                // Event Schedule Tabs End
 // Event Schedule End
 //
   JS
