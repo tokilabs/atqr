@@ -15,6 +15,13 @@ function checkInputs(inputs) {
 
 }
 
+var text = document.getElementById("invalidEmail");
+
+function errorMessage(){
+  text.innerHTML = "Insira um endereço de e-mail válido.";
+  text.style.color = "red";
+  }
+
 function validateEmail(email) {
   var emailPattern =  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
   return emailPattern.test(email)
@@ -32,12 +39,10 @@ inputs.forEach(function(input) {
       checkInputs(inputs)
     ) {
       button.disabled = false;
+      text.innerHTML = ""
     } else {
       button.disabled = true;
+      errorMessage()
     }
   });
 });
-
-
-
-
