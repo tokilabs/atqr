@@ -10658,7 +10658,7 @@ pug-attrs@^3.0.0:
 pug-cli@^1.0.0-alpha6:
   version "1.0.0-alpha6"
   resolved "https://registry.yarnpkg.com/pug-cli/-/pug-cli-1.0.0-alpha6.tgz#1ca539ea4ac0ebb69ce4aae84aeed5d64ffe6501"
-  integrity sha1-HKU56krA67ac5KroSu7V1k/+ZQE=
+  integrity sha512-ogaf7h4cT174NFSHNqAMdrZpGFCZSvsht41IYZZgP7ERZ1OxSc5fmPpojo1w9UntVreeChQP3BJ5r+Fey0a9zg==
   dependencies:
     chalk "^1.0.0"
     commander "^2.8.1"
