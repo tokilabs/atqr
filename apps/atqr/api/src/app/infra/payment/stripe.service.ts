@@ -22,20 +22,6 @@ export class StripeService implements OnApplicationBootstrap {
   get endpointSecret() {
     return this.configService.get<string>('STRIPE_WEBHOOK_ENDPOINT_SECRET');
   }
-  /*
-    When user is prompted for their card info for the first time, the following should happen before any user interaction
-      1 - Create Customer
-      2 - Create Setup Intent
-    The User then will input their card info.
-    Through the use of either synchronous or webhooks, relevant user data can be captured from stripe
-    If the only objective was to have the user's card info our work could stop here.
-    However as one of the business rules is to have the card checked for limit on their challenge
-    the following must happen, after the card data is captured.
-     - A transaction of the value provided by them should be performed, this transaction should be immediately refunded
-    So to execute it you must first
-      1 - Create a MANUAL payment intent
-      2 - After the payment intent is successful, cancel the payment intent
-    */
 
   async retrieveCustomer(
     customerId: string
@@ -47,6 +33,7 @@ export class StripeService implements OnApplicationBootstrap {
     return customer;
   }
 
+  // TODO: Provide parameter type
   async getPaymentMethod(customerId): Promise<Stripe.PaymentMethod> {
     const paymentMethods = await this.stripeClient.paymentMethods.list({
       customer: customerId,
@@ -72,6 +59,7 @@ export class StripeService implements OnApplicationBootstrap {
     });
   }
 
+  // TODO: Provide parameter type
   async chargeCard(customerId) {
     // TODO: Define Payment intent and Customer Types
     let paymentIntent, customer;
@@ -129,12 +117,12 @@ export class StripeService implements OnApplicationBootstrap {
         console.log('Unknown error occurred', err);
       }
     }
-
-    // --------------------------------------------
     return;
   }
 
+  // TODO: Provide parameter type
   async verifyFunds(customerId) {
+    // TODO: Define Payment intent and Customer Types
     let paymentIntent, customer;
     try {
       // You need to attach the PaymentMethod to a Customer in order to reuse

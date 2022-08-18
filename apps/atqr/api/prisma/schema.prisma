@@ -1,6 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// TODO: Solve challenge status already exists error on second migration
 generator client {
   provider = "prisma-client-js"
 }

@@ -23,15 +23,13 @@ export class CreateChallengeDto {
   @MinLength(3)
   player: Player;
 
-  @IsEmail()
-  playerEmail: string;
-
   @MinLength(3)
   supervisorName: string;
 
   @IsEmail()
   supervisorEmail: string;
 
+  // TODO: @yfernandes Resolve with real interface
   paymentMethod?: {
     method: PaymentMethodEnum;
     paymentService: `pagar.me` | `pagseguro`;

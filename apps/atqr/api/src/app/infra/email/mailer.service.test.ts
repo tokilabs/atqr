@@ -7,7 +7,8 @@ import Mailgun from 'mailgun.js';
 import APIError from 'mailgun.js/lib/error';
 import { Mailer } from './mailer.service';
 
-// import APIError from './mailgunApiErrors';
+// TODO: Review if removing linting exception is necessary
+// TODO: Finalize test
 
 describe('Mailer', () => {
   let configService: ConfigService;
@@ -116,6 +117,7 @@ describe('Mailer', () => {
         ) => {
           return new Promise((resolve, reject) => {
             reject(
+              // TODO: Fill error with valid data - Low priority
               new APIError({
                 status: 401,
                 statusText: '',
@@ -135,6 +137,6 @@ describe('Mailer', () => {
 
       await expect(myFunc()).rejects.toThrow();
     });
-    //   // Invalid Content
+    // Invalid Content
   });
 });

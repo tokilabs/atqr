@@ -14,7 +14,6 @@ export class Mailer implements OnApplicationBootstrap, IMailer {
   private apiKey: string;
   fromEmail: string;
   fromTitle: string;
-  //options: { username; key }; remember configs
 
   constructor(public configService: ConfigService) {}
 
@@ -23,7 +22,9 @@ export class Mailer implements OnApplicationBootstrap, IMailer {
     this.domain = this.configService.get<string>('MAILGUN_DOMAIN');
     this.fromEmail = this.configService.get<string>('FROM_EMAIL');
     this.fromTitle = this.configService.get<string>('FROM_TITLE');
+
     this.mailgun = new Mailgun(formData);
+
     this.client = this.mailgun.client({
       username: 'api',
       key: this.apiKey,
@@ -38,7 +39,6 @@ export class Mailer implements OnApplicationBootstrap, IMailer {
       message: email.Message,
     };
 
-    // eslint-disable-next-line no-useless-catch
     try {
       await this.client.messages.create(this.domain, messageData);
     } catch (error) {
