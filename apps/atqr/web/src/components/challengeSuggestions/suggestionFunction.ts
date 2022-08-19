@@ -20,7 +20,6 @@ function challengeSuggestion(btn: Node) {
 
 function scrollToId(form: HTMLElement) {
   const position = form.getBoundingClientRect().y;
-  console.log(position);
   window.scroll({
     top: position,
     behavior: 'smooth',
