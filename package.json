@@ -11,6 +11,7 @@
     "atqr:generate": "yarn prisma generate --schema ./apps/atqr/api/prisma/schema.prisma",
     "atqr:studio": "yarn prisma studio --schema ./apps/atqr/api/prisma/schema.prisma",
     "prepare": "husky install",
+    "post-checkout": "yarn && yarn run atqr:generate",
     "commit": "git-cz",
     "lint": "eslint . --ext .js,.jsx"
   },
