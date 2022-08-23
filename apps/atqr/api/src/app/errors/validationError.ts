@@ -14,7 +14,14 @@ export default class ValidationErrors extends Exception {
   }
 }
 
-// TODO: Elaborate on other types of errors
 export enum ValidationErrorTypes {
-  'InvalidValue',
+  InvalidValue = 'InvalidValue',
+  NotFound = 'NotFound',
+  MethodNotAllowed = 'MethodNotAllowed',
+  Conflict = 'Conflict',
+  UnprocessableEntity = 'UnprocessableEntity',
+  NotImplemented = 'NotImplemented',
+  BadGateway = 'BadGateway',
+  ServiceUnavailable = 'ServiceUnavailable',
+  GatewayTimeout = 'GatewayTimeout'
 }
