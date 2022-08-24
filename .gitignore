@@ -2,6 +2,7 @@
 
 *.env
 /apps/atqr/api/node_modules
+.parcel-cache
 
 # compiled output
 /dist
