@@ -1,4 +1,4 @@
-import { ThrowHttpExceptions } from './ThrowHttpExceptions';
+import { ThrowHttpExceptions } from './throwHttpExceptions';
 import {
   CommonErrorTypes,
   ErrorTypes,
