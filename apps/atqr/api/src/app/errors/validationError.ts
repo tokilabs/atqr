@@ -16,6 +16,9 @@ export default class ValidationErrors extends Exception {
 
 export enum ValidationErrorTypes {
   InvalidValue = 'InvalidValue',
+}
+
+export enum CommonErrorTypes {
   NotFound = 'NotFound',
   MethodNotAllowed = 'MethodNotAllowed',
   Conflict = 'Conflict',
@@ -23,5 +26,7 @@ export enum ValidationErrorTypes {
   NotImplemented = 'NotImplemented',
   BadGateway = 'BadGateway',
   ServiceUnavailable = 'ServiceUnavailable',
-  GatewayTimeout = 'GatewayTimeout'
+  GatewayTimeout = 'GatewayTimeout',
 }
+
+export type ErrorTypes = CommonErrorTypes | ValidationErrorTypes;

@@ -1,4 +1,4 @@
-// Todo: @albnunes list error types
-
+export * from './exceptions/exceptions'
+export * from './exceptions/ThrowHttpExceptions'
 export * from './mailgunError';
 export * from './validationError';
