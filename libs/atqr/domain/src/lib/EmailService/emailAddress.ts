@@ -1,3 +1,4 @@
+import { Exception } from '@tokilabs/lang';
 import * as EmailValidator from 'email-validator';
 
 export class EmailAddress {
@@ -9,7 +10,9 @@ export class EmailAddress {
     if (isValidEmail) {
       this.value = email;
     } else {
-      throw new Error('Invalid Email');
+      throw new Exception(
+        'Error validating email. Please check the EmailValidator'
+      );
     }
   }
 }
