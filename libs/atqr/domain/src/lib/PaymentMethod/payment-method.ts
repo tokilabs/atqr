@@ -1,4 +1,4 @@
-import { Guid } from '@tokilabs/lang';
+import { Exception, Guid } from '@tokilabs/lang';
 
 export enum PaymentMethodEnum {
   'creditCard' = 'creditCard',
@@ -22,6 +22,11 @@ export class PaymentMethodEntity {
   }
 
   getToken() {
-    return this.token;
+    try {
+      return this.token;
+    } catch {
+      Exception;
+      throw Exception;
+    }
   }
 }
