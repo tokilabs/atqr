@@ -1,4 +1,4 @@
-import { Guid } from '@tokilabs/lang/';
+import { Exception, Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../PaymentMethod';
@@ -40,13 +40,13 @@ export class Challenge {
     if (price >= 25) {
       this._price = price;
     } else {
-      throw new Error('Selecione um valor acima de 25 reais');
+      throw new Error('Selecione um valor acima de 25 reais'); // treat this error
     }
     const today = new Date();
     if (dateDiff(today, deadline) > 1) {
       this._deadline = deadline;
     } else {
-      throw Error('Selecione uma data futura');
+      throw Error('Selecione uma data futura'); // treat this error
     }
 
     this._status = _status;
@@ -85,9 +85,24 @@ export class Challenge {
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
+    if (
+      this._supervisorName != newSupervisorName ||
+      this._supervisorEmail != newSupervisorEmail
+    ) {
+      throw new Exception(
+        'Error changing supervisor. Supervisor did not get newSupervisorName or newSupervisorEmail'
+      );
+    } else {
+      return { newSupervisorName, newSupervisorEmail };
+    }
+
+    // implement error
   }
+
   changePaymentMethod(paymentMethod: PaymentMethodEntity) {
     this._paymentMethod = paymentMethod;
+
+    // implement error
   }
 
   /**
@@ -95,18 +110,19 @@ export class Challenge {
    */
   updateOverdueStatus(): boolean {
     if (this.deadline < new Date()) {
+      // implement error
       this._status = ChallengeStatus.Overdue;
       return true;
     } else {
       return false;
     }
-
   }
   updateStatus(status: ChallengeStatus) {
-    if(status == ChallengeStatus.Overdue){
-      return false
+    if (status == ChallengeStatus.Overdue) {
+      return false;
     }
+    //implement error
     this._status = status;
-    return true
+    return true;
   }
 }
