@@ -91,6 +91,7 @@
     "parcel": "^2.7.0",
     "postcss": "8.4.5",
     "prettier": "2.3.1",
+    "process": "^0.11.10",
     "pug": "^3.0.2",
     "pug-cli": "^1.0.0-alpha6",
     "tailwindcss": "3.0.2",
