@@ -1,4 +1,4 @@
-import { Challenge } from '@atqr/domain';
+import { Challenge, IChallengeRepository } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
@@ -6,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
-export class ChallengeRepository {
+export class ChallengeRepository implements IChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   create(challenge: Challenge): void {
