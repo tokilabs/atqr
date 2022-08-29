@@ -2,8 +2,10 @@ import { Challenge, ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import axios from 'axios';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
-import { CreateChallengeDto } from '../../../api/src/app/dtos/index';
-import { UpdateCreditCardTokenDto } from '../../../api/src/app/dtos/index';
+import {
+  CreateChallengeDto,
+  UpdateCreditCardTokenDto,
+} from '../../../api/src/app/dtos/index';
 
 const baseUrl = 'http://localhost:3333/api/';
 
