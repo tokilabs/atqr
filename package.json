@@ -9,7 +9,7 @@
     "atqr:generate": "yarn prisma generate --schema ./apps/atqr/api/prisma/schema.prisma",
     "atqr:studio": "yarn prisma studio --schema ./apps/atqr/api/prisma/schema.prisma",
     "atqr:start": "yarn parcel apps/atqr/web/src/pages/**/*.pug",
-    "atqr:start:web": "yarn parcel apps/atqr/web/src/pages/index/index.pug",
+    "atqr:start:web": "yarn parcel apps/atqr/web/src/pages/**/*.pug",
     "atqr:start:api": "docker compose up && nx serve api",
     "postatqr:start:api": "docker compose down",
     "prepare": "husky install",
