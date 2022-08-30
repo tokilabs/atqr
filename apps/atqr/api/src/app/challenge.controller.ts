@@ -44,13 +44,13 @@ export class ChallengeController {
   ): Promise<Challenge> {
     try {
       let player = this.playerRepository.findByEmail(
-        new EmailAddress(challengeDto.playerEmail)
+        new EmailAddress(challengeDto.player.emailAddress.value)
       );
 
       if (!player) {
         player = new Player(
           challengeDto.player.name,
-          new EmailAddress(challengeDto.playerEmail)
+          new EmailAddress(challengeDto.player.emailAddress.value)
         );
 
         this.playerRepository.create(player);
@@ -93,7 +93,9 @@ export class ChallengeController {
 
         // TODO Finalize implementation
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = new EmailAddress(challengeDto.playerEmail);
+        const emailAddress = new EmailAddress(
+          challengeDto.player.emailAddress.value
+        );
         const email = new SupConfirmation(player);
         this.emailService.sendMail(email);
       }
