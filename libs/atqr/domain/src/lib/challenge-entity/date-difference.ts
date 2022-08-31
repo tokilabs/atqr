@@ -1,4 +1,5 @@
 import { Exception } from '@tokilabs/lang';
+import { errAsync } from 'neverthrow';
 
 const _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -12,7 +13,9 @@ export function dateDiff(a, b) {
     dateDiff(this.a, this.b);
   } catch {
     Exception;
-    throw { Exception };
+    if (Exception) {
+      errAsync(new Exception('Function is not working'));
+    }
   }
   return Math.floor((utc2 - utc1) / _MS_PER_DAY);
 }

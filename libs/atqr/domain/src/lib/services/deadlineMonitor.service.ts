@@ -1,5 +1,6 @@
 import { Exception } from '@tokilabs/lang';
 import { CronJob } from 'cron';
+import { errAsync } from 'neverthrow';
 import { NotificationService } from './notification.service';
 
 export class DeadlineMonitorService {
@@ -23,8 +24,9 @@ export class DeadlineMonitorService {
     try {
       this.notificationService.notifyOverdueChallenges();
     } catch {
-      Exception;
-      throw Exception;
-    } // implement error condition
+      errAsync(
+        new Error('The notification was not made by DeadLineMonitorService')
+      );
+    }
   }
 }
