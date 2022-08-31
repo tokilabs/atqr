@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
+import { errAsync } from 'neverthrow';
 
 export enum SupervisorEnum {
   'notInvited',
@@ -40,13 +41,13 @@ export class Challenge {
     if (price >= 25) {
       this._price = price;
     } else {
-      throw new Error('Selecione um valor acima de 25 reais'); // treat this error
+      return; // treat this error
     }
     const today = new Date();
     if (dateDiff(today, deadline) > 1) {
       this._deadline = deadline;
     } else {
-      throw Error('Selecione uma data futura'); // treat this error
+      errAsync(new Error('Selecione uma data futura'));
     }
 
     this._status = _status;
@@ -89,8 +90,8 @@ export class Challenge {
       this._supervisorName != newSupervisorName ||
       this._supervisorEmail != newSupervisorEmail
     ) {
-      throw new Exception(
-        'Error changing supervisor. Supervisor did not get newSupervisorName or newSupervisorEmail'
+      errAsync(
+        new Error('Did not get newSupervisorName or newSupervisorEmail')
       );
     } else {
       return { newSupervisorName, newSupervisorEmail };
