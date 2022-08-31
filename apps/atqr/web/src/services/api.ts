@@ -1,4 +1,4 @@
-import { Challenge, ChallengeStatus } from '@atqr/domain';
+import { ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import axios from 'axios';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
