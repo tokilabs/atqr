@@ -4,6 +4,7 @@ import {
   ChallengeStatus,
   Congrats,
   EmailAddress,
+  NotificationService,
   PaymentMethodEntity,
   PayThePrice,
   Player,
@@ -36,6 +37,7 @@ export class ChallengeController {
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
     private readonly paymentService: StripeService,
+    private readonly notificationService: NotificationService
   ) {}
 
   @Post()
@@ -157,30 +159,25 @@ export class ChallengeController {
     return {} as Challenge;
   }
 
-  
+
 
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      challenge.updateStatus(status);
-      this.challengeRepository.update(challenge);
-
-      if (challenge.status == ChallengeStatus.Completed) {
-        const email = new Congrats(challenge.player);
-        this.emailService.sendMail(email);
+      if (challenge.updateStatus(status) == true) {
+        if (
+          this.notificationService.notifyCompletedChallenges(challenge) == true
+        ) {
+          this.paymentService.chargeCard(challenge.player);
+        }
       } else {
-        const email = new PayThePrice(challenge.player);
-        this.emailService.sendMail(email);
-
-        this.paymentService.chargeCard(challenge.player);
+        throw new Error('challenge not updated');
       }
     } catch (error) {
-      if (error instanceof ValidationErrors) {
-        throw new HttpException(
-          { message: "We don't know what happen'd", error },
-          HttpStatus.INTERNAL_SERVER_ERROR
-        );
-      }
+      throw new HttpException(
+        "We don't know what happen'd",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }
