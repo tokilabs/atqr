@@ -24,8 +24,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
+import { UpdateChallengeDto } from './dtos/updateChallenge.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
@@ -128,39 +128,33 @@ export class ChallengeController {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  // TODO Implement update challenge endpoint and fix return
   @Patch(':id')
   async updateChallenge(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Param('id') id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
-  ): Promise<Challenge> {
-    // TODO ---------- REFACTOR ME ------------------
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
-      this.changePayment('Change Me');
-      this.changeSupervisor('Change Me');
-      this.updateStatus(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        'id' as any as Guid,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        'Change me' as any as ChallengeStatus
-      );
+    @Param('id') id: Guid,
+    @Body() dto: UpdateChallengeDto
+  ): Promise<void> {
+    switch (dto.valueOf()) {
+      case dto.challengeStatus != undefined:
+        return await this.updateStatus(id, dto.challengeStatus);
+      case dto.updateCreditCard != undefined:
+        return await this.changePayment(id, dto.updateCreditCard);
+      case dto.updateSupervisor != undefined:
+        return await this.changeSupervisor(id);
+      default:
+        console.log('algo de errado nãoe sta certo');
     }
-    return {} as Challenge;
   }
-
-  // TODO Implement change supervisor endpoint and fix return
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changeSupervisor(id: string): Challenge {
-    return {} as Challenge;
+  private changeSupervisor(id: Guid): void {
+    return;
   }
 
   // TODO Implement change payment endpoint and fix return
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changePayment(id: string): Challenge {
-    return {} as Challenge;
+  private changePayment(
+    id: Guid,
+    UpdateCreditCardTokenDto: UpdateCreditCardTokenDto
+  ): void {
+    return;
   }
 
  raquel/atqr-96-refactor-challenge-page
