@@ -103,6 +103,10 @@ export class Challenge {
 
   }
   updateStatus(status: ChallengeStatus) {
+    if(status == ChallengeStatus.Overdue){
+      return false
+    }
     this._status = status;
+    return true
   }
 }
