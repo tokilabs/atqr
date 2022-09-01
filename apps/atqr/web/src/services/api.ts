@@ -37,45 +37,44 @@ export const atqrApi = {
         return error;
       }
     },
-    
-    statusUpdated: async (id: Guid, status: ChallengeStatus) => {
-      try {
-        const updated = await api.patch(`challenge/challenge/${id}`, status);
-        return updated;
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    },
-    changePayment: async (id: Guid) => {
-      try {
-        const paymentUpdated = await api.get(`challenge/challenge/${id}`);
-        return paymentUpdated;
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    },
-    updateCardToken: async (id: Guid, token: UpdateCreditCardTokenDto) => {
-      try {
-        const tokenUpdated = await api.patch(
-          `challenge/challenge/${id}`,
-          token
-        );
-        return tokenUpdated;
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
-    },
-    changeSupervisor: async (id: Guid) => {
-      try {
-        const supervisorUpdated = await api.get(`challenge/challenge/${id}`);
-        return supervisorUpdated;
-      } catch (error) {
-        console.log(error);
-        return error;
-      }
+    challengeUpdated: {
+      statusUpdated: async (id: Guid, updateStatus: ChallengeStatus) => {
+        try {
+          const statsUpdated = await api.patch(
+            `/challenge/${id}`,
+            updateStatus
+          );
+          return statsUpdated;
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
+      //TODO: need implement in controller
+      paymentUpdated: async (
+        id: Guid,
+        updateCreditCardTokenDto: UpdateCreditCardTokenDto
+      ) => {
+        try {
+          const paymentUpdated = await api.patch(
+            `/challenge/${id}`,
+            updateCreditCardTokenDto
+          );
+          return paymentUpdated;
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      }, //TODO: need implement in controller
+      changedSupervisor: async (id: string) => {
+        try {
+          const paymentUpdated = await api.patch(`/challenge/${id}`);
+          return paymentUpdated;
+        } catch (error) {
+          console.log(error);
+          return error;
+        }
+      },
     },
   },
 
