@@ -8,6 +8,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ChallengeController } from './challenge.controller';
 import { Mailer, PrismaService, StripeService } from './infra';
+import { PatchMiddleware } from './middleware/patchMiddleware';
 import { ChallengeRepository, PlayerRepository } from './repositories';
 
 @Module({
@@ -42,7 +43,10 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
         return new DeadlineMonitorService(NotificationService);
       },
     },
-
   ],
 })
-export class AppModule {}
+export class AppModule {  configure(consumer: MiddlewareConsumer) {
+  consumer
+    .apply(PatchMiddleware)
+    .forRoutes({ path: 'challenge/:id', method: RequestMethod.PATCH });
+}}

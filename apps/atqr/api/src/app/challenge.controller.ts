@@ -18,6 +18,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  NotAcceptableException,
   Inject,
   Param,
   Patch,
@@ -133,17 +134,18 @@ export class ChallengeController {
     @Param('id') id: Guid,
     @Body() dto: UpdateChallengeDto
   ): Promise<void> {
-    switch (dto.valueOf()) {
-      case dto.challengeStatus != undefined:
-        return await this.updateStatus(id, dto.challengeStatus);
-      case dto.updateCreditCard != undefined:
-        return await this.changePayment(id, dto.updateCreditCard);
-      case dto.updateSupervisor != undefined:
-        return await this.changeSupervisor(id);
+    switch (true) {
+      case dto.case == 1:
+        return this.updateStatus(id, dto.challengeStatus);
+      case dto.case == 2:
+        return this.changePayment(id, dto.updateCreditCard);
+      case dto.case == 3:
+        return this.changeSupervisor(id);
       default:
-        console.log('algo de errado nãoe sta certo');
+        throw new NotAcceptableException('error');
     }
   }
+
   private changeSupervisor(id: Guid): void {
     return;
   }
