@@ -1,5 +1,12 @@
 import { ChallengeStatus } from '@atqr/domain';
-import { isDefined, IsEnum, IsInstance, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf, ValidateNested } from 'class-validator';
+import {
+  IsEnum,
+  IsInstance,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { UpdateCreditCardTokenDto } from './updateCreditCardToken.dto';
 
 export class UpdateChallengeDto {
@@ -18,5 +25,5 @@ export class UpdateChallengeDto {
 
   @IsNumber()
   @IsOptional()
-  case: number
+  case: number;
 }
