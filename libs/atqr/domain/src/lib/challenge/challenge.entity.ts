@@ -2,7 +2,6 @@ import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../PaymentMethod';
-
 import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
@@ -94,15 +93,13 @@ export class Challenge {
   /**
    * Checks if the challenge became overdue and returns true if the status changes
    */
-  updateOverdueStatus(): boolean {
+  updateOverdueStatus(status: ChallengeStatus): boolean {
     if (this.deadline < new Date()) {
       this._status = ChallengeStatus.Overdue;
       return true;
     } else {
       return false;
     }
-  }
-  updateStatus(status: ChallengeStatus) {
     this._status = status;
   }
-}
+ 

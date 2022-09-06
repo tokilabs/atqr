@@ -35,7 +35,7 @@ export class ChallengeController {
     private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
-    private readonly paymentService: StripeService
+    private readonly paymentService: StripeService,
   ) {}
 
   @Post()
@@ -156,6 +156,8 @@ export class ChallengeController {
   private changePayment(id: string): Challenge {
     return {} as Challenge;
   }
+
+  
 
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
