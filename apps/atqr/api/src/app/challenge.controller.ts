@@ -42,19 +42,19 @@ export class ChallengeController {
     private readonly paymentService: StripeService
   ) {}
 
-  @Post('challenge')
+  @Post()
   async createChallenge(
     @Body() challengeDto: CreateChallengeDto
   ): Promise<Challenge> {
     try {
       let player = this.playerRepository.findByEmail(
-        new EmailAddress(challengeDto.playerEmail)
+        new EmailAddress(challengeDto.player.emailAddress.value)
       );
 
       if (!player) {
         player = new Player(
           challengeDto.player.name,
-          new EmailAddress(challengeDto.playerEmail)
+          new EmailAddress(challengeDto.player.emailAddress.value)
         );
 
         this.playerRepository.create(player);
@@ -97,7 +97,9 @@ export class ChallengeController {
 
         // TODO Finalize implementation
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = new EmailAddress(challengeDto.playerEmail);
+        const emailAddress = new EmailAddress(
+          challengeDto.player.emailAddress.value
+        );
         const email = new SupConfirmation(player);
         this.emailService.sendMail(email);
       }
@@ -119,16 +121,47 @@ export class ChallengeController {
     }
   }
 
-  @Get('last-challenges')
-  getLastChallenges(amount: number) {
+  @Get('latest/:amount')
+  latest(@Param('amount') amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  @Patch('challenge/:id/')
-  async updateStatus(
-    @Param('id') id: Guid,
-    @Body() status: ChallengeStatus
-  ): Promise<void> {
+  // TODO Implement update challenge endpoint and fix return
+  @Patch(':id')
+  async updateChallenge(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Param('id') id: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
+  ): Promise<Challenge> {
+    // TODO ---------- REFACTOR ME ------------------
+    // eslint-disable-next-line no-constant-condition
+    if (true) {
+      this.changePayment('Change Me');
+      this.changeSupervisor('Change Me');
+      this.updateStatus(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        'id' as any as Guid,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        'Change me' as any as ChallengeStatus
+      );
+    }
+    return {} as Challenge;
+  }
+
+  // TODO Implement change supervisor endpoint and fix return
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private changeSupervisor(id: string): Challenge {
+    return {} as Challenge;
+  }
+
+  // TODO Implement change payment endpoint and fix return
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  private changePayment(id: string): Challenge {
+    return {} as Challenge;
+  }
+
+  private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
       challenge.updateStatus(status);
@@ -151,28 +184,5 @@ export class ChallengeController {
         );
       }
     }
-  }
-  @Get('challenge/:id')
-  // TODO Implement change payment endpoint and fix return
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  changePayment(@Param('id') id: string): Challenge {
-    return {} as Challenge;
-  }
-
-  // TODO Implement update challenge endpoint and fix return
-  @Patch('challenge/:id')
-  async updateChallenge(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Param('id') id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
-  ): Promise<Challenge> {
-    return {} as Challenge;
-  }
-  // TODO Implement change supervisor endpoint and fix return
-  @Get('challenge/:id')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  changeSupervisor(@Param('id') id: string): Challenge {
-    return {} as Challenge;
   }
 }

@@ -1,5 +1,4 @@
 import axios, { AxiosError } from 'axios';
-import '../atqr/api';
 
 const axiosInstance = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com/',

@@ -1,14 +1,11 @@
-version: "3.7"
+version: '3.7'
 services:
   db:
     image: postgres
     restart: always
     environment:
-      - PGDATA=/pg
       - POSTGRES_PASSWORD=secretpassword
       - POSTGRES_USER=postgres
       - POSTGRES_DB=dev
-    ports: [8080:80]
-
-
-
+    ports:
+      - 5432:5432
