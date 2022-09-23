@@ -18,7 +18,16 @@ export enum ChallengeStatus {
   Failed = 'Failed',
   Overdue = 'Overdue',
 }
-export class Challenge {
+
+abstract class Entity {
+  static createFromObject<TEntity>(data: { new (): TEntity }): TEntity {
+    throw new Error(
+      `createFromObject not implemented in ${this.constructor.name}`
+    );
+  }
+}
+
+export class Challenge extends Entity {
   private _id: Guid;
   private _price: number;
   private _deadline: Date;
@@ -36,6 +45,7 @@ export class Challenge {
     _status: ChallengeStatus = ChallengeStatus.Ongoing,
     private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
   ) {
+    super();
     this._id = new Guid();
     if (price >= 25) {
       this._price = price;
@@ -51,6 +61,7 @@ export class Challenge {
 
     this._status = _status;
   }
+
   get id() {
     return this._id;
   }
@@ -82,6 +93,10 @@ export class Challenge {
   get paymentMethod() {
     return this._paymentMethod;
   }
+
+  static createFromObject<Challenge>(data:new ()=> Challenge ): Challenge {
+    return new data();
+  }
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
@@ -110,3 +125,4 @@ export class Challenge {
     return true
   }
 }
+

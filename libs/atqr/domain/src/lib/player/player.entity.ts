@@ -6,7 +6,14 @@ import {
   InvalidParametersException,
 } from '../exceptions/invalidParameters.exception';
 
-export class Player {
+abstract class Entity {
+  static createFromObject<TEntity>(data: { new (): TEntity }): TEntity {
+    throw new Error(
+      `createFromObject not implemented in ${this.constructor.name}`
+    );
+  }
+}
+export class Player extends Entity {
   private _id: Guid;
 
   constructor(
@@ -14,6 +21,7 @@ export class Player {
     private _email: EmailAddress,
     private _challenges: Challenge[] = []
   ) {
+    super();
     this._id = new Guid();
     const errors: InvalidParameterInfo[] = [];
 
@@ -44,5 +52,9 @@ export class Player {
 
   get challenges() {
     return this._challenges;
+  }
+
+  static createFromObject<Player>(data: { new (): Player }): Player {
+    return new data();
   }
 }

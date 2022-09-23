@@ -1,13 +1,15 @@
 import { Challenge, IChallengeRepository } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
-import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
+import { Challenge as PrismaChallenge, ChallengeStatus, prisma } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
-import { plainToInstance } from 'class-transformer';
+import { plainToClass, plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
 export class ChallengeRepository implements IChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
+
+  
 
   create(challenge: Challenge): void {
     this.prismaService.challenge.create({
@@ -38,11 +40,12 @@ export class ChallengeRepository implements IChallengeRepository {
           id: 'desc',
         },
       });
+      return
 
-    return plainChallenges.map((challenge) => {
-      return plainToInstance(Challenge, challenge);
-    });
-  }
+     
+   
+    
+    }
 
   async findMany(numberOfResults = 100): Promise<Challenge[]> {
     // Cursor or Offset based pagination?
@@ -59,13 +62,20 @@ export class ChallengeRepository implements IChallengeRepository {
   }
 
   async findUnique(id: Guid): Promise<Challenge> {
-    return plainToInstance(
-      Challenge,
-      await this.prismaService.challenge.findUnique({
+    
+    
+      
+      let prismaChallenge = await this.prismaService.challenge.findUnique({
         where: { id: id.valueOf() },
-        include: { player: true },
+        // include: { player: true },
       })
-    );
+      let Aa = plainToClass(Challenge, prismaChallenge)
+      const challenge = Challenge.createFromObject<Challenge>()
+
+      return challenge
+
+
+    
   }
 
   async findOverdueChallenges(
@@ -99,4 +109,8 @@ export class ChallengeRepository implements IChallengeRepository {
       },
     });
   }
-}
+
+  
+    
+  }
+
