@@ -3,11 +3,13 @@ import {
   ChallengeStarted,
   ChallengeStatus,
   Congrats,
+  DeadLineEmail,
   EmailAddress,
   PaymentMethodEntity,
   PayThePrice,
   Player,
   SupConfirmation,
+  SupervisorEnum,
 } from '@atqr/domain';
 import {
   Body,
@@ -22,20 +24,22 @@ import {
 import { Guid } from '@tokilabs/lang';
 
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
+import { UpdateSupervisorStatusDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 import { ChallengeRepository, PlayerRepository } from './repositories';
-
+import { HttpService } from '@nestjs/axios';
 @Controller('challenge')
 export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
-    private readonly paymentService: StripeService
+    private readonly paymentService: StripeService,
+    private readonly httpService: HttpService
   ) {}
 
   @Post()
@@ -134,7 +138,10 @@ export class ChallengeController {
     // eslint-disable-next-line no-constant-condition
     if (true) {
       this.changePayment('Change Me');
-      this.changeSupervisor('Change Me');
+      this.updateSupervisorStatus(
+        'id' as any as Guid,
+        'Change Me' as any as UpdateSupervisorStatusDto
+      );
       this.updateStatus(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         'id' as any as Guid,
@@ -146,9 +153,40 @@ export class ChallengeController {
   }
 
   // TODO Implement change supervisor endpoint and fix return
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changeSupervisor(id: string): Challenge {
-    return {} as Challenge;
+  private async updateSupervisorStatus(
+    id: Guid,
+    updateSupervisorDto: UpdateSupervisorStatusDto
+  ): Promise<void> {
+    const challenge = await this.challengeRepository.findUnique(id);
+    challenge.updateSupervisorStatus(updateSupervisorDto.SupervisorEnum);
+    switch (true) {
+      case updateSupervisorDto.SupervisorEnum == SupervisorEnum.notInvited: {
+        const email = new SupConfirmation(challenge.player);
+        this.emailService.sendMail(email);
+        break;
+      }
+      case updateSupervisorDto.SupervisorEnum ==
+        SupervisorEnum.askedIfTheGoalIsAccomplished: {
+        const email = new DeadLineEmail(challenge.player);
+        this.emailService.sendMail(email);
+        break;
+      }
+      case updateSupervisorDto.SupervisorEnum ==
+        SupervisorEnum.repliedTheGoalWasSuccess: {
+        const url = `http://localhost:3333/api/challenge/${id}`;
+        const data = { id: id, status: ChallengeStatus.Completed };
+        this.httpService.axiosRef.patch(url, data);
+        break;
+      }
+      case updateSupervisorDto.SupervisorEnum ==
+        SupervisorEnum.repliedTheGoalWasFailed: {
+        const url = `http://localhost:3333/api/challenge/${id}`;
+        const data = { id: id, status: ChallengeStatus.Failed };
+        this.httpService.axiosRef.patch(url, data);
+        break;
+      }
+    }
+    this.challengeRepository.update(challenge);
   }
 
   // TODO Implement change payment endpoint and fix return
