@@ -67,6 +67,7 @@
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
     "@commitlint/config-conventional": "16.2.1",
+    "@nestjs/axios": "^0.1.0",
     "@nestjs/config": "1.1.6",
     "@nestjs/schematics": "8.0.0",
     "@nestjs/testing": "8.0.0",
