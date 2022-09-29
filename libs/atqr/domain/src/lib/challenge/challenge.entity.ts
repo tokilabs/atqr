@@ -6,11 +6,12 @@ import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
-  'notInvited',
-  'invited',
-  'accepted',
-  'askedIfTheGoalIsAccomplished',
-  'repliedIfTheGoalWasAccomplished',
+  notInvited = 'notInvited',
+  invited = 'invited',
+  accepted = 'accepted',
+  askedIfTheGoalIsAccomplished = 'askedIfTheGoalIsAccomplished',
+  repliedTheGoalWasSuccess = 'repliedTheGoalWasSuccess',
+  repliedTheGoalWasFailed = 'repliedTheGoalWasFailed'
 }
 
 export enum ChallengeStatus {
@@ -104,5 +105,8 @@ export class Challenge {
   }
   updateStatus(status: ChallengeStatus) {
     this._status = status;
+  }
+  updateSupervisorStatus(supervisorStatus: SupervisorEnum){
+    this._supervisorStatus = supervisorStatus
   }
 }
