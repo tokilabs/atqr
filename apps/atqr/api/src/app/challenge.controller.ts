@@ -26,7 +26,6 @@ import {
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
-import { UpdateChallengeDto } from './dtos/updateChallenge.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
@@ -129,40 +128,29 @@ export class ChallengeController {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  @Patch(':id')
-  async updateChallenge(
-    @Param('id') id: Guid,
-    @Body() dto: UpdateChallengeDto
-  ): Promise<void> {
-    switch (true) {
-      case dto.case == 1:
-        return this.updateStatus(id, dto.challengeStatus);
-      case dto.case == 2:
-        return this.changePayment(id, dto.updateCreditCard);
-      case dto.case == 3:
-        return this.changeSupervisor(id);
-      default:
-        throw new NotAcceptableException('error');
-    }
-  }
-
-  private changeSupervisor(id: Guid): void {
+  @Patch(':id/supervisor')
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  changeSupervisor(@Param('id') id: Guid): void {
     return;
   }
 
   // TODO Implement change payment endpoint and fix return
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changePayment(
-    id: Guid,
-    UpdateCreditCardTokenDto: UpdateCreditCardTokenDto
+
+  @Patch(':id/payment')
+
+  changePayment(
+     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Param('id') id: Guid,
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() updateCreditCardTokenDto : UpdateCreditCardTokenDto
   ): void {
     return;
   }
-
- raquel/atqr-96-refactor-challenge-page
-
-
-  private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: Guid,
+    @Body() status: ChallengeStatus
+  ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
       challenge.updateOverdueStatus(status);
@@ -172,7 +160,7 @@ export class ChallengeController {
         const email = new Congrats(challenge.player);
         this.emailService.sendMail(email);
 
- 
+
  development
       } else {
         throw new Error('challenge not updated');
