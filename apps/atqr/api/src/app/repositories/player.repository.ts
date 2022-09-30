@@ -1,5 +1,4 @@
 import {
-  Challenge,
   EmailAddress,
   IPlayerRepository,
   Player,
@@ -7,7 +6,6 @@ import {
 import { Injectable } from '@nestjs/common';
 import { Player as PrismaPlayer } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
-import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
@@ -23,37 +21,21 @@ export class PlayerRepository implements IPlayerRepository {
         },
       });
 
-    return plainToInstance(
-      Player,
-      prismaPlayer,
-      // TODO check the right syntax for targetMaps
-      {
-        targetMaps: [
-          {
-            target: () => EmailAddress,
-            properties: {
-              email: (value) => new EmailAddress(value),
-            },
-          },
-          {
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
-            target: () => {},
-            properties: {
-              Challenges: (value) => plainToInstance(Challenge, value),
-            },
-          },
-        ],
-      }
-    );
+    return;
+    //  const prismaaPlayer = {
+    //   id: prismaPlayer.id,
+    //   name: prismaPlayer.name,
+    //   email: new EmailAddress(prismaPlayer.email)
+
+    // }
   }
 
   findByEmail(email: EmailAddress): Player {
-    return plainToInstance(
-      Player,
-      this.prismaService.player.findUnique({
-        where: { email: email.value },
-      })
-    );
+    this.prismaService.player.findUnique({
+      where: { email: email.value },
+    });
+
+    return;
   }
 
   // TODO: Discuss with Saulo if this method should return

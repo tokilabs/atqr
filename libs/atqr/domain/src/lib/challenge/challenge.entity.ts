@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
+import { EntityDTO } from '../entity-type/entity.type';
 
 export enum SupervisorEnum {
   'notInvited',
@@ -19,8 +20,10 @@ export enum ChallengeStatus {
   Overdue = 'Overdue',
 }
 
-abstract class Entity {
-  static createFromObject<TEntity>(data: { new (): TEntity }): TEntity {
+export abstract class Entity {
+  static createFromObject<TEntity extends new (...args: any) => any>(
+    data: any
+  ): InstanceType<TEntity> {
     throw new Error(
       `createFromObject not implemented in ${this.constructor.name}`
     );
@@ -29,37 +32,49 @@ abstract class Entity {
 
 export class Challenge extends Entity {
   private _id: Guid;
-  private _price: number;
   private _deadline: Date;
+  private _goal: string;
+  private _paymentMethod?: PaymentMethodEntity;
+  private _player: Player;
+  private _price: number;
+  private _supervisorEmail: string;
+  private _supervisorName: string;
+  private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited;
+
   @Transform(({ value }) => ChallengeStatus[value])
   private _status?: ChallengeStatus;
 
-  constructor(
-    private _goal: string,
-    private _supervisorName: string,
-    private _supervisorEmail: string,
-    private _player: Player,
-    price: number,
-    deadline: Date,
-    private _paymentMethod?: PaymentMethodEntity,
-    _status: ChallengeStatus = ChallengeStatus.Ongoing,
-    private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
-  ) {
+  constructor(data: {
+    goal: string;
+    supervisorName: string;
+    supervisorEmail: string;
+    player: Player;
+    price: number;
+    deadline: Date;
+    paymentMethod?: PaymentMethodEntity;
+    status?: ChallengeStatus;
+    supervisorStatus?: SupervisorEnum;
+  }) {
     super();
+
     this._id = new Guid();
-    if (price >= 25) {
-      this._price = price;
+    this._status = data.status || ChallengeStatus.Ongoing;
+    this._supervisorStatus = data.supervisorStatus || SupervisorEnum.notInvited;
+
+    if (data.price >= 25) {
+      this._price = data.price;
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
     }
+
     const today = new Date();
-    if (dateDiff(today, deadline) > 1) {
-      this._deadline = deadline;
+    if (dateDiff(today, data.deadline) > 1) {
+      this._deadline = data.deadline;
     } else {
       throw Error('Selecione uma data futura');
     }
 
-    this._status = _status;
+    this._status = data.status;
   }
 
   get id() {
@@ -90,13 +105,16 @@ export class Challenge extends Entity {
   get player() {
     return this._player;
   }
-  get paymentMethod() {
+
+  get paymentMethod(): PaymentMethodEntity | undefined {
     return this._paymentMethod;
   }
 
-  static createFromObject<Challenge>(data:new ()=> Challenge ): Challenge {
-    return new data();
+  createFromObject<Challenge>(data: EntityDTO<typeof Challenge>): Challenge {
+    // @FIXME: remove any
+    return new Challenge(data) as any;
   }
+
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
@@ -125,4 +143,3 @@ export class Challenge extends Entity {
     return true
   }
 }
-

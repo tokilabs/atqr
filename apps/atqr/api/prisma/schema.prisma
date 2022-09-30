@@ -37,3 +37,4 @@ model Player {
   email      String      @unique
   Challenges Challenge[]
 }
+
