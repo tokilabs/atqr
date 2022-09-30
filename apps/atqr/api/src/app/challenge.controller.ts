@@ -157,12 +157,12 @@ export class ChallengeController {
     return {} as Challenge;
   }
 
-  
+
 
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      challenge.updateStatus(status);
+      challenge.updateOverdueStatus(status);
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {

@@ -102,4 +102,4 @@ export class Challenge {
     }
     this._status = status;
   }
- 
+}

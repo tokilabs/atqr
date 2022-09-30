@@ -1,4 +1,4 @@
-import { ChallengeStatus } from '@atqr/domain';
+import { Challenge, ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import axios from 'axios';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
@@ -37,6 +37,7 @@ export const atqrApi = {
         return error;
       }
     },
+    
     statusUpdated: async (id: Guid, status: ChallengeStatus) => {
       try {
         const updated = await api.patch(`challenge/challenge/${id}`, status);

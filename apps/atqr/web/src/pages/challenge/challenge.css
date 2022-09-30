@@ -1,4 +1,4 @@
-/*-- Common Style --*/
+-- Common Style --
 *, *::after, *::before {
   box-sizing: border-box;
   margin: 0;
@@ -77,49 +77,49 @@ p {
   margin-bottom: 0;
 }
 
-a, button {
+/* a, button {
   color: inherit;
   display: inline-block;
   line-height: inherit;
   text-decoration: none;
   cursor: pointer;
-}
+} */
 
-a, button, img, input {
+/* a, button, img, input {
   transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
   outline: 0;
-}
+} */
 
-a:focus, button:focus, img:focus, input:focus {
+/* a:focus, button:focus, img:focus, input:focus {
   outline: 0;
-}
+} */
 
-a:focus {
+/* a:focus {
   color: none;
   outline: none;
   text-decoration: none;
-}
+} */
 
 a:hover {
   text-decoration: none;
   color: #fc097c;
 }
 
-ul, ol {
+/* ul, ol {
   padding: 0;
   list-style: none;
   margin: 0;
-}
+} */
 
-button, input[type="submit"] {
+/* button, input[type="submit"] {
   cursor: pointer;
-}
+} */
 
 img {
   max-width: 100%;
 }
 
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+/* input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   opacity: 1;
 }
 
@@ -129,11 +129,11 @@ input:-moz-placeholder, textarea:-moz-placeholder {
 
 input::-moz-placeholder, textarea::-moz-placeholder {
   opacity: 1;
-}
+} */
 
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+/* input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   opacity: 1;
-}
+} */
 
 /*-- Common Classes --*/
 @media only screen and (min-width: 1200px) {
@@ -3598,7 +3598,7 @@ label {
   }
 }
 
-.meeta-about-counter-items .single-about-counter .about-count {
+/* .meeta-about-counter-items .single-about-counter .about-count {
   font-size: 40px;
   font-weight: 700;
   font-family: "Big Shoulders Display", cursive;
@@ -3606,7 +3606,7 @@ label {
   display: block;
   line-height: 1.1;
   transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
-}
+} */
 
 .meeta-about-counter-items .single-about-counter .about-text {
   margin-top: 3px;
@@ -4005,6 +4005,8 @@ label {
 
 .meeta-about-section-4 .meeta-about-content-wrap {
   margin-top: -30px;
+  margin-left: 70%;
+  width: 600px;
 }
 
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-section-title-2 {
@@ -4020,6 +4022,7 @@ label {
   flex-wrap: wrap;
   justify-content:center;
   align-items: center;
+
 }
 
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul .about-list-item {
@@ -4039,6 +4042,7 @@ label {
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul .about-list-item .about-text {
   flex: 1;
   margin-left: 20px;
+
 }
 
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul .about-list-item .about-text .title {
@@ -4047,6 +4051,7 @@ label {
   font-family: "Archivo", sans-serif;
   font-weight: 700;
   color: #1a0a1e;
+
 }
 
 .meeta-about-section-4 .meeta-about-content-wrap .meeta-about-content-4 .about-list ul .about-list-item .about-text p {
@@ -4080,6 +4085,7 @@ label {
   }
   .meeta-about-section-4 .meeta-about-content-wrap {
     margin-top: 160px;
+
   }
 }
 
@@ -4109,13 +4115,13 @@ label {
     line-height: 30px;
     padding: 50px 30px;
   }
-  .meeta-about-section-4 .meeta-about-counter-wrap .single-about-counter .value {
+  /* .meeta-about-section-4 .meeta-about-counter-wrap .single-about-counter .value {
     font-size: 40px;
     line-height: 40px;
-  }
-  .meeta-about-section-4 .meeta-about-counter-wrap .single-about-counter .text {
+  } */
+  /* .meeta-about-section-4 .meeta-about-counter-wrap .single-about-counter .text {
     font-size: 16px;
-  }
+  } */
   .meeta-about-section-4 .meeta-about-counter-wrap .single-about-counter:nth-child(2) {
     top: 110px;
     left: 90px;
