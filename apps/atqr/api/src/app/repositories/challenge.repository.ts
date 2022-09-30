@@ -7,7 +7,12 @@ import { EntityDTO } from 'libs/atqr/domain/src/lib/entity-type/entity.type';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
+<<<<<<< HEAD
 export class ChallengeRepository implements IChallengeRepository {
+=======
+export class ChallengeRepository {
+  [x: string]: any;
+>>>>>>> 7d9f0ed (feat: finished implementing and testing createFromObject())
   constructor(private readonly prismaService: PrismaService) {}
 
   create(challenge: Challenge): void {
@@ -33,20 +38,14 @@ export class ChallengeRepository implements IChallengeRepository {
 
   async findLastChallenges(amount: number): Promise<Challenge[]> {
     const plainChallenges: PrismaChallenge[] =
-      await this.data.prismaService.challenge.findMany({
+      await this.prismaService.challenge.findMany({
         take: amount,
         orderBy: {
           id: 'desc',
         },
-        createFromObject<Challenge>(
-          data: EntityDTO<typeof Challenge>
-        ): Challenge {
-          // @FIXME: remove any
-          return new Challenge(data) as any;
-        },
       });
 
-    return this.findMany();
+    return Challenge.createFromObject(plainChallenges);
   }
 
   async findMany(numberOfResults = 100): Promise<Challenge[]> {
@@ -56,37 +55,24 @@ export class ChallengeRepository implements IChallengeRepository {
     const plainChallenges: PrismaChallenge[] =
       await this.prismaService.challenge.findMany({
         take: numberOfResults,
-
-        createFromObject<Challenge>(
-          data: EntityDTO<typeof Challenge>
-        ): Challenge {
-          // @FIXME: remove any
-          return new Challenge(data) as any;
-        },
       });
 
-    return this.findMany(numberOfResults);
+    return Challenge.createFromObject(plainChallenges);
   }
 
   async findUnique(id: Guid): Promise<Challenge> {
-    let prismaChallenge = await this.data.prismaService.challenge.findUnique({
+    let prismaChallenge = await this.prismaService.challenge.findUnique({
       where: { id: id.valueOf() },
       // include: { player: true },
-      createFromObject<Challenge>(
-        data: EntityDTO<typeof Challenge>
-      ): Challenge {
-        // @FIXME: remove any
-        return new Challenge(data) as any;
-      },
     });
-    return;
+    return Challenge.createFromObject(prismaChallenge);
   }
 
   async findOverdueChallenges(
     numberOfResults = 100,
     skip = 0
   ): Promise<Challenge[]> {
-    const prismaChallenges = await this.data.prismaService.challenge.findMany({
+    const prismaChallenges = await this.prismaService.challenge.findMany({
       take: numberOfResults,
       skip,
       where: {
@@ -97,11 +83,16 @@ export class ChallengeRepository implements IChallengeRepository {
       },
       include: { player: true },
     });
+<<<<<<< HEAD
     return prismaChallenges.map((pc) => {
       return plainToInstance(Challenge, pc);
       // TODO: Finalize Conversion from prisma entity to domain entity
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     });
+=======
+
+    return Challenge.createFromObject(prismaChallenges[]);
+>>>>>>> 7d9f0ed (feat: finished implementing and testing createFromObject())
   }
 
   update(challenge: Challenge) {

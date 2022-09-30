@@ -110,7 +110,9 @@ export class Challenge extends Entity {
     return this._paymentMethod;
   }
 
-  createFromObject<Challenge>(data: EntityDTO<typeof Challenge>): Challenge {
+  static createFromObject<Challenge>(
+    data: EntityDTO<typeof Challenge>
+  ): Challenge {
     // @FIXME: remove any
     return new Challenge(data) as any;
   }

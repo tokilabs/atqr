@@ -21,7 +21,8 @@ export class PlayerRepository implements IPlayerRepository {
         },
       });
 
-    return;
+    return Player.createFromObject(prismaPlayer);
+
     //  const prismaaPlayer = {
     //   id: prismaPlayer.id,
     //   name: prismaPlayer.name,
@@ -35,7 +36,7 @@ export class PlayerRepository implements IPlayerRepository {
       where: { email: email.value },
     });
 
-    return;
+    return Player.createFromObject(email);
   }
 
   // TODO: Discuss with Saulo if this method should return
