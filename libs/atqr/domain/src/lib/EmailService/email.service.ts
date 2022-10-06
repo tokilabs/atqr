@@ -33,42 +33,4 @@ export class Email implements IEmail {
   }
 }
 
-export class ChallengeStarted extends Email {
-  constructor(to: Player) {
-    super(to, 'Seu desafio começou', 'Mensagem de boas vindas');
-  }
-}
 
-export class SupConfirmation extends Email {
-  constructor(to: Player) {
-    super(
-      to,
-      'Você foi convidado a ser supervisor de ${playerName}...',
-      'Explicação do jogo'
-    );
-  }
-}
-
-export class PayThePrice extends Email {
-  constructor(to: Player) {
-    super(to, 'Não cumpriu o desafio', ' .... ');
-  }
-}
-
-export class Congrats extends Email {
-  constructor(to: Player) {
-    super(to, 'Cumpriu o desafio', ' .... ');
-  }
-}
-
-export class YouWereChallenged extends Email {
-  constructor(to: Player) {
-    super(to, 'Você foi desafiado', ' .... ');
-  }
-}
-
-export class DeadLineEmail extends Email {
-  constructor(to: Player) {
-    super(to, 'E aí?', ' .... ');
-  }
-}
