@@ -1,16 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "module": "commonjs",
     "outDir": "../../../dist/out-tsc",
-    "declaration": true,
-    "types": ["node"]
+    "types": ["node"],
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "include": [
     "**/*.ts",
-    "src/lib/EmailService/configs.ts.env",
-    "src/lib/EmailService/email-service.ts",
+    "src/lib/services/EmailService/configs.ts.env",
+    "src/lib/services/EmailService/email-service.ts",
     "../../../apps/atqr/api/src/app/challenge-entity.controller.ts"
   ]
 }

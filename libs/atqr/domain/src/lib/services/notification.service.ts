@@ -1,7 +1,8 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge';
-import { IChallengeRepository } from '../challenge/challengeRepo.interface';
-import { Congrats, Email, IMailer, PayThePrice } from '../EmailService';
+import { Email, IMailer } from '../services/email.service';
+import { Congrats, PayThePrice } from '../EmailService/templates';
+import { IChallengeRepository } from '../repository.interfaces';
+import { Challenge, ChallengeStatusEnum } from '../entities/challenge';
 
 export class NotificationService {
   constructor(
@@ -44,8 +45,7 @@ export class NotificationService {
     });
   }
   public notifyCompletedChallenges(challenge: Challenge) {
-    if (challenge.status == ChallengeStatus.Completed) {
-    //challenge status = completed
+    if (challenge.status == ChallengeStatusEnum.Completed) {
       const email = new Congrats(challenge.player);
     //cria um email Congrats que eé mandado pro player da challenge
       this.mailer.sendMail(email);

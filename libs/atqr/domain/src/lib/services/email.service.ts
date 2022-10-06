@@ -1,5 +1,10 @@
-import { IEmail } from '.';
-import { Player } from '../player/player.entity';
+import { Player } from '../entities/player/player.entity';
+
+export interface IEmail {
+  to: Player;
+  subject: string;
+  message?: string;
+}
 
 export interface IMailer {
   sendMail(email: Email): Promise<unknown>;

@@ -17,6 +17,14 @@ enum ChallengeStatus {
   Failed
 }
 
+enum SupervisorStatus {
+  NotInvited,
+  Invited,
+  Accepted,
+  Asked,
+  Replied,
+}
+
 model Challenge {
   id              String          @id @db.Uuid
   goal            String

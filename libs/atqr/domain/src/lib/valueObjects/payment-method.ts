@@ -4,7 +4,7 @@ export enum PaymentMethodEnum {
   'creditCard' = 'creditCard',
   'debitCard' = 'debitCard',
 }
-export class PaymentMethodEntity {
+export class PaymentMethod {
   id: Guid;
   method: PaymentMethodEnum;
   paymentService: `pagar.me` | `pagseguro`;

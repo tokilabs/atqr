@@ -1,48 +1,40 @@
 import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
-import { dateDiff } from '../../utils/date-difference';
-import { PaymentMethodEntity } from '../PaymentMethod';
-import { Player } from '../player/player.entity';
-import { EntityDTO } from '../entity-type/entity.type';
+import { dateDiff } from '../../../utils/date-difference';
 
-export enum SupervisorEnum {
-  'notInvited',
-  'invited',
-  'accepted',
-  'askedIfTheGoalIsAccomplished',
-  'repliedIfTheGoalWasAccomplished',
+import { Player } from '../player/player.entity';
+import { Entity, EntityDTO } from '../../entity.type';
+import { PaymentMethod } from '../../valueObjects/payment-method';
+
+export enum SupervisorStatusEnum {
+  NotInvited = 'NotInvited',
+  Invited = 'Invited',
+  Accepted = 'Accepted',
+  Asked = 'Asked',
+  Replied = 'Replied',
 }
 
-export enum ChallengeStatus {
+export enum ChallengeStatusEnum {
   Ongoing = 'Ongoing',
   Completed = 'Completed',
   Failed = 'Failed',
   Overdue = 'Overdue',
 }
 
-export abstract class Entity {
-  static createFromObject<TEntity extends new (...args: any) => any>(
-    data: any
-  ): InstanceType<TEntity> {
-    throw new Error(
-      `createFromObject not implemented in ${this.constructor.name}`
-    );
-  }
-}
-
 export class Challenge extends Entity {
   private _id: Guid;
   private _deadline: Date;
   private _goal: string;
-  private _paymentMethod?: PaymentMethodEntity;
+  private _paymentMethod?: PaymentMethod;
   private _player: Player;
   private _price: number;
   private _supervisorEmail: string;
   private _supervisorName: string;
-  private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited;
+  private _supervisorStatus: SupervisorStatusEnum =
+    SupervisorStatusEnum.NotInvited;
 
-  @Transform(({ value }) => ChallengeStatus[value])
-  private _status?: ChallengeStatus;
+  @Transform(({ value }) => ChallengeStatusEnum[value])
+  private _status?: ChallengeStatusEnum;
 
   constructor(data: {
     goal: string;
@@ -51,15 +43,16 @@ export class Challenge extends Entity {
     player: Player;
     price: number;
     deadline: Date;
-    paymentMethod?: PaymentMethodEntity;
-    status?: ChallengeStatus;
-    supervisorStatus?: SupervisorEnum;
+    paymentMethod?: PaymentMethod;
+    status?: ChallengeStatusEnum;
+    supervisorStatus?: SupervisorStatusEnum;
   }) {
     super();
 
     this._id = new Guid();
-    this._status = data.status || ChallengeStatus.Ongoing;
-    this._supervisorStatus = data.supervisorStatus || SupervisorEnum.notInvited;
+    this._status = data.status || ChallengeStatusEnum.Ongoing;
+    this._supervisorStatus =
+      data.supervisorStatus || SupervisorStatusEnum.NotInvited;
 
     if (data.price >= 25) {
       this._price = data.price;
@@ -106,7 +99,7 @@ export class Challenge extends Entity {
     return this._player;
   }
 
-  get paymentMethod(): PaymentMethodEntity | undefined {
+  get paymentMethod(): PaymentMethod | undefined {
     return this._paymentMethod;
   }
 
@@ -121,7 +114,7 @@ export class Challenge extends Entity {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
   }
-  changePaymentMethod(paymentMethod: PaymentMethodEntity) {
+  changePaymentMethod(paymentMethod: PaymentMethod) {
     this._paymentMethod = paymentMethod;
   }
 
@@ -130,18 +123,14 @@ export class Challenge extends Entity {
    */
   updateOverdueStatus(): boolean {
     if (this.deadline < new Date()) {
-      this._status = ChallengeStatus.Overdue;
+      this._status = ChallengeStatusEnum.Overdue;
       return true;
     } else {
       return false;
     }
-
   }
-  updateStatus(status: ChallengeStatus) {
-    if(status == ChallengeStatus.Overdue){
-      return false
-    }
+  updateStatus(status: ChallengeStatusEnum) {
     this._status = status;
-    return true
+    return true;
   }
 }

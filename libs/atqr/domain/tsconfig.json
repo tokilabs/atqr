@@ -4,6 +4,8 @@
     "emitDecoratorMetadata": true
   },
   "extends": "../../../tsconfig.base.json",
+  "importHelpers": true,
+  "target": "ES6",
   "files": [],
   "include": [],
   "references": [
@@ -13,8 +15,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "compilerOptions": {
-    "emitDecoratorMetadata": true
-  }
+  ]
 }
