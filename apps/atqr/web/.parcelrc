@@ -1,5 +1,0 @@
-// TODO: Further configure parcel routes later
-
-{
-  "extends": "@parcel/config-default"
-}

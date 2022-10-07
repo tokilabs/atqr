@@ -1,0 +1,17 @@
+{
+  "name": "@atqr/web",
+  "version": "0.0.1",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "targets": {
+    "default": {
+      "distDir": "../../../dist/atqr-web"
+    }
+  },
+  "scripts": {
+    "start": "yarn run parcel src/pages/**/*.pug --dist-dir  "
+  },
+  "devDependencies": {
+    "parcel": "2.7.0",
+    "@parcel/transformer-pug": "2.7.0"
+  }
+}

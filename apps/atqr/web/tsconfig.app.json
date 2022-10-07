@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
-    "types": ["node"],
+    "types": ["stripe"],
     "target": "ES2017"
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],

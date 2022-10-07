@@ -1,6 +1,6 @@
 import { ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
-import axios from 'axios';
+import axios, { AxiosResponse, AxiosStatic } from 'axios';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import {
   CreateChallengeDto,
@@ -79,10 +79,13 @@ export const atqrApi = {
   },
 
   payment: {
-    publicKey: async () => {
+    publicKey: async (): Promise<string> => {
       try {
-        const key = await api.get(`stripe/public-key`);
-        return key;
+        const key: AxiosResponse<string> = await api.get<string>(
+          `stripe/public-key`
+        );
+        console.log(key.data);
+        return key.data;
       } catch (error) {
         console.log(error);
         return error;
