@@ -1,0 +1,43 @@
+mixin formInput (id, inputType, placeholder)
+  .col-md-6
+    .single-form
+      input.form-control(id=id type=inputType placeholder=placeholder)
+
+mixin challengeForm(id, formName, active)
+  - const isPersonalChallenge = formName === "formChallengeYourself"
+  div(id=id class=active.concat(" meeta-event-schedule-tab-pane"))
+    // Event Accordion Start
+    // Contact Form Start
+    .contact-form-section.section-padding
+      .container
+        // Contact Wrap Start
+        .contact-wrap
+          .row.justify-content-center
+            .col-lg-10
+              // Contact Form Wrap Start
+              .contact-form-wrap
+                form(action=isPersonalChallenge? '#': '#' name=formName)
+                  .row
+                    +formInput("playerName", "text",
+                    isPersonalChallenge? "Seu Nome": "Nome do Desafiado")
+
+                    +formInput("seu-email", "email",
+                    isPersonalChallenge? "Seu Email": "Email do desafiado")
+
+                    +formInput("nome-supervisor", "text",
+                    isPersonalChallenge? "Nome do Supervisor": "Nome do Supervisor")
+
+                    +formInput("email-supervisor", "email",
+                    isPersonalChallenge? "Email do Supervisor": "Email do Supervisor")
+
+                    .col-md-12
+                      // Single Form Start
+                      .single-form
+                        textarea#descricao.form-control(placeholder=isPersonalChallenge? 'Descreva seu desafio': 'Descreva o desafio' name ='challengeDescription')
+                      // Single Form End
+                    .col-md-12
+                      // Single Form Start
+                      .form-btn.text-center
+                        button.btn.btn-primary(type='submit')
+                          | Pr&oacute;ximo Passo
+                      // Single Form End
