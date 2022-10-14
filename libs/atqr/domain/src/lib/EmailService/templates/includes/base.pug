@@ -1,10 +1,10 @@
 
-mixin content(h1, p1, src, p2)
-  .message
+mixin email-content(h1, p1, src, p2)
+  .content-wrapper
     h1=h1
     p=p1
     |
-    div&attributes(attributes)
-      img(src = src)
+    .image
+      img(src=src)
     p=p2
     |
