@@ -1,0 +1,10 @@
+
+mixin content(h1, p1, src, p2)
+  .message
+    h1=h1
+    p=p1
+    |
+    div&attributes(attributes)
+      img(src = src)
+    p=p2
+    |
