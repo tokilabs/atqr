@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+      include includes/base-style.pug
+
+  //- extra non-base style
+  style.
+
+  body
+    include includes/base-template.pug
+
+    +email-content('Entra no carro, otária',
+    'Confirma seu e-mail pra gente começar o seu desafio 💅',
+    './imgs/car.gif')
