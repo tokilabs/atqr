@@ -1,17 +1,27 @@
-import {
-  EmailAddress,
-  IPlayerRepository,
-  Player,
-} from '@atqr/domain';
+import { Player } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Player as PrismaPlayer } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
+import {
+  PartialPlayer,
+  PlayerRequiredProps,
+} from 'libs/atqr/domain/src/lib/entities/player';
 import { PrismaService } from '../infra/database/prisma.service';
+import { EmailAddress } from 'libs/atqr/domain/src/lib/valueObjects/emailAddress';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class PlayerRepository implements IPlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
+  // static convert(prismaPlayer: PrismaPlayer): PartialPlayer {
+  //   const partialPlayer: PartialPlayer = {
+  //     name: prismaPlayer.name,
+  //     id: new Guid(prismaPlayer.id),
+  //     email: new EmailAddress(prismaPlayer.email),
+  //   };
+  //   return partialPlayer;
+  // }
   async findUnique(id: Guid): Promise<Player> {
     const prismaPlayer: PrismaPlayer =
       await this.prismaService.player.findUnique({
@@ -21,7 +31,7 @@ export class PlayerRepository implements IPlayerRepository {
         },
       });
 
-    return Player.createFromObject(prismaPlayer);
+    return plainToInstance(Player, prismaPlayer);
 
     //  const prismaaPlayer = {
     //   id: prismaPlayer.id,
@@ -31,12 +41,11 @@ export class PlayerRepository implements IPlayerRepository {
     // }
   }
 
-  findByEmail(email: EmailAddress): Player {
-    this.prismaService.player.findUnique({
+  async findByEmail(email: EmailAddress): Promise<Player> {
+    const prismaPlayer = await this.prismaService.player.findUnique({
       where: { email: email.value },
     });
-
-    return Player.createFromObject(email);
+    return plainToInstance(Player, prismaPlayer);
   }
 
   // TODO: Discuss with Saulo if this method should return
@@ -45,7 +54,7 @@ export class PlayerRepository implements IPlayerRepository {
       data: {
         id: player.id.valueOf(),
         name: player.name,
-        email: player.emailAddress.value,
+        email: player.email.value,
       },
     });
   }

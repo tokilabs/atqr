@@ -1,10 +1,11 @@
 import { Guid } from '@tokilabs/lang/';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { dateDiff } from '../../../utils/date-difference';
 
 import { Player } from '../player/player.entity';
-import { Entity, EntityDTO } from '../../entity.type';
+import { Entity } from '../../entity.type';
 import { PaymentMethod } from '../../valueObjects/payment-method';
+import { EmailAddress } from '../../valueObjects/emailAddress';
 
 export enum SupervisorStatusEnum {
   NotInvited = 'NotInvited',
@@ -21,14 +22,30 @@ export enum ChallengeStatusEnum {
   Overdue = 'Overdue',
 }
 
+export type ChallengeRequiredProps = {
+  id: Guid;
+  deadline: Date;
+  goal: String;
+  player: Player;
+  price: Number;
+  supervisorName: String;
+  supervisorEmail: String;
+  status: ChallengeStatusEnum;
+  supervisorStatus: SupervisorStatusEnum;
+};
+
+export type PartialChallenge = Partial<Challenge> & ChallengeRequiredProps;
 export class Challenge extends Entity {
+  @Transform(({ value }) => new Guid(value))
   private _id: Guid;
   private _deadline: Date;
   private _goal: string;
   private _paymentMethod?: PaymentMethod;
+  @Type(() => Player)
   private _player: Player;
-  private _price: number;
-  private _supervisorEmail: string;
+  private _price: Number;
+  @Transform(({ value }) => new EmailAddress(value))
+  private _supervisorEmail: EmailAddress;
   private _supervisorName: string;
   private _supervisorStatus: SupervisorStatusEnum =
     SupervisorStatusEnum.NotInvited;
@@ -36,38 +53,38 @@ export class Challenge extends Entity {
   @Transform(({ value }) => ChallengeStatusEnum[value])
   private _status?: ChallengeStatusEnum;
 
-  constructor(data: {
-    goal: string;
-    supervisorName: string;
-    supervisorEmail: string;
-    player: Player;
-    price: number;
-    deadline: Date;
-    paymentMethod?: PaymentMethod;
-    status?: ChallengeStatusEnum;
-    supervisorStatus?: SupervisorStatusEnum;
-  }) {
+  constructor({
+    id,
+    deadline,
+    goal,
+    player,
+    price,
+    supervisorName,
+    supervisorEmail,
+    status,
+    supervisorStatus,
+  }: ChallengeRequiredProps) {
     super();
-
+    this._player = player;
     this._id = new Guid();
-    this._status = data.status || ChallengeStatusEnum.Ongoing;
+    this._status = status || ChallengeStatusEnum.Ongoing;
     this._supervisorStatus =
-      data.supervisorStatus || SupervisorStatusEnum.NotInvited;
+      supervisorStatus || SupervisorStatusEnum.NotInvited;
 
-    if (data.price >= 25) {
-      this._price = data.price;
+    if (price >= 25) {
+      this._price = price;
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
     }
 
     const today = new Date();
-    if (dateDiff(today, data.deadline) > 1) {
-      this._deadline = data.deadline;
+    if (dateDiff(today, deadline) > 1) {
+      this._deadline = deadline;
     } else {
       throw Error('Selecione uma data futura');
     }
 
-    this._status = data.status;
+    this._status = status;
   }
 
   get id() {
@@ -103,16 +120,49 @@ export class Challenge extends Entity {
     return this._paymentMethod;
   }
 
-  static createFromObject<Challenge>(
-    data: EntityDTO<typeof Challenge>
-  ): Challenge {
-    // @FIXME: remove any
-    return new Challenge(data) as any;
+  /**
+   * This method MUST ONLY be used to hydrate entities
+   * when loading from persistent storage
+   *
+   * @param props An object with the properties values to be set in the returned instance
+   * @returns A new player
+   */
+  static createFromObject(props: PartialChallenge): Challenge {
+    // extract from props
+    // leaving remaining props in optionalProps
+    const {
+      id,
+      deadline,
+      goal,
+      player,
+      price,
+      supervisorName,
+      supervisorEmail,
+      status,
+      supervisorStatus,
+      ...optionalProps
+    } = props;
+
+    const challenge = new Challenge({
+      id,
+      deadline,
+      goal,
+      player,
+      price,
+      supervisorName,
+      supervisorEmail,
+      status,
+      supervisorStatus,
+    });
+
+    this.overrideProps(challenge, optionalProps);
+
+    return challenge;
   }
 
   changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
     this._supervisorName = newSupervisorName;
-    this._supervisorEmail = newSupervisorEmail;
+    this._supervisorEmail = new EmailAddress(newSupervisorEmail);
   }
   changePaymentMethod(paymentMethod: PaymentMethod) {
     this._paymentMethod = paymentMethod;

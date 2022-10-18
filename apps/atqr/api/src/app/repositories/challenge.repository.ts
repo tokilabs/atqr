@@ -7,12 +7,7 @@ import { EntityDTO } from 'libs/atqr/domain/src/lib/entity-type/entity.type';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
-<<<<<<< HEAD
 export class ChallengeRepository implements IChallengeRepository {
-=======
-export class ChallengeRepository {
-  [x: string]: any;
->>>>>>> 7d9f0ed (feat: finished implementing and testing createFromObject())
   constructor(private readonly prismaService: PrismaService) {}
 
   create(challenge: Challenge): void {
@@ -83,16 +78,11 @@ export class ChallengeRepository {
       },
       include: { player: true },
     });
-<<<<<<< HEAD
     return prismaChallenges.map((pc) => {
       return plainToInstance(Challenge, pc);
       // TODO: Finalize Conversion from prisma entity to domain entity
       // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     });
-=======
-
-    return Challenge.createFromObject(prismaChallenges[]);
->>>>>>> 7d9f0ed (feat: finished implementing and testing createFromObject())
   }
 
   update(challenge: Challenge) {
