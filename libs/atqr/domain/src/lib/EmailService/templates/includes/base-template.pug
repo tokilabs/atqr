@@ -11,3 +11,9 @@ mixin email-content(h1, p1, src, p2, p3, p4)
     p.p3=p3
 
     p.p4=p4
+    |
+
+mixin button(href, name)
+  .btn-wrapper
+    a(href=href)&attributes(attributes)= name
+

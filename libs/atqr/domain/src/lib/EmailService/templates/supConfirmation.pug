@@ -6,8 +6,11 @@ html
   body
     include includes/base-template.pug
 
-    +email-content(`Dizemos por meio desta...`,
-    `Que você é a última esperança de #{player} se endireitar na vida`, './imgs/old-man.jpg', `Por isso o/a senhor/ra digníssimo foi escolhido como o grande e importante supervisor dessa criatura perdida 🦄.`,
-     `Sua função é simples: dedurar pra gente se #{player} cumpriu ou não cumpriu com a tarefa que esse anjo de deus iluminado está tentando alcançar. Pra você eu só desejo boa sorte (e talvez outro círculo social no futuro 🤡).
-     Você aceita esse desafio? (Por favor, diz que sim, teu amigo só tem você, cara 🥺).`)
+    +email-content('Dizemos por meio desta...',
+    'Que você é a última esperança de *Nome do Usuário* se endireitar na vida', 'Por isso o/a senhor/ra digníssimo foi escolhido como o grande e importante supervisor dessa criatura perdida 🦄.',
+    './old-man.jpg', 'Sua função é simples: dedurar pra gente se *Nome do Usuário* cumpriu ou não cumpriu com a tarefa que esse anjo de deus iluminado está tentando alcançar. Pra você eu só desejo boa sorte (e talvez outro círculo social no futuro 🤡).
+    Você aceita esse desafio? (Por favor, diz que sim, teu amigo só tem você, cara 🥺)')
+
+    +button('', 'Aceito')(class="btn")
+    +button('', 'Prefiro Mordor')(class="btn")
 
