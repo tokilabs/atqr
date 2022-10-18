@@ -13,8 +13,7 @@ export class SupConfirmation extends Email {
     super(
       to,
       'Você foi convidado a ser supervisor de ${playerName}...', pugFile({
-        player: to,
-        supervisor: 
+        player: to.name,
       })
     );
   }
@@ -45,5 +44,5 @@ const getPlayer = async () => {
   }
 };
 
-let playerName = document.getElementsByTagName('')
+
 

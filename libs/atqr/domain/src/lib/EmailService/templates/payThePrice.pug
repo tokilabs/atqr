@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    include includes/base-style.pug
+  body
+    include includes/base-template
+    +email-content("Digníssimo jogador", `Mas que raios foi isso que aconteceu aqui? Ficamos sabendo por fontes totalmente críveis e verificadas as quais não deduraremos (mas foi o/a #{supervisor}) que você agiu como um saquinho de lixo e não cumpriu seu próprio desafio`,
+    `../imgs/lixo.jpg`,
+    `A gente sabe que às vezes a gente tá lá batendo ponto na vida, meio distraído e toma um caldo nervoso. Se fosse fácil todo mundo estaria no lugar dos sonhos, né? 🤔`,
+    ` Às vezes a gente leva um capote e tá tudo bem, tu não é feito/a de açúcar, quem tá na chuva é pra se molhar, etc e etc. Levanta e vai de novo!`,
+    `A gente acredita em você (e todo o resto é psicologia inversa, seu/a bobo/a)!🌈`)

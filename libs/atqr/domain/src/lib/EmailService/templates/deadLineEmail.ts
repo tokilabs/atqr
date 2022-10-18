@@ -9,7 +9,7 @@ const compileTemplate = pug.compileFile(
 
 export class DeadLineEmail extends Email {
   constructor(to: Player) {
-    super(to, 'E aí?', ' .... ', compileTemplate({
+    super(to, 'E aí?', compileTemplate({
       player: to,
     }));
   }
