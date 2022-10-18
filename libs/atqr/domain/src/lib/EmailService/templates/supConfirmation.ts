@@ -2,17 +2,19 @@ import { Player } from '../../player/player.entity';
 import { Email } from '../email.service';
 import axios, { AxiosError } from 'axios';
 import * as pug from 'pug';
-import * as fs from 'fs';
 import path = require('path');
+import { Challenge } from '@atqr/domain';
 
-const pugFile = pug.compileFile(path.join( __dirname, 'SupConfirmation.pug'))
-
+export const pugFile = pug.compileFile(
+  path.join(__dirname, 'SupConfirmation.pug')
+);
 
 export class SupConfirmation extends Email {
-  constructor(to: Player) {
+  constructor(to: Player, challenge: Challenge) {
     super(
       to,
-      'Você foi convidado a ser supervisor de ${playerName}...', pugFile({
+      'Você foi convidado a ser supervisor de ${playerName}... com  o desafio ${challenge.description}',
+      pugFile({
         player: to.name,
       })
     );
@@ -23,14 +25,12 @@ const axiosInstance = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com/',
 });
 
-
-
 const getPlayer = async () => {
   try {
     const res = await axiosInstance({
       method: 'get',
       url: 'challenge/player',
-      data: 'player'
+      data: 'player',
     });
     return res.data;
   } catch (err) {
@@ -43,6 +43,3 @@ const getPlayer = async () => {
     }
   }
 };
-
-
-
