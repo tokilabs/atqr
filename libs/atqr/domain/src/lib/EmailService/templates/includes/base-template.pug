@@ -1,20 +1,21 @@
 
 mixin email-content(h1, p1, src, p2, p3, p4)
-  .content-wrapper
-    h1=h1
-    p.p1=p1
-    |
-    .image
-      img(src=src)
-    p.p2=p2
-    |
-    p.p3=p3
-    |
-    p.p4=p4
-    |
+  .content-frame
+    .content-wrapper
+      h1=h1
+      p.p1=p1
+      |
+      .image
+        img(src=src)
+      p.p2=p2
+      |
+      p.p3=p3
+      |
+      p.p4=p4
+      |
 
 mixin button(href, name)
-    .btn-wrapper
-      a(href=href)&attributes(attributes)= name
+  .btn-wrapper
+    a(href=href)&attributes(attributes)= name
 
 
