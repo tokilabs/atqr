@@ -27,7 +27,7 @@ export type ChallengeRequiredProps = {
   deadline: Date;
   goal: String;
   player: Player;
-  price: Number;
+  price: number;
   supervisorName: String;
   supervisorEmail: String;
   status: ChallengeStatusEnum;
@@ -43,7 +43,7 @@ export class Challenge extends Entity {
   private _paymentMethod?: PaymentMethod;
   @Type(() => Player)
   private _player: Player;
-  private _price: Number;
+  private _price: number;
   @Transform(({ value }) => new EmailAddress(value))
   private _supervisorEmail: EmailAddress;
   private _supervisorName: string;
