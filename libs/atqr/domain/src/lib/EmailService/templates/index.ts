@@ -1,9 +1,10 @@
-export * from './deadLineEmail'
+export * from './confirmEmail'
+export * from './youWereChallenged'
 export * from './challengeStarted'
 export * from './supConfirmation'
+export * from './supAccepted'
+export * from './supDenied'
+export * from './deadLineEmail'
 export * from './payThePrice'
 export * from './congrats'
-export * from './youWereChallenged'
 
-
-//acrescentar sup accepted, denied, confirm email

@@ -19,7 +19,7 @@
     "atqr:db:push": "yarn prisma db push --schema ./apps/atqr/api/prisma/schema.prisma",
     "_________ATQR REPO MAINTENANCE_________": "_________________",
     "prepare": "husky install",
-    "post-checkout": "yarn && yarn run atqr:generate",
+    "post-checkout": "yarn && yarn run atqr:db:generate",
     "commit": "git-cz",
     "lint": "eslint . --ext .js,.jsx"
   },
