@@ -1,6 +1,6 @@
 import { Exception } from '@tokilabs/lang';
 import { Email, IMailer } from '../EmailService';
-import { IChallengeRepository } from '../repository.interfaces';
+import { IChallengeRepository } from '../challenge/challengeRepo.interface';
 
 export class NotificationService {
   constructor(
