@@ -1,5 +1,5 @@
 import { Guid } from '@tokilabs/lang';
-import { Challenge } from './challenge/challenge.entity';
+import { Challenge } from './challenge.entity';
 
 export const IChallengeRepository = Symbol.for('IChallengeRepository');
 
