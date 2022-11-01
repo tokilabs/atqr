@@ -134,20 +134,7 @@ export class ChallengeController {
 
   // TODO Implement change payment endpoint and fix return
 
-  @Patch(':id/payment')
-  changePayment(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Param('id') id: Guid,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
-  ): void {
-    return;
-  }
-  @Patch(':id/status')
-  async updateStatus(
-    @Param('id') id: Guid,
-    @Body() status: ChallengeStatus
-  ): Promise<void> {
+   async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
       challenge.updateOverdueStatus();
