@@ -32,22 +32,18 @@
     <!-- CSS
 	============================================ -->
 
-    <!-- Icon Font CSS -->
-    <link rel="stylesheet" href="assets/css/all.min.css" />
-    <link rel="stylesheet" href="assets/css/flaticon.css" />
-
-    <!-- Plugins CSS -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="assets/css/magnific-popup.css" />
-    <link rel="stylesheet" href="assets/css/aos.css" />
-    <link rel="stylesheet" href="assets/css/nice-select.css" />
+  <link rel="stylesheet" href="../../assets/css/aos.css">
+  <link rel="stylesheet" href="../../assets/css/flaticon.css">
+  <link rel="stylesheet" href="../../assets/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+  <link rel="stylesheet" href="../../assets/css/style.min.css">
 
     <!-- Main Style CSS -->
     <link rel="stylesheet" href="createdChallenge.css" />
   </head>
 
   <body>
+  <div class="main-wrapper">
     <!-- Pricing Start -->
     <div class="meeta-pricing meeta-pricing-2 meeta-pricing-4 section-padding">
       <div class="container">
@@ -77,6 +73,9 @@
                   <li id="description">{{description}}</li>
                   <li id="deadline">Até: {{deadline}}</li>
                 </ul>
+                <div class="text">
+                  <textarea name="" id="text" cols="30" rows="10"></textarea>
+                </div>
                 <button class="congratsButton" href="price.html"
                   >{{player}} cumpriu o desafio!</a
                 >
@@ -99,24 +98,14 @@
 
     <!-- Modernizer & jQuery JS -->
     <script src="/apps/atqr/web/src/assets/Meeta/assets/js/vendor/modernizr-3.11.7.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/vendor/jquery-1.12.4.min.js"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/popper.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/bootstrap.min.js"></script>
-
-    <!-- Plugins JS -->
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/swiper-bundle.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/back-to-top.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/jquery.magnific-popup.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/jquery.counterup.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/waypoints.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/aos.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets//js/jquery.nice-select.min.js"></script>
+      <script src="../../assets/js/all.js"></script>
+    <script src="../../assets/js/back-to-top.js"></script>
 
     <!-- Main JS -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/apps/atqr/web/src/assets/Meeta/assets/js/main.js"></script>
+    <script src="../../assets/js/main.js"></script>
     <script src="createdChallenge.js"></script>
+ </div>
   </body>
 </html>
