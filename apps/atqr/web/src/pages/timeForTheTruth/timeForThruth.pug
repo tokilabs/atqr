@@ -1,0 +1,38 @@
+doctype html
+
+.main-wrapper
+  // Pricing Start
+  .meeta-pricing.meeta-pricing-2.meeta-pricing-4.section-padding
+    .container
+      // Section Title Start
+      .meeta-section-title-2.section-title-4.text-center
+        h4.sub-title Eu Duvido
+        h2#player.main-title.text-white
+          | E ai .... {{player}} cumpriu o desafio ?
+      // Section Title End
+      .row.gy-5.justify-content-center.meeta-pricing-row
+        .col-lg-4.col-md-8
+        .col-lg-4.col-md-8
+          // Single Pricing Start
+          .single-pricing.color-2
+            .pricing-header
+              h3.price_title Apostou:
+              .price
+                span#price
+                  sup R$
+                  | {{price}}
+            .pricing-body
+              ul
+                li#player {{player}}
+                li#description {{description}}
+                li#deadline At&eacute;: {{deadline}}
+              .text
+                textarea#text(name='' cols='30' rows='10')
+              button.congratsButton(href='price.html')
+                | {{player}} cumpriu o desafio!
+                br
+              button.reproveButton(href='price.html')
+                | {{player}} falhou miseravelmente
+          // Single Pricing End
+        .col-lg-4.col-md-8
+
