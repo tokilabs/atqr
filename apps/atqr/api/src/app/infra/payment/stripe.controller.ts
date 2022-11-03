@@ -58,7 +58,7 @@ export class StripeController implements OnApplicationBootstrap {
     switch (event.type) {
       case 'payment_intent.succeeded':
         {
-          const paymentIntent = event.data.object as Stripe.PaymentIntent;
+          const paymentIntent  = event.data.object as Stripe.PaymentIntent;
 
           console.log(
             `PaymentIntent for ${paymentIntent.amount} was successful!`

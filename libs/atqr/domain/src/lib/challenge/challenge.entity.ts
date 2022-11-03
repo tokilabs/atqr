@@ -1,7 +1,7 @@
 import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
-import { PaymentMethodEntity } from '../PaymentMethod';
+import { PaymentEntity } from '../payment/payment.entity';
 
 import { Player } from '../player/player.entity';
 
@@ -33,7 +33,7 @@ export class Challenge {
     private _player: Player,
     price: number,
     deadline: Date,
-    private _paymentMethod?: PaymentMethodEntity,
+    private _paymentMethod?: PaymentEntity,
     _status: ChallengeStatus = ChallengeStatus.Ongoing,
     private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
   ) {
@@ -87,7 +87,7 @@ export class Challenge {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
   }
-  changePaymentMethod(paymentMethod: PaymentMethodEntity) {
+  changePaymentMethod(paymentMethod: PaymentEntity) {
     this._paymentMethod = paymentMethod;
   }
 

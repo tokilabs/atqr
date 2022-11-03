@@ -5,9 +5,11 @@ import {
   InvalidParameterInfo,
   InvalidParametersException,
 } from '../exceptions/invalidParameters.exception';
+import { PaymentEntity } from '../payment/payment.entity';
 
 export class Player {
   private _id: Guid;
+  private _paymentEntity: PaymentEntity;
 
   constructor(
     private _name: string,
@@ -44,5 +46,9 @@ export class Player {
 
   get challenges() {
     return this._challenges;
+  }
+
+  get paymentEntity() {
+    return this._paymentEntity;
   }
 }

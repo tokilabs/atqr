@@ -1,6 +1,9 @@
+import { Guid } from '@tokilabs/lang/'
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Stripe from 'stripe';
+import {Stripe} from 'stripe';
+import PaymentIntent from 'stripe';
+import { Challenge } from '@atqr/domain';
 
 @Injectable()
 export class StripeService implements OnApplicationBootstrap {
@@ -24,19 +27,18 @@ export class StripeService implements OnApplicationBootstrap {
   }
 
   async retrieveCustomer(
-    customerId: string
+    challenge: Challenge
   ): Promise<Stripe.Response<Stripe.Customer | Stripe.DeletedCustomer>> {
-    const customer = await this.stripeClient.customers.retrieve(customerId);
+    const customer = await this.stripeClient.customers.retrieve(challenge.player.paymentEntity.customerId);
     if (customer.deleted) {
       throw new Error('User was deleted');
     }
     return customer;
   }
 
-  // TODO: Provide parameter type
-  async getPaymentMethod(customerId): Promise<Stripe.PaymentMethod> {
+  async getPaymentMethod(challenge: Challenge): Promise<Stripe.PaymentMethod> {
     const paymentMethods = await this.stripeClient.paymentMethods.list({
-      customer: customerId,
+      customer: challenge.player.paymentEntity.customerId,
       type: 'card',
     });
     return paymentMethods.data[0];
@@ -59,26 +61,29 @@ export class StripeService implements OnApplicationBootstrap {
     });
   }
 
-  // TODO: Provide parameter type
-  async chargeCard(customerId) {
-    // TODO: Define Payment intent and Customer Types
-    let paymentIntent, customer;
+
+
+  // Done: Provide parameter type
+  async chargeCard(challenge: Challenge) {
+    // Done: Define Payment intent and Customer Types
+    let paymentIntent: Stripe.PaymentIntent, customer: Stripe.Customer
     try {
       // You need to attach the PaymentMethod to a Customer in order to reuse
       // Since we are using test cards, create a new Customer here
       // You would do this in your payment flow that saves cards
-      customer = await this.retrieveCustomer(customerId);
+
+      customer = await this.retrieveCustomer(challenge.player.paymentEntity.customerId);
 
       // List the customer's payment methods to find one to charge
-      const paymentMethod = await this.getPaymentMethod(customerId);
+      const paymentMethod = await this.getPaymentMethod(challenge.player.paymentEntity.customerId);
 
       // Create and confirm a PaymentIntent with the order amount, currency,
       // Customer and PaymentMethod ID
 
-      paymentIntent = this.createPaymentIntent(
+      paymentIntent = await this.createPaymentIntent(
         customer,
         paymentMethod,
-        1499, // Todo: Get value from challenge,
+        challenge.price, // Done: Get value from challenge,
         false
       );
 
@@ -99,7 +104,7 @@ export class StripeService implements OnApplicationBootstrap {
           paymentMethod: err.raw.payment_method.id,
           clientSecret: err.raw.payment_intent.client_secret,
           publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
-          amount: 1499, // TODO: Get value from challenge
+          amount: challenge.price, // DONE: Get value from challenge
           card: {
             brand: err.raw.payment_method.card.brand,
             last4: err.raw.payment_method.card.last4,
@@ -120,18 +125,18 @@ export class StripeService implements OnApplicationBootstrap {
     return;
   }
 
-  // TODO: Provide parameter type
-  async verifyFunds(customerId) {
-    // TODO: Define Payment intent and Customer Types
-    let paymentIntent, customer;
+  // Done: Provide parameter type
+  async verifyFunds(challenge: Challenge) {
+    // Done: Define Payment intent and Customer Types
+    let paymentIntent: Stripe.PaymentIntent, customer: Stripe.Customer;
     try {
       // You need to attach the PaymentMethod to a Customer in order to reuse
       // Since we are using test cards, create a new Customer here
       // You would do this in your payment flow that saves cards
-      customer = await this.retrieveCustomer(customerId);
+      customer = await this.retrieveCustomer(challenge.player.paymentEntity.customerId);
 
       // List the customer's payment methods to find one to charge
-      const paymentMethod = await this.getPaymentMethod(customerId);
+      const paymentMethod = await this.getPaymentMethod(challenge.player.paymentEntity.customerId);
 
       // Create and confirm a PaymentIntent with the order amount, currency,
       // Customer and PaymentMethod ID
@@ -139,7 +144,7 @@ export class StripeService implements OnApplicationBootstrap {
       paymentIntent = this.createPaymentIntent(
         customer,
         paymentMethod,
-        1499, // Todo: Get value from challenge
+        challenge.price, // Done: Get value from challenge
         false
       );
 
@@ -160,7 +165,7 @@ export class StripeService implements OnApplicationBootstrap {
           paymentMethod: err.raw.payment_method.id,
           clientSecret: err.raw.payment_intent.client_secret,
           publicKey: process.env.STRIPE_PUBLISHABLE_KEY,
-          amount: 1499, // TODO: Get value from challenge
+          amount: challenge.price, // Done: Get value from challenge
           card: {
             brand: err.raw.payment_method.card.brand,
             last4: err.raw.payment_method.card.last4,
@@ -185,7 +190,7 @@ export class StripeService implements OnApplicationBootstrap {
     paymentMethod: Stripe.PaymentMethod,
     amount: number,
     confirm = false
-  ): Promise<Stripe.Response<Stripe.PaymentIntent>> {
+  ): Promise<Stripe.PaymentIntent> {
     return await this.stripeClient.paymentIntents.create({
       amount,
       currency: 'brl',
