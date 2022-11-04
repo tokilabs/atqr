@@ -26,6 +26,14 @@ export class PaymentEntity {
     this.token = token;
   }
 
+  getId() {
+    return this.id
+  }
+
+  getCustomerId() {
+    return this.customerId
+  }
+
 
   getToken() {
     return this.token;

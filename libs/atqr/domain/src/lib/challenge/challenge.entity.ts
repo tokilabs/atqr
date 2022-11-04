@@ -80,6 +80,7 @@ export class Challenge {
   get player() {
     return this._player;
   }
+
   get paymentMethod() {
     return this._paymentMethod;
   }
