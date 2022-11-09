@@ -82,7 +82,6 @@ export class StripeService implements OnApplicationBootstrap {
       const paymentMethod = await this.getPaymentMethod(
         challenge.player.paymentEntity
       );
-
       // Create and confirm a PaymentIntent with the order amount, currency,
       // Customer and PaymentMethod ID
 
