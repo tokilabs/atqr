@@ -84,14 +84,13 @@ export class ChallengeRepository {
       include: { player: true },
     });
     return prismaChallenges.map((pc) => {
-      plainToInstance(Challenge, prismaChallenges);
+      return plainToInstance(Challenge, pc);
       // TODO: Finalize Conversion from prisma entity to domain entity
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return pc as any as Challenge;
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     });
   }
 
-  update(challenge: Challenge): void {
+  update(challenge: Challenge) {
     this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
       data: {
