@@ -1,0 +1,13 @@
+doctype html
+html
+  head
+      include includes/base-style.pug
+
+  body
+    include includes/base-template.pug
+
+    +email-content('Entra no carro,',
+    'Confirma seu e-mail pra gente começar o seu desafio 💅',
+    './imgs/confirm-email.gif')
+
+    +button('', 'Confirma 😈')(class="btn")
