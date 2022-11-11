@@ -100,6 +100,9 @@ export class Challenge {
     } else {
       return false;
     }
+   
+  }
+  updateStatus(status: ChallengeStatus) {
     this._status = status;
   }
 }
