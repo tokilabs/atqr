@@ -93,14 +93,14 @@ export class Challenge {
   /**
    * Checks if the challenge became overdue and returns true if the status changes
    */
-  updateOverdueStatus(status: ChallengeStatus): boolean {
+  updateOverdueStatus(): boolean {
     if (this.deadline < new Date()) {
       this._status = ChallengeStatus.Overdue;
       return true;
     } else {
       return false;
     }
-   
+
   }
   updateStatus(status: ChallengeStatus) {
     this._status = status;

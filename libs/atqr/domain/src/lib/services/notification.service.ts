@@ -13,14 +13,14 @@ export class NotificationService {
     this.challengeRepository.findOverdueChallenges().then((challenges) => {
       Promise.all(
         challenges.map((c) => {
-          if (c.updateOverdueStatus(ChallengeStatus[c.status]) === true) {
+          if (c.updateOverdueStatus() === true) {
             try {
               const player = c.player;
               const email = new DeadLineEmail(
                 player,
               );
               this.mailer.sendMail(email);
-              c.updateOverdueStatus(ChallengeStatus.Overdue);
+              c.updateOverdueStatus();
             } catch (err) {
               throw new Exception(
                 `Error updating overdue status of Challenge ${c.id}: ${
