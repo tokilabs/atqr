@@ -1,7 +1,7 @@
 import { Guid } from '@tokilabs/lang';
-import { Challenge } from './challenge/challenge.entity';
-import { EmailAddress } from './EmailService';
-import { Player } from './player';
+import { Challenge } from './challenge.entity';
+import { EmailAddress } from '../EmailService';
+import { Player } from '../player';
 
 export interface IChallengeRepository {
   create(challenge: Challenge): void;
