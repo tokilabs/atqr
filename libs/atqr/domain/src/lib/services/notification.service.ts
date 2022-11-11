@@ -1,6 +1,8 @@
 import { Exception } from '@tokilabs/lang';
-import { Email, IMailer } from '../EmailService';
-import { IChallengeRepository } from '../repository.interfaces';
+import { ChallengeStatus } from '../challenge';
+import { Email ,DeadLineEmail, IMailer } from '../EmailService';
+import { IChallengeRepository } from '../challenge/challengeRepo.interface';
+
 
 export class NotificationService {
   constructor(
@@ -15,13 +17,11 @@ export class NotificationService {
           if (c.updateOverdueStatus() === true) {
             try {
               const player = c.player;
-              const email = new Email(
+              const email = new DeadLineEmail(
                 player,
-                'OverdueChallenge',
-                'Your time is over'
               );
               this.mailer.sendMail(email);
-              this.challengeRepository.update(c);
+              c.updateOverdueStatus();
             } catch (err) {
               throw new Exception(
                 `Error updating overdue status of Challenge ${c.id}: ${

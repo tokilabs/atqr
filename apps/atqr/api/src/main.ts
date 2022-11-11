@@ -39,7 +39,7 @@ async function bootstrap() {
 
   const prismaService = app.get(PrismaService);
   await prismaService.enableShutdownHooks(app);
-
+  app.enableCors();
   const port = process.env.PORT || 3333;
   await app.listen(port);
 
