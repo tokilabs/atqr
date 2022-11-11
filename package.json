@@ -21,7 +21,13 @@
     "prepare": "husky install",
     "post-checkout": "yarn && yarn run atqr:db:generate",
     "commit": "git-cz",
-    "lint": "eslint . --ext .js,.jsx"
+    "lint": "eslint  --ext .ts,.js,.jsx",
+    "lint-staged":"lint-staged"
+  },
+  "lint-staged": {
+    "*ts": [
+      "yarn lint"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -43,8 +49,9 @@
     "core-js": "3.6.5",
     "cron": "1.8.2",
     "email-validator": "2.0.4",
-    "form-data": "4.0.0",
-    "guid-typescript": "1.0.9",
+    "form-data": "^4.0.0",
+    "guid-typescript": "^1.0.9",
+    "lint-staged": "13.0.3",
     "mailgun": "0.5.0",
     "mailgun.js": "5.0.3",
     "mime-type": "4.0.0",
