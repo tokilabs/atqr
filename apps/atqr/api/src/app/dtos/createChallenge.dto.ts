@@ -1,4 +1,4 @@
-import { PaymentMethodEnum, Player } from '@atqr/domain';
+import { PaymentEntity, Player } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -31,7 +31,7 @@ export class CreateChallengeDto {
 
   // TODO: @yfernandes Resolve with real interface
   paymentMethod?: {
-    method: PaymentMethodEnum;
+    method: PaymentEntity; // paymentMethodEnum wasnt right/used in the payment entity @rai changed it
     paymentService: `pagar.me` | `pagseguro`;
     token: string;
   };

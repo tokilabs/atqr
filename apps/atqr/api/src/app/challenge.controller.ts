@@ -4,7 +4,7 @@ import {
   ChallengeStatus,
   Congrats,
   EmailAddress,
-  PaymentMethodEntity,
+  PaymentEntity,
   PayThePrice,
   Player,
   SupConfirmation,
@@ -69,7 +69,7 @@ export class ChallengeController {
       // TODO: paramos aqui!
 
       if (challengeDto.paymentMethod) {
-        const paymentMethod = new PaymentMethodEntity(
+        const paymentMethod = new PaymentEntity(
           challengeDto.paymentMethod.method,
           challengeDto.paymentMethod.paymentService,
           challengeDto.paymentMethod.token

@@ -1,7 +1,7 @@
 import { Challenge } from './challenge.entity';
 import { Player } from '../player';
 import { Guid } from '@tokilabs/lang/';
-import { EmailAddress, PaymentMethodEntity, PaymentMethodEnum } from '../..';
+import { EmailAddress, PaymentEntity } from '../..';
 
 // arrange, act and assert
 describe('Challenge', () => {
@@ -9,8 +9,8 @@ describe('Challenge', () => {
     const email = new EmailAddress('fulano@hotmai.com');
     const player = new Player('fulano', email);
     const date = new Date(2022, 11, 12);
-    const creditCard = PaymentMethodEnum.creditCard;
-    const payment = new PaymentMethodEntity(creditCard, 'pagar.me', 'hau20283');
+    // const creditCard = PaymentMethodEnum.creditCard;
+    const payment = new PaymentEntity(creditCard, 'pagar.me', 'hau20283');
 
     const challenge = new Challenge(
       'goal',
@@ -35,7 +35,7 @@ describe('Challenge', () => {
     expect(challenge.supervisorEmail).toBe('emailSupervisor');
     expect(challenge.supervisorName).toBe('meuSupervisor');
     expect(challenge.price).toBe(30);
-    expect(challenge.paymentMethod).toBeInstanceOf(PaymentMethodEntity);
+    expect(challenge.paymentMethod).toBeInstanceOf(PaymentEntity);
   });
 
   test('Should throw a error if price is less than 24', () => {
@@ -74,14 +74,15 @@ describe('Challenge', () => {
 
   test('Should correctly change the payment method when given the data needed', () => {
     //arrange
+    //change paymentMethodEnum. It should exist in payment entity
     const creditCard = PaymentMethodEnum.creditCard;
     const debitCard = PaymentMethodEnum.debitCard;
-    const newPaymentMethod = new PaymentMethodEntity(
+    const newPaymentMethod = new PaymentEntity(
       debitCard,
       'pagseguro',
       'bi92'
     );
-    const payment = new PaymentMethodEntity(creditCard, 'pagar.me', 'haa20283');
+    const payment = new PaymentEntity(creditCard, 'pagar.me', 'haa20283');
 
     //act
     const challenge = new Challenge(
