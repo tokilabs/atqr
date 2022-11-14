@@ -1,4 +1,9 @@
-import { Challenge, EmailAddress, IPlayerRepository, Player } from '@atqr/domain';
+import {
+  Challenge,
+  EmailAddress,
+  IPlayerRepository,
+  Player,
+} from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Player as PrismaPlayer } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
@@ -6,7 +11,7 @@ import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
-export class PlayerRepository implements IPlayerRepository{
+export class PlayerRepository implements IPlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   async findUnique(id: Guid): Promise<Player> {
@@ -62,4 +67,3 @@ export class PlayerRepository implements IPlayerRepository{
     });
   }
 }
-
