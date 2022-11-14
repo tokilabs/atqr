@@ -163,15 +163,21 @@ export class ChallengeController {
     return {} as Challenge;
   }
 
+ raquel/atqr-96-refactor-challenge-page
+
+
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      if (challenge.updateStatus(status) == true) {
-        if (
-          this.notificationService.notifyCompletedChallenges(challenge) == true
-        ) {
-          this.paymentService.chargeCard(challenge.player);
-        }
+      challenge.updateOverdueStatus(status);
+      this.challengeRepository.update(challenge);
+
+      if (challenge.status == ChallengeStatus.Completed) {
+        const email = new Congrats(challenge.player);
+        this.emailService.sendMail(email);
+
+ 
+ development
       } else {
         throw new Error('challenge not updated');
       }
