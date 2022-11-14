@@ -19,9 +19,15 @@
     "atqr:db:push": "yarn prisma db push --schema ./apps/atqr/api/prisma/schema.prisma",
     "_________ATQR REPO MAINTENANCE_________": "_________________",
     "prepare": "husky install",
-    "post-checkout": "yarn && yarn run atqr:generate",
+    "post-checkout": "yarn && yarn run atqr:db:generate",
     "commit": "git-cz",
-    "lint": "eslint . --ext .js,.jsx"
+    "lint": "eslint  --ext .ts,.js,.jsx",
+    "lint-staged":"lint-staged"
+  },
+  "lint-staged": {
+    "*ts": [
+      "yarn lint"
+    ]
   },
   "private": true,
   "dependencies": {
@@ -43,8 +49,9 @@
     "core-js": "3.6.5",
     "cron": "1.8.2",
     "email-validator": "2.0.4",
-    "form-data": "4.0.0",
-    "guid-typescript": "1.0.9",
+    "form-data": "^4.0.0",
+    "guid-typescript": "^1.0.9",
+    "lint-staged": "13.0.3",
     "mailgun": "0.5.0",
     "mailgun.js": "5.0.3",
     "mime-type": "4.0.0",
@@ -85,6 +92,7 @@
     "@types/body-parser": "1.19.2",
     "@types/jest": "27.4.1",
     "@types/node": "14.14.33",
+    "@types/pug": "^2.0.6",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
     "autoprefixer": "10.4.0",

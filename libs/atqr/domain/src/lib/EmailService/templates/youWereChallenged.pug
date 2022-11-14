@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    include includes/base-style.pug
+  body
+    include includes/base-template
+    +email-content('Tã tã tã tã tã tã tã tã tã tã tã tã tã tã tã tã tã tãã tãããã 🎶', 'Interrompemos a programação normal da sua vida sem graça e sem sal para informar que  #{supervisor.name} te chamou pra briga. Vai encarar? VAI ENCARAR?',
+    './imgs/you-were-challenged.gif',
+    'Na real a briga é entre você e aquela sua amante tóxica que não te larga porque você sempre acaba dando atenção pra ela. Aquela sua…*procrastinação* 🥴',
+    'E #{supervisor.name} tá fazendo o papel clássico de amigo trouxa 🤡 que acredita que ainda consegue resgatar aquela pessoa que se perdeu no relacionamento e não sabe mais onde começam e terminam as tarefas.',
+    'Todo mundo merece uma chance nessa vida né, até você 🌈')
+
+    .btn-container
+      +button('', 'Vou Encarar')(class="btn")
+      +button('', 'Darei Migué')(class="btn")
+
+

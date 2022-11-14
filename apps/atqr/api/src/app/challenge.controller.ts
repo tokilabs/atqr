@@ -4,6 +4,9 @@ import {
   ChallengeStatus,
   Congrats,
   EmailAddress,
+  NotificationService,
+  IChallengeRepository,
+  IPlayerRepository,
   PaymentMethodEntity,
   PayThePrice,
   Player,
@@ -15,6 +18,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   Patch,
   Post,
@@ -27,15 +31,17 @@ import ValidationErrors, {
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
-import { ChallengeRepository, PlayerRepository } from './repositories';
 
 @Controller('challenge')
 export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
-    private readonly challengeRepository: ChallengeRepository,
-    private readonly playerRepository: PlayerRepository,
+    @Inject(IChallengeRepository)
+    private readonly challengeRepository: IChallengeRepository,
+    @Inject(IPlayerRepository)
+    private readonly playerRepository: IPlayerRepository,
     private readonly paymentService: StripeService,
+    private readonly notificationService: NotificationService
   ) {}
 
   @Post()
@@ -96,7 +102,7 @@ export class ChallengeController {
         const emailAddress = new EmailAddress(
           challengeDto.player.emailAddress.value
         );
-        const email = new SupConfirmation(player);
+        const email = new SupConfirmation(player, challenge);
         this.emailService.sendMail(email);
       }
     } catch (error) {
@@ -157,6 +163,7 @@ export class ChallengeController {
     return {} as Challenge;
   }
 
+ raquel/atqr-96-refactor-challenge-page
 
 
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
@@ -168,19 +175,17 @@ export class ChallengeController {
       if (challenge.status == ChallengeStatus.Completed) {
         const email = new Congrats(challenge.player);
         this.emailService.sendMail(email);
-      } else {
-        const email = new PayThePrice(challenge.player);
-        this.emailService.sendMail(email);
 
-        this.paymentService.chargeCard(challenge.player);
+ 
+ development
+      } else {
+        throw new Error('challenge not updated');
       }
     } catch (error) {
-      if (error instanceof ValidationErrors) {
-        throw new HttpException(
-          { message: "We don't know what happen'd", error },
-          HttpStatus.INTERNAL_SERVER_ERROR
-        );
-      }
+      throw new HttpException(
+        "We don't know what happen'd",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }
