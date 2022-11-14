@@ -1,6 +1,7 @@
 import { Exception } from '@tokilabs/lang';
-import { Email, IMailer } from '../EmailService';
-import { IChallengeRepository } from '../repository.interfaces';
+import { Challenge, ChallengeStatus } from '../challenge';
+import { IChallengeRepository } from '../challenge/challengeRepo.interface';
+import { Congrats, Email, IMailer, PayThePrice } from '../EmailService';
 
 export class NotificationService {
   constructor(
@@ -33,5 +34,16 @@ export class NotificationService {
         })
       );
     });
+  }
+  public notifyCompletedChallenges(challenge: Challenge) {
+    if (challenge.status == ChallengeStatus.Completed) {
+      const email = new Congrats(challenge.player);
+      this.mailer.sendMail(email);
+    } else {
+      const email = new PayThePrice(challenge.player);
+      this.mailer.sendMail(email);
+      return true;
+    }
+    this.challengeRepository.update(challenge);
   }
 }

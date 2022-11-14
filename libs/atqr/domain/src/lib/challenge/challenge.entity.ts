@@ -2,7 +2,6 @@ import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
 import { PaymentMethodEntity } from '../PaymentMethod';
-
 import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
@@ -101,6 +100,7 @@ export class Challenge {
     } else {
       return false;
     }
+
   }
   updateStatus(status: ChallengeStatus) {
     this._status = status;

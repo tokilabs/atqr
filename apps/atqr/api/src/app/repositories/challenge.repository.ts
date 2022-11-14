@@ -1,4 +1,4 @@
-import { Challenge } from '@atqr/domain';
+import { Challenge, IChallengeRepository } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
@@ -6,7 +6,7 @@ import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
 
 @Injectable()
-export class ChallengeRepository {
+export class ChallengeRepository implements IChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   create(challenge: Challenge): void {
@@ -84,14 +84,13 @@ export class ChallengeRepository {
       include: { player: true },
     });
     return prismaChallenges.map((pc) => {
-      plainToInstance(Challenge, prismaChallenges);
+      return plainToInstance(Challenge, pc);
       // TODO: Finalize Conversion from prisma entity to domain entity
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return pc as any as Challenge;
+      // eslint-disable-next-line  @typescript-eslint/no-explicit-any
     });
   }
 
-  update(challenge: Challenge): void {
+  update(challenge: Challenge) {
     this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
       data: {

@@ -1,4 +1,9 @@
-import { DeadlineMonitorService, NotificationService } from '@atqr/domain';
+import {
+  DeadlineMonitorService,
+  IChallengeRepository,
+  IPlayerRepository,
+  NotificationService,
+} from '@atqr/domain';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ChallengeController } from './challenge.controller';
@@ -10,11 +15,19 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
   controllers: [ChallengeController],
   providers: [
     PrismaService,
-    ChallengeRepository,
-    PlayerRepository,
     ConfigService,
     StripeService,
     Mailer,
+    ChallengeRepository,
+    PlayerRepository,
+    {
+      provide: IChallengeRepository,
+      useClass: ChallengeRepository,
+    },
+    {
+      provide: IPlayerRepository,
+      useClass: PlayerRepository,
+    },
     {
       provide: NotificationService,
       inject: [Mailer, ChallengeRepository],
