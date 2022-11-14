@@ -98,7 +98,7 @@ export class ChallengeController {
         const emailAddress = new EmailAddress(
           challengeDto.player.emailAddress.value
         );
-        const email = new SupConfirmation(player);
+        const email = new SupConfirmation(player, challenge);
         this.emailService.sendMail(email);
       }
     } catch (error) {
@@ -158,8 +158,6 @@ export class ChallengeController {
   private changePayment(id: string): Challenge {
     return {} as Challenge;
   }
-
-
 
   private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
     try {
