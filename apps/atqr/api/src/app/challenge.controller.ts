@@ -8,7 +8,6 @@ import {
   IChallengeRepository,
   IPlayerRepository,
   PaymentMethodEntity,
-  PayThePrice,
   Player,
   SupConfirmation,
 } from '@atqr/domain';
@@ -18,7 +17,6 @@ import {
   Get,
   HttpException,
   HttpStatus,
-  NotAcceptableException,
   Inject,
   Param,
   Patch,
@@ -129,7 +127,7 @@ export class ChallengeController {
   }
 
   @Patch(':id/supervisor')
-   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   changeSupervisor(@Param('id') id: Guid): void {
     return;
   }
@@ -137,12 +135,11 @@ export class ChallengeController {
   // TODO Implement change payment endpoint and fix return
 
   @Patch(':id/payment')
-
   changePayment(
-     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @Param('id') id: Guid,
- // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() updateCreditCardTokenDto : UpdateCreditCardTokenDto
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
   ): void {
     return;
   }
@@ -153,15 +150,12 @@ export class ChallengeController {
   ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      challenge.updateOverdueStatus(status);
+      challenge.updateOverdueStatus();
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {
         const email = new Congrats(challenge.player);
         this.emailService.sendMail(email);
-
-
- development
       } else {
         throw new Error('challenge not updated');
       }
