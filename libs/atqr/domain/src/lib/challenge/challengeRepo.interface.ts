@@ -1,19 +1,32 @@
 import { Guid } from '@tokilabs/lang';
 import { Challenge } from './challenge.entity';
-
-export const IChallengeRepository = Symbol.for('IChallengeRepository');
+import { EmailAddress } from '../EmailService';
+import { Player } from '../player';
 
 export interface IChallengeRepository {
-  create(challenge: Challenge);
+  create(challenge: Challenge): void;
 
-  findMany(numberOfResults?: number);
+  findLastChallenges(amount: number): Promise<Challenge[]>;
 
-  findUnique(id: Guid);
+  findMany(numberOfResults?: number): Promise<Challenge[]>;
+
+  findUnique(id: Guid): Promise<Challenge>;
 
   findOverdueChallenges(
     numberOfResults?: number,
     skip?: number
   ): Promise<Challenge[]>;
 
-  update(challenge: Challenge);
+  update(challenge: Challenge): void;
 }
+
+export interface IPlayerRepository {
+  findUnique(id: Guid): Promise<Player>;
+
+  findByEmail(email: EmailAddress): Player;
+
+  create(player: Player): void;
+}
+
+export const IChallengeRepository = Symbol.for('IChallengeRepository');
+export const IPlayerRepository = Symbol.for('IPlayerRepository');

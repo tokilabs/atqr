@@ -5,6 +5,8 @@ import {
   Congrats,
   EmailAddress,
   NotificationService,
+  IChallengeRepository,
+  IPlayerRepository,
   PaymentMethodEntity,
   PayThePrice,
   Player,
@@ -16,6 +18,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Inject,
   Param,
   Patch,
   Post,
@@ -28,14 +31,15 @@ import ValidationErrors, {
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
-import { ChallengeRepository, PlayerRepository } from './repositories';
 
 @Controller('challenge')
 export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
-    private readonly challengeRepository: ChallengeRepository,
-    private readonly playerRepository: PlayerRepository,
+    @Inject(IChallengeRepository)
+    private readonly challengeRepository: IChallengeRepository,
+    @Inject(IPlayerRepository)
+    private readonly playerRepository: IPlayerRepository,
     private readonly paymentService: StripeService,
     private readonly notificationService: NotificationService
   ) {}
