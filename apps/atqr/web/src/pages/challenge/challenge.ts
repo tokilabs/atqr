@@ -1,4 +1,5 @@
-declare const axios: typeof import('axios').default;
+// declare const axios: typeof import('axios').default;
+import axios, { AxiosError } from 'axios';
 
 
 const axiosInstance = axios.create({
@@ -40,6 +41,16 @@ setDeadline2.innerHTML = getDeadline;
 const resumeCreatedChallenge = document.getElementById('text')
 resumeCreatedChallenge.innerHTML = 'seu desafio é' + challenge.goal + 'até a data' + challenge.deadline + '. Caso não cumpra com seu objetivo, será cobrado de você' + challenge.price + 'reais';
 
+function onClickYes(){
+ challenge.updateStatus();
+}
+onClickYes()
+
+function onClickNo(){
+challenge.updateStatus();
+// atualizar pra uma página dizendo que a resposta foi enviada e agradecendo? exibir apenas uma mensagem onde era o botão?
+}
+onClickNo()
 
 
 
