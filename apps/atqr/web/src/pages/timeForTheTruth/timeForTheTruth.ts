@@ -1,4 +1,4 @@
-import { ChallengeStatus } from '@atqr/domain';
+import { ChallengeStatus, Email } from '@atqr/domain';
 import { ChallengeController } from '../../../../api/src/app/challenge.controller';
 import { challenge } from '../challenge/challenge';
 
@@ -25,13 +25,3 @@ export class TimeForTheTruth {
 }
 
 
-const player = document.getElementById('player');
-const resumeChallenge = document.getElementById('description');
-const deadline = document.getElementById('deadline');
-const text = document.getElementById('text')
-
-const congratsButton = document.getElementsByClassName('congratsButton');
-const reproveButton = document.getElementsByClassName('reproveButton');
-
-resumeChallenge.innerHTML = 'O desafio é' + challenge.description;
-deadline.innerHTML = 'Até: ' + deadline;

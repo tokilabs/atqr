@@ -17,7 +17,7 @@ head
       .meeta-section-title-2.section-title-4.text-center
         h4.sub-title Eu Duvido
         h2#player.main-title.text-white
-          | E ai .... {{player}} cumpriu o desafio ?
+          | E ai .... {{player.name}} cumpriu o desafio ?
       // Section Title End
       .row.gy-5.justify-content-center.meeta-pricing-row
         .col-lg-4.col-md-8
@@ -32,16 +32,16 @@ head
                   | {{price}}
             .pricing-body
               ul
-                li#player {{player}}
-                li#description {{description}}
-                li#deadline At&eacute;: {{deadline}}
+                li player.name 
+                li description
+                li deadline At&eacute;:
               .text
                 textarea#text(name='' cols='30' rows='10')
               button.congratsButton(href='price.html')
-                | {{player}} cumpriu o desafio!
+                |  player.name cumpriu o desafio!
                 br
               button.reproveButton(href='price.html')
-                | {{player}} falhou miseravelmente
+                |  player.name falhou miseravelmente
           // Single Pricing End
         .col-lg-4.col-md-8
 
