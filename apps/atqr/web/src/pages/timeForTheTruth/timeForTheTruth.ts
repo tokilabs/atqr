@@ -1,27 +1,25 @@
-import { ChallengeStatus, Email } from '@atqr/domain';
-import { ChallengeController } from '../../../../api/src/app/challenge.controller';
+import { ChallengeStatus } from '@atqr/domain';
+
+import { getChallenge } from '../acceptChallenge/acceptChallenge';
+import { atqrApi } from '../../services/api';
 import { challenge } from '../challenge/challenge';
 
-export class TimeForTheTruth {
-  constructor(private challengeController: ChallengeController) {}
+const api = atqrApi;
 
-  challenge = challenge;
-
-  congratsButton() {
-    let challengeStatusUpdated = this.challengeController.updateStatus(
+getChallenge().then(
+  function congratsButton() {
+    let challengeStatusUpdated = api.challenges.statusUpdated(
       challenge,
       ChallengeStatus.Completed
     );
     return challengeStatusUpdated;
-  }
+  },
 
-  reproveButton() {
-    let challengeStatusUpdated = this.challengeController.updateStatus(
+  function reproveButton() {
+    let challengeStatusUpdated = api.challenges.statusUpdated(
       challenge,
       ChallengeStatus.Failed
     );
     return challengeStatusUpdated;
   }
-}
-
-
+);
