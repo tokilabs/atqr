@@ -37,7 +37,7 @@ export class ChallengeController {
     private readonly emailService: Mailer,
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
-    private readonly paymentService: StripeService,
+    private readonly paymentService: StripeService
   ) {}
 
   @Post()
@@ -134,6 +134,7 @@ export class ChallengeController {
   ): Promise<Challenge> {
     // TODO ---------- REFACTOR ME ------------------
     // eslint-disable-next-line no-constant-condition
+
     if (true) {
       this.changePayment('Change Me');
       this.updateSupervisorStatus(
@@ -155,38 +156,40 @@ export class ChallengeController {
     id: Guid,
     updateSupervisorDto: UpdateSupervisorStatusDto
   ): Promise<void> {
+    const urlSearchParams = new URLSearchParams();
     const challenge = await this.challengeRepository.findUnique(id);
     challenge.updateSupervisorStatus(updateSupervisorDto.SupervisorEnum);
     if (updateSupervisorDto.SupervisorEnum == SupervisorEnum.notInvited) {
-       
-        const email = new SupConfirmation(challenge.player);
-        this.emailService.sendMail(email);
-        
+      const email = new SupConfirmation(challenge.player);
+      this.emailService.sendMail(email);
     }
-    if(updateSupervisorDto.SupervisorEnum ==
-      SupervisorEnum.askedIfTheGoalIsAccomplished)
-      {const email = new DeadLineEmail(challenge.player);
-        this.emailService.sendMail(email);
-      } 
-        
-      if(updateSupervisorDto.SupervisorEnum ==
-        SupervisorEnum.repliedTheGoalWasSuccess) {
-        const urlSearchParams = new URLSearchParams
-        const url = `http://localhost:3333/api/challenge/${id}`;
-        const data = { id: id, status: SupervisorEnum.repliedTheGoalWasSuccess};
-        
-        urlSearchParams.append(url, data.status)
-      }
+    if (
+      updateSupervisorDto.SupervisorEnum ==
+      SupervisorEnum.askedIfTheGoalIsAccomplished
+    ) {
+      const email = new DeadLineEmail(challenge.player);
+      this.emailService.sendMail(email);
+    }
 
-      if(updateSupervisorDto.SupervisorEnum ==
-        SupervisorEnum.repliedTheGoalWasFailed){
-        const url = `http://localhost:3333/api/challenge/${id}`;
-        const data = { id: id, status: ChallengeStatus.Failed };
-        this.httpService.axiosRef.patch(url, data);
-      } 
-      else {
-        this.challengeRepository.update(challenge);
-      }
+    if (
+      updateSupervisorDto.SupervisorEnum ==
+      SupervisorEnum.repliedTheGoalWasSuccess
+    ) {
+      const url = `http://localhost:3333/api/challenge/${id}`;
+      const data = { id: id, status: SupervisorEnum.repliedTheGoalWasSuccess };
+
+      urlSearchParams.append(url, data.status);
+    }
+
+    if (
+      updateSupervisorDto.SupervisorEnum ==
+      SupervisorEnum.repliedTheGoalWasFailed
+    ) {
+      const url = `http://localhost:3333/api/challenge/${id}`;
+      const data = { id: id, status: ChallengeStatus.Failed };
+      urlSearchParams.append(url, data.status);
+    } else {
+      this.challengeRepository.update(challenge);
     }
   }
 
