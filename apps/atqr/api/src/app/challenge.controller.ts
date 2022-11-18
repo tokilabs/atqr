@@ -22,7 +22,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
 import { UpdateSupervisorStatusDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
@@ -39,7 +38,6 @@ export class ChallengeController {
     private readonly challengeRepository: ChallengeRepository,
     private readonly playerRepository: PlayerRepository,
     private readonly paymentService: StripeService,
-    private readonly httpService: HttpService
   ) {}
 
   @Post()
@@ -159,34 +157,37 @@ export class ChallengeController {
   ): Promise<void> {
     const challenge = await this.challengeRepository.findUnique(id);
     challenge.updateSupervisorStatus(updateSupervisorDto.SupervisorEnum);
-    switch (true) {
-      case updateSupervisorDto.SupervisorEnum == SupervisorEnum.notInvited: {
+    if (updateSupervisorDto.SupervisorEnum == SupervisorEnum.notInvited) {
+       
         const email = new SupConfirmation(challenge.player);
         this.emailService.sendMail(email);
-        break;
-      }
-      case updateSupervisorDto.SupervisorEnum ==
-        SupervisorEnum.askedIfTheGoalIsAccomplished: {
-        const email = new DeadLineEmail(challenge.player);
+        
+    }
+    if(updateSupervisorDto.SupervisorEnum ==
+      SupervisorEnum.askedIfTheGoalIsAccomplished)
+      {const email = new DeadLineEmail(challenge.player);
         this.emailService.sendMail(email);
-        break;
-      }
-      case updateSupervisorDto.SupervisorEnum ==
-        SupervisorEnum.repliedTheGoalWasSuccess: {
+      } 
+        
+      if(updateSupervisorDto.SupervisorEnum ==
+        SupervisorEnum.repliedTheGoalWasSuccess) {
+        const urlSearchParams = new URLSearchParams
         const url = `http://localhost:3333/api/challenge/${id}`;
-        const data = { id: id, status: ChallengeStatus.Completed };
-        this.httpService.axiosRef.patch(url, data);
-        break;
+        const data = { id: id, status: SupervisorEnum.repliedTheGoalWasSuccess};
+        
+        urlSearchParams.append(url, data.status)
       }
-      case updateSupervisorDto.SupervisorEnum ==
-        SupervisorEnum.repliedTheGoalWasFailed: {
+
+      if(updateSupervisorDto.SupervisorEnum ==
+        SupervisorEnum.repliedTheGoalWasFailed){
         const url = `http://localhost:3333/api/challenge/${id}`;
         const data = { id: id, status: ChallengeStatus.Failed };
         this.httpService.axiosRef.patch(url, data);
-        break;
+      } 
+      else {
+        this.challengeRepository.update(challenge);
       }
     }
-    this.challengeRepository.update(challenge);
   }
 
   // TODO Implement change payment endpoint and fix return
