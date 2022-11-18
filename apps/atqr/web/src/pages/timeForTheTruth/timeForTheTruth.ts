@@ -1,25 +1,41 @@
 import { ChallengeStatus } from '@atqr/domain';
+import { getUrlId } from '../../services/urlDetails';
+import { atqrApi } from '../../services/apiClient';
 
-import { getChallenge } from '../acceptChallenge/acceptChallenge';
-import { atqrApi } from '../../services/api';
-import { challenge } from '../challenge/challenge';
-
-const api = atqrApi;
-
-getChallenge().then(
-  function congratsButton() {
-    let challengeStatusUpdated = api.challenges.statusUpdated(
-      challenge,
+const idUrl = getUrlId.toString();
+const urlId = idUrl;
+export async function congratsButton() {
+  const challengeStatusUpdated =
+    await atqrApi.challenges.challengeUpdated.statusUpdated(
+      idUrl, // pegar id da url
       ChallengeStatus.Completed
     );
-    return challengeStatusUpdated;
-  },
 
-  function reproveButton() {
-    let challengeStatusUpdated = api.challenges.statusUpdated(
-      challenge,
-      ChallengeStatus.Failed
-    );
+  if (!urlId) {
+    return Error('error');
+  }
+  if (challengeStatusUpdated != ChallengeStatus.Completed) {
+    return Error('error');
+  } else {
     return challengeStatusUpdated;
   }
-);
+}
+congratsButton();
+
+export async function reproveButton() {
+  const challengeStatusUpdated =
+    await atqrApi.challenges.challengeUpdated.statusUpdated(
+      idUrl, // pegar id da url,
+      ChallengeStatus.Failed
+    );
+
+  if (!urlId) {
+    return Error('error');
+  }
+  if (challengeStatusUpdated != ChallengeStatus.Failed) {
+    return Error('error');
+  } else {
+    return challengeStatusUpdated;
+  }
+}
+reproveButton();
