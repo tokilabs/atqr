@@ -1,7 +1,8 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge';
-import { IChallengeRepository } from '../challenge/challengeRepo.interface';
-import { Congrats, Email, IMailer, PayThePrice } from '../EmailService';
+import { errAsync, ResultAsync } from 'neverthrow';
+import { Challenge } from '../challenge';
+import { Email, IMailer } from '../EmailService';
+import { IChallengeRepository } from '../repository.interfaces';
 
 export class NotificationService {
   constructor(
@@ -9,7 +10,7 @@ export class NotificationService {
     private challengeRepository: IChallengeRepository
   ) {}
 
-  public notifyOverdueChallenges() {
+  public notifyOverdueChallenges(): ResultAsync<void, Error> {
     this.challengeRepository.findOverdueChallenges().then((challenges) => {
       Promise.all(
         challenges.map((c) => {
@@ -24,16 +25,15 @@ export class NotificationService {
               this.mailer.sendMail(email);
               this.challengeRepository.update(c);
             } catch (err) {
-              throw new Exception(
-                `Error updating overdue status of Challenge ${c.id}: ${
-                  err.message || err
-                }`
+              return errAsync(
+                new Error('Error updating overdue status of Challenge')
               );
             }
           }
         })
       );
     });
+    return;
   }
   public notifyCompletedChallenges(challenge: Challenge) {
     if (challenge.status == ChallengeStatus.Completed) {

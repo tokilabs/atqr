@@ -1,7 +1,8 @@
 import { atqrApi } from '../../services/api';
 import { EmailAddress, Player } from '@atqr/domain';
 import { CreateChallengeDto } from 'apps/atqr/api/src/app/dtos';
-
+import { AxiosError } from 'axios';
+import axiosInstance from '../acceptChallenge/acceptChallenge';
 // challenge attribute
 const yourName = document.getElementById('seu-nome').innerHTML;
 const yourEmail = document.getElementById('seu-email').innerHTML;
@@ -12,6 +13,10 @@ const supervisorEmail = document.getElementById('email-supervisor').innerHTML;
 const goal = document.getElementById('descricao').innerHTML;
 const priceString = document.getElementById('price').innerHTML;
 const price = Number(priceString);
+
+
+
+declare const axios: typeof import('axios').default;
 
 const emailAddress = new EmailAddress(yourEmail);
 const player = new Player(yourName, emailAddress);
@@ -25,7 +30,23 @@ export const challengeDto: CreateChallengeDto = {
   supervisorEmail,
 };
 
-const challenge = await atqrApi.challenges.create(challengeDto);
+const createChallenge = await atqrApi.challenges.create(challengeDto);
+const getChallenge = async () => {
+  try {
+    const res = await axiosInstance({
+      method: 'get',
+      url: '/:id',
+    });
+    return res.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      console.log('error message: ');
+      return Error;
+    }
+  }
+};
+
+export const challenge = await getChallenge();
 
 //page construction
 const nextStepBtn = document.getElementById('proximo-passo-btn');
@@ -33,7 +54,12 @@ nextStepBtn.addEventListener('click', challenge);
 const goalTitle = document.getElementById('main-title');
 goalTitle.innerHTML = 'seu desafio ' + challenge.goal + ' foi criado';
 
-//page challenge created
+const getDeadline = challenge.deadline;
+const setDeadline = document.getElementById('deadline');
+setDeadline.setAttribute('data-countdown', getDeadline);
+const setDeadline2 = document.getElementById('deadline2');
+setDeadline2.innerHTML = getDeadline;
+
 const resumeCreatedChallenge = document.getElementById('text');
 resumeCreatedChallenge.innerHTML =
   'seu desafio é' +
@@ -43,5 +69,3 @@ resumeCreatedChallenge.innerHTML =
   '. Caso não cumpra com seu objetivo, será cobrado de você' +
   challenge.price +
   'reais';
-
-// end page challenge created

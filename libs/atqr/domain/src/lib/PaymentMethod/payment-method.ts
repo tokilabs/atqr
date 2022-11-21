@@ -1,4 +1,5 @@
-import { Guid } from '@tokilabs/lang';
+import { Exception, Guid } from '@tokilabs/lang';
+import { errAsync } from 'neverthrow';
 
 export enum PaymentMethodEnum {
   'creditCard' = 'creditCard',
@@ -22,6 +23,9 @@ export class PaymentMethodEntity {
   }
 
   getToken() {
+    if (!this.token) {
+      errAsync(new Error('Could not get PaymentMethodEntity'));
+    }
     return this.token;
   }
 }

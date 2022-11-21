@@ -73,6 +73,7 @@ export const atqrApi = {
         }
       },
     },
+    
   },
 
   payment: {

@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://jsonplaceholder.typicode.com/',
 });
 
-const getChallenge = async () => {
+export const getChallenge = async () => {
   try {
     const res = await axios({
       method: 'get',

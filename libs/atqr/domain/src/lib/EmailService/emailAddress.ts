@@ -1,4 +1,5 @@
 import * as EmailValidator from 'email-validator';
+import { errAsync } from 'neverthrow';
 
 export class EmailAddress {
   value: string;
@@ -9,7 +10,9 @@ export class EmailAddress {
     if (isValidEmail) {
       this.value = email;
     } else {
-      throw new Error('Invalid Email');
+      errAsync(
+        new Error('Error validating email. Please check the EmailValidator')
+      );
     }
   }
 }
