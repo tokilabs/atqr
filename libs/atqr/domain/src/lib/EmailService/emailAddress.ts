@@ -1,4 +1,3 @@
-import { Exception } from '@tokilabs/lang';
 import * as EmailValidator from 'email-validator';
 import { errAsync } from 'neverthrow';
 
