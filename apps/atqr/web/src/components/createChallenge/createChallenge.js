@@ -1,52 +1,42 @@
-(function ($) {
-    "use strict";
-    
-		// nav area
-		var $nav = $('#nav'),
-            $navItem = $nav.find('.nav-item'),
-            $mainNavItem = $nav.find('.nav-list-item'),
-            $subNavItem = $nav.find('.sub-nav-item'),
-            $content = $('#content'),
-            $contentSection = $content.find('.content-section');
-		
-        $('.nav-item .sub-nav').slideUp();
-        $('.nav-item.active .sub-nav').slideDown();
-        
-        // For Nav Item
-		$mainNavItem.on('click', function(e){
-            e.preventDefault();
-            
-            var $this = $(this);
-			
-            if( !$this.parent().hasClass('active')) {
-                $this.siblings('.sub-nav').slideDown();
-                $this.parent().addClass('active').siblings().removeClass('active').find('.sub-nav').slideUp();
-            } else {
-                $this.siblings('.sub-nav').slideUp();
-                $this.parent().removeClass('active').find('.sub-nav').slideUp();
-            }
-            
-		});
-    
-        $('.sub-nav-item').click(function(e)
-            {
-                e.preventDefault();
-                window.location = $(this).attr('href');
-        });
-
-        
-        // For Subnav Item
-//		$subNavItem.on('click', function(e){
-//            e.preventDefault();
-//            
-//            var $this = $(this),
-//                $thisTarget = $this.attr('href');
-//            
-//			$subNavItem.removeClass('active');
-//			$this.addClass('active');
-//			$($thisTarget).fadeIn().siblings('.content-section').hide();
-//		});
-    
-    
-    
-})(jQuery);
+"use strict";
+exports.__esModule = true;
+exports.challengeDto = void 0;
+var api_1 = require("../../services/api");
+var domain_1 = require("@atqr/domain");
+// challenge attribute
+var yourName = document.getElementById('seu-nome').innerHTML;
+var yourEmail = document.getElementById('seu-email').innerHTML;
+var deadlineString = document.getElementById('deadline').innerHTML;
+var deadline = new Date(deadlineString);
+var supervisorName = document.getElementById('nome-supervisor').innerHTML;
+var supervisorEmail = document.getElementById('email-supervisor').innerHTML;
+var goal = document.getElementById('descricao').innerHTML;
+var priceString = document.getElementById('price').innerHTML;
+var price = Number(priceString);
+var emailAddress = new domain_1.EmailAddress(yourEmail);
+var player = new domain_1.Player(yourName, emailAddress);
+exports.challengeDto = {
+    goal: goal,
+    deadline: deadline,
+    price: price,
+    player: player,
+    supervisorName: supervisorName,
+    supervisorEmail: supervisorEmail
+};
+var challenge = await api_1.atqrApi.challenges.create(exports.challengeDto);
+//page construction
+var nextStepBtn = document.getElementById('proximo-passo-btn');
+nextStepBtn.addEventListener('click', challenge);
+var goalTitle = document.getElementById('main-title');
+goalTitle.innerHTML = 'seu desafio ' + challenge.goal + ' foi criado';
+//page challenge created
+var resumeCreatedChallenge = document.getElementById('text');
+resumeCreatedChallenge.innerHTML =
+    'seu desafio é' +
+        challenge.goal +
+        'até a data' +
+        challenge.deadline +
+        '. Caso não cumpra com seu objetivo, será cobrado de você' +
+        challenge.price +
+        'reais';
+// end page challenge created

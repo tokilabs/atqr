@@ -1,5 +1,5 @@
 import { atqrApi } from './api';
-import { challengeDto } from '../pages/challenge/challenge';
+import { challengeDto } from '../components/createChallenge/createChallenge';
 
 declare type Challenge = import('@atqr/domain').Challenge;
 
