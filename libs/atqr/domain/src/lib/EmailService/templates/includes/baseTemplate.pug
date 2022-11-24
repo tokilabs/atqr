@@ -1,12 +1,12 @@
 
-mixin email-content(h1, p1, src, p2, p3, p4)
+mixin emailContent(title, p1, imgSrc, p2, p3, p4)
   .content-frame
     .content-wrapper
-      h1=h1
+      h1=title
       p.p1=p1
       |
       .image
-        img(src=src)
+        img(src=imgSrc)
       p.p2=p2
       |
       p.p3=p3

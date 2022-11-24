@@ -1,12 +1,12 @@
 doctype html
 html
   head
-    include includes/style-imports.pug
+    include includes/styleImports.pug
 
   body
-    include includes/base-template.pug
+    include includes/baseTemplate.pug
 
-    +email-content('Cá estamos novamente...', 'Cremos que você se lembra do nosso famigerado primeiro encontro, #{player.name} e sabe o que vim fazer hoje.', './imgs/deadline-email.gif', 'Chegou o dia do juízo final e ele pode doer ou arrebatar ✨💸', 'Precisamos saber e você precisa dedurar... #{player.name} cumpriu o desafio? 🙈')
+    +emailContent('Cá estamos novamente...', 'Cremos que você se lembra do nosso famigerado primeiro encontro, #{player.name} e sabe o que vim fazer hoje.', './imgs/deadline-email.gif', 'Chegou o dia do juízo final e ele pode doer ou arrebatar ✨💸', 'Precisamos saber e você precisa dedurar... #{player.name} cumpriu o desafio? 🙈')
 
     .btn-container
       +button('', 'Cumpriu, o Miserávi!')(class="btn")
