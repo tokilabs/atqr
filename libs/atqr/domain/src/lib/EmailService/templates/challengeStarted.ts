@@ -12,7 +12,7 @@ const compileTemplate = pug.compileFile(
 );
 
 export class ChallengeStarted extends Email {
-  constructor(to: Player) {
+  constructor(to: Player['_email']) {
     super(
       to,
       'Seu desafio começou',
