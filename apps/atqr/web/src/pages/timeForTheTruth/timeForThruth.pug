@@ -1,47 +1,45 @@
 
-doctype html
-head
-  meta(charset='utf-8')
-  meta(http-equiv='x-ua-compatible', content='ie=edge')
-  title  ATQR - AJOELHOU TEM QUE REZAR
-  meta(name='robots', content='noindex, follow')
-  meta(name='description', content='')
-  meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
-  include ../index/_cdns.pug
-  +headImports
-.main-wrapper
-  // Pricing Start
-  .meeta-pricing.meeta-pricing-2.meeta-pricing-4.section-padding
-    .container
-      // Section Title Start
-      .meeta-section-title-2.section-title-4.text-center
-        h4.sub-title Eu Duvido
-        h2#player.main-title.text-white
-          | E ai .... {{player.name}} cumpriu o desafio ?
-      // Section Title End
-      .row.gy-5.justify-content-center.meeta-pricing-row
-        .col-lg-4.col-md-8
-        .col-lg-4.col-md-8
-          // Single Pricing Start
-          .single-pricing.color-2
-            .pricing-header
-              h3.price_title Apostou:
-              .price
-                span#price
-                  sup R$
-                  | {{price}}
-            .pricing-body
-              ul
-                li player.name 
-                li description
-                li deadline At&eacute;:
-              .text
-                textarea#text(name='' cols='30' rows='10')
-              button.congratsButton(href='price.html')
-                |  player.name cumpriu o desafio!
-                br
-              button.reproveButton(href='price.html')
-                |  player.name falhou miseravelmente
-          // Single Pricing End
-        .col-lg-4.col-md-8
-
+//- doctype html
+//- head
+//-   meta(charset='utf-8')
+//-   meta(http-equiv='x-ua-compatible', content='ie=edge')
+//-   title  ATQR - AJOELHOU TEM QUE REZAR
+//-   meta(name='robots', content='noindex, follow')
+//-   meta(name='description', content='')
+//-   meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+//-   include ../index/_cdns.pug
+//-   +headImports
+//- .main-wrapper
+//-   .meeta-event-project-wrap.event-project-active.slider-bullet
+//-   .swiper
+//-     .swiper-wrapper
+//-       .swiper-slide
+//-         .project-item
+//-           .event-project-thumb(style='background-image: url(assets/images/up-event-1.jpg);')
+//-           .event-project-content
+//-             h3.title Mindfull App Pi Meets Soundproof Booth 2021 summer
+//-             .event-meta
+//-               span
+//-                 i.far.fa-clock
+//-                 |   29 July - 30 July
+//-               span
+//-                 i.fas.fa-map-marker-alt
+//-                 |    Sand diego, Canada
+//-             .meeta-register-countdown.register-countdown-4.register-countdown-5
+//-               .meeta-register-countdown-wrapper
+//-                 // Countdown Start
+//-                 .meeta-countdown.countdown(data-countdown='2024/10/24' data-format='short')
+//-                   .single-countdown
+//-                     span.count.countdown__time.daysLeft
+//-                     span.value.countdown__time.daysText
+//-                   .single-countdown
+//-                     span.count.countdown__time.hoursLeft
+//-                     span.value.countdown__time.hoursText
+//-                   .single-countdown
+//-                     span.count.countdown__time.minsLeft
+//-                     span.value.countdown__time.minsText
+//-                   .single-countdown
+//-                     span.count.countdown__time.secsLeft
+//-                     span.value.countdown__time.secsText
+//-                 // Countdown End
+//-             a.btn-2(href='price.html') Book Your Seat

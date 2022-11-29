@@ -38,5 +38,8 @@
   "liveServer.settings.port": 5501,
   "[jade]": {
     "editor.defaultFormatter": "ducfilan.pug-formatter"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
   }
 }

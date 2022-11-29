@@ -2,6 +2,7 @@
   "name": "@atqr/domain",
   "version": "0.0.1",
   "devDependencies": {
-    "@types/pug": "^2.0.6"
+    "@types/pug": "2.0.6",
+    "parcel": "8.1.2"
   }
 }

@@ -1,71 +1,33 @@
-import { atqrApi } from '../../services/api';
-import { EmailAddress, Player } from '@atqr/domain';
-import { CreateChallengeDto } from 'apps/atqr/api/src/app/dtos';
-import { AxiosError } from 'axios';
-import axiosInstance from '../acceptChallenge/acceptChallenge';
-// challenge attribute
-const yourName = document.getElementById('seu-nome').innerHTML;
-const yourEmail = document.getElementById('seu-email').innerHTML;
-const deadlineString = document.getElementById('deadline').innerHTML;
-const deadline = new Date(deadlineString);
-const supervisorName = document.getElementById('nome-supervisor').innerHTML;
-const supervisorEmail = document.getElementById('email-supervisor').innerHTML;
-const goal = document.getElementById('descricao').innerHTML;
-const priceString = document.getElementById('price').innerHTML;
-const price = Number(priceString);
+import { atqrApi } from './ApiClient';
 
-
-
-declare const axios: typeof import('axios').default;
-
-const emailAddress = new EmailAddress(yourEmail);
-const player = new Player(yourName, emailAddress);
-
-export const challengeDto: CreateChallengeDto = {
-  goal,
-  deadline,
-  price,
-  player,
-  supervisorName,
-  supervisorEmail,
+export const getChallenge = () => {
+  const data = atqrApi.challenges.getOne('');
+  console.log('this is data :', data);
+  return data;
 };
-
-const createChallenge = await atqrApi.challenges.create(challengeDto);
-const getChallenge = async () => {
-  try {
-    const res = await axiosInstance({
-      method: 'get',
-      url: '/:id',
+//pegat todos os elementos com atributo data-template 
+//
+//substituir as variaveis no innerhtml
+function updateUI(data) {
+  console.log('new result: ', data);
+  const fields = document.querySelectorAll('[data-field]');
+  fields.forEach((field) => {
+    const path = (field as any).dataset.field.split('.');
+    console.log('path: ', path);
+    let value = data;
+    path.forEach((key) => {
+      value = value[key];
     });
-    return res.data;
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      console.log('error message: ');
-      return Error;
-    }
-  }
-};
+    console.log(
+      'Updating field:',
+      field,
+      `(${field.innerHTML})`,
+      'with value:',
+      value
+    );
+    field.innerHTML = value;
+  });
+}
+updateUI(getChallenge());
 
-export const challenge = await getChallenge();
-
-//page construction
-const nextStepBtn = document.getElementById('proximo-passo-btn');
-nextStepBtn.addEventListener('click', challenge);
-const goalTitle = document.getElementById('main-title');
-goalTitle.innerHTML = 'seu desafio ' + challenge.goal + ' foi criado';
-
-const getDeadline = challenge.deadline;
-const setDeadline = document.getElementById('deadline');
-setDeadline.setAttribute('data-countdown', getDeadline);
-const setDeadline2 = document.getElementById('deadline2');
-setDeadline2.innerHTML = getDeadline;
-
-const resumeCreatedChallenge = document.getElementById('text');
-resumeCreatedChallenge.innerHTML =
-  'seu desafio é' +
-  challenge.goal +
-  'até a data' +
-  challenge.deadline +
-  '. Caso não cumpra com seu objetivo, será cobrado de você' +
-  challenge.price +
-  'reais';
+//nextStepBtn.addEventListener('click', getChallenge);

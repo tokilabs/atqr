@@ -29,7 +29,6 @@ import ValidationErrors, {
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
-
 @Controller('challenge')
 export class ChallengeController {
   constructor(
@@ -121,6 +120,7 @@ export class ChallengeController {
     }
   }
 
+  @Get('challenge/:id')
   @Get('latest/:amount')
   latest(@Param('amount') amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
@@ -134,7 +134,20 @@ export class ChallengeController {
 
   // TODO Implement change payment endpoint and fix return
 
-   async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
+  @Patch(':id/payment')
+  changePayment(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Param('id') id: Guid,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
+  ): void {
+    return;
+  }
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: Guid,
+    @Body() status: ChallengeStatus
+  ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
       challenge.updateOverdueStatus();

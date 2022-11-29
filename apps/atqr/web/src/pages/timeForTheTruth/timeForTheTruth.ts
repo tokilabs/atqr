@@ -10,7 +10,6 @@ export async function congratsButton() {
       idUrl, // pegar id da url
       ChallengeStatus.Completed
     );
-
   if (!urlId) {
     return Error('error');
   }
@@ -20,7 +19,6 @@ export async function congratsButton() {
     return challengeStatusUpdated;
   }
 }
-congratsButton();
 
 export async function reproveButton() {
   const challengeStatusUpdated =
@@ -28,7 +26,6 @@ export async function reproveButton() {
       idUrl, // pegar id da url,
       ChallengeStatus.Failed
     );
-
   if (!urlId) {
     return Error('error');
   }
@@ -37,5 +34,4 @@ export async function reproveButton() {
   } else {
     return challengeStatusUpdated;
   }
-}
-reproveButton();
+};
