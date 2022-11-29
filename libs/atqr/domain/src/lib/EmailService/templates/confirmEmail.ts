@@ -1,4 +1,4 @@
-import { Player } from "../../player";
+import { Player } from "../../player/player.entity";
 import { Email } from "../email.service";
 import { pugFile } from "./supConfirmation";
 
