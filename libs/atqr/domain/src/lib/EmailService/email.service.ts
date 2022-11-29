@@ -1,4 +1,5 @@
 import { IEmail } from '.';
+import { Challenge } from '../challenge/challenge.entity';
 import { Player } from '../player/player.entity';
 
 export interface IMailer {
@@ -7,7 +8,7 @@ export interface IMailer {
 
 export class Email implements IEmail {
   constructor(
-    public to: Player,
+    public to: Player | Player['_email'] | Challenge['_supervisorEmail'],
     public subject: string,
     public message?: string
   ) {
@@ -17,7 +18,7 @@ export class Email implements IEmail {
   }
 
   public get playerEmail() {
-    return this.to.emailAddress.value;
+    return this.to;
   }
 
   public get from() {
