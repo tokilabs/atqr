@@ -2,7 +2,7 @@ import { Player } from '../../player';
 import { Email } from '../email.service';
 import { pugFile } from './supConfirmation';
 
-class SupervisorDenied extends Email {
+export class SupervisorDenied extends Email {
   constructor(to: Player) {
     super(
       to,
