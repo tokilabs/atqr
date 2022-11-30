@@ -10,6 +10,11 @@ import {
   PaymentMethodEntity,
   Player,
   SupConfirmation,
+  SupervisorEnum,
+  DeadLineEmail,
+  PayThePrice,
+  SupervisorDenied,
+  SupervisorAccepted,
 } from '@atqr/domain';
 import {
   Body,
@@ -24,6 +29,7 @@ import {
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
+import { UpdateSupervisorDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
@@ -127,9 +133,42 @@ export class ChallengeController {
   }
 
   @Patch(':id/supervisor')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  changeSupervisor(@Param('id') id: Guid): void {
-    return;
+  async updateSupervisor(
+    @Param('id') id: Guid,
+    @Body() updateSupervisorDto: UpdateSupervisorDto
+  ): Promise<void> {
+    const challenge: Challenge = await this.challengeRepository.findUnique(id);
+
+    switch (updateSupervisorDto.supervisorStatus) {
+      case SupervisorEnum.accepted:
+        this.emailService.sendMail(new SupervisorAccepted(challenge.player));
+        challenge.changeSupervisor(
+          updateSupervisorDto.supervisorName,
+          updateSupervisorDto.supervisorEmail
+        );
+        break;
+
+      case SupervisorEnum.rejected:
+        this.emailService.sendMail(new SupervisorDenied(challenge.player));
+        break;
+
+      case SupervisorEnum.askedIfTheGoalIsAccomplished:
+        this.emailService.sendMail(new DeadLineEmail(challenge.player));
+        break;
+
+      case SupervisorEnum.repliedIfTheGoalWasAccomplished:
+        this.emailService.sendMail(new Congrats(challenge.player));
+        this.updateStatus(id, ChallengeStatus.Completed);
+        break;
+
+      case SupervisorEnum.repliedIfTheGoalWasNotAccomplished:
+        this.emailService.sendMail(new PayThePrice(challenge.player));
+        this.updateStatus(id, ChallengeStatus.Failed);
+        break;
+    }
+
+    challenge.updateSupervisorStatus(updateSupervisorDto.supervisorStatus);
+    this.challengeRepository.update(challenge);
   }
 
   // TODO Implement change payment endpoint and fix return
