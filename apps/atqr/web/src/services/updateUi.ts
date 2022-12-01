@@ -1,9 +1,9 @@
 /**
- *
+ * Updates the UI with the given data.
  * @param data
  * Object that contains the data to be displayed in the UI
  * @param htmlElement
- * The html element that will be updated
+ * The name of html element that will be updated
  */
 export function updateUI(data: object, htmlElement: string) {
   console.log('new result: ', data);
