@@ -1,0 +1,26 @@
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='x-ua-compatible', content='ie=edge')
+    title  ATQR - AJOELHOU TEM QUE REZAR
+    meta(name='robots', content='noindex, follow')
+    meta(name='description', content='')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    include ../index/_cdns.pug
+    include deadlineMixins.pug
+    +headImports
+    +headScripts
+
+  body
+    .main-wrapper
+      .meeta-event-project-wrap.event-project-active.slider-bullet
+        .swiper
+          .swiper-wrapper
+            .swiper-slide
+              .project-item
+                .event-project-thumb(style='background-image: url(../../assets/images/up-event-1.jpg);')
+                  .event-project-content
+                    h3.title Hora da Verdade
+                      +content
+                      a.btn-2(href='') Cumpriu o Desafio
+                      a.btn-2(href='') Não cumpriu o Desafio

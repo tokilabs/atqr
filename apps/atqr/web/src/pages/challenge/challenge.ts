@@ -1,47 +1,26 @@
-import { atqrApi } from '../../services/api';
-import { EmailAddress, Player } from '@atqr/domain';
-import { CreateChallengeDto } from 'apps/atqr/api/src/app/dtos';
+import { atqrApi } from "../../services/apiClient";
+import { updateStatus,  ChallengeStatus } from "../../services/interfaces";
+import {updateUI} from '../../services/updateUi'
 
-// challenge attribute
-const yourName = document.getElementById('seu-nome').innerHTML;
-const yourEmail = document.getElementById('seu-email').innerHTML;
-const deadlineString = document.getElementById('deadline').innerHTML;
-const deadline = new Date(deadlineString);
-const supervisorName = document.getElementById('nome-supervisor').innerHTML;
-const supervisorEmail = document.getElementById('email-supervisor').innerHTML;
-const goal = document.getElementById('descricao').innerHTML;
-const priceString = document.getElementById('price').innerHTML;
-const price = Number(priceString);
-
-const emailAddress = new EmailAddress(yourEmail);
-const player = new Player(yourName, emailAddress);
-
-export const challengeDto: CreateChallengeDto = {
-  goal,
-  deadline,
-  price,
-  player,
-  supervisorName,
-  supervisorEmail,
+export const getChallenge = () => {
+  const data = atqrApi.challenges.getOne('');
+  console.log('this is data :', data);
+  return data;
 };
 
-const challenge = await atqrApi.challenges.create(challengeDto);
+updateUI(getChallenge(), 'data-field');
 
-//page construction
-const nextStepBtn = document.getElementById('proximo-passo-btn');
-nextStepBtn.addEventListener('click', challenge);
-const goalTitle = document.getElementById('main-title');
-goalTitle.innerHTML = 'seu desafio ' + challenge.goal + ' foi criado';
+const updateChallenge = updateStatus('', ChallengeStatus.Ongoing)
 
-//page challenge created
-const resumeCreatedChallenge = document.getElementById('text');
-resumeCreatedChallenge.innerHTML =
-  'seu desafio é' +
-  challenge.goal +
-  'até a data' +
-  challenge.deadline +
-  '. Caso não cumpra com seu objetivo, será cobrado de você' +
-  challenge.price +
-  'reais';
+console.log('challenge updated:' , updateChallenge)
+console.log('new challenge status:' , updateChallenge.valueOf())
+export const btnUpdateChallenge = ()=>{
+  updateChallenge
 
-// end page challenge created
+  return updateChallenge
+
+}
+console.log('button did update:', btnUpdateChallenge())
+
+
+

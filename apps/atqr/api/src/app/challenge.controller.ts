@@ -29,7 +29,6 @@ import ValidationErrors, {
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
-
 @Controller('challenge')
 export class ChallengeController {
   constructor(
@@ -121,6 +120,7 @@ export class ChallengeController {
     }
   }
 
+  @Get('challenge/:id')
   @Get('latest/:amount')
   latest(@Param('amount') amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
