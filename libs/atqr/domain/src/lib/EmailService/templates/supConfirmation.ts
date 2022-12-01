@@ -4,9 +4,10 @@ import axios, { AxiosError } from 'axios';
 import * as pug from 'pug';
 import path = require('path');
 import { Challenge } from '../../../lib/challenge';
+import { pathToTemplates } from './challengeStarted';
 
 export const pugFile = pug.compileFile(
-  path.join(__dirname, 'SupConfirmation.pug')
+  path.join(pathToTemplates, 'SupConfirmation.pug')
 );
 
 export class SupConfirmation extends Email {

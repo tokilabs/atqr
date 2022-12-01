@@ -1,19 +1,18 @@
-doctype html
 html
   head
-      include includes/base-style.pug
+    include includes/styleImports.pug
 
-  //- extra non-base style
-  style.
-        .p3 {
-          text-align: center;
-          font-style: italic;
-        }
+    //- extra non-base style
+    style.
+      .p3 {
+        text-align: center;
+        font-style: italic;
+      }
 
   body
-    include includes/base-template.pug
+    include includes/baseTemplate.pug
 
-    +email-content('Dizem que tem gente doida pra tudo, né?',
+    +emailContent('Dizem que tem gente doida pra tudo, né?',
     'Já ouviu aquele ditado que um Lannister (gente loira esquisita) sempre paga suas dívidas? Pois então, #{player.name}... Fica esperto/a que com você não será diferente 😈',
     './imgs/challenge-started.gif',
     'É hora de tirar esse rabo do sofá e ir à luta! Pelo menos não estão contando com você pra ganhar o trono de ferro 🫠', '*sussurro* a gente acredita no seu potencial! *sussurro*')
