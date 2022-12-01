@@ -1,9 +1,7 @@
-/* eslint-disable @nrwl/nx/enforce-module-boundaries */
-import { ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
-import axios, { AxiosError } from 'axios';
-
-import { CreateChallengeDto, UpdateCreditCardTokenDto } from '@atqr/api';
+import axios from 'axios';
+import { CreateChallengeDto, UpdateCreditCardTokenDto } from './interfaces';
+import { ChallengeStatus } from './interfaces';
 
 const baseUrl = 'http://localhost:3333/api/';
 
@@ -83,7 +81,7 @@ export const atqrApi = {
         console.log(error);
         return 'An unexpected error occurred';
       }
-    },
+    }
   },
 
   payment: {
