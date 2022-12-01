@@ -205,13 +205,13 @@ export class StripeService implements OnApplicationBootstrap {
     );
   }
 
-  // Todo: Implement webhoook method:
+  // Todo: Implement webhook method:
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent) {
     throw new Error('Method not implemented.');
   }
 
-  // Todo: Implement webhoook method:
+  // Todo: Implement webhook method:
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handlePaymentMethodAttached(paymentMethod: Stripe.PaymentMethod) {
     throw new Error('Method not implemented.');
