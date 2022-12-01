@@ -7,11 +7,11 @@ html
     meta(name='description', content='')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
     include ../index/_cdns.pug
-    include deadlineIndex.pug
+    include deadlineMixins.pug
     +headImports
     +headScripts
-    
-  body 
+
+  body
     .main-wrapper
       .meeta-event-project-wrap.event-project-active.slider-bullet
         .swiper
@@ -24,4 +24,3 @@ html
                       +content
                       a.btn-2(href='') Cumpriu o Desafio
                       a.btn-2(href='') Não cumpriu o Desafio
-  

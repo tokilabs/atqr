@@ -6,10 +6,10 @@ head
   meta(name='description', content='')
   meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
   include ../index/_cdns.pug
-  include challengeIndex.pug
+  include challengeMixins.pug
   +headImports
   +headScripts
-body  
+body
   .main-wrapper
     .meeta-event-project-wrap.event-project-active.slider-bullet
       .swiper
@@ -17,7 +17,7 @@ body
           .swiper-slide
             .project-item
               .event-project-thumb(style='background-image: url(../../assets/images/up-event-1.jpg);')
-              .event-project-content 
+              .event-project-content
                 h3.title Resumo do seu Desafio:
                   +content
                 .meeta-register-countdown.register-countdown-4.register-countdown-5

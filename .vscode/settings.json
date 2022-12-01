@@ -40,6 +40,6 @@
     "editor.defaultFormatter": "ducfilan.pug-formatter"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "ms-vsliveshare.vsliveshare"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

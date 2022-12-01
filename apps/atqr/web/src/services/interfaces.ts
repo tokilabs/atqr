@@ -5,12 +5,12 @@ export enum SupervisorEnum {
     'askedIfTheGoalIsAccomplished',
     'repliedIfTheGoalWasAccomplished',
   }
-  
+
   export enum PaymentMethodEnum {
     'creditCard' = 'creditCard',
     'debitCard' = 'debitCard',
   }
-  
+
   export enum ChallengeStatus {
     Ongoing = 'Ongoing',
     Completed = 'Completed',
@@ -18,14 +18,14 @@ export enum SupervisorEnum {
     Overdue = 'Overdue',
     Created = 'Created'
   }
-  
+
   export const updateStatus = (id: string, status: ChallengeStatus) => {
     if(status == ChallengeStatus.Overdue){
       return false
     }else{
       return status
     }
-    
+
   }
   export interface IChallenge {
     id: string;
@@ -40,18 +40,18 @@ export enum SupervisorEnum {
     supervisorStatus: SupervisorEnum;
     updateStatus: ChallengeStatus
   }
-  
+
   export interface IEmailAddress {
     value: string;
   }
-  
+
   export interface IPlayer {
     id: string;
     email: typeEmailAddress;
     challenges: playerChallenges;
     name: string;
   }
-  
+
   export interface PaymentMethodEntity {
     id: string;
     method: PaymentMethodEnum;
@@ -79,12 +79,11 @@ export enum SupervisorEnum {
     // TODO: @yfernandes Validate token type
     creditCardToken: string;
   }
-  
+
   export type typeEmailAddress = IEmailAddress;
   export type typePlayer = IPlayer;
   export type playerChallenges = IChallenge[];
   export type challenge = IChallenge;
- 
+
   export type playerName = '';
   export type paymentMethod = PaymentMethodEntity;
-  
