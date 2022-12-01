@@ -20,13 +20,4 @@ export interface IChallengeRepository {
   update(challenge: Challenge): void;
 }
 
-export interface IPlayerRepository {
-  findUnique(id: Guid): Promise<Player>;
-
-  findByEmail(email: EmailAddress): Player;
-
-  create(player: Player): void;
-}
-
 export const IChallengeRepository = Symbol.for('IChallengeRepository');
-export const IPlayerRepository = Symbol.for('IPlayerRepository');
