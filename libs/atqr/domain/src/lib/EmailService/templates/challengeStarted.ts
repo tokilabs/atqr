@@ -3,8 +3,12 @@ import { Email } from '../email.service';
 import * as pug from 'pug';
 import path = require('path');
 
+export const pathToTemplates = path.join(
+  process.cwd(),
+  'libs/atqr/domain/src/lib/EmailService/templates/'
+);
 const compileTemplate = pug.compileFile(
-  path.join(__dirname, 'challengeStarted.pug')
+  path.join(pathToTemplates, 'challengeStarted.pug')
 );
 
 export class ChallengeStarted extends Email {
