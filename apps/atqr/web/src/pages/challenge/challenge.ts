@@ -1,33 +1,26 @@
-import { atqrApi } from './ApiClient';
+import { atqrApi } from "../../services/apiClient";
+import { updateStatus, IEmailAddress, playerChallenges, IPlayer, SupervisorEnum, ChallengeStatus, challenge } from "../../services/interfaces";
+import {updateUI} from '../../services/updateUi'
 
 export const getChallenge = () => {
-  const data = atqrApi.challenges.getOne('');
+  const data = atqrApi.challenges.getOne('123456');
   console.log('this is data :', data);
   return data;
 };
-//pegat todos os elementos com atributo data-template 
-//
-//substituir as variaveis no innerhtml
-function updateUI(data) {
-  console.log('new result: ', data);
-  const fields = document.querySelectorAll('[data-field]');
-  fields.forEach((field) => {
-    const path = (field as any).dataset.field.split('.');
-    console.log('path: ', path);
-    let value = data;
-    path.forEach((key) => {
-      value = value[key];
-    });
-    console.log(
-      'Updating field:',
-      field,
-      `(${field.innerHTML})`,
-      'with value:',
-      value
-    );
-    field.innerHTML = value;
-  });
-}
-updateUI(getChallenge());
 
-//nextStepBtn.addEventListener('click', getChallenge);
+updateUI(getChallenge(), 'data-field');
+
+const updateChallenge = updateStatus('123456', getChallenge().updateStatus().Completed)
+
+console.log('challenge updated:' , updateChallenge)
+console.log('new challenge status:' , updateChallenge.valueOf())
+export const btnUpdateChallenge = ()=>{
+  updateChallenge
+  
+  return updateChallenge
+  
+}
+console.log('button did update:', btnUpdateChallenge())
+
+
+
