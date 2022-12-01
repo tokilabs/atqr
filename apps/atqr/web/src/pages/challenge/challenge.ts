@@ -21,6 +21,3 @@ export const btnUpdateChallenge = ()=>{
 
 }
 console.log('button did update:', btnUpdateChallenge())
-
-
-

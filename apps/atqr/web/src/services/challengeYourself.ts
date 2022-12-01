@@ -18,8 +18,6 @@ const descricao = document.getElementById('descricao');
 const nextStepBtn = document.getElementById('proximo-passo-btn');
 nextStepBtn.addEventListener('click', challengeYourself);
 
-declare type Challenge = import('@atqr/domain').Challenge;
-
 const url = 'https://jsonplaceholder.typicode.com/posts/';
 // TODO: Consume Api
 async function challengeYourself(id) {

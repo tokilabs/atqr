@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function challengeSuggestion(btn: Node) {
   const fatherBtn = btn.parentNode.parentNode.parentNode;
   const text = fatherBtn.querySelector('p').innerText;
@@ -25,5 +26,3 @@ function scrollToId(form: HTMLElement) {
     behavior: 'smooth',
   });
 }
-
-module.exports = { challengeSuggestion, scrollToId };
