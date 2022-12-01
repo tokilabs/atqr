@@ -42,7 +42,6 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
         return new DeadlineMonitorService(NotificationService);
       },
     },
-
   ],
 })
 export class AppModule {}

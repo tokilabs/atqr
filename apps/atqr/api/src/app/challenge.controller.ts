@@ -8,7 +8,6 @@ import {
   IChallengeRepository,
   IPlayerRepository,
   PaymentMethodEntity,
-  PayThePrice,
   Player,
   SupConfirmation,
 } from '@atqr/domain';
@@ -24,7 +23,6 @@ import {
   Post,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
-
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
 import ValidationErrors, {
   ValidationErrorTypes,
@@ -128,56 +126,36 @@ export class ChallengeController {
     return this.challengeRepository.findLastChallenges(amount);
   }
 
-  // TODO Implement update challenge endpoint and fix return
-  @Patch(':id')
-  async updateChallenge(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Param('id') id: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
-  ): Promise<Challenge> {
-    // TODO ---------- REFACTOR ME ------------------
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
-      this.changePayment('Change Me');
-      this.changeSupervisor('Change Me');
-      this.updateStatus(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        'id' as any as Guid,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        'Change me' as any as ChallengeStatus
-      );
-    }
-    return {} as Challenge;
-  }
-
-  // TODO Implement change supervisor endpoint and fix return
+  @Patch(':id/supervisor')
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changeSupervisor(id: string): Challenge {
-    return {} as Challenge;
+  changeSupervisor(@Param('id') id: Guid): void {
+    return;
   }
 
   // TODO Implement change payment endpoint and fix return
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  private changePayment(id: string): Challenge {
-    return {} as Challenge;
+
+  @Patch(':id/payment')
+  changePayment(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Param('id') id: Guid,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    @Body() updateCreditCardTokenDto: UpdateCreditCardTokenDto
+  ): void {
+    return;
   }
-
- raquel/atqr-96-refactor-challenge-page
-
-
-  private async updateStatus(id: Guid, status: ChallengeStatus): Promise<void> {
+  @Patch(':id/status')
+  async updateStatus(
+    @Param('id') id: Guid,
+    @Body() status: ChallengeStatus
+  ): Promise<void> {
     try {
       const challenge = await this.challengeRepository.findUnique(id);
-      challenge.updateOverdueStatus(status);
+      challenge.updateOverdueStatus();
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {
         const email = new Congrats(challenge.player);
         this.emailService.sendMail(email);
-
- 
- development
       } else {
         throw new Error('challenge not updated');
       }
