@@ -1,8 +1,7 @@
-import { Challenge, ChallengeStatus } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import axios from 'axios';
-
-import { CreateChallengeDto, UpdateCreditCardTokenDto } from '@atqr/api';
+import { CreateChallengeDto, UpdateCreditCardTokenDto } from './interfaces';
+import { ChallengeStatus } from './interfaces';
 
 const baseUrl = 'http://localhost:3333/api/';
 
@@ -35,7 +34,7 @@ export const atqrApi = {
       }
     },
     challengeUpdated: {
-      statusUpdated: async (id: Guid, updateStatus: ChallengeStatus) => {
+      statusUpdated: async (id: string, updateStatus: ChallengeStatus) => {
         try {
           const statsUpdated = await api.patch(
             `/challenge/${id}`,
@@ -73,7 +72,16 @@ export const atqrApi = {
         }
       },
     },
-    
+    getOne: async (id: string) => {
+      try {
+        const getOne = await api.get(`/challenge/${id}`);
+        console.log(getOne);
+        return getOne;
+      } catch (error) {
+        console.log(error);
+        return 'An unexpected error occurred';
+      }
+    }
   },
 
   payment: {
