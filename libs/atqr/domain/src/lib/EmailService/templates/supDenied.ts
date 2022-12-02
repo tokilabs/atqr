@@ -3,7 +3,7 @@ import { Email } from '../email.service';
 import { pugFile } from './supConfirmation';
 
 export class SupervisorDenied extends Email {
-  constructor(to: Player) {
+  constructor(to: Player) { // is changed to sup email in other branch
     super(
       to,
       'Supervisor não aceitou seu convite...',
@@ -13,3 +13,4 @@ export class SupervisorDenied extends Email {
     );
   }
 }
+//TODO btn logic to new page choseNewSupervisor

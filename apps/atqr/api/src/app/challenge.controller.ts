@@ -36,10 +36,12 @@ import ValidationErrors, {
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 @Controller('challenge')
+// defines a class as a controller to make HTTP requests
 export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
     @Inject(IChallengeRepository)
+    //injects IChallengeRepository dependency on parameter challengeRepository
     private readonly challengeRepository: IChallengeRepository,
     @Inject(IPlayerRepository)
     private readonly playerRepository: IPlayerRepository,
@@ -133,31 +135,39 @@ export class ChallengeController {
   }
 
   @Patch(':id/supervisor')
+  //"update"s the result information of a request in the specified route
   async updateSupervisor(
     @Param('id') id: Guid,
     @Body() updateSupervisorDto: UpdateSupervisorDto
+    //promise function that receives an id parameter through @param get request
+    //and the body of updateSupervisorDto parameter
   ): Promise<void> {
     const challenge: Challenge = await this.challengeRepository.findUnique(id);
-
+    // got challenge by id 
     switch (updateSupervisorDto.supervisorStatus) {
+      // supervisorStatus
       case SupervisorEnum.accepted:
-        this.emailService.sendMail(new SupervisorAccepted(challenge.player));
+        this.emailService.sendMail(new SupervisorAccepted(challenge.player));4
+        // if supervisor has accepted an SupervisorAccepted wil be sent to the player
         challenge.changeSupervisor(
           updateSupervisorDto.supervisorName,
           updateSupervisorDto.supervisorEmail
         );
-        break;
+        //then will call changeSupervisor entity function to update name and email of supervisor
+      break;
 
       case SupervisorEnum.rejected:
         this.emailService.sendMail(new SupervisorDenied(challenge.player));
+        // if supervisor has denied an SupervisorAccepted wil be sent to the player
         break;
 
       case SupervisorEnum.askedIfTheGoalIsAccomplished:
-        this.emailService.sendMail(new DeadLineEmail(challenge.player));
+        this.emailService.sendMail(new DeadLineEmail(challenge.player)); // change to sup email
         break;
 
       case SupervisorEnum.repliedIfTheGoalWasAccomplished:
         this.emailService.sendMail(new Congrats(challenge.player));
+        // sends congrats email to player
         this.updateStatus(id, ChallengeStatus.Completed);
         break;
 
@@ -166,9 +176,11 @@ export class ChallengeController {
         this.updateStatus(id, ChallengeStatus.Failed);
         break;
     }
-
+    // if any of these cases happen the following functions will execute 
     challenge.updateSupervisorStatus(updateSupervisorDto.supervisorStatus);
+    // update sup status according to the case that happened
     this.challengeRepository.update(challenge);
+    //calls uptdate function to save new sup status
   }
 
   // TODO Implement change payment endpoint and fix return
