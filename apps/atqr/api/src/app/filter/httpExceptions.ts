@@ -12,7 +12,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: HttpException, host: ArgumentsHost): string | void {
+    //catch expects receive HTTP exception and arguments of given by the handler
     if (!(exception instanceof HttpException)) {
+      // if the exception is not HTTP one
       console.log('You need handle this error');
       console.log(
         "Error handling example: throw new NotFoundException('we didn't find what you were looking for') "
@@ -28,7 +30,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         "We don't know what happen'd"
       );
     }
-
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
     const httpStatus = exception.getStatus();
@@ -39,7 +40,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: message,
       path: path,
     };
-
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
 }
