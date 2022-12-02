@@ -2,8 +2,8 @@ import { Player } from '../../player';
 import { Email } from '../email.service';
 import { pugFile } from './supConfirmation';
 
-class SupervisorDenied extends Email {
-  constructor(to: Player) {
+export class SupervisorDenied extends Email {
+  constructor(to: Player) { // is changed to sup email in other branch
     super(
       to,
       'Supervisor não aceitou seu convite...',
@@ -13,3 +13,4 @@ class SupervisorDenied extends Email {
     );
   }
 }
+//TODO btn logic to new page choseNewSupervisor
