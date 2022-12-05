@@ -26,6 +26,7 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
@@ -33,6 +34,7 @@ import { UpdateSupervisorDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
+import { HttpExceptionFilter } from './filter/httpExceptions';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 @Controller('challenge')
