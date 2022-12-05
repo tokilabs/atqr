@@ -26,7 +26,6 @@ import {
   Param,
   Patch,
   Post,
-  UseFilters,
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
@@ -34,7 +33,6 @@ import { UpdateSupervisorDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
-import { HttpExceptionFilter } from './filter/httpExceptions';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 @Controller('challenge')
@@ -129,8 +127,10 @@ export class ChallengeController {
       // TODO Handle other errors
     }
   }
+  // TODO: implement
+  // @Get('challenge/:id')
 
-  @Get('challenge/:id')
+  
   @Get('latest/:amount')
   latest(@Param('amount') amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
@@ -145,7 +145,7 @@ export class ChallengeController {
     //and the body of updateSupervisorDto parameter
   ): Promise<void> {
     const challenge: Challenge = await this.challengeRepository.findUnique(id);
-    // got challenge by id 
+    // got challenge by id
     switch (updateSupervisorDto.supervisorStatus) {
       // supervisorStatus
       case SupervisorEnum.accepted:
@@ -178,7 +178,7 @@ export class ChallengeController {
         this.updateStatus(id, ChallengeStatus.Failed);
         break;
     }
-    // if any of these cases happen the following functions will execute 
+    // if any of these cases happen the following functions will execute
     challenge.updateSupervisorStatus(updateSupervisorDto.supervisorStatus);
     // update sup status according to the case that happened
     this.challengeRepository.update(challenge);
