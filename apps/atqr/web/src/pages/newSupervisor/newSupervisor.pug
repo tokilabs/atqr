@@ -1,0 +1,55 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(http-equiv='x-ua-compatible', content='ie=edge')
+  title  ATQR - AJOELHOU TEM QUE REZAR
+  meta(name='robots', content='noindex, follow')
+  meta(name='description', content='')
+  meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  include ../index/_cdns.pug
+  +headImports
+.meeta-event-schedule.meeta-event-schedule-2.section-padding
+  .container
+
+    .meeta-section-title-2.text-center
+      h4.sub-title Ajoelhou tem que rezar
+      br
+      h2.main-title Escolha um novo supervisor!
+
+    .row.gy-5.justify-content-between
+      .col-lg-12
+
+        .meeta-event-schedule-tabs
+
+          .meeta-event-schedule-tab-content
+            .meeta-event-schedule-tab-pane.active#tab1
+
+              .contact-form-section.section-padding
+                .container
+
+                  .contact-wrap
+                    .row.justify-content-center
+                      .col-lg-10
+
+                        .contact-form-wrap
+                          form(action="#", method="post")
+                            .row
+                              .col-md-6
+
+                                .single-form
+                                  input.form-control#nameSupervisor(type="text", name= "nameSupervisor", placeholder="Nome do supervisor")
+
+                              .col-md-6
+
+                                .single-form
+                                  input.form-control#emailSupervisor(type="email", name="emailSupervisor",placeholder="Email do supervisor")
+
+                              .col-md-12
+
+                                .form-btn.text-center
+                                  button.btn-primary(type="submit") Enviar
+
+script(src='./newSupervisor.ts')
+
++scriptImports
+
