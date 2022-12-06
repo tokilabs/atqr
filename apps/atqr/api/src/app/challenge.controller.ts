@@ -94,8 +94,8 @@ export class ChallengeController {
 
         // TODO Finalize implementation
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
-        const email = new ChallengeStarted(player);
+        const emailAddress = challengeDto.supervisorEmail;
+        const email = new ChallengeStarted(player.emailAddress);
         this.emailService.sendMail(email);
 
         return challenge;
@@ -207,7 +207,7 @@ export class ChallengeController {
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {
-        const email = new Congrats(challenge.player);
+        const email = new Congrats(challenge.player.emailAddress);
         this.emailService.sendMail(email);
       } else {
         throw new Error('challenge not updated');
