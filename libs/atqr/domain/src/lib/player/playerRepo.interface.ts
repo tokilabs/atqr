@@ -5,9 +5,9 @@ import { EmailAddress } from '../EmailService';
 export interface IPlayerRepository {
   findUnique(id: Guid): Promise<Player>;
 
-  findByEmail(email: EmailAddress): Player;
+  findByEmail(email: EmailAddress): Promise<Player>;
 
-  create(player: Player): void;
+  create(player: Player): Promise<void>;
 }
 
 export const IPlayerRepository = Symbol.for('IPlayerRepository');

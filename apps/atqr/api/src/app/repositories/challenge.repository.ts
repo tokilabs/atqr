@@ -1,4 +1,4 @@
-import { Challenge, IChallengeRepository } from '@atqr/domain';
+import { IChallengeRepository, Challenge } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
@@ -9,8 +9,8 @@ import { PrismaService } from '../infra/database/prisma.service';
 export class ChallengeRepository implements IChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(challenge: Challenge): void {
-    this.prismaService.challenge.create({
+  async create(challenge: Challenge): Promise<void> {
+    await this.prismaService.challenge.create({
       data: {
         id: challenge.id.valueOf(),
         deadline: challenge.deadline,
@@ -90,8 +90,8 @@ export class ChallengeRepository implements IChallengeRepository {
     });
   }
 
-  update(challenge: Challenge) {
-    this.prismaService.challenge.update({
+  async update(challenge: Challenge) {
+    await this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),
