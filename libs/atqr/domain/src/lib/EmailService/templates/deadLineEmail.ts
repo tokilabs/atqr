@@ -2,7 +2,7 @@ import { Email } from '../email.service';
 import * as pug from 'pug';
 import path = require('path');
 import { pathToTemplates } from './challengeStarted';
-import { Challenge } from '@atqr/domain';
+import { Challenge } from '../../../lib/challenge';
 
 const compileTemplate = pug.compileFile(
   path.join(pathToTemplates, 'deadLineEmail.pug')

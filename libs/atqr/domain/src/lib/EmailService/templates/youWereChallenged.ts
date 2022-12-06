@@ -10,7 +10,7 @@ const compileTemplate = pug.compileFile(
 );
 
 export class YouWereChallenged extends Email {
-  constructor(to: Player, challenge: Challenge) {
+  constructor(to: Player['_email'], challenge: Challenge) {
     super(
       to,
       'Você foi desafiado',

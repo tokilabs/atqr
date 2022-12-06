@@ -4,10 +4,10 @@ import { pugFile } from "./supConfirmation";
 
 class ConfirmEmail extends Email {
 
-    constructor (to: Player) {
+    constructor (to: Player['_email']) {
         super(to,
             'Email de confirmação...', pugFile({
-              player: to.name,
+              player: to,
             }))
     }
 }
