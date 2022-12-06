@@ -1,4 +1,3 @@
-import { Player } from '../../player/player.entity';
 import { Email } from '../email.service';
 import * as pug from 'pug';
 import path = require('path');

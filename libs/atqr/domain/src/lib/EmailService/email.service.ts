@@ -8,7 +8,7 @@ export interface IMailer {
 
 export class Email implements IEmail {
   constructor(
-    public to: Player | Player['_email'] | Challenge['_supervisorEmail'],
+    public to: Player['_email'] | Challenge['_supervisorEmail'],
     public subject: string,
     public message?: string
   ) {
@@ -17,7 +17,7 @@ export class Email implements IEmail {
     this.message = message;
   }
 
-  public get playerEmail() {
+  public get email() {
     return this.to;
   }
 
@@ -33,5 +33,3 @@ export class Email implements IEmail {
     return this.message;
   }
 }
-
-

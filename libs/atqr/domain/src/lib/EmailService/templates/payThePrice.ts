@@ -9,7 +9,7 @@ const compileTemplate = pug.compileFile(
 );
 
 export class PayThePrice extends Email {
-  constructor(to: Player | Player['_email']) {
-    super(to, 'Não cumpriu o desafio', compileTemplate({player: to}));
+  constructor(to: Player['_email']) {
+    super(to, 'Não cumpriu o desafio', compileTemplate({ player: to }));
   }
 }
