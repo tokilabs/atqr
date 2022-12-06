@@ -2,7 +2,7 @@ import { Guid } from '@tokilabs/lang';
 import { Challenge } from './challenge.entity';
 
 export interface IChallengeRepository {
-  create(challenge: Challenge): void;
+  create(challenge: Challenge): Promise<void>;
 
   findLastChallenges(amount: number): Promise<Challenge[]>;
 
@@ -15,7 +15,7 @@ export interface IChallengeRepository {
     skip?: number
   ): Promise<Challenge[]>;
 
-  update(challenge: Challenge): void;
+  update(challenge: Challenge): Promise<void>;
 }
 
 export const IChallengeRepository = Symbol.for('IChallengeRepository');
