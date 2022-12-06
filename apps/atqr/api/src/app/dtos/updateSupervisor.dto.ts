@@ -1,4 +1,4 @@
-import { SupervisorEnum } from '@atqr/domain';
+import { EmailAddress, SupervisorEnum } from '@atqr/domain';
 import { IsEnum, IsOptional } from 'class-validator';
 
 export class UpdateSupervisorDto {
@@ -9,5 +9,5 @@ export class UpdateSupervisorDto {
   supervisorName?: string;
 
   @IsOptional()
-  supervisorEmail?: string;
+  supervisorEmail?: EmailAddress;
 }

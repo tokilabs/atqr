@@ -18,7 +18,7 @@ export class ChallengeRepository implements IChallengeRepository {
         price: challenge.price,
         paymentMethod: 'Not Finished', // TODO: Resolve entity
         supervisorName: challenge.supervisorName,
-        supervisorEmail: challenge.supervisorEmail,
+        supervisorEmail: challenge.supervisorEmail.value,
         status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {

@@ -9,7 +9,8 @@ const compileTemplate = pug.compileFile(
 );
 
 export class Congrats extends Email {
-  constructor(to: Player) {
-    super(to, 'Cumpriu o desafio', '...');
+  constructor(to: Player['_email']) {
+    super(to,
+      'Cumpriu o desafio', '...');
   }
 }

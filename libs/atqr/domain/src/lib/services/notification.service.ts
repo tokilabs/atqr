@@ -1,7 +1,7 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge';
+import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
 import { IChallengeRepository } from '../challenge/challengeRepo.interface';
-import { Congrats, Email, IMailer, PayThePrice } from '../EmailService';
+import { Congrats, DeadLineEmail, IMailer, PayThePrice } from '../EmailService';
 
 export class NotificationService {
   constructor(
@@ -13,30 +13,24 @@ export class NotificationService {
     this.challengeRepository.findOverdueChallenges().then((challenges) => {
       Promise.all(
         challenges.map((c) => {
-          //devolve as challenges que estao sendo filtradas pelo findOverdueChallenges()
-          //em um array:
+          //return challenges that are filtered by findOverdueChallenges()
+          //in array format:
           //[challenge1,challenge2, challenge3...]
           if (c.updateOverdueStatus() === true) {
-          // challenge status updated to overdue
+            // challenge status updated to overdue
             try {
-              const player = c.player;
-              const email = new Email(
-                player,
-                'OverdueChallenge',
-                'Your time is over'
-              );
-            //cria um email pra enviar pro player
+              const email = new DeadLineEmail(c.supervisorEmail);
+              //create email to send to sup
               this.mailer.sendMail(email);
-            //manda o email pro player
+              //sends that email
               this.challengeRepository.update(c);
-            //faz o update do challenge que estiver nessa condicao de overdue
+              //do challenge update that are overdue
             } catch (err) {
               throw new Exception(
                 `Error updating overdue status of Challenge ${c.id}: ${
                   err.message || err
                 }`
               );
-            //se o catch encontrar um erro, uma nova Exception é criada com a mensagem do erro
             }
           }
         })
@@ -45,15 +39,13 @@ export class NotificationService {
   }
   public notifyCompletedChallenges(challenge: Challenge) {
     if (challenge.status == ChallengeStatus.Completed) {
-    //challenge status = completed
-      const email = new Congrats(challenge.player);
-    //cria um email Congrats que eé mandado pro player da challenge
+      //challenge status = completed
+      const player = challenge.player;
+      const email = new Congrats(player.emailAddress);
       this.mailer.sendMail(email);
-    //envia o email criado
     } else {
-      const email = new PayThePrice(challenge.player);
+      const email = new PayThePrice(challenge.player.emailAddress);
       this.mailer.sendMail(email);
-      return true;
     }
     this.challengeRepository.update(challenge);
   }

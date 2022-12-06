@@ -54,7 +54,7 @@ export class ChallengeController {
     @Body() challengeDto: CreateChallengeDto
   ): Promise<Challenge> {
     try {
-      let player = this.playerRepository.findByEmail(
+      let player = await this.playerRepository.findByEmail(
         new EmailAddress(challengeDto.player.emailAddress.value)
       );
 
@@ -94,8 +94,8 @@ export class ChallengeController {
 
         // TODO Finalize implementation
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
-        const email = new ChallengeStarted(player);
+        const emailAddress = challengeDto.supervisorEmail;
+        const email = new ChallengeStarted(player.emailAddress);
         this.emailService.sendMail(email);
 
         return challenge;
@@ -107,7 +107,7 @@ export class ChallengeController {
         const emailAddress = new EmailAddress(
           challengeDto.player.emailAddress.value
         );
-        const email = new SupConfirmation(player, challenge);
+        const email = new SupConfirmation(player.emailAddress);
         this.emailService.sendMail(email);
       }
     } catch (error) {
@@ -130,7 +130,7 @@ export class ChallengeController {
   // TODO: implement
   // @Get('challenge/:id')
 
-  
+
   @Get('latest/:amount')
   latest(@Param('amount') amount: number) {
     return this.challengeRepository.findLastChallenges(amount);
@@ -149,7 +149,7 @@ export class ChallengeController {
     switch (updateSupervisorDto.supervisorStatus) {
       // supervisorStatus
       case SupervisorEnum.accepted:
-        this.emailService.sendMail(new SupervisorAccepted(challenge.player));4
+        this.emailService.sendMail(new SupervisorAccepted(challenge.player.emailAddress));4
         // if supervisor has accepted an SupervisorAccepted wil be sent to the player
         challenge.changeSupervisor(
           updateSupervisorDto.supervisorName,
@@ -159,22 +159,22 @@ export class ChallengeController {
       break;
 
       case SupervisorEnum.rejected:
-        this.emailService.sendMail(new SupervisorDenied(challenge.player));
+        this.emailService.sendMail(new SupervisorDenied(challenge.player.emailAddress));
         // if supervisor has denied an SupervisorAccepted wil be sent to the player
         break;
 
       case SupervisorEnum.askedIfTheGoalIsAccomplished:
-        this.emailService.sendMail(new DeadLineEmail(challenge.player)); // change to sup email
+        this.emailService.sendMail(new DeadLineEmail(challenge.supervisorEmail)); // change to sup email
         break;
 
       case SupervisorEnum.repliedIfTheGoalWasAccomplished:
-        this.emailService.sendMail(new Congrats(challenge.player));
+        this.emailService.sendMail(new Congrats(challenge.player.emailAddress));
         // sends congrats email to player
         this.updateStatus(id, ChallengeStatus.Completed);
         break;
 
       case SupervisorEnum.repliedIfTheGoalWasNotAccomplished:
-        this.emailService.sendMail(new PayThePrice(challenge.player));
+        this.emailService.sendMail(new PayThePrice(challenge.player.emailAddress));
         this.updateStatus(id, ChallengeStatus.Failed);
         break;
     }
@@ -207,7 +207,7 @@ export class ChallengeController {
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {
-        const email = new Congrats(challenge.player);
+        const email = new Congrats(challenge.player.emailAddress);
         this.emailService.sendMail(email);
       } else {
         throw new Error('challenge not updated');
