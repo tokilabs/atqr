@@ -1,0 +1,164 @@
+ui Web
+  /**
+   * Defines a context for the screens
+   * A context is a set of screens that are related to each other.
+   * It can have preconditions that are checked before allowing the user to
+   * navigate to the screens in the context.
+   *
+   * context ID
+   */
+  context User
+    preconditions
+      user is logged in
+
+  context Admin
+    preconditions
+      user is logged in
+      user is admin
+
+  # When no context is specified, the default context is Public
+  context Public
+    preconditions
+      // none
+
+    screen Home
+      section Header
+        image Logo
+        copy HeaderTagline
+
+      section LastChallenges
+        title "Last Challenges"
+        text "See what others are facing"
+        # GetLastChallenges returns Challenge[]
+        list GetLastChallenges(qty = 5)
+          item @goal, @player.name, @deadline, @price
+
+      form CreateChallenge
+        card Card
+        choice CreatedByPlayer
+          # option LABEL VALUE
+          option "Challenge yourself" true
+          option "Challenge a friend" false
+        /**
+         * Renders a single line text input
+         * phrase ID
+         */
+        phrase Goal
+        /**
+         * Renders a text input for a full name
+         * full_name ID
+         */
+        full_name PlayerName
+        /**
+         * Renders an email input field
+         * email ID
+         */
+        email PlayerEmail
+
+        full_name SupervisorName
+        email SupervisorEmail
+        /**
+         * Renders a date input
+         * date ID
+         */
+        date Deadline
+        /**
+         * Renders a money (number with 2 decimals) input field
+         * number ID
+         */
+        money Price (
+          currency = "USD"
+          min = 0
+          max = 1000
+        )
+
+        when CreatedByPlayer's value is true
+          // # It is possible to use a custom component as a field
+          // # stripe_elements is a CUSTOM component
+          stripe_elements CardData (
+            token = @token
+            required when CreatedByPlayer's value is true
+          )
+
+      section ChallengeSuggestions
+        copy SuggestionsSectionTagline
+
+      section LatestTweetsTaggedEuDuvido
+        copy TweetsSectionTagline
+
+        paged_list tweets GetTweets
+
+        section Tweets
+          button Previous disabled={:start <= 0}
+            run tweets
+
+          list tweets's current_page
+            item @text, @user.name, @user.screen_name, @user.profile_image_url_https
+
+          button Next
+            run :tweets = NextTweets()
+
+    screen ConfirmChallengeResponse
+      params
+        # "Accepted" | "Rejected"
+        url response
+      copy AreYouSureOfChallengeResponse @response
+
+      button ConfirmChallengeResponse
+        when @response is "Accepted"
+          command AcceptChallenge
+            max_retry 3
+            on Success
+              open ChallengeAccepted
+
+        when @response is "Rejected"
+          command RejectChallenge
+            max_retry 3
+            on Success
+              open ChallengeRejected
+
+      button ChangeChallengeResponse
+        open ChallengeResponse
+
+    screen ConfirmSupervisionRequestResponse
+      params
+        # "Accepted" | "Rejected"
+        url response
+      copy AreYouSureOfSupervisionRequestResponse @response
+
+      button ConfirmSupervisionRequestResponse
+        when @response is "Accepted"
+          command AcceptSupervisionRequest
+            max_retry 3
+            on Success
+              open SupervisionRequestAccepted
+
+        when @response is "Rejected"
+          command RejectSupervisionRequest
+            max_retry 3
+            on Success
+              open SupervisionRequestRejected
+
+      button ChangeSupervisionRequestResponse
+        open SupervisionRequestResponse
+
+
+ui Email
+
+  email ChallengeCreated
+    copy ChallengeCreatedEmailSubject
+    copy ChallengeCreatedEmailBody
+    button Share
+      open ShareYourChallenge
+
+  email YouHaveBeenChallenged
+    copy YouHaveBeenChallengedEmailSubject
+    copy YouHaveBeenChallengedEmailBody
+
+    button AcceptChallenge
+      open ConfirmChallengeResponse
+        data response=ChallengeResponse.Accepted
+
+    button RejectChallenge
+      open ConfirmChallengeResponse
+        data response=ChallengeResponse.Rejected
