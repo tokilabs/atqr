@@ -142,6 +142,10 @@ ui Web
       button ChangeSupervisionRequestResponse
         open SupervisionRequestResponse
 
+    screen CheckEmailToConfirmParticipation
+      copy CheckEmailToConfirmParticipation
+
+
 
 ui Email
 

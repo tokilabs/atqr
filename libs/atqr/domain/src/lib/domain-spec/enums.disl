@@ -1,19 +1,28 @@
 context TheGame
   enum ChallengeStatus
+    Unverified
     /**
      * Challenges are created as Unverified and cannot be moved to Ongoing until:
      *   - a player acceptance (when the challenge is created by a supervisor)
      *   - a supervisor acceptance
      *   - a challenge funds verification
      */
-    Unverified
     Ongoing
     Overdue
-    Accomplished
+    /**
+     * Challenges are moved to Finished when:
+     *  - it is overdue
+     *  - no payment is being processed
+     *  - no refund request is being processed
+     */
+    Finished
+
+  enum PlayerOutcome
+    Succeeded
     Failed
-    Paid
 
   enum PaymentStatus
+    NotNeeded
     Abandoned
     Failed
     Paid
@@ -28,7 +37,7 @@ context TheGame
 
   enum PaymentFundsStatus
     Unverified
-    Available
+    Authorized
     Denied
 
   enum SupervisionStatus
