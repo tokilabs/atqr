@@ -5,16 +5,19 @@ ui Web
    * It can have preconditions that are checked before allowing the user to
    * navigate to the screens in the context.
    *
-   * context ID
+   * A context can have preconditions that are checked before allowing the user
+   * to navigate to the screens in the context.
+   *
+   * Examples:
+   * context User
+   *   preconditions
+   *     user is logged in
+   *
+   * context Admin
+   *   preconditions
+   *     user is logged in
+   *     user is admin
    */
-  context User
-    preconditions
-      user is logged in
-
-  context Admin
-    preconditions
-      user is logged in
-      user is admin
 
   # When no context is specified, the default context is Public
   context Public
