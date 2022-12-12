@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "@disl/lang": "libs/@disl/lang",
     "api": {
       "root": "apps/atqr/api",
       "sourceRoot": "apps/atqr/api/src",
