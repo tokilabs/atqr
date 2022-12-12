@@ -21,7 +21,7 @@ export class NotificationService {
             try {
               const email = new DeadLineEmail(c.supervisorEmail);
               //create email to send to sup
-              this.mailer.sendMail(email);
+              this.mailer.send(email);
               //sends that email
               this.challengeRepository.update(c);
               //do challenge update that are overdue
