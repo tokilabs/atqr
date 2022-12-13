@@ -1,12 +1,10 @@
 import { Player } from '../../player/player.entity';
 import { Email } from '../email.service';
 import * as pug from 'pug';
-import path = require('path');
+import * as path from 'path';
+import { pathToTemplates } from './includes/pathToTemplates';
 
-export const pathToTemplates = path.join(
-  process.cwd(),
-  'libs/atqr/domain/src/lib/EmailService/templates/'
-);
+
 const compileTemplate = pug.compileFile(
   path.join(pathToTemplates, 'challengeStarted.pug')
 );

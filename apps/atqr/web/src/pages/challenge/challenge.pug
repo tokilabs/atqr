@@ -5,10 +5,11 @@ head
   meta(name='robots', content='noindex, follow')
   meta(name='description', content='')
   meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+  script(type="module", src="challenge.ts")
   include ../index/_cdns.pug
   include challengeMixins.pug
   +headImports
-  +headScripts
+
 body
   .main-wrapper
     .meeta-event-project-wrap.event-project-active.slider-bullet

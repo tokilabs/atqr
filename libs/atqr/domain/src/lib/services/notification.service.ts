@@ -1,6 +1,6 @@
 import { Exception } from '@tokilabs/lang';
 import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
-import { IChallengeRepository } from '../challenge/challengeRepo.interface';
+import { IChallengeRepository } from '../challenge/challenge.repository.interface';
 import { Congrats, DeadLineEmail, IMailer, PayThePrice } from '../EmailService';
 
 export class NotificationService {

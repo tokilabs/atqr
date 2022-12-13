@@ -3,8 +3,7 @@ import { updateStatus, ChallengeStatus } from '../../services/interfaces';
 import { updateUI } from '../../services/updateUi';
 
 export const getChallenge = () => {
-  const data = atqrApi.challenges.getOne('');
-  console.log('this is data :', data);
+  const data = atqrApi.challenge.getOne('');
   return data;
 };
 

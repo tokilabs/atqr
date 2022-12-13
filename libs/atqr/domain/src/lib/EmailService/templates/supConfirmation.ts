@@ -1,8 +1,8 @@
 import { Email } from '../email.service';
 import * as pug from 'pug';
-import path = require('path');
+import * as path from 'path';
+import { pathToTemplates } from './includes/pathToTemplates';
 import { Challenge } from '../../../lib/challenge';
-import { pathToTemplates } from './challengeStarted';
 
 export const pugFile = pug.compileFile(
   path.join(pathToTemplates, 'SupConfirmation.pug')

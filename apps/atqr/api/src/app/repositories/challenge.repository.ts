@@ -40,7 +40,9 @@ export class ChallengeRepository implements IChallengeRepository {
       });
 
     return plainChallenges.map((challenge) => {
-      return plainToInstance(Challenge, challenge);
+      console.log(challenge)
+      return plainToInstance(Challenge, challenge,
+        );
     });
   }
 
@@ -48,9 +50,10 @@ export class ChallengeRepository implements IChallengeRepository {
     // Cursor or Offset based pagination?
     // As the change is quite easy i'll implement Offset based pagination and will change later if need arises
 
-    const plainChallenges: PrismaChallenge[] =
+    const plainChallenges =
       await this.prismaService.challenge.findMany({
         take: numberOfResults,
+        include: { player: true },
       });
 
     return plainChallenges.map((challenge) => {

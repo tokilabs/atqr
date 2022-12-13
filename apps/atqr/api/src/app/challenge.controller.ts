@@ -36,12 +36,10 @@ import ValidationErrors, {
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
 @Controller('challenge')
-// defines a class as a controller to make HTTP requests
 export class ChallengeController {
   constructor(
     private readonly emailService: Mailer,
     @Inject(IChallengeRepository)
-    //injects IChallengeRepository dependency on parameter challengeRepository
     private readonly challengeRepository: IChallengeRepository,
     @Inject(IPlayerRepository)
     private readonly playerRepository: IPlayerRepository,
@@ -93,8 +91,6 @@ export class ChallengeController {
         this.challengeRepository.create(challenge);
 
         // TODO Finalize implementation
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = challengeDto.supervisorEmail;
         const email = new ChallengeStarted(player.emailAddress);
         this.emailService.sendMail(email);
 
@@ -130,59 +126,55 @@ export class ChallengeController {
   // TODO: implement
   // @Get('challenge/:id')
 
-
   @Get('latest/:amount')
-  latest(@Param('amount') amount: number) {
-    return this.challengeRepository.findLastChallenges(amount);
+  latest(@Param('amount') amount: string) {
+    return this.challengeRepository.findLastChallenges(parseInt(amount));
   }
 
   @Patch(':id/supervisor')
-  //"update"s the result information of a request in the specified route
   async updateSupervisor(
     @Param('id') id: Guid,
     @Body() updateSupervisorDto: UpdateSupervisorDto
-    //promise function that receives an id parameter through @param get request
-    //and the body of updateSupervisorDto parameter
   ): Promise<void> {
     const challenge: Challenge = await this.challengeRepository.findUnique(id);
-    // got challenge by id
     switch (updateSupervisorDto.supervisorStatus) {
-      // supervisorStatus
       case SupervisorEnum.accepted:
-        this.emailService.sendMail(new SupervisorAccepted(challenge.player.emailAddress));4
-        // if supervisor has accepted an SupervisorAccepted wil be sent to the player
+        this.emailService.sendMail(
+          new SupervisorAccepted(challenge.player.emailAddress)
+        );
+        4;
         challenge.changeSupervisor(
           updateSupervisorDto.supervisorName,
           updateSupervisorDto.supervisorEmail
         );
-        //then will call changeSupervisor entity function to update name and email of supervisor
-      break;
+        break;
 
       case SupervisorEnum.rejected:
-        this.emailService.sendMail(new SupervisorDenied(challenge.player.emailAddress));
-        // if supervisor has denied an SupervisorAccepted wil be sent to the player
+        this.emailService.sendMail(
+          new SupervisorDenied(challenge.player.emailAddress)
+        );
         break;
 
       case SupervisorEnum.askedIfTheGoalIsAccomplished:
-        this.emailService.sendMail(new DeadLineEmail(challenge.supervisorEmail)); // change to sup email
+        this.emailService.sendMail(
+          new DeadLineEmail(challenge.supervisorEmail)
+        ); // change to sup email
         break;
 
       case SupervisorEnum.repliedIfTheGoalWasAccomplished:
         this.emailService.sendMail(new Congrats(challenge.player.emailAddress));
-        // sends congrats email to player
         this.updateStatus(id, ChallengeStatus.Completed);
         break;
 
       case SupervisorEnum.repliedIfTheGoalWasNotAccomplished:
-        this.emailService.sendMail(new PayThePrice(challenge.player.emailAddress));
+        this.emailService.sendMail(
+          new PayThePrice(challenge.player.emailAddress)
+        );
         this.updateStatus(id, ChallengeStatus.Failed);
         break;
     }
-    // if any of these cases happen the following functions will execute
     challenge.updateSupervisorStatus(updateSupervisorDto.supervisorStatus);
-    // update sup status according to the case that happened
     this.challengeRepository.update(challenge);
-    //calls uptdate function to save new sup status
   }
 
   // TODO Implement change payment endpoint and fix return

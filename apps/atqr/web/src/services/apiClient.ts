@@ -1,6 +1,11 @@
 import { Guid } from '@tokilabs/lang';
 import axios from 'axios';
-import { CreateChallengeDto, UpdateCreditCardTokenDto } from './interfaces';
+import {
+  challenge,
+  CreateChallengeDto,
+  IChallenge,
+  UpdateCreditCardTokenDto,
+} from './interfaces';
 import { ChallengeStatus } from './interfaces';
 
 const baseUrl = 'http://localhost:3333/api/';
@@ -11,7 +16,7 @@ const api = axios.create({
 });
 
 export const atqrApi = {
-  challenges: {
+  challenge: {
     create: async (createChallengeDto: CreateChallengeDto) => {
       try {
         const created = await api.post(
@@ -24,17 +29,29 @@ export const atqrApi = {
         return error;
       }
     },
-    getLatest: async (amount: number) => {
+    getOne: async (id: string) => {
       try {
-        const latest = await api.get(`challenge/last-challenges/${amount}`);
+        const getOne = await api.get(`/challenge/${id}`);
+        console.log(getOne);
+        return getOne;
+      } catch (error) {
+        console.log(error);
+        return 'An unexpected error occurred';
+      }
+    },
+    getLatest: async (amount: number): Promise<IChallenge[]> => {
+      try {
+        const latest = (await api.get(
+          `challenge/latest/${amount}`
+        )) as challenge[];
         return latest;
       } catch (error) {
         console.log(error);
         return error;
       }
     },
-    challengeUpdated: {
-      statusUpdated: async (id: string, updateStatus: ChallengeStatus) => {
+    challengeUpdate: {
+      status: async (id: string, updateStatus: ChallengeStatus) => {
         try {
           const statsUpdated = await api.patch(
             `/challenge/${id}`,
@@ -47,7 +64,7 @@ export const atqrApi = {
         }
       },
       //TODO: need implement in controller
-      paymentUpdated: async (
+      payment: async (
         id: Guid,
         updateCreditCardTokenDto: UpdateCreditCardTokenDto
       ) => {
@@ -62,26 +79,16 @@ export const atqrApi = {
           return error;
         }
       }, //TODO: need implement in controller
-      changedSupervisor: async (id: string) => {
+      supervisor: async (id: string) => {
         try {
-          const paymentUpdated = await api.patch(`/challenge/${id}`);
-          return paymentUpdated;
+          const supervisorUpdated = await api.patch(`/challenge/${id}`);
+          return supervisorUpdated;
         } catch (error) {
           console.log(error);
           return error;
         }
       },
     },
-    getOne: async (id: string) => {
-      try {
-        const getOne = await api.get(`/challenge/${id}`);
-        console.log(getOne);
-        return getOne;
-      } catch (error) {
-        console.log(error);
-        return 'An unexpected error occurred';
-      }
-    }
   },
 
   payment: {

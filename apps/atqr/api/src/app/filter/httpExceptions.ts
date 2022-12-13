@@ -25,10 +25,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       );
     }
     if (exception.message.length <= 10) {
-      console.log('Your message is too short. Do a better one');
-      exception = new InternalServerErrorException(
-        "We don't know what happen'd"
-      );
+      console.error('Your message is too short. Do a better one');
     }
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();

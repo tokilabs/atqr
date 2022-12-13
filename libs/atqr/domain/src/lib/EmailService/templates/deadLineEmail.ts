@@ -1,7 +1,7 @@
 import { Email } from '../email.service';
 import * as pug from 'pug';
-import path = require('path');
-import { pathToTemplates } from './challengeStarted';
+import * as path from 'path';
+import { pathToTemplates } from './includes/pathToTemplates';
 import { Challenge } from '../../../lib/challenge';
 
 const compileTemplate = pug.compileFile(
