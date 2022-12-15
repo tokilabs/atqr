@@ -40,6 +40,7 @@ context Challenges
       @emailConfirmed: boolean
       @playedChallenges: Enrollment[]
       @officiatedChallenges: Officiation[]
+      @organizedChallenges: Owner[]
       @paymentMethod?: PaymentMethod
 
       /**
@@ -54,11 +55,13 @@ context Challenges
      */
     valueObject Enrollment
       @player: User
+      @judge: User
       @challenge: Challenge
       @playerAlias?: DISL.Name
       @pledge: DISL.Money
       @outcome: PlayerOutcome = null
-      @paymentStatus: PaymentStatus = PaymentStatus.Pending
+      @participationStatus: ParticipationStatus.Accepted
+      @paymentStatus: PaymentStatus = PaymentStatus.notDueYet
       @paymentMethod: PaymentMethod
       @paymentFundsStatus: PaymentFundsStatus = PaymentFundsStatus.Unverified
 
@@ -72,7 +75,7 @@ context Challenges
     valueObject Officiation
       @challenge: Challenge
       @judge: User
-      @players: ChallengeEntry[]
+      @players: Enrollment[]
       @participationStatus: ParticipationStatus = ParticipationStatus.NotRequested
       @judgementStatus: JudgementStatus = JudgementStatus.NotRequested
 
