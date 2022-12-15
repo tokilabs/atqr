@@ -7,9 +7,13 @@ AdoptChallenge?
   @officiatedChallenges: Officiation[]
 
 rules:
+  /**
+  * visitor's email must be validated so we know if this person is already a user in this challenge through Enrollment[] and Officiation[]
+  */
+  create email input labeled "adoptLink"
+
   when @playedChallenges and @officiatedChallenges
     if !ChallengeNotFound
-      adoptLink == true
         CreateChallenge?
           @goal = it's challenge.goal
 
