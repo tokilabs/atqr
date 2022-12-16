@@ -48,6 +48,7 @@ context Challenges
 
   enum ParticipationStatus
     NotRequested
+    askedToThePlayer
     Requested
     Accepted
     Rejected
