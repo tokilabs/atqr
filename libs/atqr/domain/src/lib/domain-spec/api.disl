@@ -421,5 +421,7 @@ context Challenges
     createAccount for Contact
       rules:
         - Contact.email does not exist in UserRepository.users.email
+        - PaymentService.capturePayment(foreignId) succeeds
+        - SupervisionStatus.NotRequested
 
   valueObject Icons
