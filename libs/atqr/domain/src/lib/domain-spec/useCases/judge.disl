@@ -1,7 +1,7 @@
 shareInviteLink for Judge :challengeId
     rules:
         - ChallengeCreated! is true 
-        - ChallengeStatus = Unverified | ongoing | Failed | succeeded
+        - ChallengeStatus = Unverified 
         - link has handom numeric id
         - link has to get challenge by its id :challengeId
     ShareLink!
