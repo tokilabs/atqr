@@ -1,0 +1,7 @@
+domain ATQR
+
+context Challenges
+
+  💬listLastChallenges? :qty :challengeId
+    take :qty of challenges by it's id
+      then order by descending @creation_date
