@@ -1,0 +1,32 @@
+shareInviteLink for Judge :challengeId
+    rules:
+        - ChallengeCreated! is true 
+        - ChallengeStatus = Unverified | ongoing | Failed | succeeded
+        - link has handom numeric id
+        - link has to get challenge by its id :challengeId
+    ShareLink!
+        when
+            ChallengeCreated! :challengeId
+                get challenge by its id
+                redirect! 
+                    player to challenge resume 
+                    then 
+                        list 
+                        - challenge.goal
+                        - challenge.deadline
+                        - challenhe.price
+                    player accepts or deny inviteByLink
+        when 
+            player accepts  
+                ChallengeStatus = Ongoing
+            then.
+                NotificationService notifies Supevisor by its email
+        when 
+            player denys 
+                ChallengeStatus = Unverified
+            then. 
+                 NotificationService notifies Supevisor by its email
+
+
+
+    

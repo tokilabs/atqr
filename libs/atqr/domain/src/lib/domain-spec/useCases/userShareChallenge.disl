@@ -1,0 +1,16 @@
+shareChallenge? challengeId
+    rules:
+        - ChallengeStatus = Unverified | Ongoing | Finished
+        - User can access any challenge by ShowChallenge!
+    when.
+        User CreateChallenge!
+             Can click on button to share its challenge
+    when
+        Visitor|User access a challenge
+            ShowChallenge!   
+                user goes to challenge resume 
+        then. 
+            Can click on button to share the challenge
+
+            
+
