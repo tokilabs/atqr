@@ -1,0 +1,24 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+ChallengeRejected! (??)
+    rules: 
+        - ChallengeCreated!
+        - ChallengeStatus = Unverified
+        - player is not participating on this Challenge
+        - PaymentFundsStatus = Unverified
+
+    when    
+        player receives invitation email 
+            player can click on view Challenge button
+        then.    
+            redirect! to Challenge resume page 
+            player can click on deny Challenge button
+        and.
+            NotificationService sends ChallengeRejected!  
+    when 
+        player receives invitation email 
+            player can click on deny Challenge button
+        then. 
+            NotificationService sends ChallengeRejected!
