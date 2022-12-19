@@ -1,0 +1,23 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+ChallengeAccepted! (??)
+    rules: 
+        - ChallengeCreated!
+        - ChallengeStatus = Unverified
+        - player is not participating on this Challenge
+        - PaymentFundsStatus = Authorized
+
+    when    
+        player receives invitation email 
+            player can click on Accept Challenge button
+        then.    
+            redirect! to Challenge resume page 
+            player can click on next step button
+        then. 
+            redirect! to stripe page 
+            player enters card data to be validated
+        and.
+            NotificationService sends ChallengeAccepted!  
+
