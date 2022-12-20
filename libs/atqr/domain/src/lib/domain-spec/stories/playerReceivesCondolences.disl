@@ -1,0 +1,22 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+ChallengeFailed!
+    rules:
+        - JudgementStatus = Judged
+        - ChallengeStatus = Finished
+        - PlayerOutcome = Failed
+
+    when. 
+        PlayerOutcome is Failed
+            NotificationService will send ChallengeFailed! email
+        then.
+            //"Usuário gera imagem do desafio” use case
+            player can share its outcome 
+        and 
+            player can create new Challenge or redo this one
+            // "Jogador se Desafia" use case
+                ChallengeYourSelf?
+            // "Player Challenges Someone" use case
+                ChallengeSomeOne?

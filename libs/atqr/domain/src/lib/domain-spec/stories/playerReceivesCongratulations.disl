@@ -1,0 +1,22 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+ChallengeAccomplished!
+    rules:
+        - JudgementStatus = Judged
+        - ChallengeStatus = Finished
+        - PlayerOutcome = Succeeded
+
+    when. 
+        PlayerOutcome is Succeeded
+            NotificationService will send ChallengeAccomplished! email
+        then.
+            //"Usuário gera imagem do desafio” use case
+            player can share its outcome 
+        and 
+            player can create new Challenge or redo this one
+            // "Jogador se Desafia" use case
+                ChallengeYourSelf?
+            // "Player Challenges Someone" use case
+                ChallengeSomeOne?
