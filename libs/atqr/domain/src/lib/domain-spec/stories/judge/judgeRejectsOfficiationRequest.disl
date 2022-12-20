@@ -1,0 +1,13 @@
+
+💬 judgeRejects! challenge: Challenge, id: PlayerId
+    challenge.changeParticipationStatus? participationStatus: ParticipationStatus, judgeId: UserId
+    NotificationService.judgeRejects! challenge: Challenge, id: PlayerId
+
+service NotificationService
+
+    💬 judgeRejects! challenge: Challenge, id: PlayerId
+        sendEmail
+          template: judgeRejects
+          data: Challenge
+          to: challenge.player
+

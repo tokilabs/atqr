@@ -1,0 +1,62 @@
+💬 SelectNewJudge! challenge: Challenge, id: PlayerId
+    NotificationService.SelectNewJudge(challenge, id)
+
+
+💬 SupervisionRequest! challenge: Challenge, contactJudge: Contact
+    user = (find user or create with contactJudge)
+    user.addOfficiatedChallenge(challenge)
+    NotificationService.SupervisionRequested(challenge, contactJudge)
+
+
+service NotificationService
+
+    💬 SelectNewJudge! challenge: Challenge, id: PlayerId
+        sendEmail
+          template: SelectNewJudge
+          data: Challenge
+          to: challenge.player
+        when get the response   📣 supervisionRequest
+        if(pass X days send again, if pass Y days cancel)
+
+    💬 SupervisionRequested! id: PlayerId ,newJudge: Contact
+        sendEmail
+          template: JudgeRequested
+          data: Challenge
+          to: challenge.supervisor
+        when get the response   📣 judgeAccepted or judgeRejected
+        if(pass X days send again, if pass Y days cancel)
+
+
+entity User
+
+  💬 addOfficiatedChallenge! challenge: Challenge
+      officiation = new Officiation(this, challenge)
+      this.officiatedChallenges.push(officiation)
+
+      📣 addJudge! officiation: Officiation
+
+
+entity Challenge
+
+    💬 changeParticipationStatus? participationStatus: ParticipationStatus , judgeId: UserId
+        challenge.invitees.for(invitee)
+            if (invitee.id == judge Id)
+                invitee.participationStatus = participationStatus
+        challenge.judges.for(judge)
+            if (judge.id == judgeId)
+                judge.participationStatus = participationStatus
+
+        if(participationStatus == ParticipationStatus.ACCEPTED)
+            📣 verifyChallengeCanBegin!
+        else
+            📣 deleteJudge!
+            📣 selectNewJudge!
+
+
+    💬 addJudge? judge: Officiation
+        this.judges.push(judge)
+
+    💬 deleteJudge? judgeId: UserId
+        this.judges.for(judge)
+            if (judge.id == judgeId)
+                this.judges.remove(judge)
