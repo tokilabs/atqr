@@ -17,6 +17,8 @@ ChallengeSomeone?
         NotificationService sends YouWereInvited? email to player
         if player does not answer 
             NotificationService sends YouWereInvited? email again
+            after 10 days
+                ChallengeStatus = Abanded 
     then. 
         // "Player Accepts Challenge by Email" use case
         Player Accepts Challenge by email 
