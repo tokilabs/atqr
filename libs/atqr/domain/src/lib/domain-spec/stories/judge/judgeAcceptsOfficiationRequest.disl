@@ -1,0 +1,13 @@
+💬 judgeAccepts! challenge: Challenge, id: judgeId
+  user = findUser()
+  challenge.changeParticipationStatus? participationStatus: ParticipationStatus.judgeAccepted, judgeId: user.id
+  NotificationService.judgeAccepts! challenge: challenge, id: user.id
+
+
+service NotificationService
+
+    💬 judgeAccepts! challenge: Challenge, id: PlayerId
+        sendEmail
+          template: judgeAccepts
+          data: Challenge
+          to: challenge.player
