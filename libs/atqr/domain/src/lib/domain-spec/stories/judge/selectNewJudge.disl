@@ -1,6 +1,6 @@
 💬 SelectNewJudge! challenge: Challenge, id: PlayerId
     NotificationService.SelectNewJudge(challenge, id)
-
+    challenge.
 
 💬 SupervisionRequest! challenge: Challenge, contactJudge: Contact
     user = (find user or create with contactJudge)
