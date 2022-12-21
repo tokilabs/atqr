@@ -1,0 +1,26 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+AdoptChallenge?
+  @playedChallenges: Enrollment[]
+  @officiatedChallenges: Officiation[]
+
+rules:
+  when @playedChallenges and @officiatedChallenges
+    if !ChallengeNotFound
+      adoptLink == true
+        CreateChallenge?
+          @goal = it's challenge.goal
+
+  when @playedChallenges
+    if !ChallengeNotFound == false
+      throw "you are a player in this challenge"
+
+  when @officiatedChalenges
+    if !ChallengeNotFound == false
+      throw "you are a judge in this challenge"
+
+end rules
+
+
