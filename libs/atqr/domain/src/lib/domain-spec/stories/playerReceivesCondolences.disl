@@ -2,30 +2,12 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-ChallengeFailed!
+doman/NotificationService calls ChallengeFailed!
     rules:
-        - JudgementStatus = Judged
-        - ChallengeStatus = Finished
-        - PlayerOutcome = Failed
+        - JudgementStatus == Judged
+        - ChallengeStatus == Finished
+        - PlayerOutcome == Failed
 
     when. 
-        PlayerOutcome is Failed
+        Challenge.PlayerOutcome is Failed
             NotificationService will send ChallengeFailed! email
-        then.
-            //"Usuário gera imagem do desafio” use case
-            player can share its outcome 
-        and 
-            // "jogador se desafia" use case
-            player can:
-                -Challenge them self:
-                    create new Challenge
-                    ChallengeYourSelf?
-                // "repeatChallenge" function has to be implemented on api.disl
-                -redo this Challenge:
-                    new Challenge from this same Goal
-                // "juiz desafia jogador" use case
-                -Challenge someone with:
-                    new Challenge 
-                        or
-                    this Goal
-                    ChallengeSomeOne?
