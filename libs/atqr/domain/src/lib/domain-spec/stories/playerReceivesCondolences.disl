@@ -15,8 +15,17 @@ ChallengeFailed!
             //"Usuário gera imagem do desafio” use case
             player can share its outcome 
         and 
-            player can create new Challenge or redo this one
-            // "Jogador se Desafia" use case
-                ChallengeYourSelf?
-            // "Player Challenges Someone" use case
-                ChallengeSomeOne?
+            // "jogador se desafia" use case
+            player can:
+                -Challenge them self:
+                    create new Challenge
+                    ChallengeYourSelf?
+                // "repeatChallenge" function has to be implemented on api.disl
+                -redo this Challenge:
+                    new Challenge from this same Goal
+                // "juiz desafia jogador" use case
+                -Challenge someone with:
+                    new Challenge 
+                        or
+                    this Goal
+                    ChallengeSomeOne?

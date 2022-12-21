@@ -4,19 +4,24 @@ read_also ui.disl
 
 ChallengeAccomplished!
     rules:
-        - JudgementStatus = Judged
-        - ChallengeStatus = Finished
-        - PlayerOutcome = Succeeded
+        - JudgementStatus == Judged
+        - ChallengeStatus == Finished
+        - PlayerOutcome == Succeeded
 
     when. 
         PlayerOutcome is Succeeded
             NotificationService will send ChallengeAccomplished! email
         then.
-            //"Usuário gera imagem do desafio” use case
+            // "gerar imagem do desafio" use case
             player can share its outcome 
         and 
-            player can create new Challenge or redo this one
-            // "Jogador se Desafia" use case
+            // "jogador se desafia" use case
+            player can Challenge themselves:
+                -create new Challenge
                 ChallengeYourSelf?
-            // "Player Challenges Someone" use case
+            // "juiz desafia jogador" use case
+            player can challenge someone with:
+                -new Challenge 
+                -new Challenge from its Goal
                 ChallengeSomeOne?
+               
