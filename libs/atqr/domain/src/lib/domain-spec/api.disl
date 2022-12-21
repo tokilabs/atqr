@@ -40,7 +40,7 @@ context Challenges
       @emailConfirmed: boolean
       @playedChallenges: Enrollment[]
       @officiatedChallenges: Officiation[]
-      @organizedChallenges: Owner[]
+      @organizedChallenges: Challenge[]
       @paymentMethod?: PaymentMethod
 
       /**
