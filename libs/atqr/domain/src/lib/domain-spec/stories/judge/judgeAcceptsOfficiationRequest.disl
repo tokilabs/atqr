@@ -1,5 +1,10 @@
-💬 judgeAccepts! challenge: Challenge, id: judgeId
-  user = findUser()
+💬 judgeAccepts! challengeId: ChallengeId, judgeId: judgeId
+  challenge = findChallenge(challengeId)
+  user = findOrCreateUser(judgeId)
+
+  officiation = createOfficiation(user, challenge)
+  challenge.addJudge(officiation)
+
   challenge.changeParticipationStatus? participationStatus: ParticipationStatus.judgeAccepted, judgeId: user.id
   NotificationService.judgeAccepts! challenge: challenge, id: user.id
 
