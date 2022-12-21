@@ -1,0 +1,27 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+entity Goal
+  @persuer: User
+  @goal: Goal
+
+root Challenge
+  CreateChallenge?
+    AdoptGoal? :email :goal
+
+    rules:
+      /**
+      * visitor's email must be validated as a player persuing this goal or not through Goal's @persuer
+      */
+    when @email not @persuer
+      CreateChallenge?
+        @email = their email
+        @goal = this Goal
+
+    when @persuer
+      throw "você já persegue esta meta"
+
+    end rules
+
+
