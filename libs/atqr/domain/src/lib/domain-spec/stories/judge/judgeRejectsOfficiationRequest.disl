@@ -1,7 +1,8 @@
 
-💬 judgeRejects! challenge: Challenge, id: PlayerId
-    challenge.changeParticipationStatus? participationStatus: ParticipationStatus, judgeId: UserId
+💬 judgeRejects! challengeId: ChallengeId, id: PlayerId
+    challenge = findChallenge(challengeId)
     NotificationService.judgeRejects! challenge: Challenge, id: PlayerId
+    challenge.changeParticipationStatus? participationStatus: ParticipationStatus, judgeId: UserId
 
 service NotificationService
 
