@@ -4,29 +4,22 @@ context Challenges
 
 //função no Challenge
 
-💬 RequestJudgement? :challengeId, accomplished: boolean
+💬 RequestJudgement? :challengeId
   rules:
     challenge.status = ChallengeStatus.Overdue
 
   sendJudgementRequestEmail? :challengeId
 
   if @challenge.judge answer
-    then @challengeJudgement = ChallengeJudgement.Judged
-    when accomplished.true
-      @challengeJudgement = challengeJudgement.Accomplished
-      sendChallengeAccomplishedEmailToPlayer? :challengeId
-    when accomplished.false
-      @challengeJudgement = challengeJudgement.Failed
-      sendChallengeFailedEmailToPlayer? :challengeId
+    @challengeJudgement = ChallengeJudgement.Judged
   else
-    wait 1 day to
+    wait x day to
     sendJudgementRequestEmail? :challengeId
     if not answer
-      wait 2 days to
+      wait y days to
     sendJudgementRequestEmail? :challengeId
-    sendYouWillBeChargeIn7DaysEmailToPlayer? :challengeId
-    if still not answer
-      wait 7 days then @challengeJudgment = ChallengeJudgment.Failed 
+    sendYouWillBeChargeInNDaysEmailToPlayer? :challengeId
+  
 
 
 
