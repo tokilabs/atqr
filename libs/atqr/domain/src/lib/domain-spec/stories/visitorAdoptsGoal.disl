@@ -21,7 +21,7 @@ root Challenge
         @goal = visitor's :goal of choice
 
     when @pursuer
-      throw "você já persegue esta meta"
+      throw "o usuário já persegue esta meta"
 
   end rules
 
