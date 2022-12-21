@@ -3,25 +3,26 @@ read_also enums.disl
 read_also ui.disl
 
 entity Goal
-  @persuer: User
-  @goal: Goal
+  @goal: string
+  @challenges: Challenge[]
+  @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
 root Challenge
   CreateChallenge?
-    AdoptGoal? :email :goal
+  AdoptGoal? :email :goal
 
-    rules:
-      /**
-      * visitor's email must be validated as a player persuing this goal or not through Goal's @persuer
-      */
-    when @email not @persuer
+  rules:
+    /**
+    * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
+    */
+    when :email not in @pursuer's email
       CreateChallenge?
-        @email = their email
-        @goal = this Goal
+        @email = visitor's :email input
+        @goal = visitor's :goal of choice
 
-    when @persuer
+    when @pursuer
       throw "você já persegue esta meta"
 
-    end rules
+  end rules
 
 
