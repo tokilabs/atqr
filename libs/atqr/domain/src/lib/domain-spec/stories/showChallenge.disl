@@ -1,0 +1,9 @@
+domain ATQR
+
+context Challenges
+
+  💬showChallenge? :challengeId
+    if find :challegeId in database
+      return @challenge
+    else
+      return "Couldn't find this challenge"
