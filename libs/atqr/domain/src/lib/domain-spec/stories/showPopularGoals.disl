@@ -2,28 +2,13 @@ domain ATQR
 
 context Challenges
 
-  groupByGoals? :goal
-    rules:
-      - goals have to have the same string
-
-    when challengeCreated!
-      take @challenge.goal
-      put in Array of challenges with the same goal
-        if !goalArray
-          create goalArray
-      //goalArrays is a Array of Arrays
-      return goalsArray[]
-
-
-
   showPopularGoals? :qty
     rules:
-      - challengeCreated!
-      - status !ChallengeStatus.Overdue
-      - show most popular goals
+      - Challenges have to exist in the database
 
+    //call a function that will return a array with arrays of goals that are the same
     groupByGoals!
-    show :qty in descending order by lenght of array
+    show Goals :qty in descending order by lenght of array
 
 
 
