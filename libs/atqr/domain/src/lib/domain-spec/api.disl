@@ -60,7 +60,6 @@ context Challenges
       @playerAlias?: DISL.Name
       @pledge: DISL.Money
       @outcome: PlayerOutcome = null
-      @participationStatus: ParticipationStatus.Accepted
       @paymentStatus: PaymentStatus = PaymentStatus.notDueYet
       @paymentMethod: PaymentMethod
       @paymentFundsStatus: PaymentFundsStatus = PaymentFundsStatus.Unverified
@@ -105,7 +104,7 @@ context Challenges
           - @pledge: DISL.Money
               greater than 0
           - deadline: FutureDate
-          - invitees: Contact[]
+          - invitees: Invitee[]
           - @requiredProof?: DISL.Paragraph
           /**
            * Allows players to enroll using a link instead of being invited
@@ -114,7 +113,7 @@ context Challenges
           - @inviteByLink: boolean
           - @enrollmentDeadline: FutureDate
               before @deadline
-          - owner: Contact[]
+          - owner: Invitee[]
           - ownerPaymentMethod: PaymentMethod | null
 
         // We must create the User first to ensure
