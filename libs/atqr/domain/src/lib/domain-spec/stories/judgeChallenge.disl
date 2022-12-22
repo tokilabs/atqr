@@ -2,24 +2,21 @@ domain ATQR
 
 context Challenges
 
-//função no Challenge
+Root Challenge
 
 💬 RequestJudgement? :challengeId
-  rules:
-    challenge.status = ChallengeStatus.Overdue
-
-  sendJudgementRequestEmail? :challengeId
+  if challenge.status = ChallengeStatus.Overdue
+    sendJudgementRequestEmail? :challengeId
 
   if @challenge.judge answer
     @challengeJudgement = ChallengeJudgement.Judged
   else
-    wait x day to
-    sendJudgementRequestEmail? :challengeId
-    if not answer
+    wait x day to sendJudgementRequestEmail? :challengeId
+    if not answer again
       wait y days to
     sendJudgementRequestEmail? :challengeId
     sendYouWillBeChargeInNDaysEmailToPlayer? :challengeId
-  
+
 
 
 
