@@ -7,26 +7,23 @@ domain ATQR
 
 context Challenges
 
-  root Goal
-    @goal: string
-    @challenges: Challenge[]
-    @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
+  aggregate Goals
+    root Goal
+      @goal: string
+      @challenges: Challenge[]
+      @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
-    CreateChallenge?
-    AdoptGoal? :email :goal
+      AdoptGoal? :email :goal
+        rules:
+          /**
+          * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
+          */
+          when :email not in @pursuer's email
+            createChallenge
+              @email = visitor's :email input
+              @goal = visitor's :goal of choice
 
-    rules:
-      /**
-      * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
-      */
-      when :email not in @pursuer's email
-        createChallenge
-          @email = visitor's :email input
-          @goal = visitor's :goal of choice
+          when @pursuer
+            throw "o usuário já persegue esta meta"
 
-      when @pursuer
-        throw "o usuário já persegue esta meta"
-
-    end rules
-
-
+        end rules
