@@ -13,7 +13,7 @@ context Challenges
       @challenges: Challenge[]
       @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
-      IsPersuer? :email :goal
+      IsPursuer? :email :goal
         rules:
           /**
           * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
