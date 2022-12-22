@@ -19,7 +19,7 @@ context Challenges
           * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
           */
           when :email not in @pursuer's email
-            createChallenge
+            createChallenge? :email :goal
               @email = visitor's :email input
               @goal = visitor's :goal of choice
 
