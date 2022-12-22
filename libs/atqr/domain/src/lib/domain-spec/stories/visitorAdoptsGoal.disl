@@ -2,27 +2,31 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-entity Goal
-  @goal: string
-  @challenges: Challenge[]
-  @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
+domain ATQR
+  purpose "A platform for people to challenge each other to accomplish goals"
 
-root Challenge
-  CreateChallenge?
-  AdoptGoal? :email :goal
+context Challenges
 
-  rules:
-    /**
-    * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
-    */
-    when :email not in @pursuer's email
-      CreateChallenge?
-        @email = visitor's :email input
-        @goal = visitor's :goal of choice
+  root Goal
+    @goal: string
+    @challenges: Challenge[]
+    @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
-    when @pursuer
-      throw "o usuário já persegue esta meta"
+    CreateChallenge?
+    AdoptGoal? :email :goal
 
-  end rules
+    rules:
+      /**
+      * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
+      */
+      when :email not in @pursuer's email
+        createChallenge
+          @email = visitor's :email input
+          @goal = visitor's :goal of choice
+
+      when @pursuer
+        throw "o usuário já persegue esta meta"
+
+    end rules
 
 
