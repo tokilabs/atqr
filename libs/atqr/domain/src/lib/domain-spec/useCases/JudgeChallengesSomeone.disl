@@ -1,0 +1,41 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+/*
+*   rule to change challenge status to Abanded when invitee doens't respond after x invitation emails
+has to be implemented
+**/
+ChallengeSomeone?
+    rules:
+        - ChallengeCreated!
+        - ChallengeStatus == Unverified
+        - Invitee can not be playing in this Challenge
+    when
+        ChallengeCreated! by user to intented player 
+        /* 
+        * YouWereInvited email has to be implemented on api.disl
+        **/
+        domain/services/notification.service sends YouWereChallenged! email template 
+        if  Owner's Challenge have no anwser
+            after 10 days   
+            domain/services/notification.service sends YouWereChallenged? email template again
+                /* 
+                * NoAnsewrToYourInvite email template has to be implemented 
+                **/
+            domain/services/notification.service sends NoAnsewrToYourInvite? to Owner
+                and 
+                    ChallengeStatus == Abanded 
+
+        if  Owner's Challenge is accepted
+                /* 
+                * PlayerAcceptedInvite email template has to be implemented 
+                **/
+            domain/services/notification.service sends PlayerAcceptedInvite? to Judge
+        
+        if  Owner's Challenge is rejected
+                /* 
+                * PlayerRejectedInvite email template has to be implemented 
+                **/
+            domain/services/notification.service sends PlayerRejectedInvite? to Owner
+
