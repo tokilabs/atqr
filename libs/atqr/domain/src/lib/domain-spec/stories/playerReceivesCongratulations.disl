@@ -11,7 +11,7 @@ domain ATQR
                 - Challenge's  player outcome == Accomplished
             
             when. 
-                challenge's  outcome is Accomplished
+                challenge's player outcome is Accomplished
             then.    
                 NotificationService calls ChallengeAccomplished! email
                     ChallengeAccomplished!
