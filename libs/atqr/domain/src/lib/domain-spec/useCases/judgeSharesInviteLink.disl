@@ -1,0 +1,26 @@
+shareInviteLink  Challenge:challengeId
+    rules:
+        - ChallengeCreated! is true 
+        - ChallengeStatus == Unverified | Ongoing 
+        - link has handom numeric id
+        - link goes to challenge resume searching by its id :challengeId
+    
+    domain/services/notification.service (ShareInviteLink!)
+        when
+            ChallengeCreated! :challengeId
+                link is generated
+        then
+            get challenge by its id
+            redirect! 
+                player to challenge resume with:
+                    -showChallenge?
+                    -button to accptance or rejectation
+         
+               
+                 
+       
+        
+
+
+
+    
