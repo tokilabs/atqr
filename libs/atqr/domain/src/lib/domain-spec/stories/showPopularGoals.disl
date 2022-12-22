@@ -2,13 +2,14 @@ domain ATQR
 
 context Challenges
 
+Repository
   showPopularGoals? :qty
-    rules:
-      - Challenges have to exist in the database
 
-    //call a function that will return a array with arrays of goals that are the same
-    groupByGoals!
-    show Goals :qty in descending order by lenght of array
+    find challenges with the same goal and group them in a arrayNameGoal
+      for each arrayNameGoal count the lenght
+      order the arrayNameGoal by descending lenght of the array
+
+      then return :qty Goals
 
 
 
