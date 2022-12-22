@@ -1,16 +1,14 @@
 shareChallenge? challengeId
     rules:
-        - ChallengeStatus = Unverified | Ongoing | Finished
-        - User can access any challenge by ShowChallenge!
+        - Challenge's status == Unverified | Ongoing | Finished
+        - User can access any challenge by ShowChallenge! //TODO: showChallenge has to be implemented
     when.
         User CreateChallenge!
-             Can click on button to share its challenge
-    when
-        Visitor|User access a challenge
-            ShowChallenge!   
-                user goes to challenge resume 
-        then. 
-            Can click on button to share the challenge
+        then
+            option WantToShareYourChallenge?
+    if(User => WantToShareYourChallenge! is true)
+        User accesses there challenge 
+        ShareYourChallenge!
 
             
 
