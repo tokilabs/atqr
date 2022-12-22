@@ -2,13 +2,16 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-domain/NotificationService calls ChallengeAccomplished!
-    rules:
-        - JudgementStatus == Judged
-        - ChallengeStatus == Finished
-        - PlayerOutcome == Succeeded
-
-    when. 
-        Challenge.PlayerOutcome == Succeeded
-            NotificationService will send ChallengeAccomplished! email
-        
+domain ATQR
+    context Challenges
+        service NotificationService fires ChallengeAccomplished! 
+            rules:
+                - Challenge's JudgementStatus == Judged
+                - ChallengeStatus == Finished
+                - Challenge's  player outcome == Accomplished
+            
+            when. 
+                challenge's  outcome is Accomplished
+            then.    
+                NotificationService calls ChallengeAccomplished! email
+                    ChallengeAccomplished!

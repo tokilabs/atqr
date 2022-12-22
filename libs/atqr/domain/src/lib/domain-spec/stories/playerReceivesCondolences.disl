@@ -2,12 +2,18 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-doman/NotificationService calls ChallengeFailed!
-    rules:
-        - JudgementStatus == Judged
-        - ChallengeStatus == Finished
-        - PlayerOutcome == Failed
+domain ATQR
+    context Challenges
+        service NotificationService fires ChallengeFailed! 
+            rules:
+                - Challenge's JudgementStatus == Judged
+                - ChallengeStatus == Finished
+                - Challenge's  player outcome == Failed
+            
+            when. 
+                challenge's outcome is Failed
+            then.    
+                NotificationService calls ChallengeFailed! email
+                    ChallengeFailed!
 
-    when. 
-        Challenge.PlayerOutcome is Failed
-            NotificationService will send ChallengeFailed! email
+            
