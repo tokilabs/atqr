@@ -13,15 +13,15 @@ context Challenges
       @challenges: Challenge[]
       @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
-      IsPursuer? :email :goal
-        rules:
-          /**
-          * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
-          */
-          when @pursuer
-            throw "o usuário já persegue esta meta"
+        IsPursuer? :email :goal
+          rules:
+            /**
+            * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
+            */
+            when @pursuer
+              throw "o usuário já persegue esta meta"
 
-        end rules
+          end rules
 
-      AdoptChallenge?
-        createChallenge :email :goal
+        AdoptGoal? :email :goal
+          createChallenge with visitor's :email and :goal plus :pledge :deadline :invitees :requiredProof :inviteByLink :enrollmentDeadline :owner :ownerPaymentMethod
