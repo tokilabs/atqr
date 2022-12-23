@@ -1,0 +1,14 @@
+read_also api.disl
+read_also enums.disl
+
+ 💬 judgeChallenge? :challengeId, accomplished: boolean
+
+        @challengeJudgement = ChallengeJudgement.Judged
+         @status = accomplished ? ChallengeStatus.Accomplished : ChallengeStatus.Failed
+
+        when accomplished
+          📣 ChallengeAccomplished! :challengeId
+            sendChallengeAccomplishedEmail? :challengeId
+
+        else
+          📣 ChallengeFailed! :challengeId
