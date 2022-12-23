@@ -1,14 +1,24 @@
+domain ATQR
+context Challenge
 
-💬 judgeRejects! challengeId: ChallengeId, id: PlayerId
-    challenge = findChallenge(challengeId)
-    NotificationService.judgeRejects! challenge: Challenge, id: PlayerId
-    challenge.changeParticipationStatus? participationStatus: ParticipationStatus, judgeId: UserId
+entity Challenge
+  💬 JudgeRejectsOfficiationRequest? :challengeId :id
+    listening:
+      - RequestedJudgeParticipation!
+
+      @NotificationService.judgeRejects
+      this.JudgeRejectsOfficiationRequest
+
+  JudgeRejectsOfficiationRequest? :participationStatus , :judgeId
+    challenge.invitees.find(invitee => invitee.id == judgeId: delete ? continue)
+
+    📣 RejectedParticipateJudgeRequest!
+
 
 service NotificationService
-
-    💬 judgeRejects! challenge: Challenge, id: PlayerId
-        sendEmail
-          template: judgeRejects
-          data: Challenge
-          to: challenge.player
+  💬 judgeRejects? :challenge :Challenge
+      sendEmail
+        template: judgeRejects
+        data: Challenge
+        to: challenge.player
 

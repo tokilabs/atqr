@@ -1,65 +1,55 @@
-💬 SelectNewJudge! challenge: Challenge
-    NotificationService.SelectNewJudge(challenge)
 
-💬 SupervisionRequest! challenge: Challenge, contactJudge: Contact
-    NotificationService.SupervisionRequested(challenge, contactJudge)
-    
+context Challenge
+
+entity Challenge
+  💬 AskPlayerForNewJudge? :challenge
+      listening:
+      - RejectedParticipateJudgeRequest!
+
+    @NotificationService.SelectNewJudge
+
+    ⏰ NewDayStarted!
+      if(pass X days send again, if pass Y days cancel)
+
+    📣 AskedPlayerForNewJudge!
+
+
+
+
+  💬 RequestJudgeParticipation? :challenge :contactJudge
+
+    @NotificationService.SupervisionRequested
+    this.addInvite
+
+    ⏰ NewDayStarted!
+      if(pass X days send again, if pass Y days cancel)
+
+    📣 RequestedJudgeParticipation!
+
+
+
+  addInvite? :contactJudge
+
+  invitee = new Invitee(contactJudge)
+  invitee.participationStatus = participationStatus.requested
+
+  this.invitees.push(invitee)
+
 
 
 service NotificationService
 
-    💬 SelectNewJudge! challenge: Challenge
-        sendEmail
-          template: SelectNewJudge
-          data: Challenge
-          to: challenge.player
-        when get the response   📣 supervisionRequest
-        if(pass X days send again, if pass Y days cancel)
-
-    💬 SupervisionRequested! challenge: Challenge ,contactJudge: Contact
-        sendEmail
-          template: JudgeRequested
-          data: Challenge
-          to: contactJudge
-        when get the response   📣 judgeAccepted or judgeRejected
-        if(pass X days send again, if pass Y days cancel)
+  AskPlayerForNewJudge? :challenge
+    sendEmail
+      template: emailAskPlayerForNewJudge
+      data: Challenge
+      to: challenge.player
 
 
-entity User
 
-  💬 addOfficiatedChallenge! challenge: Challenge
-      officiation = new Officiation(this, challenge)
-      this.officiatedChallenges.push(officiation)
+  RequestJudgeParticipation? :challenge :contactJudge
+    sendEmail
+      template: emailRequestJudgeParticipation
+      data: Challenge
+      to: contactJudge
 
-      📣 addJudge! officiation: Officiation
-
-
-entity Challenge
-
-    💬 changeParticipationStatus? participationStatus: ParticipationStatus , judgeId: UserId
-        challenge.invitees.for(invitee)
-            if (invitee.id == judgeId)
-                invitee.participationStatus = participationStatus
-
-        challenge.judges.for(judge)
-            if (judge.id == judgeId)
-                judge.participationStatus = participationStatus
-
-        if(participationStatus == ParticipationStatus.ACCEPTED)
-            📣 verifyChallengeCanBegin!
-
-        else
-            📣 selectNewJudge!
-
-
-    💬 addJudge? judge: Officiation
-        this.judges.push(judge)
-
-        📣addOfficiation! judge: Officiation
-
-    💬 deleteJudge? judgeId: UserId
-        this.judges.for(judge)
-            if (judge.id == judgeId)
-                this.judges.remove(judge)
-
-        📣 deleteOfficiation! judgeId: UserId
