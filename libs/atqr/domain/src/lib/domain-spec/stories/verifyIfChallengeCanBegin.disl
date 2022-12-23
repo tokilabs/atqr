@@ -1,6 +1,9 @@
+context Chalennge
+
 entity Challenge
 
   💬 verifyIfChallengeCanBegin!
+
     if(this.createdByPlayer == false && allPlayersAccepted() == false)
       return false
 
@@ -9,5 +12,15 @@ entity Challenge
 
     if(allPaymentMethodsVerified() == false)
       return false
+
+
+    allPlayersAccepted?
+      return this.invitees.find(invitee => invitee.role == player && invitee == false: false ? true)
+
+    allJudgeAccepted?
+      return this.invitees.find(invitee => invitee.role == judge && invitee == false: false ? true)
+
+    allPaymentMethodsVerified?
+      return this.enrollment.find(enrollment => enrollment.paymentMethodVerified == paymentMethodVerified.(Failed OR NotDueYet)  : false ? true)
 
     return true
