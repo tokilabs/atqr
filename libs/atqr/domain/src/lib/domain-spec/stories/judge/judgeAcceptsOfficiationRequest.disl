@@ -1,18 +1,44 @@
-💬 judgeAccepts! challengeId: ChallengeId, judgeId: judgeId
-  challenge = findChallenge(challengeId)
-  user = findOrCreateUser(judgeId)
+domain ATQR
+context Challenge
 
-  officiation = createOfficiation(user, challenge)
-  challenge.addJudge(officiation)
+entity Challenge
+  💬 judgeAcceptOfficiationRequest? :judgeId
+    listening:
+      - RequestedJudgeParticipation!
 
-  challenge.changeParticipationStatus? participationStatus: ParticipationStatus.judgeAccepted, judgeId: user.id
-  NotificationService.judgeAccepts! challenge: challenge, id: user.id
+    user = @user.findOrCreateUser
+    user.addOfficiateChallenge
+
+    @NotificationService.judgeAccepts
+
+    this.verifyChallengeCanBegin()
+    📣 judgeAcceptedOfficiationRequest!
+
+
+
+    judgeAcceptInvitee? :participationStatus , :judgeId
+      challenge.invitees.find(invitee => invitee.id == judgeId: invitee.participationStatus == accepted ? continue)
+      this.addJudge
+
+    addJudge? :judge
+      this.judges.push(judge)
+      📣 addedJudge! :judge
+
+
+
+entity User
+
+  addOfficiateChallenge? :challenge
+      officiation = new Officiation(this, challenge)
+      this.officiatedChallenges.push(officiation)
+
+
 
 
 service NotificationService
 
-    💬 judgeAccepts! challenge: Challenge, id: PlayerId
-        sendEmail
-          template: judgeAccepts
-          data: Challenge
-          to: challenge.player
+  judgeAcceptOfficiationRequest? :challenge :id
+    sendEmail
+      template: EmailjudgeAcceptsOfficiationRequest
+      data: Challenge
+      to: challenge.player
