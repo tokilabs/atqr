@@ -9,7 +9,7 @@ async function getLastChallenges(amount: number) {
   } catch (error) {
     const topicContent = document.querySelectorAll('.topic-content');
     topicContent.forEach(value => {
-      value.querySelector('h3').textContent = "teste";
+      value.querySelector('h3').textContent = "test";
     });
     console.error(error);
   }

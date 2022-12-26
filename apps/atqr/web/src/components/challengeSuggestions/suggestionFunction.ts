@@ -9,7 +9,7 @@ function challengeSuggestion(btn: Node, bool: boolean) {
   };
 
   const scrollToForm = (form: HTMLElement) => {
-    form.click()
+    form.click();
     const position = form.getBoundingClientRect().y;
     window.scroll({
       top: position,

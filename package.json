@@ -111,7 +111,6 @@
     "jest": "27.5.1",
     "jest-preset-angular": "11.0.0",
     "os-browserify": "0.3.0",
-    "parcel": "2.7.0",
     "path-browserify": "1.0.1",
     "postcss": "8.4.5",
     "prettier": "2.3.1",

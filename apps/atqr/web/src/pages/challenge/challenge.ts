@@ -11,8 +11,6 @@ updateUI(getChallenge(), 'data-field');
 
 const updateChallenge = updateStatus('', ChallengeStatus.Ongoing);
 
-console.log('challenge updated:', updateChallenge);
-console.log('new challenge status:', updateChallenge.valueOf());
 export const btnUpdateChallenge = () => {
   updateChallenge;
 

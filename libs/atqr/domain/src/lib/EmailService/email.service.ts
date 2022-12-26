@@ -1,6 +1,4 @@
-import { IEmail } from '.';
-import { Challenge } from '../challenge/challenge.entity';
-import { Player } from '../player/player.entity';
+import { EmailAddress, IEmail } from '.';
 
 export interface IMailer {
   sendMail(email: Email): Promise<unknown>;
@@ -8,7 +6,7 @@ export interface IMailer {
 
 export class Email implements IEmail {
   constructor(
-    public to: Player['_email'] | Challenge['_supervisorEmail'],
+    public to: EmailAddress,
     public subject: string,
     public message?: string
   ) {

@@ -1,8 +1,6 @@
-import { Challenge } from '../challenge/challenge.entity';
-import { Player } from '../player/player.entity';
-
+import { EmailAddress } from './emailAddress';
 export interface IEmail {
-  to: Player | Player['_email'] | Challenge['_supervisorEmail'];
+  to: EmailAddress;
   subject: string;
   message?: string;
 }
