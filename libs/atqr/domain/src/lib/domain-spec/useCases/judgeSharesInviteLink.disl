@@ -1,19 +1,30 @@
-shareInviteLink  Challenge:challengeId
-    rules:
-        - ChallengeCreated! is true 
-        - ChallengeStatus == Unverified | Ongoing 
-        - link has handom numeric id
-        - link goes to challenge resume searching by its id :challengeId
-    
-    domain/services/notification.service (ShareInviteLink!)
-        when
-            ChallengeCreated! :challengeId
-                link is generated
-        then
-            get challenge by its id
-                invitee goes to challenge resume with:
-                    -showChallenge?
-                    -button to accptance or rejectation
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+domain ATQR
+    context Challenges
+        shareInviteLink? challengeId
+            rules:
+                - ChallengeCreated!  
+                - Challenge.@status == Unverified | Ongoing 
+                - Challenge have maximun x days since @createdAt
+                - link has handom numeric id
+                - link goes to challenge resume searching by its id :challengeId
+            when
+                    ChallengeCreated! :challengeId
+                    /*
+                    *   //TODO: generateInviteLink function have to be implemented
+                    */
+                        generateInviteLink?
+                        InviteLinkGenerated!
+                then
+                    WantToShareThisChallenge?
+                    if (Juge => WantToShareThisChallenge?)
+                        Judge can copy link 
+                            link goes to Challenge searching by its id
+                            Invitee goes to challenge resume with:
+                                -button to accptance or rejectation
          
                
                  
