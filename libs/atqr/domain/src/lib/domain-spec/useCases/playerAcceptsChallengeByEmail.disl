@@ -2,18 +2,24 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-PlayerAcceptance? 
-    rules: 
-        - ChallengeCreated!
-        - ChallengeStatus == Unverified
-        - player is not participating on this Challenge
-        - PaymentFundsStatus == Unverified
+context Challenges 
 
-    when    
-        player receives invitation email and opens it
-            @options:
-                -Accept or Reject Challenge
-                -Go to Challenge resume page
+    AcceptChallenge?
+            rules: 
+                - ChallengeCreated!
+                - Challenge.@status == Unverified
+                - player is not participating on this Challenge
+                - Challenge.@owner.@paymentMethod == Unverified
 
-        if player accepts Challenge
-            domain/notification.service sends ChallengeAccepted! email to supervisor
+            when    
+                service NotificationService sends YouWereChallenged? email template and Invitee opens it
+                    @options:
+                        -Accept or Reject Challenge
+                        -Go to Challenge resume page
+
+                /*
+                *   InviteeAcceptedYourChallenge email template have to be implemented 
+                **/
+                if (Challenge.@owner => AcceptChallenge?)
+                    service NotificationService sends InviteeAcceptedYourChallenge? email template
+                    ChallengeRejected! 
