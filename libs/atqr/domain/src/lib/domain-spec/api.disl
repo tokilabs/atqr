@@ -356,7 +356,8 @@ context Challenges
           send ChallengeAcceptedEmailToPlayer
 
       💬 ChallengeRejected!
-          send ChallengeRejectedEmailToPlayer
+          send ChallengeRejectedEmailToPlayer 
+          // isn't it for supervisor ?
 
       💬 ChallengeOngoing!
           send ChallengeOngoingEmailToPlayer
