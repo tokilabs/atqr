@@ -1,14 +1,26 @@
-shareChallenge? challengeId
-    rules:
-        - Challenge's status == Unverified | Ongoing | Finished
-        - User can access any challenge by ShowChallenge! //TODO: showChallenge has to be implemented
-    when.
-        User CreateChallenge!
-        then
-            option WantToShareYourChallenge?
-    if(User => WantToShareYourChallenge! is true)
-        User accesses there challenge 
-        ShareYourChallenge!
+context Challenges 
+
+    shareChallenge? challengeId
+        rules:
+            - Challenge's status == Unverified | Ongoing | Finished
+            /*
+            *   //TODO: showChallenge has to be implemented
+            */
+            - User can access this option any time with ShowChallenge? function 
+        when.
+            ChallengeCreated!
+            then
+            /*
+            *   //TODO: WantToShareYourChallenge has to be implemented
+            */
+                option WantToShareYourChallenge?
+        if(Challenge.@owner => WantToShareYourChallenge?)
+            User accesses there challenge 
+            ShareYourChallenge?
+            /*
+            *   //TODO: ChallengeShared has to be implemented
+            */
+            ChallengeShared!
 
             
 

@@ -137,6 +137,10 @@ context Challenges
             📣 ChargeAuthorized! @owner @pledge :paymentMethod
             📣 ChallengeCreated! this
 
+            /*
+            * //TODO: WantToShareYourChallenge? function to give challenge owner the possibility to share there challenge on social midia 
+            */
+
           when not @createdByPlayer
 
             sendChallengeCreatedEmailToSupervisor? :challengeId
