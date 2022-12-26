@@ -3,7 +3,8 @@ read_also enums.disl
 
  💬 judgeChallenge? :challengeId, accomplished: boolean
 
-        @challengeJudgement = ChallengeJudgement.Judged
+        @challengeJudgement = ChallengeJudgement.Requested
+
          @status = accomplished ? ChallengeStatus.Accomplished : ChallengeStatus.Failed
 
         when accomplished
@@ -12,3 +13,4 @@ read_also enums.disl
 
         else
           📣 ChallengeFailed! :challengeId
+             send ChallengeFailedEmailToPlayer
