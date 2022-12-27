@@ -5,7 +5,8 @@ context Challenges
 ChallengeRepository
 
   💬showChallenge? :challengeId
-    if find challegeId in database == :challengeId
+    @prismaService.findOne?
+      where challegeId == :challengeId
       return challenge
     else
       return "Couldn't find this challenge"
