@@ -2,18 +2,26 @@ domain ATQR
 
 context Challenges
 
-Repository
-  showPopularGoals? :qty
+ /*
+  * //TODO: implement repositorys in general
+  **/
 
-    find challenges with the same goal and group them in a arrayNameGoal
-      for each arrayNameGoal count the lenght
-      order the arrayNameGoal by descending lenght of the array
+  repository ChallengeRepository injects PrismaService
 
-      then return :qty Goals
+    findEqualGoals? :goal
+      when ChallengeCreated!
+        then @prismaService.createChallenge?
 
+        if goal == any goal in the arrayGoals
+          put goal in the array with the same goals
+          return arrayGoals
+        if goal is different of any goal in arrayGoals
+          create new array in arrayGoals
+          return arrayGoals
 
+    showPopularGoals? :qty
+      @prismaService.findEqualGoals?
+        for each array in ArrayGoals count the lenght
+          order the arrays by descending lenght of the array
 
-
-
-
-
+              return :qty arrays in descending order
