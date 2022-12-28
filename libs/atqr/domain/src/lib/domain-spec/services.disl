@@ -1,0 +1,115 @@
+domain ATQR
+  context Challenges
+    service ChallengesService
+      depends on ChallengeRepository
+
+      💬 GetLastChallenges? amount
+        returns the first amount Challenges ordered by challenge's createdAt descending
+
+        service EmailService
+        send Email
+
+    service AccountService
+      uses UserRepository
+
+      createAccount for Contact
+        rules:
+          - Contact.email does not exist in UserRepository.users.email
+
+    service NotificationService
+      import * as Pug from 'pug'
+
+      sendEmail template: EmailTemplate, data: Object, $to: EmailAddress
+        {{using}} Pug
+          parse template.subject with data as :subject
+          parse template.body with data as :body
+        create new Email $to with :subject and :body
+        send ${it} {{using}} IEmailService
+
+      💬 ChallengeCreated! challenge: Challenge
+        sendEmail
+          template: ChallengeCreatedEmail
+          data: Challenge
+          to: challenge.owner.email
+
+        when challenge.createdByPlayer
+          for each contact in challenge.invitees
+            if contact.role is ContactRole.Judge
+              sendEmail
+                template: OfficiationRequestedEmail
+                data: Challenge
+                to: :contact.email
+
+            if contact.role is ContactRole.Player
+              sendEmail
+                template: ChallengeCreatedEmail
+                data: Challenge
+                to: :contact.email
+
+        when challenge.createdByJudge
+          for each :contact in challenge.invitees
+            if contact.role is ContactRole.Player
+              sendEmail
+                template: YouHaveBeenChallengedEmail
+                data: Challenge
+                to: :contact.email
+
+            if contact.role is ContactRole.Judge
+              sendEmail
+                template: ChallengeCreatedEmail
+                data: Challenge
+                to: :contact.email
+
+      💬 FundsAvailable!
+          send ChallengeCreatedEmailToPlayer
+
+      💬 FundsDenied!
+          send PaymentMethodDeniedEmail
+
+      💬 SupervisionRequested!
+          send SupervisionRequestEmail
+
+      💬 SupervisionRequestAccepted!
+          send SupervisionRequestAccepted
+
+      💬 SupervisionRequestRejected!
+          send SupervisorRejectedEmail
+
+      💬 ChallengeAccepted! enrollment: Enrollment
+          send ChallengeAcceptedEmail
+            data: enrollment
+            to: enrollment.judge.email
+
+      💬 ChallengeRejected! challenge
+          send ChallengeRejectedEmail
+            data: challenge
+            to: challenge.owner.email
+
+      💬 ChallengeOngoing!
+          send ChallengeOngoingEmailToPlayer
+
+      💬 JudgeRequested!
+          send JudgementRequestEmail
+
+      💬 ChallengeAccomplished!
+          send ChallengeAccomplishedEmail
+
+      💬 ChallengeFailed!
+          send ChallengeFailedEmail
+
+
+    /**
+     * Definition of a service that handles payments
+     * @type Infrastructure
+     */
+    service PaymentService
+      createCustomer from :contact => ForeignCustomerId
+
+      createPaymentMethod for :customer with :paymentMethod
+        return ForeignPaymentMethodId
+
+      setupFuturePayment of :amount using :paymentMethod => FuturePaymentId
+
+      capturePayment futurePaymentId
+        // return SUCCESS or FAILURE
+        return Whether it succeeded or not
