@@ -1,26 +1,21 @@
 read_also api.disl
 read_also enums.disl
-read_also ui.disl
 
 domain ATQR
-  purpose "A platform for people to challenge each other to accomplish goals"
 
-context Challenges
+  context Challenges
 
-  aggregate Goals
-    root Goal
-      @goal: string
-      @challenges: Challenge[]
-      @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
+    aggregate Goals
+      root Goal
+        💬 AdoptGoal? :challenge
+          assert isNotPursuer :challenge.owner.email
 
-        IsPursuer? :email :goal
-          rules:
-            /**
-            * visitor's email must be validated as a player pursuing or not this goal through Goal's @pursuer
-            */
-            when @pursuer
-              throw "o usuário já persegue esta meta"
-          end rules
+          create new Challenge with :challenge
+          
+        /**
+         * visitor's email must be validated as a player pursuing or not this goal through Goal's pursuer
+         */
+        ⚙️ isNotPursuer :email
+          when :email exists in @pursuers[].email
+            throw "The player is already pursuing this goal"
 
-        AdoptGoal? :email :goal
-          createChallenge with visitor's :email and :goal plus :pledge :deadline :invitees :requiredProof :inviteByLink :enrollmentDeadline :owner :ownerPaymentMethod

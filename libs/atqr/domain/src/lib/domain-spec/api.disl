@@ -1,7 +1,8 @@
-``# import other DISL files
+// import other DISL files
 read_also enums.disl
 read_also ui.disl
 
+// Creates new types that extend Guid to differentiate among Entity Ids
 identity ChallengeId: Guid
 identity UserId: Guid
 
@@ -15,413 +16,319 @@ alias :id id Guid
 domain ATQR
   purpose "A platform for people to challenge each other to accomplish goals"
 
-context Challenges
+  // System events
+  //------------------
+  /**
+   * Fired each new day at 00:00:01
+   */
+  ⏰ NewDayStarted!
 
-  valueObject Contact
-    @name: DISL.FullName
-    @email: DISL.EmailAddress
-    @role: ParticipationRole
+  context Challenges
 
-  valueObject Invite extends Contact
-    @status: ParticipationStatus = ParticipationStatus.NotRequested
+    aggregate Goals
+      root Goal
+        @title: string
+        @challenges: Challenge[]
+        @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
 
-  // Creates a new type that is a Guid to differentiate among Entity Ids
-  // export type PlayerId = Guid
-  identity PlayerId: Guid
+        stories:
+          - stories/visitorAdoptsGoal
 
-  aggregate ChallengeAggregate
+        💬 CreateGoal? :title
+          create new Goal with :title
+          📣 GoalCreated! :goal
 
-    !ChallengeNotFound :challengeId
+        /**
+         * Creates a new challenge and notifies both the Player and the Supervisor
+         */
+        💬 CreateChallenge?
+          params:
+            goalId: GoalId
+            pledge: DISL.Money
+                greater than 0
+            deadline: FutureDate
+            invitees: Invitee[]
+            requiredProof?: DISL.Paragraph
+            /**
+             * Allows players to enroll using a link instead of being invited
+             * @param {boolean} true if players can enroll using a link
+             */
+            inviteByLink: boolean
+            enrollmentDeadline: FutureDate
+                before @deadline
+            owner: Contact
+            ownerPaymentMethod: PaymentMethod | null
 
-    entity User
-      @id: UserId { auto-generated }
-      @name: DISL.FullName
-      @email: DISL.EmailAddress { unique }
-      @emailConfirmed: boolean
-      @playedChallenges: Enrollment[]
-      @officiatedChallenges: Officiation[]
-      @organizedChallenges: Challenge[]
-      @paymentMethod?: PaymentMethod
+          // We must create the User first to ensure
+          // that we collect their email address (for marketing purposes)
+          find_or_create new User from owner
 
-      /**
-       * Returns all unanswered challenge invitations
-       */
-      getPendingInvitations
-        return The Challenges where this user is in .invitees[]
-            AND .invitees[].status == ParticipationStatus.NotRequested
+          rules:
+            when @createdByPlayer
+              if ownerPaymentMethod is not defined
+                throw "A player must have a payment method defined"
 
-    /**
-     * Represents a player's participation in a challenge
-     */
-    valueObject Enrollment
-      @player: User
-      @judge: User
-      @challenge: Challenge
-      @playerAlias?: DISL.Name
-      @pledge: DISL.Money
-      @outcome: PlayerOutcome = null
-      @paymentStatus: PaymentStatus = PaymentStatus.notDueYet
-      @paymentMethod: PaymentMethod
-      @paymentFundsStatus: PaymentFundsStatus = PaymentFundsStatus.Unverified
+              if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
+                throw "Could not authorize payment"
 
-      rules:
-        when user == judge
-          throw "A player cannot be a judge of their own challenge"
+              the new User's paymentMethod = ownerPaymentMethod
 
-    /**
-     * Represents a User participation in a challenge as a Judge
-     */
-    valueObject Officiation
-      @challenge: Challenge
-      @judge: User
-      @players: Enrollment[]
-      @participationStatus: ParticipationStatus = ParticipationStatus.NotRequested
-      @judgementStatus: JudgementStatus = JudgementStatus.NotRequested
+              create new Challenge with the parameters received
 
-    root Challenge
-      @owner: User
-      @players: Enrollment[]
-      @judges: Officiation[]
-      /**
-       * Holds all users ever invited to this challenge
-       * and their participation status
-       */
-      @invitees: Map<UserId, ParticipationStatus>
-      @status: ChallengeStatus = ChallengeStatus.Unverified
-      @deadline: Date
-      @createAt: DateTime { auto: Today }
-      @createdByPlayer: boolean
-        return @owner.role == ParticipationRole.Player
+              createEnrollmentFor the new User
+                add it to the new Challenge's enrollments
 
-      /**
-       * Creates a new challenge and notifies both the Player and the Supervisor
-       */
-      💬 CreateChallenge?
-        params:
-          - @goal: DISL.Phrase
-              not empty
-              less than 140 characters
-          - @pledge: DISL.Money
+              📣 ChargeAuthorized! @owner @pledge ownerPaymentMethod
+              📣 ChallengeCreated! this
+
+            when @createdByJudge
+              create new Challenge with the parameters received
+
+              create new Officiation for owner
+                add it to the new Challenge's judges
+
+              📣 ChallengeCreated! this
+
+    aggregate ChallengeAggregate
+
+      !ChallengeNotFound :challengeId
+
+      root Challenge
+        depends on PaymentService
+
+        @createdByPlayer: boolean
+          returns @owner.role == ParticipationRole.Player
+
+        @createdByJudge: boolean
+          returns @owner.role == ParticipationRole.Judge
+
+        @players: Enrollment[]
+        @judges: Officiation[]
+        @status: ChallengeStatus = ChallengeStatus.Unverified
+        @createAt: DateTime
+          auto: Today
+
+        ⚙️ recipe:
+          params:
+            @goalId: GoalId
+            @owner: User
+            /**
+            * Holds all users ever invited to this challenge
+            * and their participation status
+            */
+            @invitees: Contact[]
+            @deadline: Date
+            @pledge: DISL.Money
               greater than 0
-          - deadline: FutureDate
-          - invitees: Invitee[]
-          - @requiredProof?: DISL.Paragraph
-          /**
-           * Allows players to enroll using a link instead of being invited
-           * @param {boolean} true if players can enroll using a link
-           */
-          - @inviteByLink: boolean
-          - @enrollmentDeadline: FutureDate
+            @deadline: FutureDate
+            @requiredProof?: DISL.Paragraph
+            /**
+             * Allows players to enroll using a link instead of being invited
+             * @param {boolean} true if players can enroll using a link
+             */
+            @inviteByLink: boolean
+            @enrollmentDeadline: FutureDate
               before @deadline
-          - owner: Invitee[]
-          - ownerPaymentMethod: PaymentMethod | null
+            @owner: Contact
+            ownerPaymentMethod: PaymentMethod | null
 
-        // We must create the User first to ensure
-        // that we collect their email address (for marketing purposes)
-        find_or_create new User from owner as @owner
-
-        rules:
           when @createdByPlayer
-            if @owner .paymentMethod is not defined
-              throw "A player must have a payment method defined"
-
-            if IPaymentService .authorizeCharge for @pledge and :paymentMethod FAILED
-              throw "Could not authorize payment"
-
-            @owner.paymentMethod = ownerPaymentMethod
-
-            create new Enrollment in @players for @owner
-              it's pledge = @pledge
+            create new User for owner
               it's paymentMethod = ownerPaymentMethod
-              it's paymentStatus = PaymentStatus.Pending
-              it's paymentFundsStatus = PaymentFundsStatus.Authorized
 
-            📣 ChargeAuthorized! @owner @pledge :paymentMethod
-            📣 ChallengeCreated! this
+            createEnrollmentFor owner
 
-          when not @createdByPlayer
+        ⚙️ registerPlayer :name :email
+          rules:
+            when User with :email does not exist
+              create new User with :name :email
+                on SUCCESS:
+                  show ui CheckEmailToConfirmParticipation
+                on FAILURE:
+                  throw "Could not create player"
 
-            sendChallengeCreatedEmailToSupervisor? :challengeId
-            sendYouHaveBeenChallengedEmail? :challengeId
-              📣 playerChallenged! :challengeId
-        end rules
+        /**
+         * Represents the intention of a player to accept a challenge
+         */
+        💬 AcceptChallenge? paymentInfo: Payment
+          rules:
+            when @status == ChallengeStatus.Ongoing do nothing
 
-        @deadline = deadline
+          if invitee is not found
+            throw "Could not find invitee"
 
+          invitee.status = ParticipationStatus.Accepted
 
-        // Create invites to track participation status
-        for each invitee in invitees
-          find_or_create new User for invitee
-          then create new Invite for $newUser
-            set $newInvite role to invitee.role
-            set $newInvite status = ParticipationStatus.NotRequested
-            then add $newInvite to @invitees
+          createEnrollmentFor invitee
 
-      /**
-       * Creates a new player and fires a PlayerCreated event
-       *
-       * NOTE: Commands in DISL are semantic and do not always mean
-       * that a method should be created with the same name.
-       * In this case, the CreatePlayer command will be translated
-       * to the Player entity's constructor.
-       */
-      💬 CreateUser? :name :email
-        create new User with :name :email as :user
-        📣 UserCreated! :user
+          📣 ChallengeAccepted! :challengeId
 
-      💬 RegisterPlayer? :name :email
-        rules:
-          when Player with :email does not exist
-            CreateUser? :name :email
-              on SUCCESS:
-                show ui CheckEmailToConfirmParticipation
-              on FAILURE:
-                throw "Could not create player"
+        💬 RejectChallenge? :challengeId :inviteeEmail
+          rules:
+            when :challengeId not in Challenges
+              throw ChallengeNotFound
 
+            when @status == ChallengeStatus.Ongoing do nothing
 
-      /**
-       * Represents the intention of a player to accept a challenge
-       */
-      💬 AcceptChallenge? :challengeId paymentInfo: Payment
-        rules:
-          when :challengeId not in Challenges
-            throw ChallengeNotFound
-          when @status == ChallengeStatus.Ongoing do nothing
+          find invitee in @invitees where invitee.email == :inviteeEmail
 
-        @status = ChallengeStatus.Accepted
-        📣 challengeAccepted! :challengeId
-          sendChallengeAcceptedEmailToPlayer? :challengeId
-      💬 RejectChallenge? :challengeId
+          if invitee is not found
+            throw "Could not find invitee"
 
-      💬 GetLastChallenges? :qty
-        return the first :qty Challenges ordered by @creation_date descending
-          source: database
+          invitee.status = ParticipationStatus.Rejected
 
-      📧 fundsVerified! :challengeId :paymentFundsStatus
-        rules:
-          when :paymentFundsStatus == PaymentFundsStatus.Available
-            📣 fundsAvailable! :challengeId :paymentMethod
-              sendChallengeCreatedEmailToPlayer? :challengeId
+          📣 ChallengeRejected! :challengeId
 
-            when :supervisionStatus == SupervisionStatus.Accepted
-              @status = ChallengeStatus.Ongoing
-              📣 challengeOngoing! :challengeId
-                sendChallengeOngoingEmailToPlayer? :challengeId
+        ⚙️ createEnrollmentFor invitee
+          create enrollment in @players for invitee
+            it's pledge = 0
+            it's paymentMethod = null
+            it's paymentStatus = PaymentStatus.NotRequested
+            it's paymentFundsStatus = PaymentFundsStatus.NotRequested
 
-          when :paymentFundsStatus == PaymentFundsStatus.Denied
-            📣 challengeFailed! :challengeId
-              sendChallengeFailedEmailToPlayer? :challengeId
+        ⚙️ verifyFunds
+          params:
+              :challengeId
+              paymentMethod: PaymentMethod
+
+          PaymentService.verifyFunds for @pledge and paymentMethod
+
+          rules:
+            when :paymentFundsStatus == PaymentFundsStatus.Available
+              📣 fundsAvailable! :challengeId :paymentMethod
+                sendChallengeCreatedEmailToPlayer? :challengeId
+
+              when :supervisionStatus == SupervisionStatus.Accepted
+                @status = ChallengeStatus.Ongoing
+                📣 challengeOngoing! :challengeId
+                  sendChallengeOngoingEmailToPlayer? :challengeId
+
+            when :paymentFundsStatus == PaymentFundsStatus.Denied
+              📣 challengeFailed! :challengeId
+                sendChallengeFailedEmailToPlayer? :challengeId
 
           # if Supervisor has accepted the request then
-      💬 rejectFundsRequest? :challengeId :paymentMethod
-          @paymentMethod = PaymentFundsStatus.Denied
-          📣 fundsDenied! :challengeId :paymentMethod
-              sendPaymentMethodDeniedEmail? :challengeId
+        💬 rejectFundsRequest? :challengeId :paymentMethod
+            @paymentMethod = PaymentFundsStatus.Denied
+            📣 fundsDenied! :challengeId :paymentMethod
+                sendPaymentMethodDeniedEmail? :challengeId
 
-      💬 AcceptSupervisionRequest? :challengeId :supervisorId
-        @supervisorStatus = SupervisionStatus.Accepted
-        📣 supervisionRequestAccepted! :challengeId :supervisorId
-          # if Funds are verified then
-          when @paymentFundsStatus is PaymentFundsStatus.Available
-            @status = ChallengeStatus.Ongoing
+        💬 AcceptSupervisionRequest? :challengeId :supervisorId
+          @supervisorStatus = SupervisionStatus.Accepted
+          📣 supervisionRequestAccepted! :challengeId :supervisorId
+            # if Funds are verified then
+            when @paymentFundsStatus is PaymentFundsStatus.Available
+              @status = ChallengeStatus.Ongoing
 
-      💬 RejectSupervisionRequest? :challengeId :supervisorId
-        @supervisorStatus = SupervisionStatus.Rejected
-        📣 supervisionRequestRejected! :challengeId :supervisorId
-        sendSupervisorRejectedEmail? :challengeId
+        💬 RejectSupervisionRequest? :challengeId :supervisorId
+          @supervisorStatus = SupervisionStatus.Rejected
+          📣 supervisionRequestRejected! :challengeId :supervisorId
+          sendSupervisorRejectedEmail? :challengeId
 
-      💬 InviteNewSupervisor? :challengeId :supervisorName :supervisorEmail
-        @supervisorStatus = SupervisionStatus.Requested
-        sendSupervisionRequestedEmail? :challengeId
-          📣 supervisionRequested! :challengeId
-
-
-      💬 judgeChallenge? :challengeId, accomplished: boolean
-        @challengeJudgement = ChallengeJudgement.Judged
-        @status = accomplished ? ChallengeStatus.Accomplished : ChallengeStatus.Failed
-        when accomplished
-          📣 ChallengeAccomplished! :challengeId
-            sendChallengeAccomplishedEmail? :challengeId
-        else
-          📣 ChallengeFailed! :challengeId
-
-      /**
-       * This is a cron job that runs every day and checks if any challenges are overdue
-       *
-       * ItsThatTimeAgain!
-       *   @createdAt: DateTime
-       */
-      ⏰ NewDayStarted!
-        for each :challenge in Challenges
-          when .deadline is before Today
-            📣 DeadlineReached! :challengeId
-
-          when .createdAt is before 2 days ago
-           and .enrollmentDeadline is after Yesterday
-            list all .invitees that
-              - have not enrolled in :challengeId
-              - have not been notified
-
-            if list is not empty
-              📣 PlayersForgotToEnroll! :challengeId :list
-
-          when .createdAt is before 5 days ago
-           and .enrollmentDeadline is Today
-            list all .invitees that
-              - have not enrolled in :challengeId
-              - have been notified at most once
-
-            if list is not empty
-              📣 PlayersLastChanceToEnrollArrived! :challengeId :list
-
-      ⌛ DeadlineReached! :challengeId
-        @status = ChallengeStatus.Overdue
-        sendJudgementRequestEmail? :challengeId
-          @challengeJudgement = ChallengeJudgement.Requested
-
-      📧 ChallengeFailed!
-        sendChallengeFailedEmail? :challengeId
-
-    valueObject PreAuthorization
-      @code: DISL.Token
-      @amount: DISL.Money
-      // TODO: Check if Stripe returns an authorization code
-      @createdAt: DateTime
-      /**
-      * The authorization expires in 30 days
-      */
-      @expiresAt: DateTime
-        // ◌ - Not implemented
-        // ◯ - Implemented
-        // ● - Implemented and in use
-        rules ◌ ◯ ●
-          ◌ Is future date
-          ◌ Is before 31 days from @createdAt
-
-    valueObject Email
-      @to: EmailAddress
-      @subject: string
-      @body: string
-
-    valueObject EmailTemplate
-      @subject: string
-      @body: string
-
-    externalService EmailService
-      send Email
-
-    service NotificationService
-      import * as Pug from 'pug'
-
-      sendEmail template: EmailTemplate, data: Object, $to: EmailAddress
-        {{using}} Pug
-          parse template.subject with data as :subject
-          parse template.body with data as :body
-        create new Email $to with :subject and :body
-        send ${it} {{using}} IEmailService
-
-      💬 ChallengeCreated! challenge: Challenge
-        sendEmail
-          template: ChallengeCreatedEmail
-          data: Challenge
-          to: challenge.owner.email
-
-        when challenge.createdByPlayer
-          for each :contact in challenge.invitees
-            if :contact.role is ContactRole.Judge
-              send SupervisionRequestedEmail to challenge.invitees.email for challenge
-
-        when not challenge.createdByPlayer
-          for each :contact in challenge.invitees
-            if :contact.role is ContactRole.Player
-              send YouHaveBeenChallengedEmail to challenge.invitees.email for challenge
-
-      💬 FundsAvailable!
-          send ChallengeCreatedEmailToPlayer
-
-      💬 FundsDenied!
-          send PaymentMethodDeniedEmail
-
-      💬 SupervisionRequested!
-          send SupervisionRequestEmail
-
-      💬 SupervisionRequestAccepted!
-          send SupervisionRequestAccepted
-
-      💬 SupervisionRequestRejected!
-          send SupervisorRejectedEmail
-
-      💬 ChallengeAccepted!
-          send ChallengeAcceptedEmailToPlayer
-
-      💬 ChallengeRejected!
-          send ChallengeRejectedEmailToPlayer
-
-      💬 ChallengeOngoing!
-          send ChallengeOngoingEmailToPlayer
-
-      💬 JudgeRequested!
-          send JudgementRequestEmail
-
-      💬 ChallengeAccomplished!
-          send ChallengeAccomplishedEmail
-
-      💬 ChallengeFailed!
-          send ChallengeFailedEmail
+        💬 InviteNewSupervisor? :challengeId :supervisorName :supervisorEmail
+          @supervisorStatus = SupervisionStatus.Requested
+          sendSupervisionRequestedEmail? :challengeId
+            📣 supervisionRequested! :challengeId
 
 
-    /**
-    * Interface for a Service that handles payments
-    * Implementation layer: Infrastructure
-    */
-    serviceInterface IPaymentService
-      createCustomer from :contact => ForeignCustomerId
+        💬 JudgeChallenge? :challengeId, accomplished: boolean
+          @challengeJudgement = ChallengeJudgement.Judged
+          @status = accomplished ? ChallengeStatus.Accomplished : ChallengeStatus.Failed
+          when accomplished
+            📣 ChallengeAccomplished! :challengeId
+              sendChallengeAccomplishedEmail? :challengeId
+          else
+            📣 ChallengeFailed! :challengeId
 
-      createPaymentMethod for :customer with :paymentMethod
-        return ForeignPaymentMethodId
+        /**
+         * This is a cron job that runs every day and checks if any challenges are overdue
+         *
+         * ItsThatTimeAgain!
+         *   @createdAt: DateTime
+         */
+        ⏰ NewDayStarted!
+          for each :challenge in Challenges
+            when .deadline is before Today
+              📣 DeadlineReached! :challengeId
 
-      setupFuturePayment of :amount using :paymentMethod => FuturePaymentId
+            when .createdAt is before 2 days ago
+              and .enrollmentDeadline is after Yesterday
+              list all .invitees that
+                - have not enrolled in :challengeId
+                - have not been notified
 
-      capturePayment futurePaymentId
-        // return SUCCESS or FAILURE
-        return Whether it succeeded or not
+              if list is not empty
+                📣 PlayersForgotToEnroll! :challengeId :list
 
+            when .createdAt is before 5 days ago
+              and .enrollmentDeadline is Today
+              list all .invitees that
+                - have not enrolled in :challengeId
+                - have been notified at most once
 
-    entity PaymentMethod
-      /**
-       * The id of the payment method in the payment service
-       */
-      @foreignId: ForeignPaymentMethodId
-      @type: PaymentMethodType
-      @paymentService: "stripe"
-      @futurePayments: Map<ChallengeId, FuturePaymentId>
+              if list is not empty
+                📣 PlayersLastChanceToEnrollArrived! :challengeId :list
 
-      📧 CardCharged! :auth :amountInCents
+        ⌛ DeadlineReached! :challengeId
+          @status = ChallengeStatus.Overdue
+          sendJudgementRequestEmail? :challengeId
+            @challengeJudgement = ChallengeJudgement.Requested
 
-      💬 SetupFuturePayment? :amountInCents
+        📧 ChallengeFailed!
+          sendChallengeFailedEmail? :challengeId
 
-      /**
-       * Uses Stripe to charge the card using the pre-authorization
-       *
-       * @param {PreAuthorization} auth The pre-authorization to use
-       * @param {number} amountInCents The amount to charge in cents
-       * @returns {boolean} Whether the charge was successful or not
-       */
-      💬 Charge? foreignId: FuturePaymentId
-        when IPaymentService.capturePayment(foreignId) succeeds
-          ⮐ SUCCESS
-        else
-          CardChargeFailed! :auth :amountInCents
-          ⮐ FAILED
+      entity User
+        @id: UserId { auto-generated }
+        @emailConfirmed: boolean
+        @playedChallenges: Enrollment[]
+        @officiatedChallenges: Officiation[]
+        @organizedChallenges: Challenge[]
 
-      ⌘ releasePreAuth? :preAuthorization
-    end
+        recipe:
+          params:
+            @name: DISL.FullName
+            @email: DISL.EmailAddress { unique }
 
-  service AccountService
-    uses UserRepository
+          📣 UserCreated! :user
 
-    createAccount for Contact
-      rules:
-        - Contact.email does not exist in UserRepository.users.email
+        /**
+         * Returns all unanswered challenge invitations
+         */
+        ⚙️ getPendingInvitations:
+          returns The Challenges where this user is in .invitees[]
+              AND .invitees[].status == ParticipationStatus.NotRequested
 
-  valueObject Icons
+      entity PaymentMethod
+        depends on PaymentService
+
+        /**
+         * The id of the payment method in the payment service
+         */
+        @foreignId: ForeignPaymentMethodId
+        @type: PaymentMethodType
+        @paymentService: "stripe"
+        @futurePayments: Map<ChallengeId, FuturePaymentId>
+
+        📧 CardCharged! :auth :amountInCents
+
+        ⚙️ setupFuturePayment: amountInCents
+          // TODO: Implement this
+
+        /**
+         * Uses Stripe to charge the card using the pre-authorization
+         *
+         * @param {PreAuthorization} auth The pre-authorization to use
+         * @param {number} amountInCents The amount to charge in cents
+         * @returns {boolean} Whether the charge was successful or not
+         */
+        ⚙️ charge
+          params:
+            foreignId: FuturePaymentId
+
+          when PaymentService.capturePayment(foreignId) succeeds
+            ⮐ SUCCESS
+          else
+            CardChargeFailed! :auth :amountInCents
+            ⮐ FAILED
+
+        ⚙️ ReleasePreAuth? :preAuthorization
