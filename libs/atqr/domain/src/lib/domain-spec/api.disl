@@ -232,25 +232,6 @@ domain ATQR
 
             // if Supervisor has accepted the request then
 
-        💬 judgeChallenge? :userId, accomplished: boolean
-
-          rules:
-            when @status is not ChallengeStatus.Overdue
-              throw "Challenge is not ongoing"
-
-            when there is no Enrollment for :userId
-              throw "User is not a player in this challenge"
-
-          @challengeJudgement = ChallengeJudgement.Judged
-          @status = ChallengeStatus.Finished
-
-          if ^accomplished
-            @enrollments[0].outcome = PlayerOutcome.Accomplished
-            📣 ChallengeAccomplished! this
-          else
-            @enrollments[0].outcome = PlayerOutcome.Failed
-            📣 ChallengeFailed! this
-
         💬 rejectFundsRequest? :challengeId :paymentMethod
             @paymentMethod = PaymentFundsStatus.Denied
             📣 fundsDenied! :challengeId :paymentMethod
@@ -273,15 +254,24 @@ domain ATQR
           sendSupervisionRequestedEmail? :challengeId
             📣 supervisionRequested! :challengeId
 
+        💬 JudgeChallenge? :userId, accomplished: boolean
 
-        💬 JudgeChallenge? :challengeId, accomplished: boolean
+          rules:
+            when @status is not ChallengeStatus.Overdue
+              throw "Challenge is not ongoing"
+
+            when there is no Enrollment for :userId
+              throw "User is not a player in this challenge"
+
           @challengeJudgement = ChallengeJudgement.Judged
-          @status = accomplished ? ChallengeStatus.Accomplished : ChallengeStatus.Failed
-          when accomplished
-            📣 ChallengeAccomplished! :challengeId
-              sendChallengeAccomplishedEmail? :challengeId
+          @status = ChallengeStatus.Finished
+
+          if ^accomplished
+            @enrollments[0].outcome = PlayerOutcome.Accomplished
+            📣 ChallengeAccomplished! this
           else
-            📣 ChallengeFailed! :challengeId
+            @enrollments[0].outcome = PlayerOutcome.Failed
+            📣 ChallengeFailed! this
 
         /**
          * This is a cron job that runs every day and checks if any challenges are overdue
