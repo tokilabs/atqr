@@ -169,3 +169,14 @@ ui Email
     button RejectChallenge
       open ConfirmChallengeResponse
         data response=ChallengeResponse.Rejected
+
+  email ChallengeAccomplished
+    // - convite a criar novo desafio
+    button CreateNewChallenge
+
+    // - possibilidade de compartilhar o resultado do desafio exitoso
+    // ([1.3 Usuário gera imagem do desafio](https://www.notion.so/1-3-Usu-rio-gera-imagem-do-desafio-fa47c140fbc94cf58cdbdd85ab02a63c));
+    button ShareChallengeResult
+
+    // Possibilidade de convidar alguém para esse mesmo desafio
+    button ChallengeSomeone
