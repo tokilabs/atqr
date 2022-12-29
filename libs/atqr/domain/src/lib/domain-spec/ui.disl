@@ -148,7 +148,12 @@ ui Web
     screen CheckEmailToConfirmParticipation
       copy CheckEmailToConfirmParticipation
 
+    screen ChallengeNotFound
+      copy ChallengeNotFound
+      copy MotivateToCreateChallenge
 
+      button CreateChallenge
+        open CreateChallengeForm
 
 ui Email
 
