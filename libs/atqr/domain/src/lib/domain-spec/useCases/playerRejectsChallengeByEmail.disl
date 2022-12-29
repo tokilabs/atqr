@@ -1,0 +1,25 @@
+read_also api.disl
+read_also enums.disl
+read_also ui.disl
+
+context Challenges 
+
+    RejectChallenge?
+            rules: 
+                - ChallengeCreated!
+                - Challenge.@status == Unverified
+                - player is not participating on this Challenge
+                - Challenge.@owner.@paymentMethod == Unverified
+
+            when    
+                service NotificationService sends YouWereChallenged? email template and Invitee opens it
+                    @options:
+                        -Accept or Reject Challenge
+                        -Go to Challenge resume page
+
+                /*
+                *   InviteeRejectedYourChallenge email template have to be implemented 
+                **/
+                if RejectChallenge?
+                    service NotificationService sends InviteeRejectedYourChallenge? email template
+                    ChallengeRejected! 
