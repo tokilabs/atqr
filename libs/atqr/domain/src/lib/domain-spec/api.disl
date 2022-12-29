@@ -16,84 +16,31 @@ alias :id id Guid
 domain ATQR
   purpose "A platform for people to challenge each other to accomplish goals"
 
+  value object Settings
+    emails:
+      retryDelay: $> number of emails sent * 2
+      maxRetries: 3 times
+      maxEmailsPerAddress: 5
+      maxEmailsResetPeriod: 1 month
+
+  //------------------------------
   // System events
   //------------------
+
   /**
    * Fired each new day at 00:00:01
    */
   ⏰ NewDayStarted!
+    @date: DateTime
 
   context Challenges
-
-    aggregate Goals
-      root Goal
-        @title: string
-        @challenges: Challenge[]
-        @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
-
-        stories:
-          - stories/visitorAdoptsGoal
-
-        💬 CreateGoal? :title
-          create new Goal with :title
-          📣 GoalCreated! :goal
-
-        /**
-         * Creates a new challenge and notifies both the Player and the Supervisor
-         */
-        💬 CreateChallenge?
-          params:
-            goalId: GoalId
-            pledge: DISL.Money
-                greater than 0
-            deadline: FutureDate
-            invitees: Invitee[]
-            requiredProof?: DISL.Paragraph
-            /**
-             * Allows players to enroll using a link instead of being invited
-             * @param {boolean} true if players can enroll using a link
-             */
-            inviteByLink: boolean
-            enrollmentDeadline: FutureDate
-                before @deadline
-            owner: Contact
-            ownerPaymentMethod: PaymentMethod | null
-
-          // We must create the User first to ensure
-          // that we collect their email address (for marketing purposes)
-          find_or_create new User from owner
-
-          rules:
-            when @createdByPlayer
-              if ownerPaymentMethod is not defined
-                throw "A player must have a payment method defined"
-
-              if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
-                throw "Could not authorize payment"
-
-              the new User's paymentMethod = ownerPaymentMethod
-
-              create new Challenge with the parameters received
-
-              createEnrollmentFor the new User
-                add it to the new Challenge's enrollments
-
-              📣 ChargeAuthorized! @owner @pledge ownerPaymentMethod
-              📣 ChallengeCreated! this
-
-            when @createdByJudge
-              create new Challenge with the parameters received
-
-              create new Officiation for owner
-                add it to the new Challenge's judges
-
-              📣 ChallengeCreated! this
 
     aggregate ChallengeAggregate
 
       !ChallengeNotFound :challengeId
 
       root Challenge
+
         depends on PaymentService
 
         @createdByPlayer: boolean
@@ -109,28 +56,27 @@ domain ATQR
           auto: Today
 
         ⚙️ recipe:
-          params:
-            @goalId: GoalId
-            @owner: User
-            /**
-            * Holds all users ever invited to this challenge
-            * and their participation status
-            */
-            @invitees: Contact[]
-            @deadline: Date
-            @pledge: DISL.Money
-              greater than 0
-            @deadline: FutureDate
-            @requiredProof?: DISL.Paragraph
-            /**
-             * Allows players to enroll using a link instead of being invited
-             * @param {boolean} true if players can enroll using a link
-             */
-            @inviteByLink: boolean
-            @enrollmentDeadline: FutureDate
-              before @deadline
-            @owner: Contact
-            ownerPaymentMethod: PaymentMethod | null
+          @goalId: GoalId
+          @owner: User
+          /**
+          * Holds all users ever invited to this challenge
+          * and their participation status
+          */
+          @invitees: Contact[]
+          @deadline: Date
+          @pledge: DISL.Money
+            greater than 0
+          @deadline: FutureDate
+          @requiredProof?: DISL.Paragraph
+          /**
+           * Allows players to enroll using a link instead of being invited
+           * @param {boolean} true if players can enroll using a link
+           */
+          @inviteByLink: boolean
+          @enrollmentDeadline: FutureDate
+            before @deadline
+          @owner: Contact
+          ownerPaymentMethod: PaymentMethod | null
 
           when @createdByPlayer
             create new User for owner
@@ -272,35 +218,6 @@ domain ATQR
           else
             @enrollments[0].outcome = PlayerOutcome.Failed
             📣 ChallengeFailed! this
-
-        /**
-         * This is a cron job that runs every day and checks if any challenges are overdue
-         *
-         * ItsThatTimeAgain!
-         *   @createdAt: DateTime
-         */
-        ⏰ NewDayStarted!
-          for each :challenge in Challenges
-            when .deadline is before Today
-              📣 DeadlineReached! :challengeId
-
-            when .createdAt is before 2 days ago
-              and .enrollmentDeadline is after Yesterday
-              list all .invitees that
-                - have not enrolled in :challengeId
-                - have not been notified
-
-              if list is not empty
-                📣 PlayersForgotToEnroll! :challengeId :list
-
-            when .createdAt is before 5 days ago
-              and .enrollmentDeadline is Today
-              list all .invitees that
-                - have not enrolled in :challengeId
-                - have been notified at most once
-
-              if list is not empty
-                📣 PlayersLastChanceToEnrollArrived! :challengeId :list
 
         ⌛ DeadlineReached! :challengeId
           @status = ChallengeStatus.Overdue

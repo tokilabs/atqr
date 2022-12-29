@@ -9,7 +9,7 @@ context Challenges
      */
     Ongoing
     Overdue
-    Abanded
+    Abandoned
     /**
      * Challenges are moved to Finished when:
      *  - it is overdue

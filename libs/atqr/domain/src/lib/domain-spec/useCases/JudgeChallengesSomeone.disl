@@ -2,41 +2,42 @@ read_also api.disl
 read_also enums.disl
 read_also ui.disl
 
-context Challenges
-/*
-*   rule to change challenge status to Abanded when invitee doens't respond after x invitation emails
-has to be implemented
-**/
+domain ATQR
+
+  context Challenges
+    /**
+     * TODO: Rule to change challenge status to Abandoned when invitee doesn't respond after x invitation emails have to be implemented
+     **/
     PlayerChallenged!
         rules:
             - CreateChallenge?
             - Challenge.@status == Unverified
-            - Invitee can not be playing in this Challenge
+            - Invitee must not have accepted the Challenge
         when
-            ChallengeCreated! by user to intented player 
-            /* 
-            * YouWereChallenged email has to be implemented on api.disl
-            **/
-            service NotificationService sends YouWereChallenged! email template 
-            if  Owner's Challenge have no anwser
-                after 10 days   
-                service NotificationService sends YouWereChallenged? email template again
-                    /* 
-                    * NoAnsewrToYourInvite email template has to be implemented 
+            ChallengeCreated! by Judge to intented player
+            /**
+             * YouWereChallenged email has to be implemented on api.disl
+             **/
+            service NotificationService sends YouWereChallenged email template
+            if Owner's Challenge have no anwser
+                after 10 days
+                service NotificationService sends YouWereChallenged email template again
+                    /*
+                    * NoAnsewrToYourInvite email template has to be implemented
                     **/
                 service NotificationService sends NoAnsewrToYourInvite? to Owner
-                    and 
-                        Challenge.@status == Abanded 
+                    and
+                        Challenge.@status == Abandoned
 
             if  Owner's Challenge is accepted
-                    /* 
-                    * PlayerAcceptedInvite email template has to be implemented 
+                    /*
+                    * PlayerAcceptedInvite email template has to be implemented
                     **/
                 service NotificationService sends PlayerAcceptedInvite? to Judge
-            
+
             if  Owner's Challenge is rejected
-                    /* 
-                    * PlayerRejectedInvite email template has to be implemented 
+                    /*
+                    * PlayerRejectedInvite email template has to be implemented
                     **/
                 service NotificationService sends PlayerRejectedInvite? to Owner
 
