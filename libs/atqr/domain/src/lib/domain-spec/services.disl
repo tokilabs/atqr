@@ -1,13 +1,15 @@
 domain ATQR
+
   context Challenges
+
     service ChallengesService
       depends on ChallengeRepository
 
       💬 GetLastChallenges? amount
         returns the first amount Challenges ordered by challenge's createdAt descending
 
-        service EmailService
-        send Email
+    service EmailService
+      send template: EmailTemplate, to: EmailAddress, data: Object
 
     service AccountService
       uses UserRepository
@@ -91,12 +93,15 @@ domain ATQR
       💬 JudgeRequested!
           send JudgementRequestEmail
 
-      💬 ChallengeAccomplished!
-          send ChallengeAccomplishedEmail
+      💬 ChallengeAccomplished! :challenge
+          EmailService.send ChallengeAccomplishedEmail
+            to: :challenge.enrollments[0].player.email
+            data: :challenge
 
-      💬 ChallengeFailed!
-          send ChallengeFailedEmail
-
+      💬 ChallengeFailed! :challenge
+          EmailService.send ChallengeFailedEmail
+            to: :challenge.enrollments[0].player.email
+            data: :challenge
 
     /**
      * Definition of a service that handles payments
