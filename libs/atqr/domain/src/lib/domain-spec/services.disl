@@ -18,9 +18,58 @@ domain ATQR
           either findChallengeById :challengeId using ChallengeRepository
               or show ChallengeNotFound screen
 
-    service EmailService
-      send template: EmailTemplate, to: EmailAddress, data: Object
+    service DeadlineMonitor
+      depends on ChallengesService
 
+      /**
+       * This is a cron job that runs every day and checks if any challenges are overdue
+       *
+       * ItsThatTimeAgain!
+       *   @createdAt: DateTime
+       */
+      ⏰ NewDayStarted!
+        for each :challenge in Challenges
+          when .deadline is before Today
+            📣 DeadlineReached! :challengeId
+
+          // TODO: Check which logic is better for sending emails
+          // This or the one inside NotificationService
+          when .createdAt is before 2 days ago
+            and .enrollmentDeadline is after Yesterday
+            list all .invitees that
+              - have not enrolled in :challengeId
+              - have not been notified
+
+            if list is not empty
+              📣 PlayersForgotToEnroll! :challengeId :list
+
+          when .createdAt is before 5 days ago
+            and .enrollmentDeadline is Today
+            list all .invitees that
+              - have not enrolled in :challengeId
+              - have been notified at most once
+
+            if list is not empty
+              📣 PlayersLastChanceToEnrollArrived! :challengeId :list
+
+      💬 ChallengeDeadlineReached! :challenge
+        if :challenge is not Accomplished
+          mark :challenge as Failed
+
+    /**
+     * Definition of a service that handles emails
+     * @type Infrastructure
+     */
+    service EmailService
+      send
+        params
+          to: EmailAddress
+          subject: string
+          body: string
+
+    /**
+     * @type DomainService
+     */
     service AccountService
       uses UserRepository
 
@@ -29,46 +78,56 @@ domain ATQR
           - Contact.email does not exist in UserRepository.users.email
 
     service NotificationService
-      import * as Pug from 'pug'
+      depends on EmailService
+      depends on ChallengeRepository
 
-      sendEmail template: EmailTemplate, data: Object, $to: EmailAddress
+      sendEmail template: EmailTemplate data: Object, to: EmailAddress
         {{using}} Pug
           parse template.subject with data as :subject
           parse template.body with data as :body
-        create new Email $to with :subject and :body
+        create new Email ^to with :subject and :body
         send ${it} {{using}} IEmailService
 
-      💬 ChallengeCreated! challenge: Challenge
-        sendEmail
-          template: ChallengeCreatedEmail
-          data: Challenge
-          to: challenge.owner.email
+      ⏰ NewDayStarted!
+        for each :challenge in ChallengeRepository
 
-        when challenge.createdByPlayer
-          for each contact in challenge.invitees
-            if contact.role is ContactRole.Judge
+          for each invitee with .role of Player in :challenge.invitees
+            if it's participationStatus is Accepted or Rejected
+              skip it
+
+            if we've sent more than Settings.maxRetries emails
+              sendEmail
+                template: YourChallengerNeverShowedUpEmail
+                data: Challenge
+                to: :challenge.owner.email
+
+              📣 InviteeAbandonedTheChallenge! :challengeId :invitee
+
+            if last email sent is more than Settings.retryDelay days ago
+              sendEmail
+                template: YouHaveBeenChallengedEmail
+                data: Challenge
+                to: :invitee.email
+
+
+      💬 ChallengeCreated! :challenge
+        sendEmail
+          params:
+            template: ChallengeCreatedEmail
+            data: Challenge
+            to: :challenge.owner.email
+
+        when :challenge.createdByPlayer
+          for each contact in :challenge.invitees
+            if it's role is Judge
               sendEmail
                 template: OfficiationRequestedEmail
                 data: Challenge
                 to: :contact.email
 
-            if contact.role is ContactRole.Player
-              sendEmail
-                template: ChallengeCreatedEmail
-                data: Challenge
-                to: :contact.email
-
-        when challenge.createdByJudge
-          for each :contact in challenge.invitees
-            if contact.role is ContactRole.Player
+            if it's role is Player
               sendEmail
                 template: YouHaveBeenChallengedEmail
-                data: Challenge
-                to: :contact.email
-
-            if contact.role is ContactRole.Judge
-              sendEmail
-                template: ChallengeCreatedEmail
                 data: Challenge
                 to: :contact.email
 
@@ -88,14 +147,20 @@ domain ATQR
           send SupervisorRejectedEmail
 
       💬 ChallengeAccepted! enrollment: Enrollment
-          send ChallengeAcceptedEmail
-            data: enrollment
-            to: enrollment.judge.email
+          sendEmail
+            params:
+              template: ChallengeAcceptedEmail
+              data: ^enrollment
+              to: ^enrollment.judge.email
 
-      💬 ChallengeRejected! challenge
-          send ChallengeRejectedEmail
-            data: challenge
-            to: challenge.owner.email
+      💬 ChallengeRejected!
+          params:
+            - challenge: Challenge
+
+          sendEmail with:
+            template: ChallengeRejectedEmail
+            data: ^challenge
+            to: ^challenge.owner.email
 
       💬 ChallengeOngoing!
           send ChallengeOngoingEmailToPlayer
@@ -104,14 +169,17 @@ domain ATQR
           send JudgementRequestEmail
 
       💬 ChallengeAccomplished! :challenge
-          EmailService.send ChallengeAccomplishedEmail
+          sendEmail with:
+            template: ChallengeAccomplishedEmail
             to: :challenge.enrollments[0].player.email
             data: :challenge
 
       💬 ChallengeFailed! :challenge
-          EmailService.send ChallengeFailedEmail
-            to: :challenge.enrollments[0].player.email
-            data: :challenge
+          sendEmail
+            params:
+              template: ChallengeFailedEmail
+              to: :challenge.enrollments[0].player.email
+              data: :challenge
 
     /**
      * Definition of a service that handles payments

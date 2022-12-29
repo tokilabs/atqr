@@ -1,0 +1,84 @@
+read also enums.disl
+read also api.disl
+
+domain ATQR
+
+  context Challenges
+
+    aggregate Goals
+
+      root Goal
+        depends on ChallengeRepository
+
+        recipe:
+          @title: string
+          @challenges: Challenge[]
+          @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
+
+        stories:
+          - stories/visitorAdoptsGoal
+
+        💬 CreateGoal? :title
+          create new Goal with :title
+          📣 GoalCreated! :goal
+
+        /**
+         * Creates a new challenge and notifies both the Player and the Supervisor
+         */
+        💬 CreateChallenge?
+          params:
+            - goalId: GoalId
+            - pledge: DISL.Money
+                greater than 0
+            - deadline: FutureDate
+            - invitees: Invitee[]
+            - requiredProof?: DISL.Paragraph
+            /**
+             * Allows players to enroll using a link instead of being invited
+             * @param {boolean} true if players can enroll using a link
+             */
+            - inviteByLink: boolean
+            - enrollmentDeadline: FutureDate
+                before @deadline
+            - owner: Contact
+            - ownerPaymentMethod: PaymentMethod | null
+
+          // We must create the User first to ensure
+          // that we collect their email address (for marketing purposes)
+          find_or_create new User from owner
+
+          rules:
+            when @createdByPlayer
+              if ownerPaymentMethod is not defined
+                throw "A player must have a payment method defined"
+
+              if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
+                throw "Could not authorize payment"
+
+              the new User's paymentMethod = ownerPaymentMethod
+
+              create new Challenge with the parameters received
+
+              createEnrollmentFor the new User
+                add it to the new Challenge's enrollments
+
+              📣 ChargeAuthorized! @owner @pledge ownerPaymentMethod
+
+              save the new Challenge in ChallengeRepository
+
+              📣 ChallengeCreated! new Challenge
+
+            when @createdByJudge
+              create new Challenge with the ^parameters received
+                set it's status to ChallengeStatus.Unverified
+
+              create new Officiation for ^owner
+                add it to the new Challenge's judges
+
+              save the new Challenge in ChallengeRepository
+
+              📣 ChallengeCreated! new Challenge
+
+          show ChallengeCreate screen with:
+            data: the new Challenge
+
