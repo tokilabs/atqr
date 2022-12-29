@@ -10,7 +10,7 @@ alias :challenge challenge Challenge
 alias :challengeId id ChallengeId
 alias :userId id UserId
 alias :dt date DateTime
-alias :name fullName DISL.FullName
+alias :name fullName DInSL.FullName
 alias :id id Guid
 
 domain ATQR
@@ -178,6 +178,29 @@ domain ATQR
           invitee.status = ParticipationStatus.Rejected
 
           📣 ChallengeRejected! :challengeId
+
+        ⚙️ verifyIfChallengeCanBegin @players @judges @paymentMethods
+          return allJudgeAccepted
+            and  allPlayersAccepted
+            and  allPaymentMethodsVerified
+
+        ⚙️ allPlayersAccepted
+          // code: this.invitees.find(invitee => invitee.role == player && invitee.participationStatus === ParticipationStatus.Accepted == false ? false : true)
+          for each invitee with .role equals Player in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+          return true
+
+        ⚙️ allJudgesAccepted
+          for each invitee with .role equals Judge in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+        ⚙️ allPaymentMethodsVerified
+          for each enrollment in @enrollments
+            if it's PaymentFundsStatus is not Authorized
+              return false
 
         ⚙️ createEnrollmentFor invitee
           create enrollment in @players for invitee
