@@ -230,7 +230,27 @@ domain ATQR
               📣 challengeFailed! :challengeId
                 sendChallengeFailedEmailToPlayer? :challengeId
 
-          # if Supervisor has accepted the request then
+            // if Supervisor has accepted the request then
+
+        💬 judgeChallenge? :userId, accomplished: boolean
+
+          rules:
+            when @status is not ChallengeStatus.Overdue
+              throw "Challenge is not ongoing"
+
+            when there is no Enrollment for :userId
+              throw "User is not a player in this challenge"
+
+          @challengeJudgement = ChallengeJudgement.Judged
+          @status = ChallengeStatus.Finished
+
+          if ^accomplished
+            @enrollments[0].outcome = PlayerOutcome.Accomplished
+            📣 ChallengeAccomplished! this
+          else
+            @enrollments[0].outcome = PlayerOutcome.Failed
+            📣 ChallengeFailed! this
+
         💬 rejectFundsRequest? :challengeId :paymentMethod
             @paymentMethod = PaymentFundsStatus.Denied
             📣 fundsDenied! :challengeId :paymentMethod
