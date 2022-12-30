@@ -142,7 +142,6 @@ export class ChallengeController {
         this.emailService.sendMail(
           new SupervisorAccepted(challenge.player.emailAddress)
         );
-        4;
         challenge.changeSupervisor(
           updateSupervisorDto.supervisorName,
           updateSupervisorDto.supervisorEmail

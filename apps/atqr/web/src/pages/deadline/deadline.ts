@@ -7,8 +7,8 @@ const idUrl = getUrlId.toString();
 const urlId = idUrl;
 
 export const getChallenge = () => {
-  const data = atqrApi.challenges.getOne('');
-  return data;
+  return atqrApi.challenge.getOne('');
+
 };
 
 console.log('got challenge:', getChallenge());
@@ -17,7 +17,7 @@ updateUI(getChallenge(), 'data-field');
 
 export async function congratsButton() {
   const challengeStatusUpdated =
-    await atqrApi.challenges.challengeUpdated.statusUpdated(
+    await atqrApi.challenge.challengeUpdate.status(
       idUrl, // pegar id da url
       ChallengeStatus.Completed
     );
@@ -33,7 +33,7 @@ export async function congratsButton() {
 
 export async function reproveButton() {
   const challengeStatusUpdated =
-    await atqrApi.challenges.challengeUpdated.statusUpdated(
+    await atqrApi.challenge.challengeUpdate.status(
       idUrl, // pegar id da url,
       ChallengeStatus.Failed
     );

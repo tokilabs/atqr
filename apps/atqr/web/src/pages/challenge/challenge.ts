@@ -3,17 +3,10 @@ import { updateStatus, ChallengeStatus } from '../../services/interfaces';
 import { updateUI } from '../../services/updateUi';
 
 export const getChallenge = () => {
-  const data = atqrApi.challenge.getOne('');
-  return data;
+  return atqrApi.challenge.getOne('');
 };
-
-updateUI(getChallenge(), 'data-field');
-
-const updateChallenge = updateStatus('', ChallengeStatus.Ongoing);
 
 export const btnUpdateChallenge = () => {
-  updateChallenge;
-
-  return updateChallenge;
+  return updateStatus('', ChallengeStatus.Ongoing);
 };
-console.log('button did update:', btnUpdateChallenge());
+updateUI(getChallenge(), 'data-field');
