@@ -1,25 +1,25 @@
-
+Domain ATQR
 context Challenge
 
 entity Challenge
-  💬 AskPlayerForNewJudge? :challenge
+
+  ⚙️ AskPlayerForNewJudge
       listening:
       - RejectedParticipateJudgeRequest!
 
     @NotificationService.SelectNewJudge
-
     ⏰ NewDayStarted!
-      if(pass X days send again, if pass Y days cancel)
-
+     //code if(pass X days send again, if pass Y days cancel)
+     
     📣 AskedPlayerForNewJudge!
 
 
 
 
-  💬 RequestJudgeParticipation? :challenge :contactJudge
+  ⚙️ RequestJudgeParticipation? @challenge @contactJudge
 
     @NotificationService.SupervisionRequested
-    this.addInvite
+    this.addInvite()
 
     ⏰ NewDayStarted!
       if(pass X days send again, if pass Y days cancel)
@@ -28,18 +28,17 @@ entity Challenge
 
 
 
-  addInvite? :contactJudge
+  ⚙️ addInvite @contactJudge
 
-  invitee = new Invitee(contactJudge)
-  invitee.participationStatus = participationStatus.requested
+    invitee = new Invitee(contactJudge)
 
-  this.invitees.push(invitee)
+    this.invitees.push(invitee)
 
 
 
 service NotificationService
 
-  AskPlayerForNewJudge? :challenge
+ 💬 AskPlayerForNewJudge? :challenge
     sendEmail
       template: emailAskPlayerForNewJudge
       data: Challenge
@@ -47,9 +46,9 @@ service NotificationService
 
 
 
-  RequestJudgeParticipation? :challenge :contactJudge
-    sendEmail
-      template: emailRequestJudgeParticipation
-      data: Challenge
-      to: contactJudge
+ 💬 RequestJudgeParticipation? :challenge :contactJudge
+     sendEmail
+       template: emailRequestJudgeParticipation
+       data: Challenge
+       to: contactJudge
 
