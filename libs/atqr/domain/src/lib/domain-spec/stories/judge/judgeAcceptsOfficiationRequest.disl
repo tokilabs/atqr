@@ -6,32 +6,35 @@ entity Challenge
     listening:
       - RequestedJudgeParticipation!
 
-    user = @user.findOrCreateUser
-    user.addOfficiateChallenge
 
-    @NotificationService.judgeAccepts
+      officiation = create Officiation(this, challenge)
+      
+      user = findOrCreateUser()
+      user.addOfficiateChallenge(officiation)
 
-    this.verifyChallengeCanBegin()
-    📣 judgeAcceptedOfficiationRequest!
+      
+      
+      @NotificationService.judgeAcceptOfficiationRequest
+      
+      this.verifyChallengeCanBegin()
+      📣 judgeAcceptedOfficiationRequest!
 
 
+    ⚙️ judgeAcceptInvitee @participationStatus , @judge
+      // code this.invitees.find(invitee => invitee.role == judge && invitee.email == judge.email? invitee.participationStatus = participationStatus.accepted : continue)
+      this.addJudge(officiation)
 
-    judgeAcceptInvitee? :participationStatus , :judgeId
-      challenge.invitees.find(invitee => invitee.id == judgeId: invitee.participationStatus == accepted ? continue)
-      this.addJudge
-
-    addJudge? :judge
+    ⚙️ addJudg? @judge
       this.judges.push(judge)
-      📣 addedJudge! :judge
 
 
 
 entity User
 
-  addOfficiateChallenge? :challenge
-      officiation = new Officiation(this, challenge)
-      this.officiatedChallenges.push(officiation)
-
+  ⚙️  addOfficiateChallenge @officiation
+      
+      //code this.officiatedChallenges.push(officiation)
+      
 
 
 
