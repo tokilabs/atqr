@@ -2,21 +2,23 @@ domain ATQR
 context Challenge
 
 entity Challenge
-  💬 JudgeRejectsOfficiationRequest? :challengeId :id
+  
+  ⚙️ JudgeRejectsOfficiationRequest @judgeId
     listening:
       - RequestedJudgeParticipation!
-
+      
+      this.JudgeRejectsOfficiationRequest(judge)
       @NotificationService.judgeRejects
-      this.JudgeRejectsOfficiationRequest
 
-  JudgeRejectsOfficiationRequest? :participationStatus , :judgeId
-    challenge.invitees.find(invitee => invitee.id == judgeId: delete ? continue)
+
+  ⚙️ JudgeRejectsOfficiationRequest @judge
+    //code challenge.invitees.find(invitee => invitee.role == judge && invitee.email == judge.email: delete ? continue)
 
     📣 RejectedParticipateJudgeRequest!
 
 
 service NotificationService
-  💬 judgeRejects? :challenge :Challenge
+  💬 EmailJudgeRejectsOfficiation?
       sendEmail
         template: judgeRejects
         data: Challenge
