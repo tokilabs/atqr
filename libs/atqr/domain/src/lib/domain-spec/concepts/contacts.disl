@@ -1,0 +1,17 @@
+domain ATQR
+
+  //--------------------------------//
+  // Contacts
+  //--------------------------------//
+  concept Email
+    @to: EmailAddress
+    @subject: string
+    @body: string
+
+  concept Contact
+    @name: DISL.FullName
+    @email: DISL.EmailAddress
+    @role: ParticipationRole
+
+  concept Invitee extends Contact
+    @status: ParticipationStatus = ParticipationStatus.NotRequested

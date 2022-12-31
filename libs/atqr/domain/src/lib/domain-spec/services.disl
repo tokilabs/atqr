@@ -34,8 +34,8 @@ domain ATQR
 
           // TODO: Check which logic is better for sending emails
           // This or the one inside NotificationService
-          when .createdAt is before 2 days ago
-            and .enrollmentDeadline is after Yesterday
+          when .enrollmentDeadline is Today
+            and .createdAt is before 2 days ago
             list all .invitees that
               - have not enrolled in :challengeId
               - have not been notified
