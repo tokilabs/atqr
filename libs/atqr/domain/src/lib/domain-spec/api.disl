@@ -1,22 +1,25 @@
 // import other DISL files
-read_also enums.disl
-read_also ui.disl
+read also enums.disl
+read also ui.disl
 
 // Creates new types that extend Guid to differentiate among Entity Ids
-identity ChallengeId: Guid
-identity UserId: Guid
+concept ChallengeId expands on Guid
+concept UserId expands on Guid
+concept GoalId expands on Guid
+concept SupervisorId expands on Guid
 
-alias :challenge challenge Challenge
-alias :challengeId id ChallengeId
-alias :userId id UserId
-alias :dt date DateTime
-alias :name fullName DInSL.FullName
-alias :id id Guid
+alias :challenge to challenge: Challenge
+alias :challengeId to id: ChallengeId
+alias :supervisorId to supervisorId: SupervisorId
+alias :userId to id: UserId
+alias :date to date: DateTime
+alias :name to fullName: DISL.FullName
+alias :id to id: Guid
 
 domain ATQR
   purpose "A platform for people to challenge each other to accomplish goals"
 
-  value object Settings
+  concept Settings
     emails:
       retryDelay: $> number of emails sent * 2
       maxRetries: 3 times
@@ -34,6 +37,14 @@ domain ATQR
     @date: DateTime
 
   context Challenges
+
+    repository Notifications
+      recordNotification NotificationMessage
+      countNotifications
+        params
+          :userId
+          optional inCategories: NotificationCategory[]
+          optional sentVia: NotificationChannel[]
 
     aggregate ChallengeAggregate
 
@@ -190,7 +201,10 @@ domain ATQR
             when @paymentFundsStatus is PaymentFundsStatus.Available
               @status = ChallengeStatus.Ongoing
 
-        💬 RejectSupervisionRequest? :challengeId :supervisorId
+        command RejectSupervisionRequest?
+          params:
+            - challengeId: ChallengeId
+            :supervisorId
           @supervisorStatus = SupervisionStatus.Rejected
           📣 supervisionRequestRejected! :challengeId :supervisorId
           sendSupervisorRejectedEmail? :challengeId
@@ -233,6 +247,9 @@ domain ATQR
         @playedChallenges: Enrollment[]
         @officiatedChallenges: Officiation[]
         @organizedChallenges: Challenge[]
+        @notificationSettings:
+          @channels: NotificationChannel[]
+          @lists: NotificationList[]
 
         recipe:
           params:
