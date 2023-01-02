@@ -1,54 +1,55 @@
 Domain ATQR
-context Challenge
 
-entity Challenge
+  context Challenge
 
-  ⚙️ AskPlayerForNewJudge
-      listening:
-      - RejectedParticipateJudgeRequest!
+    entity Challenge
 
-    @NotificationService.SelectNewJudge
-    ⏰ NewDayStarted!
-     //code if(pass X days send again, if pass Y days cancel)
-     
-    📣 AskedPlayerForNewJudge!
+      ⚙️ askPlayerForNewJudge
+          listening:
+          - RejectedParticipateJudgeRequest!
 
+        @NotificationService.SelectNewJudge
+        ⏰ NewDayStarted!
+        //code if(pass X days send again, if pass Y days cancel)
 
-
-
-  ⚙️ RequestJudgeParticipation? @challenge @contactJudge
-
-    @NotificationService.SupervisionRequested
-    this.addInvite()
-
-    ⏰ NewDayStarted!
-      if(pass X days send again, if pass Y days cancel)
-
-    📣 RequestedJudgeParticipation!
+        📣 AskedPlayerForNewJudge!
 
 
 
-  ⚙️ addInvite @contactJudge
 
-    invitee = new Invitee(contactJudge)
+      ⚙️ requestJudgeParticipation @challenge @contactJudge
 
-    this.invitees.push(invitee)
+        @NotificationService.SupervisionRequested
+        this.addInvitee()
 
+        ⏰ NewDayStarted!
+          if(pass X days send again, if pass Y days cancel)
 
-
-service NotificationService
-
- 💬 AskPlayerForNewJudge? :challenge
-    sendEmail
-      template: emailAskPlayerForNewJudge
-      data: Challenge
-      to: challenge.player
+        📣 RequestedJudgeParticipation!
 
 
 
- 💬 RequestJudgeParticipation? :challenge :contactJudge
-     sendEmail
-       template: emailRequestJudgeParticipation
-       data: Challenge
-       to: contactJudge
+      ⚙️ addInvitee @contactJudge
+
+        invitee = new Invitee(contactJudge)
+
+        this.invitees.push(invitee)
+
+
+
+    service NotificationService
+
+    💬 AskPlayerForNewJudge? :challenge
+        sendEmail
+          template: emailAskPlayerForNewJudge
+          data: Challenge
+          to: challenge.player
+
+
+
+    💬 RequestJudgeParticipation? :challenge :contactJudge
+        sendEmail
+          template: emailRequestJudgeParticipation
+          data: Challenge
+          to: contactJudge
 

@@ -55,7 +55,7 @@ domain ATQR
         depends on PaymentService
 
         @createdByPlayer: boolean
-          returns @owner.role == ParticipationRole.Player
+          return whether @owner.role equals ParticipationRole.Player or not
 
         @createdByJudge: boolean
           returns @owner.role == ParticipationRole.Judge
