@@ -1,0 +1,11 @@
+read_also api.disl
+read_also enums.disl
+
+Domain ATQR
+
+  context challenge
+
+
+      💬 GetLastChallenges? :qty
+        return the first :qty Challenges ordered by @creation_date descending
+          source: database
