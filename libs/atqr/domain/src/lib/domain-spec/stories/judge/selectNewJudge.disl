@@ -14,16 +14,13 @@ Domain ATQR
 
         📣 AskedPlayerForNewJudge!
 
-
-
-
       ⚙️ requestJudgeParticipation @challenge @contactJudge
 
         @NotificationService.SupervisionRequested
         this.addInvitee()
 
         ⏰ NewDayStarted!
-          if(pass X days send again, if pass Y days cancel)
+          concept Settings
 
         📣 RequestedJudgeParticipation!
 

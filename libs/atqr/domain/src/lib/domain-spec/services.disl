@@ -109,7 +109,6 @@ domain ATQR
                 data: Challenge
                 to: :invitee.email
 
-
       💬 ChallengeCreated! :challenge
         sendEmail
           params:
@@ -180,6 +179,20 @@ domain ATQR
               template: ChallengeFailedEmail
               to: :challenge.enrollments[0].player.email
               data: :challenge
+
+      💬 AskPlayerForNewJudge! :challenge
+          sendEmail
+            params:
+              template: emailAskPlayerForNewJudge
+              to: challenge.player
+              data: Challenge
+
+      💬 RequestJudgeParticipation! :challenge :contactJudge
+          sendEmail
+            params:
+              template: emailRequestJudgeParticipation
+              to: contactJudge
+              data: Challenge
 
     /**
      * Definition of a service that handles payments
