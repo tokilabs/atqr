@@ -109,6 +109,13 @@ domain ATQR
                 data: Challenge
                 to: :invitee.email
 
+      💬 ChallengeJudgeReplaced! :challenge :contact
+          sendEmail
+            params:
+              template: OfficiationRequestedEmail
+              to: :contact.judge.email
+              data: Challenge
+
       💬 ChallengeCreated! :challenge
         sendEmail
           params:
@@ -141,9 +148,6 @@ domain ATQR
 
       💬 SupervisionRequestAccepted!
           send SupervisionRequestAccepted
-
-      💬 SupervisionRequestRejected!
-          send SupervisorRejectedEmail
 
       💬 ChallengeAccepted! enrollment: Enrollment
           sendEmail
@@ -180,19 +184,12 @@ domain ATQR
               to: :challenge.enrollments[0].player.email
               data: :challenge
 
-      💬 AskPlayerForNewJudge! :challenge
+      💬 OfficiationRequestRejected! :challenge
           sendEmail
             params:
-              template: emailAskPlayerForNewJudge
-              to: challenge.player
-              data: Challenge
-
-      💬 RequestJudgeParticipation! :challenge :contactJudge
-          sendEmail
-            params:
-              template: emailRequestJudgeParticipation
-              to: contactJudge
-              data: Challenge
+              template: OfficiationRequestRejected
+              to: :challenge.enrollments[0].player.email
+              data: :challenge
 
     /**
      * Definition of a service that handles payments

@@ -29,6 +29,7 @@ domain ATQR
       NotRequested
       Requested
       Accepted
+      Ignored
       Rejected
 
     enum JudgementStatus

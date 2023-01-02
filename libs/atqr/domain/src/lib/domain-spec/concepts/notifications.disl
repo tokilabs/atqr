@@ -15,6 +15,7 @@ domain ATQR
     ChallengeCompleted
     OfficiationRequested
     OfficiationRequestAccepted
+    OfficiationRequestRejected
     SupervisionRequested
     YourChallengerNeverShowedUp
     YouHaveBeenChallenged
@@ -29,6 +30,7 @@ domain ATQR
     ChallengeCompleted: { challenge: Challenge }
     OfficiationRequested: { challenge: Challenge, invitee: Invitee }
     OfficiationRequestAccepted: { challenge: Challenge, invitee: Invitee }
+    OfficiationRequestRejected: { challenge: Challenge, invitee: Invitee }
     SupervisionRequested: { challenge: Challenge, invitee: Invitee }
     YourChallengerNeverShowedUp: { challenge: Challenge, invitee: Invitee }
     YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee }
