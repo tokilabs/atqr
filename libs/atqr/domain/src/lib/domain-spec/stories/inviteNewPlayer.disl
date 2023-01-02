@@ -1,0 +1,15 @@
+read_also api.disl
+read_also enums.disl
+
+Domain ATQR
+
+  context challenge
+
+    inviteNewPlayer? :challengeId :playerName :playerEmail
+      rules:
+          ChallengeStatus == Unverified
+      when
+          @participationStatus: ParticipationStatus = ParticipationStatus.Rejected
+
+              sendYouHaveBeenChallengedEmail? :challengeId
+              
