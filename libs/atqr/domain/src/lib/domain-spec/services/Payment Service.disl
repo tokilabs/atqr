@@ -1,0 +1,15 @@
+    /**
+     * Definition of a service that handles payments
+     * @type Infrastructure
+     */
+    service PaymentService
+      createCustomer from :contact => ForeignCustomerId
+
+      createPaymentMethod for :customer with :paymentMethod
+        return ForeignPaymentMethodId
+
+      setupFuturePayment of :amount using :paymentMethod => FuturePaymentId
+
+      capturePayment futurePaymentId
+        // return SUCCESS or FAILURE
+        return Whether it succeeded or not

@@ -1,0 +1,41 @@
+domain ATQR
+
+  context Challenges
+
+    service DeadlineMonitor
+      depends on ChallengesService
+
+      /**
+       * This is a cron job that runs every day and checks if any challenges are overdue
+       *
+       * ItsThatTimeAgain!
+       *   @createdAt: DateTime
+       */
+      ⏰ NewDayStarted!
+        for each :challenge in Challenges
+          when .deadline is before Today
+            📣 DeadlineReached! :challengeId
+
+          // TODO: Check which logic is better for sending emails
+          // This or the one inside NotificationService
+          when .enrollmentDeadline is Today
+            and .createdAt is before 2 days ago
+            list all .invitees that
+              - have not enrolled in :challengeId
+              - have not been notified
+
+            if list is not empty
+              📣 PlayersForgotToEnroll! :challengeId :list
+
+          when .createdAt is before 5 days ago
+            and .enrollmentDeadline is Today
+            list all .invitees that
+              - have not enrolled in :challengeId
+              - have been notified at most once
+
+            if list is not empty
+              📣 PlayersLastChanceToEnrollArrived! :challengeId :list
+
+      💬 ChallengeDeadlineReached! :challenge
+        if :challenge is not Accomplished
+          mark :challenge as Failed
