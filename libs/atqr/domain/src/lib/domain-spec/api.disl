@@ -21,10 +21,12 @@ domain ATQR
 
   concept Settings
     emails:
-      retryDelay: $> number of emails sent * 2
       maxRetries: 3 times
       maxEmailsPerAddress: 5
       maxEmailsResetPeriod: 1 month
+
+      retryDelay ^numberOfEmailsSent
+        return 2 * ^numberOfEmailsSent
 
   //------------------------------
   // System events

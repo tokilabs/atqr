@@ -1,0 +1,19 @@
+domain ATQR
+
+  context Challenges
+
+    repository ChallengeRepository
+      save challenge: Challenge
+
+      findChallengeById :challengeId
+        ⮐ Challenge or null
+
+    service ChallengesService
+      depends on ChallengeRepository
+
+      💬 GetLastChallenges? amount
+        returns the first amount Challenges ordered by challenge's createdAt descending
+
+      💬 GetChallenge? :challengeId
+          either findChallengeById :challengeId using ChallengeRepository
+              or show ChallengeNotFound screen

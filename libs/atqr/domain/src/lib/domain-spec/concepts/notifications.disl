@@ -48,6 +48,7 @@ domain ATQR
     NewInvitations
     ChallengeUpdates
 
+
   concept Notification
     @id: Guid
     @category: NotificationCategory
@@ -55,6 +56,16 @@ domain ATQR
     @allowedChannels: NotificationChannel[]
     @createdAt: DateTime
       auto: Today
+    @requiresUserAction: yes or no
+    @actionTaken: yes or no
+    @contactLog: NotificationLogEntry[]
+    @nextContactDate: Date
+
+    @waitingForUserAction:
+      return @actionTaken === no and @nextContactDate <= Today
+
+    @messagesSent:
+      return @contactLog.length
 
   concept NotificationLogEntry
     @id: Guid
