@@ -140,7 +140,7 @@ domain ATQR
         -> PlayerParticipationRequested!
           set invited player's participation status to ParticipationStatus.Requested
 
-        -> RequestJudgeOfficiation? invitee: Invitee
+        -> OfficiationRequest? invitee: Invitee
           rules:
             when @status is not .Unverified or .Ongoing
               reject saying "You cannot request judge participation for this Challenge"
@@ -217,20 +217,25 @@ domain ATQR
             publish fundsDenied! :challengeId :paymentMethod
                 sendPaymentMethodDeniedEmail? :challengeId
 
-        -> AcceptOfficiationRequest? :challengeId :judgeId
-          @judgeStatus = OfficiationStatus.Accepted
-          publish officiationRequestAccepted! :challengeId :judgeId
-            # if Funds are verified then
-            when @paymentFundsStatus is PaymentFundsStatus.Available
-              @status = ChallengeStatus.Ongoing
+        command AcceptOfficiationRequest?
+        params:
+        - inviteeId: inviteeId
+
+          set invited judge's participationStatus to .Accepted
+          set judge in officiation to challenge and player
+
+          publish OfficiationRequestAccepted! :challengeId :judgeId
+
+          ⚙️ verifyIfChallengeCanBegin
+
 
         command RejectOfficiationRequest?
           params:
-            - challengeId: ChallengeId
-            :judgeId
-          @judgeStatus = OfficiationStatus.Rejected
-          publish officiationRequestRejected! :challengeId :judgeId
-          sendJudgeRejectedEmail? :challengeId
+            - inviteeId: inviteeId
+
+          set invited judge's participationStatus to .Rejected
+
+          publish OfficiationRequestRejected! :challengeId :judgeId
 
         -> JudgeChallenge? :userId, accomplished: boolean
 

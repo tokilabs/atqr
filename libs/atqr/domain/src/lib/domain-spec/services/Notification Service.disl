@@ -102,12 +102,6 @@ domain ATQR
     // Notification Messages
     //-------------------------------
 
-    -> OfficiationRequestAccepted!
-        sendEmail OfficiationRequestAccepted
-
-    -> OfficiationRequestRejected!
-        sendEmail JudgeRejectedEmail
-
     -> ChallengeAccepted! enrollment: Enrollment
         sendEmail
           params:
@@ -140,6 +134,22 @@ domain ATQR
             to: :challenge.enrollments[0].player.email
             data: :challenge
 
-    -> OfficiationRequestDenied!
+    -> OfficiationRequested!
+        sendEmail with:
+          template: OfficiationRequestedEmail
+          data: ^challenge
+          to: ^challenge.invitees.find().invitee.email
+
+    -> OfficiationRequestRejected!
+        sendEmail with:
+          template: OfficiationRequestRejectedEmail
+          data: ^challenge
+          to: ^challenge.owner.email
+
 
     -> OfficiationRequestAccepted!
+        sendEmail with:
+          template: OfficiationRequestAcceptedEmail
+          data: ^challenge
+          to: ^challenge.owner.email
+
