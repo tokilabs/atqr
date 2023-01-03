@@ -2,11 +2,11 @@ domain ATQR
 context Challenge
 
 entity Challenge
-  
+
   ⚙️ JudgeRejectsOfficiationRequest @judgeId
     listening:
       - RequestedJudgeParticipation!
-      
+
       this.JudgeRejectsOfficiationRequest(judge)
       @NotificationService.judgeRejects
 
@@ -14,11 +14,11 @@ entity Challenge
   ⚙️ JudgeRejectsOfficiationRequest @judge
     //code challenge.invitees.find(invitee => invitee.role == judge && invitee.email == judge.email: delete ? continue)
 
-    📣 RejectedParticipateJudgeRequest!
+    publish RejectedParticipateJudgeRequest!
 
 
 service NotificationService
-  💬 EmailJudgeRejectsOfficiation?
+  -> EmailJudgeRejectsOfficiation?
       sendEmail
         template: judgeRejects
         data: Challenge

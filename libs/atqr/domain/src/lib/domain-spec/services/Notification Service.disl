@@ -13,8 +13,7 @@ domain ATQR
       create new Email ^to with :subject and :body
       send ${it} {{using}} IEmailService
 
-
-    💬 EmailSent! ^notification: Notification
+    -> EmailSent! notification: Notification
       if email.requiresUserAction
         if ^notification's messagesSent equals Settings.maxRetries
           email.nextContactDate = null
@@ -25,7 +24,6 @@ domain ATQR
 
           email.nextContactDate = last ^notification's contactLog's sentAt + ^days
 
-
     ⏰ NewDayStarted!
       for each :notification in NotificationRepository
         where :notification's nextContactDate is Today or before Today
@@ -34,7 +32,7 @@ domain ATQR
             data: :notification.data
             to: :notification.email
 
-          📣 EmailSent! :notification
+          publish EmailSent! :notification
           // TODO: como enviar eventos especificos dependendo da Notificação?
           // Ex: OfficiationRequestSent! or PlayerAbandonedChallenge!
 
@@ -42,26 +40,33 @@ domain ATQR
         // caso de uso:
         //    if we've sent more than Settings.maxRetries emails
         //      sendEmail
-        //        template: YourChallengerNeverShowedUpEmail
+        //        template: YourContenderNeverShowedUpEmail
         //        data: Challenge
         //        to: :challenge.owner.email
         //
-        //      📣 InviteeAbandonedTheChallenge! :challengeId :invitee
+        //      publish InviteeAbandonedTheChallenge! :challengeId :invitee
 
-    💬 ChallengeCreated! :challenge
+    //-------------------------------
+    // Transactional Messages
+    //-------------------------------
+
+    -> ChallengeCreated! :challenge
       sendEmail
         params:
-          template: ChallengeCreatedEmail
+          template: ConfirmEmailToValidateChallenge
           data: Challenge
           to: :challenge.owner.email
 
       when :challenge.createdByPlayer
-        for each contact in :challenge.invitees
+
+        for each [contact] in :challenge's invitees
           if it's role is Judge
             sendEmail
-              template: OfficiationRequestedEmail
+              template: RequestOfficiationEmail
               data: Challenge
               to: :contact.email
+
+            📢 publish OfficiationRequested!
 
           if it's role is Player
             sendEmail
@@ -69,29 +74,37 @@ domain ATQR
               data: Challenge
               to: :contact.email
 
-    💬 FundsAvailable!
-        send ChallengeCreatedEmailToPlayer
+            📢 publish PlayerParticipationRequested!
 
-    💬 FundsDenied!
-        send PaymentMethodDeniedEmail
+    -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
+        send OfficiationRequestEmail
+          sendEmail
+              template: RequestOfficiationEmail
+              data:
+                challenge: ^challenge
+                invitee: ^invitee
+              to: :contact.email
 
-    💬 SupervisionRequested!
-        send SupervisionRequestEmail
+        📢 publish OfficiationRequested!
 
-    💬 SupervisionRequestAccepted!
-        send SupervisionRequestAccepted
+    //-------------------------------
+    // Notification Messages
+    //-------------------------------
 
-    💬 SupervisionRequestRejected!
-        send SupervisorRejectedEmail
+    -> OfficiationRequestAccepted!
+        sendEmail OfficiationRequestAccepted
 
-    💬 ChallengeAccepted! enrollment: Enrollment
+    -> OfficiationRequestRejected!
+        sendEmail JudgeRejectedEmail
+
+    -> ChallengeAccepted! enrollment: Enrollment
         sendEmail
           params:
             template: ChallengeAcceptedEmail
             data: ^enrollment
             to: ^enrollment.judge.email
 
-    💬 ChallengeRejected!
+    -> ChallengeRejected!
         params:
           - challenge: Challenge
 
@@ -100,21 +113,22 @@ domain ATQR
           data: ^challenge
           to: ^challenge.owner.email
 
-    💬 ChallengeOngoing!
+    -> ChallengeOngoing!
         send ChallengeOngoingEmailToPlayer
 
-    💬 JudgeRequested!
-        send JudgementRequestEmail
-
-    💬 ChallengeAccomplished! :challenge
+    -> ChallengeAccomplished! :challenge
         sendEmail with:
           template: ChallengeAccomplishedEmail
           to: :challenge.enrollments[0].player.email
           data: :challenge
 
-    💬 ChallengeFailed! :challenge
+    -> ChallengeFailed! :challenge
         sendEmail
           params:
             template: ChallengeFailedEmail
             to: :challenge.enrollments[0].player.email
             data: :challenge
+
+    -> OfficiationRequestDenied!
+
+    -> OfficiationRequestAccepted!

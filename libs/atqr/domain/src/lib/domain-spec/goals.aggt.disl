@@ -18,14 +18,14 @@ domain ATQR
         stories:
           - stories/visitorAdoptsGoal
 
-        💬 CreateGoal? :title
+        -> CreateGoal? :title
           create new Goal with :title
-          📣 GoalCreated! :goal
+          publish GoalCreated! :goal
 
         /**
-         * Creates a new challenge and notifies both the Player and the Supervisor
+         * Creates a new challenge and notifies both the Player and the Judge
          */
-        💬 CreateChallenge?
+        -> CreateChallenge?
           params:
             - goalId: GoalId
             - pledge: DISL.Money
@@ -62,11 +62,11 @@ domain ATQR
               createEnrollmentFor the new User
                 add it to the new Challenge's enrollments
 
-              📣 ChargeAuthorized! @owner @pledge ownerPaymentMethod
+              publish ChargeAuthorized! @owner @pledge ownerPaymentMethod
 
               save the new Challenge in ChallengeRepository
 
-              📣 ChallengeCreated! new Challenge
+              publish ChallengeCreated! new Challenge
 
             when @createdByJudge
               create new Challenge with the ^parameters received
@@ -77,7 +77,7 @@ domain ATQR
 
               save the new Challenge in ChallengeRepository
 
-              📣 ChallengeCreated! new Challenge
+              publish ChallengeCreated! new Challenge
 
           show ChallengeCreate screen with:
             data: the new Challenge

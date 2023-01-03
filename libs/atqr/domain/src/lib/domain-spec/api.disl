@@ -6,11 +6,11 @@ read also ui.disl
 concept ChallengeId expands on Guid
 concept UserId expands on Guid
 concept GoalId expands on Guid
-concept SupervisorId expands on Guid
+concept JudgeId expands on Guid
 
 alias :challenge to challenge: Challenge
 alias :challengeId to id: ChallengeId
-alias :supervisorId to supervisorId: SupervisorId
+alias :judgeId to judgeId: JudgeId
 alias :userId to id: UserId
 alias :date to date: DateTime
 alias :name to fullName: DISL.FullName
@@ -27,6 +27,8 @@ domain ATQR
 
       retryDelay ^numberOfEmailsSent
         return 2 * ^numberOfEmailsSent
+
+      💬 publish Test!
 
   //------------------------------
   // System events
@@ -109,7 +111,7 @@ domain ATQR
         /**
          * Represents the intention of a player to accept a challenge
          */
-        💬 AcceptChallenge? paymentInfo: Payment
+        -> AcceptChallenge? paymentInfo: Payment
           rules:
             when @status == ChallengeStatus.Ongoing do nothing
 
@@ -120,13 +122,10 @@ domain ATQR
 
           createEnrollmentFor invitee
 
-          📣 ChallengeAccepted! :challengeId
+          publish ChallengeAccepted! :challengeId
 
-        💬 RejectChallenge? :challengeId :inviteeEmail
+        -> RejectChallenge? :inviteeEmail
           rules:
-            when :challengeId not in Challenges
-              throw ChallengeNotFound
-
             when @status == ChallengeStatus.Ongoing do nothing
 
           find invitee in @invitees where invitee.email == :inviteeEmail
@@ -136,7 +135,29 @@ domain ATQR
 
           invitee.status = ParticipationStatus.Rejected
 
-          📣 ChallengeRejected! :challengeId
+          publish ChallengeRejected! :challengeId
+
+        -> PlayerParticipationRequested!
+          set invited player's participation status to ParticipationStatus.Requested
+
+        -> RequestJudgeOfficiation? invitee: Invitee
+          rules:
+            when @status is not .Unverified or .Ongoing
+              reject saying "You cannot request judge participation for this Challenge"
+
+          find the currently invited judge's
+            set it's status to ParticipationStatus.Canceled
+
+          add invitee to @invitees
+
+          publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
+
+          // TODO: Disparar evento após envio de emails
+          // TODO: Capturar evento na Challenge para alterar ParticipationStatus
+          // TODO: Continuar review do beto
+
+        -> OfficiationRequested!
+          set invited judge's participationStatus to .Requested
 
         ⚙️ verifyIfChallengeCanBegin @players @judges @paymentMethods
           return allJudgeAccepted
@@ -177,46 +198,41 @@ domain ATQR
 
           rules:
             when :paymentFundsStatus == PaymentFundsStatus.Available
-              📣 fundsAvailable! :challengeId :paymentMethod
+              publish fundsAvailable! :challengeId :paymentMethod
                 sendChallengeCreatedEmailToPlayer? :challengeId
 
-              when :supervisionStatus == SupervisionStatus.Accepted
+              when :officiationStatus == OfficiationStatus.Accepted
                 @status = ChallengeStatus.Ongoing
-                📣 challengeOngoing! :challengeId
+                publish challengeOngoing! :challengeId
                   sendChallengeOngoingEmailToPlayer? :challengeId
 
             when :paymentFundsStatus == PaymentFundsStatus.Denied
-              📣 challengeFailed! :challengeId
+              publish challengeFailed! :challengeId
                 sendChallengeFailedEmailToPlayer? :challengeId
 
-            // if Supervisor has accepted the request then
+            // if Judge has accepted the request then
 
-        💬 rejectFundsRequest? :challengeId :paymentMethod
+        -> rejectFundsRequest? :challengeId :paymentMethod
             @paymentMethod = PaymentFundsStatus.Denied
-            📣 fundsDenied! :challengeId :paymentMethod
+            publish fundsDenied! :challengeId :paymentMethod
                 sendPaymentMethodDeniedEmail? :challengeId
 
-        💬 AcceptSupervisionRequest? :challengeId :supervisorId
-          @supervisorStatus = SupervisionStatus.Accepted
-          📣 supervisionRequestAccepted! :challengeId :supervisorId
+        -> AcceptOfficiationRequest? :challengeId :judgeId
+          @judgeStatus = OfficiationStatus.Accepted
+          publish officiationRequestAccepted! :challengeId :judgeId
             # if Funds are verified then
             when @paymentFundsStatus is PaymentFundsStatus.Available
               @status = ChallengeStatus.Ongoing
 
-        command RejectSupervisionRequest?
+        command RejectOfficiationRequest?
           params:
             - challengeId: ChallengeId
-            :supervisorId
-          @supervisorStatus = SupervisionStatus.Rejected
-          📣 supervisionRequestRejected! :challengeId :supervisorId
-          sendSupervisorRejectedEmail? :challengeId
+            :judgeId
+          @judgeStatus = OfficiationStatus.Rejected
+          publish officiationRequestRejected! :challengeId :judgeId
+          sendJudgeRejectedEmail? :challengeId
 
-        💬 InviteNewSupervisor? :challengeId :supervisorName :supervisorEmail
-          @supervisorStatus = SupervisionStatus.Requested
-          sendSupervisionRequestedEmail? :challengeId
-            📣 supervisionRequested! :challengeId
-
-        💬 JudgeChallenge? :userId, accomplished: boolean
+        -> JudgeChallenge? :userId, accomplished: boolean
 
           rules:
             when @status is not ChallengeStatus.Overdue
@@ -230,10 +246,10 @@ domain ATQR
 
           if ^accomplished
             @enrollments[0].outcome = PlayerOutcome.Accomplished
-            📣 ChallengeAccomplished! this
+            publish ChallengeAccomplished! this
           else
             @enrollments[0].outcome = PlayerOutcome.Failed
-            📣 ChallengeFailed! this
+            publish ChallengeFailed! this
 
         ⌛ DeadlineReached! :challengeId
           @status = ChallengeStatus.Overdue
@@ -258,7 +274,7 @@ domain ATQR
             @name: DISL.FullName
             @email: DISL.EmailAddress { unique }
 
-          📣 UserCreated! :user
+          publish UserCreated! :user
 
         /**
          * Returns all unanswered challenge invitations

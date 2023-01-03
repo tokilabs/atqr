@@ -7,16 +7,22 @@ domain ATQR
 
   // TODO: fill the MessageId enum with all possible messages
   enum MessageTemplateId
-    ChallengeCreated
-    ChallengeAccepted
-    ChallengeRejected
-    ChallengeFailed
-    ChallengeOngoing
-    ChallengeCompleted
-    OfficiationRequested
-    OfficiationRequestAccepted
-    SupervisionRequested
-    YourChallengerNeverShowedUp
+    ConfirmEmailToValidateChallenge
+    Challenge...
+      ~Accepted
+      ~Rejected
+      ~Failed
+      ~Ongoing
+      ~Completed
+
+    RequestOfficiation
+    OfficiationRequest...
+      ~Accepted
+      ~Denied
+
+    YourContenderNeverShowedUp
+    YouHaveBeenChallenged
+    YourContenderRejectedTheChallenge
     YouHaveBeenChallenged
 
   // TODO: fill the DataType enum with all possible message ids
@@ -27,10 +33,9 @@ domain ATQR
     ChallengeFailed: { challenge: Challenge }
     ChallengeOngoing: { challenge: Challenge }
     ChallengeCompleted: { challenge: Challenge }
-    OfficiationRequested: { challenge: Challenge, invitee: Invitee }
     OfficiationRequestAccepted: { challenge: Challenge, invitee: Invitee }
-    SupervisionRequested: { challenge: Challenge, invitee: Invitee }
-    YourChallengerNeverShowedUp: { challenge: Challenge, invitee: Invitee }
+    OfficiationRequested: { challenge: Challenge, invitee: Invitee }
+    YourContenderNeverShowedUp: { challenge: Challenge, invitee: Invitee }
     YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee }
 
   /**

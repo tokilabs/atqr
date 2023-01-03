@@ -14,7 +14,7 @@ domain ATQR
       ⏰ NewDayStarted!
         for each :challenge in Challenges
           when .deadline is before Today
-            📣 DeadlineReached! :challengeId
+            publish DeadlineReached! :challengeId
 
           // TODO: Check which logic is better for sending emails
           // This or the one inside NotificationService
@@ -25,7 +25,7 @@ domain ATQR
               - have not been notified
 
             if list is not empty
-              📣 PlayersForgotToEnroll! :challengeId :list
+              publish PlayersForgotToEnroll! :challengeId :list
 
           when .createdAt is before 5 days ago
             and .enrollmentDeadline is Today
@@ -34,8 +34,8 @@ domain ATQR
               - have been notified at most once
 
             if list is not empty
-              📣 PlayersLastChanceToEnrollArrived! :challengeId :list
+              publish PlayersLastChanceToEnrollArrived! :challengeId :list
 
-      💬 ChallengeDeadlineReached! :challenge
+      -> ChallengeDeadlineReached! :challenge
         if :challenge is not Accomplished
           mark :challenge as Failed

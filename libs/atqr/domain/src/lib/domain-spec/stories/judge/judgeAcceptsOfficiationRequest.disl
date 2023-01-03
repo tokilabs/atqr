@@ -2,22 +2,22 @@ domain ATQR
 context Challenge
 
 entity Challenge
-  💬 judgeAcceptOfficiationRequest? :judgeId
+  -> judgeAcceptOfficiationRequest? :judgeId
     listening:
       - RequestedJudgeParticipation!
 
 
       officiation = create Officiation(this, challenge)
-      
+
       user = findOrCreateUser()
       user.addOfficiateChallenge(officiation)
 
-      
-      
+
+
       @NotificationService.judgeAcceptOfficiationRequest
-      
+
       this.verifyChallengeCanBegin()
-      📣 judgeAcceptedOfficiationRequest!
+      publish judgeAcceptedOfficiationRequest!
 
 
     ⚙️ judgeAcceptInvitee @participationStatus , @judge
@@ -32,9 +32,9 @@ entity Challenge
 entity User
 
   ⚙️  addOfficiateChallenge @officiation
-      
+
       //code this.officiatedChallenges.push(officiation)
-      
+
 
 
 
