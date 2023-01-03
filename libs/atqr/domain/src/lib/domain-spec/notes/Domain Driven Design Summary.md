@@ -66,8 +66,8 @@ Player --> Payment
 title ChallengeAggregate Root
 
 class Challenge <<AggregateRoot>> {
-  changeSupervisor()
-  confirmSupervision()
+  changeJudge()
+  confirmOfficiation()
 
 }
 
@@ -75,10 +75,10 @@ class Player  {
 
 }
 
-class Supervisor
+class Judge
 
 Challenge --> Player
-Challenge --> Supervisor
+Challenge --> Judge
 @enduml
 ```
 

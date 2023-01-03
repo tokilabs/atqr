@@ -58,8 +58,8 @@ ui Web
          */
         email PlayerEmail
 
-        full_name SupervisorName
-        email SupervisorEmail
+        full_name JudgeName
+        email JudgeEmail
         /**
          * Renders a date input
          * date ID
@@ -123,27 +123,27 @@ ui Web
       button ChangeChallengeResponse
         open ChallengeResponse
 
-    screen ConfirmSupervisionRequestResponse
+    screen ConfirmOfficiationRequestResponse
       params
         # "Accepted" | "Rejected"
         url response
-      copy AreYouSureOfSupervisionRequestResponse @response
+      copy AreYouSureOfOfficiationRequestResponse @response
 
-      button ConfirmSupervisionRequestResponse
+      button ConfirmOfficiationRequestResponse
         when @response is "Accepted"
-          command AcceptSupervisionRequest
+          command AcceptOfficiationRequest
             max_retry 3
             on Success
-              open SupervisionRequestAccepted
+              open OfficiationRequestAccepted
 
         when @response is "Rejected"
-          command RejectSupervisionRequest
+          command RejectOfficiationRequest
             max_retry 3
             on Success
-              open SupervisionRequestRejected
+              open OfficiationRequestRejected
 
-      button ChangeSupervisionRequestResponse
-        open SupervisionRequestResponse
+      button ChangeOfficiationRequestResponse
+        open OfficiationRequestResponse
 
     screen CheckEmailToConfirmParticipation
       copy CheckEmailToConfirmParticipation

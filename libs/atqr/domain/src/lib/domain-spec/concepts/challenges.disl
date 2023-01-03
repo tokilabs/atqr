@@ -5,8 +5,8 @@ domain ATQR
       Unverified
       /**
        * Challenges are created as Unverified and cannot be moved to Ongoing until:
-       *   - a player acceptance (when the challenge is created by a supervisor)
-       *   - a supervisor acceptance
+       *   - a player acceptance (when the challenge is created by a judge)
+       *   - a judge acceptance
        *   - a challenge funds verification
        */
       Ongoing
@@ -30,6 +30,8 @@ domain ATQR
       Requested
       Accepted
       Rejected
+      Ignored
+      CanceledByPlayer
 
     enum JudgementStatus
       NotDueYet
