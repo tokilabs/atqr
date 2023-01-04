@@ -140,7 +140,7 @@ domain ATQR
         -> PlayerParticipationRequested!
           set invited player's participation status to ParticipationStatus.Requested
 
-        -> RequestJudgeOfficiation? invitee: Invitee
+        -> RequestOfficiation? invitee: Invitee
           rules:
             when @status is not .Unverified or .Ongoing
               reject saying "You cannot request judge participation for this Challenge"
@@ -217,20 +217,32 @@ domain ATQR
             publish fundsDenied! :challengeId :paymentMethod
                 sendPaymentMethodDeniedEmail? :challengeId
 
-        -> AcceptOfficiationRequest? :challengeId :judgeId
-          @judgeStatus = OfficiationStatus.Accepted
-          publish officiationRequestAccepted! :challengeId :judgeId
-            # if Funds are verified then
-            when @paymentFundsStatus is PaymentFundsStatus.Available
-              @status = ChallengeStatus.Ongoing
+        command AcceptOfficiationRequest? inviteeId: Unique Id
+          when:
+            ^inviteeId is not in @invitees
+              throw "Could not find that invitee in this challenge"
 
-        command RejectOfficiationRequest?
-          params:
-            - challengeId: ChallengeId
-            :judgeId
-          @judgeStatus = OfficiationStatus.Rejected
-          publish officiationRequestRejected! :challengeId :judgeId
-          sendJudgeRejectedEmail? :challengeId
+          get [invitee] in @invitees
+            where invitee.id is equal to ^inviteeId
+
+          set ^invitee's participationStatus to .Accepted
+
+          find_or_create a [User] for the ^invitee
+
+          create a new [Officiation] for the ^User
+
+            set Officiation's judge to ^User
+
+          publish OfficiationRequestAccepted! :challengeId :judgeId
+
+          ⚙️ verifyIfChallengeCanBegin
+
+
+        command RejectOfficiationRequest? inviteeId: inviteeId
+
+          set invited Judge's participationStatus to .Rejected
+
+          publish OfficiationRequestRejected! :challengeId :judgeId
 
         -> JudgeChallenge? :userId, accomplished: boolean
 
