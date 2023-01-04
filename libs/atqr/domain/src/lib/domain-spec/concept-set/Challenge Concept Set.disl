@@ -1,6 +1,7 @@
 domain ATQR
 
   context Challenges
+  
     enum ChallengeStatus
       Unverified
       /**

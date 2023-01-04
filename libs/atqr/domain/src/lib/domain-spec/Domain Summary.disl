@@ -1,0 +1,34 @@
+// import other DISL files
+read also enums.disl
+read also ui.disl
+
+// Creates new types that extend Guid to differentiate among Entity Ids
+concept ChallengeId expands on Guid
+concept UserId expands on Guid
+concept GoalId expands on Guid
+concept JudgeId expands on Guid
+
+alias :challenge to challenge: Challenge
+alias :challengeId to id: ChallengeId
+alias :judgeId to judgeId: JudgeId
+alias :userId to id: UserId
+alias :date to date: DateTime
+alias :name to fullName: DISL.FullName
+alias :id to id: Guid
+
+domain ATQR
+  purpose "A platform for people to challenge each other to accomplish goals"
+
+  context Challenges
+
+    // TODO: Complete TOC
+    TOC ◌ ◯ ●
+
+      - [ ] Aggregates
+          - [ ] Challenge : aggregates/challenges.disl
+              - [ ] root  : Challenge #18
+
+          - [ ] Goal : aggregates/goals.disl
+
+      - [ ] Entities
+

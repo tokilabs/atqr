@@ -1,0 +1,20 @@
+domain ATQR
+
+    concept Settings
+      emails:
+        maxRetries: 3 times
+        maxEmailsPerAddress: 5
+        maxEmailsResetPeriod: 1 month
+
+        retryDelay ^numberOfEmailsSent
+          return 2 * ^numberOfEmailsSent
+
+    //------------------------------
+    // System events
+    //------------------
+
+    /**
+     * Fired each new day at 00:00:01
+     */
+    ⏰ NewDayStarted!
+      @date: DateTime

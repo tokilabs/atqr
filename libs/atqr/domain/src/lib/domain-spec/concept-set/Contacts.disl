@@ -13,5 +13,5 @@ domain ATQR
     @email: DISL.EmailAddress
     @role: ParticipationRole
 
-  concept Invitee extends Contact
+  concept Invitee expands on Contact
     @status: ParticipationStatus = ParticipationStatus.NotRequested

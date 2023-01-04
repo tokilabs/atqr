@@ -77,15 +77,26 @@ domain ATQR
             📢 publish PlayerParticipationRequested!
 
     -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
-        send OfficiationRequestEmail
-          sendEmail
-              template: RequestOfficiationEmail
-              data:
-                challenge: ^challenge
-                invitee: ^invitee
-              to: :contact.email
+        if invitee's role is .Judge
+          sendEmail OfficiationRequestEmail
+            sendEmail
+                template: RequestOfficiationEmail
+                data:
+                  challenge: ^challenge
+                  invitee: ^invitee
+                to: :contact.email
 
-        📢 publish OfficiationRequested!
+          📢 publish OfficiationRequested!
+
+        if invitee's role is .Player
+          sendEmail
+            template: YouHaveBeenChallengedEmail
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+            to: :contact.email
+
+          📢 publish PlayerParticipationRequested!
 
     //-------------------------------
     // Notification Messages
@@ -114,7 +125,7 @@ domain ATQR
           to: ^challenge.owner.email
 
     -> ChallengeOngoing!
-        send ChallengeOngoingEmailToPlayer
+        sendEmail ChallengeOngoingEmailToPlayer
 
     -> ChallengeAccomplished! :challenge
         sendEmail with:

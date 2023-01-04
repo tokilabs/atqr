@@ -1,0 +1,286 @@
+domain ATQR
+
+  context Challenges
+
+    aggregate Challenge
+
+      !ChallengeNotFound :challengeId
+
+      root Challenge
+
+        depends on PaymentService
+
+        @createdByPlayer: boolean
+          returns @owner.role == ParticipationRole.Player
+
+        @createdByJudge: boolean
+          returns @owner.role == ParticipationRole.Judge
+
+        @players: Enrollment[]
+        @judges: Officiation[]
+        @status: ChallengeStatus = ChallengeStatus.Unverified
+        @createAt: DateTime
+          auto: Today
+
+        ⚙️ recipe:
+          @goalId: GoalId
+          @owner: User
+          /**
+          * Holds all users ever invited to this challenge
+          * and their participation status
+          */
+          @invitees: Contact[]
+          @deadline: Date
+          @pledge: DISL.Money
+            greater than 0
+          @deadline: FutureDate
+          @requiredProof?: DISL.Paragraph
+          /**
+           * Allows players to enroll using a link instead of being invited
+           * @param {boolean} true if players can enroll using a link
+           */
+          @inviteByLink: boolean
+          @enrollmentDeadline: FutureDate
+            before @deadline
+          @owner: Contact
+          ownerPaymentMethod: PaymentMethod | null
+
+          when @createdByPlayer
+            create new User for owner
+              it's paymentMethod = ownerPaymentMethod
+
+            createEnrollmentFor owner
+
+        // TODO: review, looks wrong
+        ⚙️ registerPlayer :name :email
+          rules:
+            when User with :email does not exist
+              create new User with :name :email
+                on SUCCESS:
+                  show ui CheckEmailToConfirmParticipation
+                on FAILURE:
+                  throw "Could not create player"
+
+        /**
+         * Represents the intention of a player to accept a challenge
+         */
+        -> AcceptChallenge? paymentInfo: Payment
+          rules:
+            when @status == ChallengeStatus.Ongoing do nothing
+
+          if invitee is not found
+            throw "Could not find invitee"
+
+          invitee.status = ParticipationStatus.Accepted
+
+          createEnrollmentFor invitee
+
+          publish ChallengeAccepted! :challengeId
+
+        -> RejectChallenge? :inviteeEmail
+          rules:
+            when @status == ChallengeStatus.Ongoing do nothing
+
+          find invitee in @invitees where invitee.email == :inviteeEmail
+
+          if invitee is not found
+            throw "Could not find invitee"
+
+          invitee.status = ParticipationStatus.Rejected
+
+          publish ChallengeRejected! :challengeId
+
+        -> RequestJudgeOfficiation? invitee: Invitee
+          rules:
+            when @status is not .Unverified or .Ongoing
+              reject saying "You cannot request judge participation for this Challenge"
+
+            when @createdByJudge
+              reject saying "You cannot replace the judge since you did not create this Challenge"
+
+          find the currently invited judge
+            set it's status to ParticipationStatus.Canceled
+
+          add invitee to @invitees
+
+          publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
+
+        -> InviteNewPlayer? contact: Contact
+          rules:
+            when @status is not .Unverified or .Abandoned
+              reject saying "You cannot change the Player for a Challenge after if it's already started."
+
+            when invited player's participationStatus is .Accepted
+              reject saying "You cannot change the Player for a Challenge after they have accepted."
+
+          find the currently invited player
+            set it's participationStatus to .Rejected
+
+          add invitee to @invitees
+
+          publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
+
+        -> PlayerParticipationRequested!
+          set invited player's participation status to ParticipationStatus.Requested
+
+        -> OfficiationRequested!
+          set invited judge's participationStatus to .Requested
+
+        ⚙️ verifyIfChallengeCanBegin @players @judges @paymentMethods
+          return allJudgeAccepted
+            and  allPlayersAccepted
+            and  allPaymentMethodsVerified
+
+        ⚙️ allPlayersAccepted
+          // code: this.invitees.find(invitee => invitee.role == player && invitee.participationStatus === ParticipationStatus.Accepted == false ? false : true)
+          for each invitee with .role equals Player in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+          return true
+
+        ⚙️ allJudgesAccepted
+          for each invitee with .role equals Judge in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+        ⚙️ allPaymentMethodsVerified
+          for each enrollment in @enrollments
+            if it's PaymentFundsStatus is not Authorized
+              return false
+
+        ⚙️ createEnrollmentFor invitee
+          create [new Enrollment] in @players for ^invitee
+            it's pledge = 0
+            it's paymentMethod = null
+            it's paymentStatus = PaymentStatus.NotRequested
+            it's paymentFundsStatus = PaymentFundsStatus.NotRequested
+
+        ⚙️ verifyFunds
+          params:
+              :challengeId
+              paymentMethod: PaymentMethod
+
+          PaymentService.verifyFunds for @pledge and paymentMethod
+
+          rules:
+            when :paymentFundsStatus == PaymentFundsStatus.Available
+              publish fundsAvailable! :challengeId :paymentMethod
+                sendChallengeCreatedEmailToPlayer? :challengeId
+
+              when :officiationStatus == OfficiationStatus.Accepted
+                @status = ChallengeStatus.Ongoing
+                publish challengeOngoing! :challengeId
+                  sendChallengeOngoingEmailToPlayer? :challengeId
+
+            when :paymentFundsStatus == PaymentFundsStatus.Denied
+              publish challengeFailed! :challengeId
+                sendChallengeFailedEmailToPlayer? :challengeId
+
+            // if Judge has accepted the request then
+
+        -> rejectFundsRequest? :challengeId :paymentMethod
+            @paymentMethod = PaymentFundsStatus.Denied
+            publish fundsDenied! :challengeId :paymentMethod
+                sendPaymentMethodDeniedEmail? :challengeId
+
+        -> AcceptOfficiationRequest? :challengeId :judgeId
+          @judgeStatus = OfficiationStatus.Accepted
+          publish officiationRequestAccepted! :challengeId :judgeId
+            # if Funds are verified then
+            when @paymentFundsStatus is PaymentFundsStatus.Available
+              @status = ChallengeStatus.Ongoing
+
+        command RejectOfficiationRequest?
+          params:
+            - challengeId: ChallengeId
+            :judgeId
+          @judgeStatus = OfficiationStatus.Rejected
+          publish officiationRequestRejected! :challengeId :judgeId
+          sendJudgeRejectedEmail? :challengeId
+
+        -> JudgeChallenge? :userId, accomplished: boolean
+
+          rules:
+            when @status is not ChallengeStatus.Overdue
+              throw "Challenge is not ongoing"
+
+            when there is no Enrollment for :userId
+              throw "User is not a player in this challenge"
+
+          @challengeJudgement = ChallengeJudgement.Judged
+          @status = ChallengeStatus.Finished
+
+          if ^accomplished
+            @enrollments[0].outcome = PlayerOutcome.Accomplished
+            publish ChallengeAccomplished! this
+          else
+            @enrollments[0].outcome = PlayerOutcome.Failed
+            publish ChallengeFailed! this
+
+        ⌛ DeadlineReached! :challengeId
+          @status = ChallengeStatus.Overdue
+          sendJudgementRequestEmail? :challengeId
+            @challengeJudgement = ChallengeJudgement.Requested
+
+        📧 ChallengeFailed!
+          sendChallengeFailedEmail? :challengeId
+
+      entity User
+        @id: UserId { auto-generated }
+        @emailConfirmed: boolean
+        @playedChallenges: Enrollment[]
+        @officiatedChallenges: Officiation[]
+        @organizedChallenges: Challenge[]
+        @notificationSettings:
+          @channels: NotificationChannel[]
+          @lists: NotificationList[]
+
+        recipe:
+          params:
+            @name: DISL.FullName
+            @email: DISL.EmailAddress { unique }
+
+          publish UserCreated! :user
+
+        /**
+         * Returns all unanswered challenge invitations
+         */
+        ⚙️ getPendingInvitations:
+          returns The Challenges where this user is in .invitees[]
+              AND .invitees[].status == ParticipationStatus.NotRequested
+
+      entity PaymentMethod
+        depends on PaymentService
+
+        /**
+         * The id of the payment method in the payment service
+         */
+        @foreignId: ForeignPaymentMethodId
+        @type: PaymentMethodType
+        @paymentService: "stripe"
+        @futurePayments: Map<ChallengeId, FuturePaymentId>
+
+        📧 CardCharged! :auth :amountInCents
+
+        ⚙️ setupFuturePayment: amountInCents
+          // TODO: Implement this
+
+        /**
+         * Uses Stripe to charge the card using the pre-authorization
+         *
+         * @param {PreAuthorization} auth The pre-authorization to use
+         * @param {number} amountInCents The amount to charge in cents
+         * @returns {boolean} Whether the charge was successful or not
+         */
+        ⚙️ charge
+          params:
+            foreignId: FuturePaymentId
+
+          when PaymentService.capturePayment(foreignId) succeeds
+            ⮐ SUCCESS
+          else
+            CardChargeFailed! :auth :amountInCents
+            ⮐ FAILED
+
+        ⚙️ ReleasePreAuth? :preAuthorization
