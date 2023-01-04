@@ -11,8 +11,9 @@ domain ATQR
     service ChallengesService
       depends on ChallengeRepository
 
-      -> GetLastChallenges? amount
-        returns the first amount Challenges ordered by challenge's createdAt descending
+      -> GetLastChallenges? amount: number
+        using ChallengeRepository
+          return the first ^amount Challenges ordered by challenge's createdAt in DESCENDING order
 
       -> GetChallenge? :challengeId
           either findChallengeById :challengeId using ChallengeRepository

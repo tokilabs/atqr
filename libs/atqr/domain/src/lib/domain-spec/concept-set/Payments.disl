@@ -27,7 +27,7 @@ domain ATQR
     @code: DISL.Token
     @amount: DISL.Money
     // TODO: Check if Stripe returns an authorization code
-    @createdAt: DateTime
+    @createdAt: Disl.Concepts.Time. DateTime
     /**
     * The authorization expires in 30 days
     */

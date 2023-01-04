@@ -5,7 +5,7 @@ domain ATQR
 
   context Challenges
 
-    aggregate Goals
+    aggregate Goal
 
       root Goal
         depends on ChallengeRepository

@@ -67,7 +67,7 @@ domain ATQR
     @nextContactDate: Date
 
     @waitingForUserAction:
-      return @actionTaken === no and @nextContactDate <= Today
+      @actionTaken === no and @nextContactDate <= Today
 
     @messagesSent:
       return @contactLog.length
