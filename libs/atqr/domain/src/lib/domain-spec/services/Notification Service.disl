@@ -51,26 +51,25 @@ domain ATQR
     //-------------------------------
 
     -> ChallengeCreated! :challenge
-      sendEmail
-        params:
-          template: ConfirmEmailToValidateChallenge
-          data: Challenge
-          to: :challenge.owner.email
+      sendEmail with ^params
+        template: ChallengeCreated
+        data: Challenge
+        to: :challenge.owner.email
 
       when :challenge.createdByPlayer
 
         for each [contact] in :challenge's invitees
           if it's role is Judge
-            sendEmail
-              template: RequestOfficiationEmail
+            sendEmail with ^params
+              template: YourOfficiationHaveBeenRequested
               data: Challenge
               to: :contact.email
 
             📢 publish OfficiationRequested!
 
           if it's role is Player
-            sendEmail
-              template: YouHaveBeenChallengedEmail
+            sendEmail with ^params
+              template: YouHaveBeenChallenged
               data: Challenge
               to: :contact.email
 
@@ -78,19 +77,26 @@ domain ATQR
 
     -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
         if invitee's role is .Judge
-          sendEmail OfficiationRequestEmail
-            sendEmail
-                template: RequestOfficiationEmail
-                data:
-                  challenge: ^challenge
-                  invitee: ^invitee
-                to: :contact.email
+          sendEmail with ^params
+            template: YourOfficiationHaveBeenRequested
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+            to: :contact.email
+
+          //TODO: Event for this email?
+          sendEmail with ^params
+            template: YourContenderRemovedYouAsJudge
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+            to: :contact.email
 
           📢 publish OfficiationRequested!
 
         if invitee's role is .Player
           sendEmail
-            template: YouHaveBeenChallengedEmail
+            template: YouHaveBeenChallenged
             data:
               challenge: ^challenge
               invitee: ^invitee
@@ -105,7 +111,7 @@ domain ATQR
     -> ChallengeAccepted! enrollment: Enrollment
         sendEmail
           params:
-            template: ChallengeAcceptedEmail
+            template: YourContenderAcceptedTheChallenge
             data: ^enrollment
             to: ^enrollment.judge.email
 
@@ -114,34 +120,34 @@ domain ATQR
           - challenge: Challenge
 
         sendEmail with:
-          template: ChallengeRejectedEmail
+          template: YourContenderRejectedTheChallenge
           data: ^challenge
           to: ^challenge.owner.email
 
     -> ChallengeOngoing!
-        sendEmail ChallengeOngoingEmailToPlayer
+        sendEmail ChallengeOngoingForBothPlayerAndJudge
 
     -> ChallengeAccomplished! :challenge
         sendEmail with params:
-          template: ChallengeAccomplishedEmail
+          template: ChallengeCompleted
           data: :challenge
           to: :challenge.enrollments[0].player.email
 
     -> ChallengeFailed! :challenge
         sendEmail with params:
-          template: ChallengeFailedEmail
+          template: ChallengeFailed
           data: :challenge
           to: :challenge.enrollments[0].player.email
 
     -> OfficiationRequestRejected!
         sendEmail with params:
-          template: OfficiationRequestRejectedEmail
+          template: YourOfficiationRequestHaveBeenRejected
           data: Challenge
           to: ^challenge.owner.email
 
     -> OfficiationRequestAccepted!
         sendEmail with params:
-          template: OfficiationRequestAcceptedEmail
+          template: YourOfficiationRequestHaveBeenAccepted
           data: ^challenge
           to: ^challenge.owner.email
 

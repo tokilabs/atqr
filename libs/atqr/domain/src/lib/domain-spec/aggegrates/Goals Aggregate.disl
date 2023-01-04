@@ -10,13 +10,10 @@ domain ATQR
       root Goal
         depends on ChallengeRepository
 
-        recipe:
+        ⚙️ recipe:
           @title: string
           @challenges: Challenge[]
           @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
-
-        stories:
-          - stories/visitorAdoptsGoal
 
         -> CreateGoal? :title
           create new Goal with :title
@@ -25,23 +22,23 @@ domain ATQR
         /**
          * Creates a new challenge and notifies both the Player and the Judge
          */
-        -> CreateChallenge?
-          params:
-            - goalId: GoalId
-            - pledge: DISL.Money
-                greater than 0
-            - deadline: FutureDate
-            - invitees: Invitee[]
-            - requiredProof?: DISL.Paragraph
-            /**
-             * Allows players to enroll using a link instead of being invited
-             * @param {boolean} true if players can enroll using a link
-             */
-            - inviteByLink: boolean
-            - enrollmentDeadline: FutureDate
-                before @deadline
-            - owner: Contact
-            - ownerPaymentMethod: PaymentMethod | null
+        //TODO: ???
+        -> CreateChallenge? with params:
+          - goalId: GoalId
+          - pledge: DISL.Money
+              greater than 0
+          - deadline: FutureDate
+          - invitees: Invitee[]
+          - requiredProof?: DISL.Paragraph
+          /**
+           * Allows players to enroll using a link instead of being invited
+           * @param {yes or no} yes if players can enroll using a link
+           */
+          - inviteByLink: yes or no
+          - enrollmentDeadline: FutureDate
+              before @deadline
+          - owner: Contact
+          - ownerPaymentMethod: PaymentMethod | null
 
           // We must create the User first to ensure
           // that we collect their email address (for marketing purposes)
@@ -55,18 +52,23 @@ domain ATQR
               if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
                 throw "Could not authorize payment"
 
+              //TODO: User or Enrollment that is the question. Should user have paymentMethod?
               the new User's paymentMethod = ownerPaymentMethod
 
-              create new Challenge with the parameters received
+              create new Challenge with the ^parameters received
+                set it's status to ChallengeStatus.Unverified
 
               createEnrollmentFor the new User
                 add it to the new Challenge's enrollments
 
-              publish ChargeAuthorized! @owner @pledge ownerPaymentMethod
+              publish ChargeAuthorized! with params:
+                - owner: User
+                - pledge: DISL.Money
+                - ownerPaymentMethod: PaymentMethod
 
               save the new Challenge in ChallengeRepository
 
-              publish ChallengeCreated! new Challenge
+              publish ChallengeCreated!
 
             when @createdByJudge
               create new Challenge with the ^parameters received
@@ -77,7 +79,7 @@ domain ATQR
 
               save the new Challenge in ChallengeRepository
 
-              publish ChallengeCreated! new Challenge
+              publish ChallengeCreated!
 
           show ChallengeCreate screen with:
             data: the new Challenge
