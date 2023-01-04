@@ -122,33 +122,25 @@ domain ATQR
         sendEmail ChallengeOngoingEmailToPlayer
 
     -> ChallengeAccomplished! :challenge
-        sendEmail with:
+        sendEmail with params:
           template: ChallengeAccomplishedEmail
-          to: :challenge.enrollments[0].player.email
           data: :challenge
+          to: :challenge.enrollments[0].player.email
 
     -> ChallengeFailed! :challenge
-        sendEmail
-          params:
-            template: ChallengeFailedEmail
-            to: :challenge.enrollments[0].player.email
-            data: :challenge
-
-    -> OfficiationRequested!
-        sendEmail with:
-          template: OfficiationRequestedEmail
-          data: ^challenge
-          to: ^challenge.invitees.find().invitee.email
+        sendEmail with params:
+          template: ChallengeFailedEmail
+          data: :challenge
+          to: :challenge.enrollments[0].player.email
 
     -> OfficiationRequestRejected!
-        sendEmail with:
+        sendEmail with params:
           template: OfficiationRequestRejectedEmail
-          data: ^challenge
+          data: Challenge
           to: ^challenge.owner.email
 
-
     -> OfficiationRequestAccepted!
-        sendEmail with:
+        sendEmail with params:
           template: OfficiationRequestAcceptedEmail
           data: ^challenge
           to: ^challenge.owner.email

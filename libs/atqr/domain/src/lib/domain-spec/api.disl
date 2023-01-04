@@ -140,7 +140,7 @@ domain ATQR
         -> PlayerParticipationRequested!
           set invited player's participation status to ParticipationStatus.Requested
 
-        -> OfficiationRequest? invitee: Invitee
+        -> RequestOfficiation? invitee: Invitee
           rules:
             when @status is not .Unverified or .Ongoing
               reject saying "You cannot request judge participation for this Challenge"
@@ -217,23 +217,30 @@ domain ATQR
             publish fundsDenied! :challengeId :paymentMethod
                 sendPaymentMethodDeniedEmail? :challengeId
 
-        command AcceptOfficiationRequest?
-        params:
-        - inviteeId: inviteeId
+        command AcceptOfficiationRequest? inviteeId: Unique Id
+          when:
+            ^inviteeId is not in @invitees
+              throw "Could not find that invitee in this challenge"
 
-          set invited judge's participationStatus to .Accepted
-          set judge in officiation to challenge and player
+          get [invitee] in @invitees
+            where invitee.id is equal to ^inviteeId
+
+          set ^invitee's participationStatus to .Accepted
+
+          find_or_create a [User] for the ^invitee
+
+          create a new [Officiation] for the ^User
+
+            set Officiation's judge to ^User
 
           publish OfficiationRequestAccepted! :challengeId :judgeId
 
           ⚙️ verifyIfChallengeCanBegin
 
 
-        command RejectOfficiationRequest?
-          params:
-            - inviteeId: inviteeId
+        command RejectOfficiationRequest? inviteeId: inviteeId
 
-          set invited judge's participationStatus to .Rejected
+          set invited Judge's participationStatus to .Rejected
 
           publish OfficiationRequestRejected! :challengeId :judgeId
 
