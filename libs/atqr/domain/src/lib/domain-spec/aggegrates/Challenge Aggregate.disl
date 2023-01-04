@@ -3,17 +3,16 @@ domain ATQR
   context Challenges
 
     aggregate Challenge
-
+      //TODO: Will it be implemented?
       !ChallengeNotFound :challengeId
 
       root Challenge
-
         depends on PaymentService
 
-        @createdByPlayer: boolean
+        @createdByPlayer: yes or no
           returns @owner.role == ParticipationRole.Player
 
-        @createdByJudge: boolean
+        @createdByJudge: yes or no
           returns @owner.role == ParticipationRole.Judge
 
         @players: Enrollment[]
@@ -29,7 +28,7 @@ domain ATQR
           * Holds all users ever invited to this challenge
           * and their participation status
           */
-          @invitees: Contact[]
+          @invitees: Invitee[]
           @deadline: Date
           @pledge: DISL.Money
             greater than 0
@@ -37,25 +36,24 @@ domain ATQR
           @requiredProof?: DISL.Paragraph
           /**
            * Allows players to enroll using a link instead of being invited
-           * @param {boolean} true if players can enroll using a link
+           * @param {yes or no} yes if players can enroll using a link
            */
-          @inviteByLink: boolean
+          @inviteByLink: yes or no
           @enrollmentDeadline: FutureDate
             before @deadline
           @owner: Contact
           ownerPaymentMethod: PaymentMethod | null
 
+          //TODO: User or Enrollment that is the question. Should user have paymentMethod?
           when @createdByPlayer
             create new User for owner
               it's paymentMethod = ownerPaymentMethod
-
-            createEnrollmentFor owner
-
-        // TODO: review, looks wrong
-        ⚙️ registerPlayer :name :email
-          rules:
-            when User with :email does not exist
-              create new User with :name :email
+              createEnrollmentFor owner
+          // TODO: review, looks wrong
+          ⚙️ registerPlayer :name :email
+            rules:
+              when User with :email does not exist
+                create new User with :name :email
                 on SUCCESS:
                   show ui CheckEmailToConfirmParticipation
                 on FAILURE:
@@ -64,17 +62,22 @@ domain ATQR
         /**
          * Represents the intention of a player to accept a challenge
          */
-        -> AcceptChallenge? paymentInfo: Payment
+        -> AcceptChallenge? paymentInfo: Payment, inviteeEmail: Invitee.email
           rules:
             when @status == ChallengeStatus.Ongoing do nothing
+            //TODO: Why would invitee not be found???
 
+          find invitee in @invitees where invitee.email == :inviteeEmail
+          //TODO: Should be if inside rules?
           if invitee is not found
             throw "Could not find invitee"
 
-          invitee.status = ParticipationStatus.Accepted
+          set ^invitee's participationStatus to .Accepted
 
-          createEnrollmentFor invitee
+          find_or_create new User for ^invitee
+          createEnrollmentFor ^invitee
 
+          //TODO: Should have challengeId?
           publish ChallengeAccepted! :challengeId
 
         -> RejectChallenge? :inviteeEmail
@@ -86,25 +89,28 @@ domain ATQR
           if invitee is not found
             throw "Could not find invitee"
 
-          invitee.status = ParticipationStatus.Rejected
+          set ^invitee's participationStatus to .Rejected
 
+          //TODO: Should have challengeId?
           publish ChallengeRejected! :challengeId
 
-        -> RequestJudgeOfficiation? invitee: Invitee
+        -> PlayerParticipationRequested?
+          set invited player's participation status to ParticipationStatus.Requested
+
+        -> RequestOfficiation? invitee: Invitee
           rules:
             when @status is not .Unverified or .Ongoing
               reject saying "You cannot request judge participation for this Challenge"
-
             when @createdByJudge
-              reject saying "You cannot replace the judge since you did not create this Challenge"
+              reject saying "You cannot replace the judge since you created this Challenge"
 
           find the currently invited judge
             set it's status to ParticipationStatus.Canceled
 
-          add invitee to @invitees
+          add ^invitee to invitees
+
 
           publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
-
         -> InviteNewPlayer? contact: Contact
           rules:
             when @status is not .Unverified or .Abandoned
@@ -120,19 +126,22 @@ domain ATQR
 
           publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
 
+          // TODO: Disparar evento após envio de emails
+          // TODO: Capturar evento na Challenge para alterar ParticipationStatus
+          // TODO: Continuar review do beto
         -> PlayerParticipationRequested!
           set invited player's participation status to ParticipationStatus.Requested
 
         -> OfficiationRequested!
           set invited judge's participationStatus to .Requested
 
-        ⚙️ verifyIfChallengeCanBegin @players @judges @paymentMethods
-          return allJudgeAccepted
-            and  allPlayersAccepted
-            and  allPaymentMethodsVerified
+        //TODO: call method at all required places
+        ⚙️ verifyIfChallengeCanBegin :players :judges :paymentMethods
+          return ⚙️ allJudgesAccepted
+            and  ⚙️ allPlayersAccepted
+            and  ⚙️ allPaymentMethodsVerified
 
         ⚙️ allPlayersAccepted
-          // code: this.invitees.find(invitee => invitee.role == player && invitee.participationStatus === ParticipationStatus.Accepted == false ? false : true)
           for each invitee with .role equals Player in @invitees
             if it's participationStatus is not Accepted
               return false
@@ -148,7 +157,7 @@ domain ATQR
           for each enrollment in @enrollments
             if it's PaymentFundsStatus is not Authorized
               return false
-
+        //TODO: what should be inside of this method?
         ⚙️ createEnrollmentFor invitee
           create [new Enrollment] in @players for ^invitee
             it's pledge = 0
@@ -184,20 +193,32 @@ domain ATQR
             publish fundsDenied! :challengeId :paymentMethod
                 sendPaymentMethodDeniedEmail? :challengeId
 
-        -> AcceptOfficiationRequest? :challengeId :judgeId
-          @judgeStatus = OfficiationStatus.Accepted
-          publish officiationRequestAccepted! :challengeId :judgeId
-            # if Funds are verified then
-            when @paymentFundsStatus is PaymentFundsStatus.Available
-              @status = ChallengeStatus.Ongoing
+        command AcceptOfficiationRequest? inviteeId: Unique Id
+          when:
+            ^inviteeId is not in @invitees
+              throw "Could not find that invitee in this challenge"
 
-        command RejectOfficiationRequest?
-          params:
-            - challengeId: ChallengeId
-            :judgeId
-          @judgeStatus = OfficiationStatus.Rejected
-          publish officiationRequestRejected! :challengeId :judgeId
-          sendJudgeRejectedEmail? :challengeId
+          get [invitee] in @invitees
+            where invitee.id is equal to ^inviteeId
+
+          set ^invitee's participationStatus to .Accepted
+
+          find_or_create a [User] for the ^invitee
+
+          create a new [Officiation] for the ^User
+
+            set Officiation's judge to ^User
+
+          publish OfficiationRequestAccepted! :challengeId :judgeId
+
+          ⚙️ verifyIfChallengeCanBegin
+
+
+        -> RejectOfficiationRequest? inviteeId: inviteeId
+
+          set invited Judge's participationStatus to .Rejected
+
+          publish OfficiationRequestRejected! :challengeId :judgeId
 
         -> JudgeChallenge? :userId, accomplished: boolean
 
@@ -228,7 +249,7 @@ domain ATQR
 
       entity User
         @id: UserId { auto-generated }
-        @emailConfirmed: boolean
+        @emailConfirmed: yes or no
         @playedChallenges: Enrollment[]
         @officiatedChallenges: Officiation[]
         @organizedChallenges: Challenge[]

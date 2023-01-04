@@ -1,5 +1,5 @@
 domain ATQR
-
+// TODO: Goals repository?
   context Challenges
 
     repository ChallengeRepository

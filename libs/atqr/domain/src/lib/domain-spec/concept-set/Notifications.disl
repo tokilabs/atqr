@@ -5,38 +5,54 @@ domain ATQR
     SMS
     Push
 
-  // TODO: fill the MessageId enum with all possible messages
   enum MessageTemplateId
-    ConfirmEmailToValidateChallenge
     Challenge...
-      ~Accepted
-      ~Rejected
-      ~Failed
+      ~Created
       ~Ongoing
       ~Completed
+      ~Failed
 
-    RequestOfficiation
-    OfficiationRequest...
+    YourOfficiationHaveBeenRequested
+
+    YourOfficiationRequestHaveBeen...
       ~Accepted
-      ~Denied
+      ~Rejected
+      ~Ignored
 
-    YourContenderNeverShowedUp
-    YouHaveBeenChallenged
-    YourContenderRejectedTheChallenge
     YouHaveBeenChallenged
 
-  // TODO: fill the DataType enum with all possible message ids
+    YourContender...
+      ~AcceptedTheChallenge
+      ~RejectedTheChallenge
+      ~Ignored
+      ~RemovedYouAsJudge
+      ~CanceledTheChallenge
+      ~WereTheySuccessful
+
+    ReminderToPlay
+
+    ReminderToOfficiate
+
+
+
   concept TemplateDataTypes correlates MessageTemplateId to a DataType
     ChallengeCreated: { challenge: Challenge }
-    ChallengeAccepted: { challenge: Challenge }
-    ChallengeRejected: { challenge: Challenge }
-    ChallengeFailed: { challenge: Challenge }
     ChallengeOngoing: { challenge: Challenge }
     ChallengeCompleted: { challenge: Challenge }
-    OfficiationRequestAccepted: { challenge: Challenge, invitee: Invitee }
-    OfficiationRequested: { challenge: Challenge, invitee: Invitee }
-    YourContenderNeverShowedUp: { challenge: Challenge, invitee: Invitee }
+    ChallengeFailed: { challenge: Challenge }
+    YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenAccepted: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenRejected: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenIgnored: { challenge: Challenge, invitee: Invitee }
     YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee }
+    YourContenderAcceptedTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderRejectedTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderIgnored: { challenge: Challenge, invitee: Invitee }
+    YourContenderRemovedYouAsJudge: { challenge: Challenge, invitee: Invitee }
+    YourContenderCanceledTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderWereTheySuccessful: { challenge: Challenge, invitee: Invitee }
+    ReminderToPlay: { challenge: Challenge, invitee: Invitee }
+    ReminderToOfficiate: { challenge: Challenge, invitee: Invitee }
 
   /**
    * Represents an email address to which we CANNOT send any emails.
