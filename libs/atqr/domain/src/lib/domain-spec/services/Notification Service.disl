@@ -19,7 +19,7 @@ domain ATQR
           email.nextContactDate = null
 
         else
-          let ^days be the result of:
+          let days be the result of:
             Settings.retryDelay for amount of ^notification's contactLogs
 
           email.nextContactDate = last ^notification's contactLog's sentAt + ^days

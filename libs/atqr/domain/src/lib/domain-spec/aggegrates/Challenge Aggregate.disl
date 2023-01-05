@@ -10,14 +10,14 @@ domain ATQR
         depends on PaymentService
 
         @createdByPlayer: yes or no
-          returns @owner.role == ParticipationRole.Player
+          returns @owner's role as .Player
 
         @createdByJudge: yes or no
-          returns @owner.role == ParticipationRole.Judge
+          returns @owner's role as .Judge
 
         @players: Enrollment[]
         @judges: Officiation[]
-        @status: ChallengeStatus = ChallengeStatus.Unverified
+        @status: ChallengeStatus = .Unverified
         @createAt: DateTime
           auto: Today
 
@@ -42,20 +42,28 @@ domain ATQR
           @enrollmentDeadline: FutureDate
             before @deadline
           @owner: Contact
+
+          //TODO: this "property" below was added to User entity as a property. Can it now be deleted from here?
           ownerPaymentMethod: PaymentMethod | null
 
-          //TODO: User or Enrollment that is the question. Should user have paymentMethod?
           when @createdByPlayer
-            create new User for owner
-              it's paymentMethod = ownerPaymentMethod
-              createEnrollmentFor owner
-          // TODO: review, looks wrong
+          // TODO: review, looks wrong (DONE)
           ⚙️ registerPlayer :name :email
             rules:
-              when User with :email does not exist
-                create new User with :name :email
+              when @status == .Ongoing do nothing
+              when User with ^email does not exist
+                create new User for owner with ^name ^email
+                  it's paymentMethod = PaymentMethod
+                createEnrollmentFor User
+
+              when User with ^email exists
+                it's paymentMethod = PaymentMethod
+                createEnrollmentFor User
+
                 on SUCCESS:
-                  show ui CheckEmailToConfirmParticipation
+                  show ui
+                    CheckEmailToConfirmParticipation
+
                 on FAILURE:
                   throw "Could not create player"
 
@@ -64,18 +72,16 @@ domain ATQR
          */
         -> AcceptChallenge? paymentInfo: Payment, inviteeEmail: Invitee.email
           rules:
-            when @status == ChallengeStatus.Ongoing do nothing
-            //TODO: Why would invitee not be found???
 
-          find invitee in @invitees where invitee.email == :inviteeEmail
-          //TODO: Should be if inside rules?
-          if invitee is not found
+
+          find ^invitee in @invitees where invitee.email == ^inviteeEmail
+
+          if ^invitee is not found
             throw "Could not find invitee"
 
-          set ^invitee's participationStatus to .Accepted
+          ⚙️ registerPlayer :name :email
 
-          find_or_create new User for ^invitee
-          createEnrollmentFor ^invitee
+          set ^invitee's participationStatus to .Accepted
 
           //TODO: Should have challengeId?
           publish ChallengeAccepted! :challengeId
@@ -157,7 +163,7 @@ domain ATQR
           for each enrollment in @enrollments
             if it's PaymentFundsStatus is not Authorized
               return false
-        //TODO: what should be inside of this method?
+
         ⚙️ createEnrollmentFor invitee
           create [new Enrollment] in @players for ^invitee
             it's pledge = 0
@@ -253,6 +259,7 @@ domain ATQR
         @playedChallenges: Enrollment[]
         @officiatedChallenges: Officiation[]
         @organizedChallenges: Challenge[]
+        @paymentMethod: PaymentMethod | null
         @notificationSettings:
           @channels: NotificationChannel[]
           @lists: NotificationList[]
