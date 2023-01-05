@@ -27,7 +27,7 @@ domain ATQR
               - have not been notified
 
             if list is not empty
-              publish PlayersForgotToEnroll! :challengeId :list
+              publish ContendersForgotToEnroll! :challengeId :list
 
           when .createdAt is before 5 days ago
             and .enrollmentDeadline is Today
@@ -36,7 +36,7 @@ domain ATQR
               - have been notified at most once
 
             if list is not empty
-              publish PlayersLastChanceToEnrollArrived! :challengeId :list
+              publish ContendersLastChanceToEnrollArrived! :challengeId :list
 
       -> ChallengeDeadlineReached! :challenge
         if :challenge is not Accomplished

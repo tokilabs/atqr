@@ -13,14 +13,14 @@ domain ATQR
         ⚙️ recipe:
           @title: string
           @challenges: Challenge[]
-          @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.player)).flat()
+          @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.contender)).flat()
 
         -> CreateGoal? :title
           create new Goal with :title
           publish GoalCreated! :goal
 
         /**
-         * Creates a new challenge and notifies both the Player and the Judge
+         * Creates a new challenge and notifies both the Contender and the Judge
          */
         //TODO: ???
         -> CreateChallenge? with params:
@@ -31,8 +31,8 @@ domain ATQR
           - invitees: Invitee[]
           - requiredProof?: DISL.Paragraph
           /**
-           * Allows players to enroll using a link instead of being invited
-           * @param {yes or no} yes if players can enroll using a link
+           * Allows contenders to enroll using a link instead of being invited
+           * @param {yes or no} yes if contenders can enroll using a link
            */
           - inviteByLink: yes or no
           - enrollmentDeadline: FutureDate
@@ -45,9 +45,9 @@ domain ATQR
           find_or_create new User from owner
 
           rules:
-            when @createdByPlayer
+            when @createdByContender
               if ownerPaymentMethod is not defined
-                throw "A player must have a payment method defined"
+                throw "A contender must have a payment method defined"
 
               if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
                 throw "Could not authorize payment"

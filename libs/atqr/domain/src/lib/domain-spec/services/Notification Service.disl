@@ -34,7 +34,7 @@ domain ATQR
 
           publish EmailSent! :notification
           // TODO: como enviar eventos especificos dependendo da Notificação?
-          // Ex: OfficiationRequestSent! or PlayerAbandonedChallenge!
+          // Ex: OfficiationRequestSent! or ContenderAbandonedChallenge!
 
         // TODO: econtrar um jeito de definir o que fazer APÓS exceder as tentativas
         // caso de uso:
@@ -56,7 +56,7 @@ domain ATQR
         data: Challenge
         to: :challenge.owner.email
 
-      when :challenge.createdByPlayer
+      when :challenge.createdByContender
 
         for each [contact] in :challenge's invitees
           if it's role is Judge
@@ -67,70 +67,43 @@ domain ATQR
 
             📢 publish OfficiationRequested!
 
-          if it's role is Player
+          if it's role is Contender
             sendEmail with ^params
               template: YouHaveBeenChallenged
               data: Challenge
               to: :contact.email
 
-            📢 publish PlayerParticipationRequested!
+            📢 publish ContenderParticipationRequested!
 
-    -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
-        if invitee's role is .Judge
-          sendEmail with ^params
-            template: YourOfficiationHaveBeenRequested
-            data:
-              challenge: ^challenge
-              invitee: ^invitee
-            to: :contact.email
-
-          //TODO: Event for this email?
-          sendEmail with ^params
-            template: YourContenderRemovedYouAsJudge
-            data:
-              challenge: ^challenge
-              invitee: ^invitee
-            to: :contact.email
-
-          📢 publish OfficiationRequested!
-
-        if invitee's role is .Player
-          sendEmail
-            template: YouHaveBeenChallenged
-            data:
-              challenge: ^challenge
-              invitee: ^invitee
-            to: :contact.email
-
-          📢 publish PlayerParticipationRequested!
-
-    //-------------------------------
-    // Notification Messages
-    //-------------------------------
-
-    -> ContenderAccepted! :enrollment
-        sendEmail with params:
-          template: YourContenderAcceptedTheChallenge
-          data: ^enrollment
-          to: ^enrollment.judge.email
-
-    -> ContenderRejected! :challenge
+    -> ChallengeRejected! :challenge
         sendEmail with params:
           template: YourContenderRejectedTheChallenge
           data: ^challenge
           to: ^challenge.owner.email
 
-    -> ContenderIgnored! :challenge
+    -> ChallengeIgnored! :challenge
         sendEmail with params:
           template: YourContenterIgnoredTheChallenge
           data: ^challenge
           to: ^challenge.owner.email
 
-    -> OfficiationRequestAccepted! :enrollment
-        sendEmail with params:
-          template: YourOfficiationRequestHaveBeenAccepted
-          data: ^enrollment
-          to: ^enrollment.player.email
+    -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
+        if invitee's role is .Judge
+          sendEmail with ^params
+            template: YourOfficiationHaveBeenRequested
+            to: :contact.email
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+          📢 publish OfficiationRequested!
+        else
+          sendEmail with ^params
+            template: YouHaveBeenChallenged
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+              to: :contact.email
+          📢 publish ContenderParticipationRequested!
 
     -> OfficiationRequestRejected! :challenge
         sendEmail with params:
@@ -143,6 +116,22 @@ domain ATQR
           template: YourOfficiationRequestHaveBeenIgnored
           data: ^challenge
           to: ^challenge.owner.email
+
+    //-------------------------------
+    // Notification Messages
+    //-------------------------------
+
+    -> ChallengeAccepted! :enrollment
+        sendEmail with params:
+          template: YourContenderAcceptedTheChallenge
+          data: ^enrollment
+          to: ^enrollment.judge.email
+
+    -> OfficiationRequestAccepted! :enrollment
+        sendEmail with params:
+          template: YourOfficiationRequestHaveBeenAccepted
+          data: ^enrollment
+          to: ^enrollment.contender.email
 
     TODO://logic steps
     -> ContenderRemovedJudge! :officiation
@@ -185,10 +174,10 @@ domain ATQR
         sendEmail with params:
           template: ChallengeCompleted
           data: ^challenge
-          to: ^challenge.enrollments[0].player.email
+          to: ^challenge.enrollments[0].contender.email
 
     -> ChallengeFailed! :challenge
         sendEmail with params:
           template: ChallengeFailed
           data: ^challenge
-          to: ^challenge.enrollments[0].player.email
+          to: ^challenge.enrollments[0].contender.email

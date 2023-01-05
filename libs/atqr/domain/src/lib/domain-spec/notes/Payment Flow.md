@@ -34,11 +34,11 @@ hide empty description
 
 [*] --> NotDueYet
 NotDueYet : Payment is only due
-NotDueYet : if Player fails the challenge
+NotDueYet : if Contender fails the challenge
 
 
-NotDueYet -d-> Forgiven : Player Succeeded
-NotDueYet -d-> Pending : Player Failed
+NotDueYet -d-> Forgiven : Contender Succeeded
+NotDueYet -d-> Pending : Contender Failed
 
 Pending -r-> Failed
 Pending --> Paid

@@ -34,11 +34,11 @@ ui Web
         text "See what others are facing"
         # GetLastChallenges returns Challenge[]
         list GetLastChallenges(qty = 5)
-          item @goal, @player.name, @deadline, @price
+          item @goal, @contender.name, @deadline, @price
 
       form CreateChallenge
         card Card
-        choice CreatedByPlayer
+        choice CreatedByContender
           # option LABEL VALUE
           option "Challenge yourself" true
           option "Challenge a friend" false
@@ -51,12 +51,12 @@ ui Web
          * Renders a text input for a full name
          * full_name ID
          */
-        full_name PlayerName
+        full_name ContenderName
         /**
          * Renders an email input field
          * email ID
          */
-        email PlayerEmail
+        email ContenderEmail
 
         full_name JudgeName
         email JudgeEmail
@@ -75,12 +75,12 @@ ui Web
           max = 1000
         )
 
-        when CreatedByPlayer's value is true
+        when CreatedByContender's value is true
           // # It is possible to use a custom component as a field
           // # stripe_elements is a CUSTOM component
           stripe_elements CardData (
             token = @token
-            required when CreatedByPlayer's value is true
+            required when CreatedByContender's value is true
           )
 
       section ChallengeSuggestions
