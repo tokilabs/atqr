@@ -21,6 +21,7 @@ domain ATQR
 
       createAccount for Contact
         rules:
+          TODO://find user first
           - Contact.email does not exist in UserRepository.users.email
 
     repository Notifications
