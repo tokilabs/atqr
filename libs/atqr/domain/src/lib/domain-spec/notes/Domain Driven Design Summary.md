@@ -43,10 +43,10 @@ Um conjunto de entitades que trabalham juntas.
 #### Examples
 
 ```plantuml
-@startuml PlayerAggregateRoot
-title Player Aggregate Root
+@startuml ContenderAggregateRoot
+title Contender Aggregate Root
 
-class Player <<AggregateRoot>> {
+class Contender <<AggregateRoot>> {
   - confirmEmailToken: string
   +createChallenge(): Challenge
   +addPaymentInfo(): Payment
@@ -56,8 +56,8 @@ class Player <<AggregateRoot>> {
 class Challenge
 class Payment
 
-Player --> Challenge
-Player --> Payment
+Contender --> Challenge
+Contender --> Payment
 @enduml
 ```
 
@@ -71,13 +71,13 @@ class Challenge <<AggregateRoot>> {
 
 }
 
-class Player  {
+class Contender  {
 
 }
 
 class Judge
 
-Challenge --> Player
+Challenge --> Contender
 Challenge --> Judge
 @enduml
 ```
@@ -86,4 +86,4 @@ Challenge --> Judge
 
 A Entidade responsável por coordenar todas as operações em um Aggregate.
 
-Ex: **Player**
+Ex: **Contender**
