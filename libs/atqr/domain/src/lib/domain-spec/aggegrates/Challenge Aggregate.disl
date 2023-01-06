@@ -143,19 +143,17 @@ domain ATQR
 
           set ^invitee's participationStatus to .Rejected
 
-          publish ChallengeRejected!
-        //TODO: Check if we have all the commands required for all of the events in notification
-        -> RemoveJudge? :judgeEmail
-            rules:
+          publish ContenderRejectedTheChallenge!
 
-            // tirar o juiz
+        -> CancelChallenge?
+          rules:
+            when @status  is not .Unverified do nothing
 
-            //cancelar o invitee
+          set @status  to .Canceled
 
+          publish ChallengeCanceled!
 
-
-          //
-        -> RequestOfficiation? invitee: Invitee
+        -> RequestJudge? invitee: Invitee
           rules:
             when @status is not .Unverified or .Ongoing
               reject saying "You cannot request judge participation for this Challenge"
@@ -164,8 +162,6 @@ domain ATQR
             when @createdByContender
               reject saying "A contender cannot be a judge of their own challenge"
 
-          find old'invitee in @invites
-            set old'invitee ParticipationStatus to .Canceled
 
           add ^invitee to invitees
 
@@ -176,20 +172,25 @@ domain ATQR
             when @status is not .Unverified or .Abandoned
               reject saying "You cannot change the Contender for a Challenge after if it's already started."
 
-            when invited contender's participationStatus is .Accepted
-              reject saying "You cannot change the Contender for a Challenge after they have accepted."
-
-            find old'invitee in @invites
-              set old'invitee's participationStatus to .Canceled
-
             add ^invitee to @invitees
 
           publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
 
-          // TODO: Disparar evento após envio de emails
-          // TODO: Capturar evento na Challenge para alterar ParticipationStatus
+        -> RemoveJudge? :judgeEmail
+            rules: when @status  is not .Unverified or .Ongoing do nothing
 
-        -> AcceptOfficiationRequest? inviteeId: Unique Id
+            find ^invitee in @invitees where invitee.email == :judgeEmail
+
+            if ^invitee.participationStatus is .Accepted
+              set ^invitee.participationStatus to .Canceled
+              find ^judge in @judges where judge.email == :judgeEmail and remove            // tirar o juiz (A challenge vai continuar contando mesmo assim?)
+
+            else
+              set ^invitee.participationStatus to .Canceled
+
+            publish ContenderRemovedJudge! :judgeEmail
+
+        -> AcceptJudgeRequest? inviteeId: Unique Id
           when:
             ^inviteeId is not in @invitees
               throw "Could not find that invitee in this challenge"
@@ -209,11 +210,11 @@ domain ATQR
 
           ⚙️ verifyIfChallengeCanBegin
 
-        -> RejectOfficiationRequest? inviteeId: inviteeId
+        -> RejectJudgeRequest? inviteeId: inviteeId
 
           set invited Judge's participationStatus to .Rejected
 
-          publish OfficiationRequestRejected! :challengeId :judgeId
+          publish YourJudgeRequestHaveBeenIgnored! :challengeId :judgeId
 
         -> OfficiateChallenge? :userId, accomplished: yes or no
 
@@ -240,32 +241,18 @@ domain ATQR
         // #region Events
 
         -> ContenderParticipationRequested!
-          set invited contender's participation status to ParticipationStatus.Requested
-
-        -> OfficiationRequested!
-          set invited judge's participationStatus to .Requested
-
-        -> ContenderParticipationRequested!
-
           set invited contender's participationStatus to .Requested
 
-        -> ChallengeRejected! invitee :Invitee
-
-          set ^invitee ParticipationStatus to .Rejected
-
-          send ContenderRejectedTheChallenge!
-
-        -> OfficiationRequestRejected! :challengeId :judgeId
-
-            send OfficiationRequestHaveBeenRejected!
+        -> JudgeRequested!
+          set invited judge's participationStatus to .Requested
 
         ⌛ DeadlineReached! :challengeId
           @status = ChallengeStatus.Overdue
-          sendJudgementRequestEmail? :challengeId
-            @challengeJudgement = ChallengeJudgement.Requested
 
-        📧 ChallengeFailed!
-          sendChallengeFailedEmail? :challengeId
+          publish TimeToOfficiateArrived! :challenge
+
+        -> OfficiationRequested!
+          set @judgementStatus to .Requested
 
         // #endregion
       entity User

@@ -13,6 +13,7 @@ domain ATQR
       Ongoing
       Overdue
       Abandoned
+      Canceled
       /**
        * Challenges are moved to Finished when:
        *  - it is overdue
