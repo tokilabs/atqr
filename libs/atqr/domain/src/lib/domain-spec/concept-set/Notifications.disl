@@ -8,6 +8,7 @@ domain ATQR
   enum MessageTemplateId
     Challenge...
       ~Created
+      ~Canceled
       ~Ongoing
       ~Completed
       ~Failed
@@ -24,20 +25,20 @@ domain ATQR
     YourContender...
       TODO://AcceptedTheChallenge Email must have the "The Challenge is now Ongoing" information
       ~AcceptedTheChallenge
+      ~AcceptedTheChallenge
       ~RejectedTheChallenge
       ~Ignored
       ~RemovedYouFromJudgeRole
       ~CanceledTheChallenge
       ~WereTheySuccessful
 
-    ReminderToPlay
+    TimeToOfficiateArrived
 
-    ReminderToOfficiate
-
-
+    YourJudgeDidNotAnswered
 
   concept TemplateDataTypes correlates MessageTemplateId to a DataType
     ChallengeCreated: { challenge: Challenge }
+    ChallengeCanceled: { challenge: Challenge }
     ChallengeOngoing: { challenge: Challenge }
     ChallengeCompleted: { challenge: Challenge }
     ChallengeFailed: { challenge: Challenge }
@@ -52,9 +53,8 @@ domain ATQR
     YourContenterRemovedYouFromJudgeRole: { challenge: Challenge, invitee: Invitee }
     YourContenderCanceledTheChallenge: { challenge: Challenge, invitee: Invitee }
     YourContenderWereTheySuccessful: { challenge: Challenge, invitee: Invitee }
-    ReminderToPlay: { challenge: Challenge, invitee: Invitee }
     ReminderToOfficiate: { challenge: Challenge, invitee: Invitee }
-
+    YourJudgeDidNotAnswered: { challenge: Challenge, invitee: Invitee }
   /**
    * Represents an email address to which we CANNOT send any emails.
    */
