@@ -1,0 +1,75 @@
+domain ATQR
+
+  context Challenges
+
+    enum ChallengeStatus
+      Unverified
+      /**
+       * Challenges are created as Unverified and cannot be moved to Ongoing until:
+       *   - a contender acceptance (when the challenge is created by a judge)
+       *   - a judge acceptance
+       *   - a challenge funds verification
+       */
+      Ongoing
+      Overdue
+      Abandoned
+      Canceled
+      /**
+       * Challenges are moved to Finished when:
+       *  - it is overdue
+       *  - no payment is being processed
+       *  - no refund request is being processed
+       */
+      Finished
+
+    enum ContenderOutcome
+      StillPlaying
+      Succeeded
+      Failed
+
+    enum ParticipationStatus
+      NotRequested
+      Requested
+      Accepted
+      Rejected
+      Ignored
+      CanceledByContender
+
+    enum JudgementStatus
+      NotDueYet
+      NotRequested
+      Requested
+      Ignored
+      Judged
+
+    enum ParticipationRole
+      Contender
+      Judge
+
+    /**
+     * Represents a contender's participation in a challenge
+     */
+    concept Enrollment
+      @contender: User
+      @judge: User
+      @challenge: Challenge
+      @contenderAlias?: DISL.Name
+      @pledge: DISL.Money
+      @outcome: ContenderOutcome = null
+      @paymentStatus: PaymentStatus = PaymentStatus.notDueYet
+      @paymentMethod: PaymentMethod
+      @paymentFundsStatus: PaymentFundsStatus = PaymentFundsStatus.Unverified
+
+      rules:
+        when user == judge
+          throw "A contender cannot be a judge of their own challenge"
+
+    /**
+     * Represents a User participation in a challenge as a Judge
+     */
+    concept Officiation
+      @challenge: Challenge
+      @judge: User
+      @contenders: Enrollment[]
+      @judgementStatus: JudgementStatus = JudgementStatus.NotRequested
+

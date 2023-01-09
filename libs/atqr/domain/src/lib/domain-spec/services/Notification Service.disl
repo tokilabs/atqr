@@ -1,0 +1,218 @@
+domain ATQR
+
+  context Challenges
+
+    service NotificationService
+    depends on EmailService
+    depends on ChallengeRepository
+
+    sendEmail template: EmailTemplate data: Object, to: EmailAddress
+      {{using}} Pug
+        parse template.subject with data as :subject
+        parse template.body with data as :body
+      create new Email ^to with :subject and :body
+      send ${it} {{using}} IEmailService
+
+    -> EmailSent! notification: Notification
+      if email.requiresUserAction
+        if ^notification's messagesSent equals Settings.maxRetries
+          email.nextContactDate = null
+
+        else
+          let days be the result of:
+            Settings.retryDelay for amount of ^notification's contactLogs
+
+          email.nextContactDate = last ^notification's contactLog's sentAt + ^days
+
+    ⏰ NewDayStarted!
+      for each :notification in NotificationRepository
+        where :notification's nextContactDate is Today or before Today
+          sendEmail
+            template: :notification.emailTemplate
+            data: :notification.data
+            to: :notification.email
+
+          publish EmailSent! :notification
+          // TODO: como enviar eventos especificos dependendo da Notificação?
+          // Ex: OfficiationRequestSent! or ContenderAbandonedChallenge!
+
+        // TODO: econtrar um jeito de definir o que fazer APÓS exceder as tentativas
+        // caso de uso:
+        //    if we've sent more than Settings.maxRetries emails
+        //      sendEmail
+        //        template: YourContenderNeverShowedUpEmail
+        //        data: Challenge
+        //        to: :challenge.owner.email
+        //
+        //      publish InviteeAbandonedTheChallenge! :challengeId :invitee
+
+    //-------------------------------
+    // Transactional Messages
+    //-------------------------------
+
+    -> ChallengeCreated! :challenge
+      sendEmail with ^params
+        template: ChallengeCreated
+        data: Challenge
+        to: :challenge.owner.email
+
+      when :challenge.createdByContender
+
+        for each [contact] in :challenge's invitees
+          if it's role is Judge
+            sendEmail with ^params
+              template: YourOfficiationHaveBeenRequested
+              data: Challenge
+              to: :contact.email
+
+            📢 publish OfficiationRequested!
+
+          if it's role is Contender
+            sendEmail with ^params
+              template: YouHaveBeenChallenged
+              data: Challenge
+              to: :contact.email
+
+            📢 publish ContenderParticipationRequested!
+
+    -> ChallengeRejected! :challenge
+        sendEmail with params:
+          template: YourContenderRejectedTheChallenge
+          data: ^challenge
+          to: ^challenge.owner.email
+
+    -> ChallengeIgnored! :challenge
+        sendEmail with params:
+          template: YourContenterIgnoredTheChallenge
+          data: ^challenge
+          to: ^challenge.owner.email
+
+    -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
+        if invitee's role is .Judge
+          sendEmail with ^params
+            template: YourOfficiationHaveBeenRequested
+            to: :contact.email
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+          📢 publish JudgeRequested!
+
+        else
+          sendEmail with ^params
+            template: YouHaveBeenChallenged
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+              to: :contact.email
+          📢 publish ContenderParticipationRequested!
+
+    -> ReminderToPlay! :challenge :invitee
+        if invitee's role is .Judge
+          sendEmail with ^params
+            template: YourOfficiationHaveBeenRequested
+            to: :contact.email
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+          📢 publish JudgeForgotToPlay!
+
+        else
+          sendEmail with ^params
+            template: YouHaveBeenChallenged
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+              to: :contact.email
+          📢 publish ContenderForgotToPlay!
+
+    -> LastChanceToPlay! :challenge :invitee
+        if invitee's role is .Judge
+          sendEmail with ^params
+            template: YourOfficiationHaveBeenRequested
+            to: :contact.email
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+          📢 publish LastChanceToOfficiateArrived!
+
+        else
+          sendEmail with ^params
+            template: YouHaveBeenChallenged
+            data:
+              challenge: ^challenge
+              invitee: ^invitee
+              to: :contact.email
+          📢 publish LastChanceToPlayArrived!
+
+    -> YourJudgeRequestHaveBeenIgnored! :challenge
+        sendEmail with params:
+          template: YourOfficiationRequestHaveBeenIgnored
+          data: ^challenge
+          to: ^challenge.enrollments[0].contender.email
+
+    -> YourContenderIgnoredTheChallenge! :challenge
+        sendEmail with params:
+          template: YourContenderIgnoredTheChallenge
+          data: ^challenge
+          to: ^challenge.judge.email
+
+    -> TimeToOfficiateArrived! :officiation
+        sendEmail with params:
+          template: TimeToOfficiateArrived
+          data: ^officiation
+          to: ^officiation.judge.email
+
+        publish OfficiationRequested!
+
+    -> YourJudgeDidNotAnswered! :challenge
+
+        sendEmail with params:
+          template: YourJudgeDidNotAnswered
+          data: ^challenge
+          to: ^challenge.enrollment.contender.email
+
+    //-------------------------------
+    // Notification Messages
+    //-------------------------------
+
+    -> ChallengeAccepted! :enrollment
+        sendEmail with params:
+          template: YourContenderAcceptedTheChallenge
+          data: ^enrollment
+          to: ^enrollment.judge.email
+
+    -> ChallengeCanceled! :enrollment
+        sendEmail with params:
+          template: ChallengeCanceled
+          data: ^enrollment
+          to: ^enrollment.judge.email
+
+    -> JudgeRequestAccepted! :enrollment
+        sendEmail with params:
+          template: YourOfficiationRequestHaveBeenAccepted
+          data: ^enrollment
+          to: ^enrollment.contender.email
+
+    -> ContenderRemovedJudge! :invitee
+        sendEmail with params:
+          template: YourContenterRemovedYouFromJudgeRole
+          data: ^invitee
+          to: ^invitee.email
+
+    -> ChallengeOngoing! :challenge
+        sendEmail with params:
+          template: ChallengeOngoing
+          data: ^challenge
+          to: ^challenge.owner.email
+
+    -> ChallengeCompleted! :challenge
+        sendEmail with params:
+          template: ChallengeCompleted
+          data: ^challenge
+          to: ^challenge.enrollments[0].contender.email
+
+    -> ChallengeFailed! :challenge
+        sendEmail with params:
+          template: ChallengeFailed
+          data: ^challenge
+          to: ^challenge.enrollments[0].contender.email

@@ -2,6 +2,15 @@ import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 
+/**
+ * Relevant Stripe docs:
+ * 
+ * Place a hold (pre-authorization) on a payment method:
+ * https://stripe.com/docs/payments/place-a-hold-on-a-payment-method
+ *
+ * Set up future payments:
+ * https://stripe.com/docs/payments/save-and-reuse
+ */
 @Injectable()
 export class StripeService implements OnApplicationBootstrap {
   private stripeClient: Stripe;
@@ -60,10 +69,14 @@ export class StripeService implements OnApplicationBootstrap {
   }
 
   // TODO: Provide parameter type
-  async chargeCard(customerId) {
+  async chargeCard(customerId: string, cardToken: string) {
     // TODO: Define Payment intent and Customer Types
     let paymentIntent, customer;
     try {
+      const card: Stripe.CustomerSource = await this.stripeClient.customers.(customerId, cardToken);
+
+      card.
+      const pm = this.stripeClient.paymentMethods.retrieve(paymentMethodId)
       // You need to attach the PaymentMethod to a Customer in order to reuse
       // Since we are using test cards, create a new Customer here
       // You would do this in your payment flow that saves cards

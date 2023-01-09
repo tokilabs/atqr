@@ -1,0 +1,118 @@
+domain ATQR
+
+  context Challenges
+
+    service DeadlineMonitor
+      depends on ChallengesService
+
+      /**
+       * This is a cron job that runs every day and checks if any challenges are overdue
+       *
+       * ItsThatTimeAgain!
+       *   @createdAt: DateTime
+       */
+      ⏰ NewDayStarted!
+        for each :challenge in Challenges
+          when .deadline is before Today
+            publish DeadlineReached! :challengeId
+
+          // TODO: Check which logic is better for sending emails
+          // This or the one inside NotificationService (aren't they both the same?)
+
+          //TODO: add logic for JudgeForgotToAcceptRequest and JudgesLastChancetoAccepRequest AND 2 more logics: JudgeForgotToOfficiate and JudgesLastChanceToOfficiate
+        ->ContenderForgotToPlay! :challenge
+            when .enrollmentDeadline is Today
+              and .createdAt is before 2 days ago
+              list all .invitees that
+                - have not enrolled in :challengeId
+                - have not been notified
+
+            if list is not empty
+              publish ReminderToPlay! :challengeId :list
+
+        ->JudgeForgotToPlay! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before 2 days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish ReminderToPlay! :challengeId :list
+
+        -> LastChanceToPlayArrived! :challenge
+            when .createdAt is before 5 days ago
+              and .enrollmentDeadline is Today
+              list all .invitees that
+                - have not enrolled in :challengeId
+                - have been notified at most once
+
+            if list is not empty
+              publish LastChanceToPlay! :challengeId :list
+
+        -> LastChanceToBeJudgeArrived! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before 5 days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish LastChanceToPlay! :challengeId :list
+
+        -> ContenderIgnoredTheChallenge! :challenge
+            when .createdAt is before 7 days ago
+              and .enrollmentDeadline is Today
+              list all .invitees that
+                - have not enrolled in :challengeId
+                - have been notified at most once
+
+              if list is not empty
+                publish YourContenderIgnoredTheChallenge! :challenge
+
+        -> JudgeIgnoredTheChallenge! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before 7 days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish YourOfficiationRequestHaveBeenIgnored! :challenge
+
+
+        -> ChallengeDeadlineReached! :challenge
+          set's @status to .Overdue
+
+          publish TimeToOfficiateArrived! :challenge
+
+        -> ForgotToOfficiate! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before x days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish TimeToOfficiateArrived! :challengeId :list
+
+        -> LastChanceToOfficiateArrived! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before x days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish YourJudgeDidNotAnswered! :challengeId :list
+
+        -> OfficiateIgnoredTheChallenge! :challenge
+            when .officiationDeadline is Today
+              and .createdAt is before x days ago
+              list all .invitees that
+                - have not entered Officiation in :challengeId
+                - have not been notified
+
+              if list is not empty
+                publish ChallengeFailed! :challenge
+

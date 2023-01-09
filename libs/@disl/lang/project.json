@@ -1,0 +1,35 @@
+{
+  "root": "libs/@disl/lang",
+  "sourceRoot": "libs/@disl/lang/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:package",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/@disl/lang",
+        "tsConfig": "libs/@disl/lang/tsconfig.lib.json",
+        "packageJson": "libs/@disl/lang/package.json",
+        "main": "libs/@disl/lang/src/index.ts",
+        "assets": ["libs/@disl/lang/*.md"],
+        "srcRootForCompilationRoot": "libs/disl/lang"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/@disl/lang/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/@disl/lang"],
+      "options": {
+        "jestConfig": "libs/@disl/lang/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["language", "stdlib", "concept", "utils", "wheredoesitgo"]
+}

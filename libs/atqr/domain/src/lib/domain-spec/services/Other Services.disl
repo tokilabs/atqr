@@ -1,0 +1,33 @@
+domain ATQR
+
+  context Challenges
+
+    /**
+     * Definition of a service that handles emails
+     * @type Infrastructure
+     */
+    service EmailService
+      send
+        params
+          to: EmailAddress
+          subject: string
+          body: string
+
+    /**
+     * @type DomainService
+     */
+    service AccountService
+      uses UserRepository
+
+      createAccount for Contact
+        rules:
+          TODO://find user first
+          - Contact.email does not exist in UserRepository.users.email
+
+    repository Notifications
+      recordNotification NotificationMessage
+      countNotifications
+        params
+          :userId
+          optional inCategories: NotificationCategory[]
+          optional sentVia: NotificationChannel[]
