@@ -1,15 +1,18 @@
 import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/date-difference';
+import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
-  'notInvited',
-  'invited',
-  'accepted',
-  'askedIfTheGoalIsAccomplished',
-  'repliedIfTheGoalWasAccomplished',
+  notInvited ='notInvited',
+  invited = 'invited',
+  accepted = 'accepted',
+  rejected = 'rejected',
+  askedIfTheGoalIsAccomplished = 'askedIfTheGoalIsAccomplished',
+  repliedIfTheGoalWasAccomplished = 'repliedIfTheGoalWasAccomplished',
+  repliedIfTheGoalWasNotAccomplished = 'repliedIfTheGoalWasNotAccomplished',
 }
 
 export enum ChallengeStatus {
@@ -28,7 +31,7 @@ export class Challenge {
   constructor(
     private _goal: string,
     private _supervisorName: string,
-    private _supervisorEmail: string,
+    private _supervisorEmail: EmailAddress,
     private _player: Player,
     price: number,
     deadline: Date,
@@ -82,7 +85,10 @@ export class Challenge {
   get paymentMethod() {
     return this._paymentMethod;
   }
-  changeSupervisor(newSupervisorName: string, newSupervisorEmail: string) {
+  changeSupervisor(
+    newSupervisorName: string,
+    newSupervisorEmail: EmailAddress
+  ) {
     this._supervisorName = newSupervisorName;
     this._supervisorEmail = newSupervisorEmail;
   }
@@ -100,13 +106,16 @@ export class Challenge {
     } else {
       return false;
     }
-
   }
   updateStatus(status: ChallengeStatus) {
-    if(status == ChallengeStatus.Overdue){
-      return false
+    if (status == ChallengeStatus.Overdue) {
+      return false;
     }
     this._status = status;
-    return true
+    return true;
+  }
+
+  updateSupervisorStatus(status: SupervisorEnum) {
+    this._supervisorStatus = status;
   }
 }

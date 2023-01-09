@@ -1,0 +1,86 @@
+read also enums.disl
+read also api.disl
+
+domain ATQR
+
+  context Challenges
+
+    aggregate Goal
+
+      root Goal
+        depends on ChallengeRepository
+
+        ⚙️ recipe:
+          @title: string
+          @challenges: Challenge[]
+          @pursuers: returns @challenges.map(c => c.enrollments.map(e => e.contender)).flat()
+
+        -> CreateGoal? :title
+          create new Goal with :title
+          publish GoalCreated! :goal
+
+        /**
+         * Creates a new challenge and notifies both the Contender and the Judge
+         */
+        //TODO: ???
+        -> CreateChallenge? with params:
+          - goalId: GoalId
+          - pledge: DISL.Money
+              greater than 0
+          - deadline: FutureDate
+          - invitees: Invitee[]
+          - requiredProof?: DISL.Paragraph
+          /**
+           * Allows contenders to enroll using a link instead of being invited
+           * @param {yes or no} yes if contenders can enroll using a link
+           */
+          - inviteByLink: yes or no
+          - enrollmentDeadline: FutureDate
+              before @deadline
+          - owner: Contact
+          - ownerPaymentMethod: PaymentMethod | null
+
+          // We must create the User first to ensure
+          // that we collect their email address (for marketing purposes)
+          find_or_create new User from owner
+
+          rules:
+            when @createdByContender
+              if ownerPaymentMethod is not defined
+                throw "A contender must have a payment method defined"
+
+              if PaymentService .authorizeCharge for pledge and ownerPaymentMethod FAILED
+                throw "Could not authorize payment"
+
+              //TODO: User or Enrollment that is the question. Should user have paymentMethod?
+              the new User's paymentMethod = ownerPaymentMethod
+
+              create new Challenge with the ^parameters received
+                set it's status to ChallengeStatus.Unverified
+
+              createEnrollmentFor the new User
+                add it to the new Challenge's enrollments
+
+              publish ChargeAuthorized! with params:
+                - owner: User
+                - pledge: DISL.Money
+                - ownerPaymentMethod: PaymentMethod
+
+              save the new Challenge in ChallengeRepository
+
+              publish ChallengeCreated!
+
+            when @createdByJudge
+              create new Challenge with the ^parameters received
+                set it's status to ChallengeStatus.Unverified
+
+              create new Officiation for ^owner
+                add it to the new Challenge's judges
+
+              save the new Challenge in ChallengeRepository
+
+              publish ChallengeCreated!
+
+          show ChallengeCreate screen with:
+            data: the new Challenge
+

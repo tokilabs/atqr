@@ -1,0 +1,194 @@
+ui Web
+  /**
+   * Defines a context for the screens
+   * A context is a set of screens that are related to each other.
+   * It can have preconditions that are checked before allowing the user to
+   * navigate to the screens in the context.
+   *
+   * A context can have preconditions that are checked before allowing the user
+   * to navigate to the screens in the context.
+   *
+   * Examples:
+   * context User
+   *   preconditions
+   *     user is logged in
+   *
+   * context Admin
+   *   preconditions
+   *     user is logged in
+   *     user is admin
+   */
+
+  # When no context is specified, the default context is Public
+  context Public
+    preconditions
+      // none
+
+    screen Home
+      section Header
+        image Logo
+        copy HeaderTagline
+
+      section LastChallenges
+        title "Last Challenges"
+        text "See what others are facing"
+        # GetLastChallenges returns Challenge[]
+        list GetLastChallenges(qty = 5)
+          item @goal, @contender.name, @deadline, @price
+
+      form CreateChallenge
+        card Card
+        choice CreatedByContender
+          # option LABEL VALUE
+          option "Challenge yourself" true
+          option "Challenge a friend" false
+        /**
+         * Renders a single line text input
+         * phrase ID
+         */
+        phrase Goal
+        /**
+         * Renders a text input for a full name
+         * full_name ID
+         */
+        full_name ContenderName
+        /**
+         * Renders an email input field
+         * email ID
+         */
+        email ContenderEmail
+
+        full_name JudgeName
+        email JudgeEmail
+        /**
+         * Renders a date input
+         * date ID
+         */
+        date Deadline
+        /**
+         * Renders a money (number with 2 decimals) input field
+         * number ID
+         */
+        money Price (
+          currency = "USD"
+          min = 0
+          max = 1000
+        )
+
+        when CreatedByContender's value is true
+          // # It is possible to use a custom component as a field
+          // # stripe_elements is a CUSTOM component
+          stripe_elements CardData (
+            token = @token
+            required when CreatedByContender's value is true
+          )
+
+      section ChallengeSuggestions
+        copy SuggestionsSectionTagline
+
+      section LatestTweetsTaggedEuDuvido
+        copy TweetsSectionTagline
+
+        paged_list tweets GetTweets
+
+        section Tweets
+          button Previous disabled={:start <= 0}
+            run tweets
+
+          list tweets's current_page
+            item @text, @user.name, @user.screen_name, @user.profile_image_url_https
+
+          button Next
+            run :tweets = NextTweets()
+
+    screen ConfirmChallengeResponse
+      params
+        # "Accepted" | "Rejected"
+        url response
+      copy AreYouSureOfChallengeResponse @response
+
+      button ConfirmChallengeResponse
+        when @response is "Accepted"
+          command AcceptChallenge
+            max_retry 3
+            on Success
+              open ChallengeAccepted
+
+        when @response is "Rejected"
+          command RejectChallenge
+            max_retry 3
+            on Success
+              open ChallengeRejected
+
+      button ChangeChallengeResponse
+        open ChallengeResponse
+
+    screen ConfirmOfficiationRequestResponse
+      params
+        # "Accepted" | "Rejected"
+        url response
+      copy AreYouSureOfOfficiationRequestResponse @response
+
+      button ConfirmOfficiationRequestResponse
+        when @response is "Accepted"
+          command AcceptOfficiationRequest
+            max_retry 3
+            on Success
+              open OfficiationRequestAccepted
+
+        when @response is "Rejected"
+          command RejectOfficiationRequest
+            max_retry 3
+            on Success
+              open OfficiationRequestRejected
+
+      button ChangeOfficiationRequestResponse
+        open OfficiationRequestResponse
+
+    screen CheckEmailToConfirmParticipation
+      copy CheckEmailToConfirmParticipation
+
+    screen ChallengeNotFound
+      copy ChallengeNotFound
+      copy MotivateToCreateChallenge
+
+      button CreateChallenge
+        open CreateChallengeForm
+
+    screen ChallengeCreated
+      copy CongratsYourChallengeWasCreated
+
+      text InviteLink
+
+      button Share
+        open ShareYourChallenge
+ui Email
+
+  email ChallengeCreated
+    copy ChallengeCreatedEmailSubject
+    copy ChallengeCreatedEmailBody
+    button Share
+      open ShareYourChallenge
+
+  email YouHaveBeenChallenged
+    copy YouHaveBeenChallengedEmailSubject
+    copy YouHaveBeenChallengedEmailBody
+
+    button AcceptChallenge
+      open ConfirmChallengeResponse
+        data response=ChallengeResponse.Accepted
+
+    button RejectChallenge
+      open ConfirmChallengeResponse
+        data response=ChallengeResponse.Rejected
+
+  email ChallengeAccomplished
+    // - convite a criar novo desafio
+    button CreateNewChallenge
+
+    // - possibilidade de compartilhar o resultado do desafio exitoso
+    // ([1.3 Usuário gera imagem do desafio](https://www.notion.so/1-3-Usu-rio-gera-imagem-do-desafio-fa47c140fbc94cf58cdbdd85ab02a63c));
+    button ShareChallengeResult
+
+    // Possibilidade de convidar alguém para esse mesmo desafio
+    button ChallengeSomeone

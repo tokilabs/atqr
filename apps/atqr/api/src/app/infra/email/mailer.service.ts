@@ -34,7 +34,7 @@ export class Mailer implements OnApplicationBootstrap, IMailer {
   async sendMail(email: Email) {
     const messageData = {
       from: this.fromEmail,
-      to: email.playerEmail,
+      to: email.email.value,
       subject: email.Subject,
       message: email.Message,
     };

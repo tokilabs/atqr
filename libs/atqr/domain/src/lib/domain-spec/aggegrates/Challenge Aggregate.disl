@@ -1,0 +1,316 @@
+domain ATQR
+
+  context Challenges
+
+    aggregate Challenge
+
+      root Challenge
+        depends on PaymentService
+
+        @createdByContender: yes or no
+          returns @owner's role as .Contender
+
+        @createdByJudge: yes or no
+          returns @owner's role as .Judge
+
+        @contenders: Enrollment[]
+        @judges: Officiation[]
+        @status: ChallengeStatus = .Unverified
+        @createAt: DateTime
+          auto: Today
+
+        ⚙️ recipe:
+          @goalId: GoalId
+          @owner: User
+          /**
+          * Holds all users ever invited to this challenge
+          * and their participation status
+          */
+          @invitees: Invitee[]
+          @deadline: Date
+          @pledge: DISL.Money
+            greater than 0
+          @deadline: FutureDate
+          @requiredProof?: DISL.Paragraph
+          /**
+           * Allows contenders to enroll using a link instead of being invited
+           * @param {yes or no} yes if contenders can enroll using a link
+           */
+          @inviteByLink: yes or no
+          @enrollmentDeadline: FutureDate
+            before @deadline
+          @owner: Contact
+
+          //TODO: this "property" below was added to User entity as a property. Can it now be deleted from here?
+          ownerPaymentMethod: PaymentMethod | null
+
+          when @createdByContender
+
+            ⚙️ registerContender :name :email
+              rules:
+                when Challenge @status is not .Unverified do nothing
+
+              find_or_create new User
+                it's paymentMethod = PaymentMethod
+                createEnrollmentFor User
+
+                  on SUCCESS:
+                    show ui
+                      CheckEmailToConfirmParticipation
+
+                  on FAILURE:
+                    throw "Could not create contender"
+
+        ⚙️ verifyIfChallengeCanBegin :contenders :judges :paymentMethods
+
+
+          return ⚙️ allJudgesAccepted
+            and  ⚙️ allContendersAccepted
+            and  ⚙️ allPaymentMethodsVerified
+
+        ->FundsAvailable!
+            ChallengeAccepted!
+              OfficiationRequestAccepted!
+
+
+        ⚙️ allContendersAccepted
+          for each invitee with .role equals Contender in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+          return true
+
+        ⚙️ allJudgesAccepted
+          for each invitee with .role equals Judge in @invitees
+            if it's participationStatus is not Accepted
+              return false
+
+        ⚙️ allPaymentMethodsVerified
+          for each enrollment in @enrollments
+            if it's PaymentFundsStatus is not Authorized
+              return false
+
+        ⚙️ createEnrollmentFor invitee
+          create [new Enrollment] in @contenders for ^invitee
+            it's pledge = 0
+            it's paymentMethod = null
+            it's paymentStatus = PaymentStatus.NotRequested
+            it's paymentFundsStatus = PaymentFundsStatus.NotRequested
+
+        ⚙️ verifyFunds
+          params:
+              :challengeId
+              paymentMethod: PaymentMethod
+
+          PaymentService.verifyFunds for @pledge and paymentMethod
+
+            if returned PaymentFundsStatus is .Available
+              publish FundsAvailable! :challengeId :paymentMethod
+
+            if returned PaymentFundsStatus is .Denied
+              //TODO: Check if we should remove this event
+              publish FundsDenied! :challengeId
+
+            // if Judge has accepted the request then
+
+        // #region Commands
+
+        -> AcceptChallenge? paymentInfo: Payment, inviteeEmail: Invitee.email
+          rules:
+            when Challenge @status is not .Unverified do nothing
+
+          find ^invitee in @invitees where invitee.email is ^inviteeEmail
+
+          if ^invitee is not found
+            throw "Could not find invitee"
+
+          registerContender() :name :email
+
+          set ^invitee's participationStatus to .Accepted
+
+          publish ChallengeAccepted!
+
+          verifyIfChallengeCanBegin()
+
+        -> RejectChallenge? :inviteeEmail
+          rules:
+            when @status is not .Unverified do nothing
+
+          find ^invitee in @invitees where invitee.email == :inviteeEmail
+
+          if invitee is not found
+            throw "Could not find invitee"
+
+          set ^invitee's participationStatus to .Rejected
+
+          publish ContenderRejectedTheChallenge!
+
+        -> CancelChallenge?
+          rules:
+            when @status  is not .Unverified do nothing
+
+          set @status  to .Canceled
+
+          publish ChallengeCanceled!
+
+        -> RequestJudge? invitee: Invitee
+          rules:
+            when @status is not .Unverified or .Ongoing
+              reject saying "You cannot request judge participation for this Challenge"
+            when @createdByJudge
+              reject saying "You cannot replace the judge since you created this Challenge"
+            when @createdByContender
+              reject saying "A contender cannot be a judge of their own challenge"
+
+
+          add ^invitee to invitees
+
+          publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
+
+        -> InviteNewContender? invitee: Invitee
+          rules:
+            when @status is not .Unverified or .Abandoned
+              reject saying "You cannot change the Contender for a Challenge after if it's already started."
+
+            add ^invitee to @invitees
+
+          publish ChallengeGotANewInvitee! :challenge, invitee: Invitee
+
+        -> RemoveJudge? :judgeEmail
+            rules: when @status  is not .Unverified or .Ongoing do nothing
+
+            find ^invitee in @invitees where invitee.email == :judgeEmail
+
+            if ^invitee.participationStatus is .Accepted
+              set ^invitee.participationStatus to .Canceled
+              find ^judge in @judges where judge.email == :judgeEmail and remove            // tirar o juiz (A challenge vai continuar contando mesmo assim?)
+
+            else
+              set ^invitee.participationStatus to .Canceled
+
+            publish ContenderRemovedJudge! :judgeEmail
+
+        -> AcceptJudgeRequest? inviteeId: Unique Id
+          when:
+            ^inviteeId is not in @invitees
+              throw "Could not find that invitee in this challenge"
+
+          get [invitee] in @invitees
+            where invitee.id is equal to ^inviteeId
+
+          set ^invitee's participationStatus to .Accepted
+
+          find_or_create a [User] for the ^invitee
+
+          create a new [Officiation] for the ^User
+
+            set Officiation's judge to ^User
+
+          publish OfficiationRequestAccepted! :challengeId :judgeId
+
+          ⚙️ verifyIfChallengeCanBegin
+
+        -> RejectJudgeRequest? inviteeId: inviteeId
+
+          set invited Judge's participationStatus to .Rejected
+
+          publish YourJudgeRequestHaveBeenIgnored! :challengeId :judgeId
+
+        -> OfficiateChallenge? :userId, accomplished: yes or no
+
+          rules:
+            when @status is not .Overdue
+              throw "Challenge is not ongoing"
+
+            when there is no Enrollment for :userId
+              throw "User is not a contender in this challenge"
+
+          set's @JudgementStatus to .Judged
+
+          set's @status to Finished
+
+          if ^accomplished
+            set's @enrollments[0].outcome to .Accomplished
+            publish ChallengeAccomplished!
+          else
+            set's @enrollments[0].outcome to .Failed
+            publish ChallengeFailed!
+
+        // #endregion
+
+        // #region Events
+
+        -> ContenderParticipationRequested!
+          set invited contender's participationStatus to .Requested
+
+        -> JudgeRequested!
+          set invited judge's participationStatus to .Requested
+
+        ⌛ DeadlineReached! :challengeId
+          @status = ChallengeStatus.Overdue
+
+          publish TimeToOfficiateArrived! :challenge
+
+        -> OfficiationRequested!
+          set @judgementStatus to .Requested
+
+        // #endregion
+      entity User
+        @id: UserId { auto-generated }
+        @emailConfirmed: yes or no
+        @playedChallenges: Enrollment[]
+        @officiatedChallenges: Officiation[]
+        @organizedChallenges: Challenge[]
+        @paymentMethod: PaymentMethod | null
+        @notificationSettings:
+          @channels: NotificationChannel[]
+          @lists: NotificationList[]
+
+        recipe:
+          params:
+            @name: DISL.FullName
+            @email: DISL.EmailAddress { unique }
+
+          publish UserCreated! :user
+
+        /**
+         * Returns all unanswered challenge invitations
+         */
+        ⚙️ getPendingInvitations:
+          returns The Challenges where this user is in .invitees[]
+              AND .invitees[].status == ParticipationStatus.NotRequested
+
+      entity PaymentMethod
+        depends on PaymentService
+
+        /**
+         * The id of the payment method in the payment service
+         */
+        @foreignId: ForeignPaymentMethodId
+        @type: PaymentMethodType
+        @paymentService: "stripe"
+        @futurePayments: Map<ChallengeId, FuturePaymentId>
+
+        📧 CardCharged! :auth :amountInCents
+
+        ⚙️ setupFuturePayment: amountInCents
+          // TODO: Implement this
+
+        /**
+         * Uses Stripe to charge the card using the pre-authorization
+         *
+         * @param {PreAuthorization} auth The pre-authorization to use
+         * @param {number} amountInCents The amount to charge in cents
+         * @returns {boolean} Whether the charge was successful or not
+         */
+        ⚙️ charge
+          params:
+            foreignId: FuturePaymentId
+
+          when PaymentService.capturePayment(foreignId) succeeds
+            ⮐ SUCCESS
+          else
+            CardChargeFailed! :auth :amountInCents
+            ⮐ FAILED
+
+        ⚙️ ReleasePreAuth? :preAuthorization

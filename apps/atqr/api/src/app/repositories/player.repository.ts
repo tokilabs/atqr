@@ -1,15 +1,14 @@
 import {
-  Challenge,
   EmailAddress,
   IPlayerRepository,
   Player,
+  Challenge,
 } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Player as PrismaPlayer } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
 import { PrismaService } from '../infra/database/prisma.service';
-
 @Injectable()
 export class PlayerRepository implements IPlayerRepository {
   constructor(private readonly prismaService: PrismaService) {}
@@ -47,18 +46,18 @@ export class PlayerRepository implements IPlayerRepository {
     );
   }
 
-  findByEmail(email: EmailAddress): Player {
+  async findByEmail(email: EmailAddress): Promise<Player> {
     return plainToInstance(
       Player,
-      this.prismaService.player.findUnique({
+      await this.prismaService.player.findUnique({
         where: { email: email.value },
       })
     );
   }
 
   // TODO: Discuss with Saulo if this method should return
-  create(player: Player): void {
-    this.prismaService.player.create({
+  async create(player: Player): Promise<void> {
+    await this.prismaService.player.create({
       data: {
         id: player.id.valueOf(),
         name: player.name,

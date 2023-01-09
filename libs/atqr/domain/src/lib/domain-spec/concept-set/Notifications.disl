@@ -1,0 +1,110 @@
+domain ATQR
+
+  enum NotificationChannel
+    Email
+    SMS
+    Push
+
+  enum MessageTemplateId
+    Challenge...
+      ~Created
+      ~Canceled
+      ~Ongoing
+      ~Completed
+      ~Failed
+
+    YourOfficiationHaveBeenRequested
+
+    YourOfficiationRequestHaveBeen...
+      ~Accepted
+      ~Rejected
+      ~Ignored
+
+    YouHaveBeenChallenged
+
+    YourContender...
+      TODO://AcceptedTheChallenge Email must have the "The Challenge is now Ongoing" information
+      ~AcceptedTheChallenge
+      ~AcceptedTheChallenge
+      ~RejectedTheChallenge
+      ~Ignored
+      ~RemovedYouFromJudgeRole
+      ~CanceledTheChallenge
+      ~WereTheySuccessful
+
+    TimeToOfficiateArrived
+
+    YourJudgeDidNotAnswered
+
+  concept TemplateDataTypes correlates MessageTemplateId to a DataType
+    ChallengeCreated: { challenge: Challenge }
+    ChallengeCanceled: { challenge: Challenge }
+    ChallengeOngoing: { challenge: Challenge }
+    ChallengeCompleted: { challenge: Challenge }
+    ChallengeFailed: { challenge: Challenge }
+    YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenAccepted: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenRejected: { challenge: Challenge, invitee: Invitee }
+    YourOfficiationRequestHaveBeenIgnored: { challenge: Challenge, invitee: Invitee }
+    YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee }
+    YourContenderAcceptedTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderRejectedTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderIgnored: { challenge: Challenge, invitee: Invitee }
+    YourContenterRemovedYouFromJudgeRole: { challenge: Challenge, invitee: Invitee }
+    YourContenderCanceledTheChallenge: { challenge: Challenge, invitee: Invitee }
+    YourContenderWereTheySuccessful: { challenge: Challenge, invitee: Invitee }
+    ReminderToOfficiate: { challenge: Challenge, invitee: Invitee }
+    YourJudgeDidNotAnswered: { challenge: Challenge, invitee: Invitee }
+  /**
+   * Represents an email address to which we CANNOT send any emails.
+   */
+  concept ForbiddenEmailAddress
+    @email: EmailAddress
+    @reason: text
+    @createdAt: DateTime
+      auto: Today
+
+  enum NotificationCategory
+    EuDuvidoProductUpdates
+    EuDuvidoPromotions
+    NewInvitations
+    ChallengeUpdates
+
+
+  concept Notification
+    @id: Guid
+    @category: NotificationCategory
+    @templateId: MessageTemplateId
+    @allowedChannels: NotificationChannel[]
+    @createdAt: DateTime
+      auto: Today
+    @requiresUserAction: yes or no
+    @actionTaken: yes or no
+    @contactLog: NotificationLogEntry[]
+    @nextContactDate: Date
+
+    @waitingForUserAction:
+      @actionTaken === no and @nextContactDate <= Today
+
+    @messagesSent:
+      return @contactLog.length
+
+  concept NotificationLogEntry
+    @id: Guid
+    @notification: Notification
+    @channel: NotificationChannel
+    @sentAt: DateTime
+    @to: User
+    @visualized: yes or no
+
+  concept MessageTemplate
+    @channel: NotificationChannel
+    @content: Paragraph
+
+  concept EmailMessageTemplate expands on MessageTemplate
+    @channel: NotificationChannel.Email
+    @subject: Phrase
+
+  concept PushMessageTemplate expands on MessageTemplate
+    @channel: NotificationChannel.Push
+

@@ -1,14 +1,16 @@
 import { Player } from '../../player/player.entity';
 import { Email } from '../email.service';
 import * as pug from 'pug';
-import path = require('path');
+import * as path from 'path';
+import { pathToTemplates } from './includes/pathToTemplates';
+
 
 const compileTemplate = pug.compileFile(
-  path.join(__dirname, 'challengeStarted.pug')
+  path.join(pathToTemplates, 'challengeStarted.pug')
 );
 
 export class ChallengeStarted extends Email {
-  constructor(to: Player) {
+  constructor(to: Player['_email']) {
     super(
       to,
       'Seu desafio começou',

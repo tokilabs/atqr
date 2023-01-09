@@ -10,6 +10,11 @@ import {
   PaymentMethodEntity,
   Player,
   SupConfirmation,
+  SupervisorEnum,
+  DeadLineEmail,
+  PayThePrice,
+  SupervisorDenied,
+  SupervisorAccepted,
 } from '@atqr/domain';
 import {
   Body,
@@ -24,12 +29,12 @@ import {
 } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { CreateChallengeDto, UpdateCreditCardTokenDto } from './dtos';
+import { UpdateSupervisorDto } from './dtos/updateSupervisor.dto';
 import ValidationErrors, {
   ValidationErrorTypes,
 } from './errors/validationError';
 import { StripeService } from './infra';
 import { Mailer } from './infra/email/mailer.service';
-
 @Controller('challenge')
 export class ChallengeController {
   constructor(
@@ -47,7 +52,7 @@ export class ChallengeController {
     @Body() challengeDto: CreateChallengeDto
   ): Promise<Challenge> {
     try {
-      let player = this.playerRepository.findByEmail(
+      let player = await this.playerRepository.findByEmail(
         new EmailAddress(challengeDto.player.emailAddress.value)
       );
 
@@ -86,9 +91,7 @@ export class ChallengeController {
         this.challengeRepository.create(challenge);
 
         // TODO Finalize implementation
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const emailAddress = new EmailAddress(challengeDto.supervisorEmail);
-        const email = new ChallengeStarted(player);
+        const email = new ChallengeStarted(player.emailAddress);
         this.emailService.sendMail(email);
 
         return challenge;
@@ -100,7 +103,7 @@ export class ChallengeController {
         const emailAddress = new EmailAddress(
           challengeDto.player.emailAddress.value
         );
-        const email = new SupConfirmation(player, challenge);
+        const email = new SupConfirmation(player.emailAddress);
         this.emailService.sendMail(email);
       }
     } catch (error) {
@@ -120,16 +123,57 @@ export class ChallengeController {
       // TODO Handle other errors
     }
   }
+  // TODO: implement
+  // @Get('challenge/:id')
 
   @Get('latest/:amount')
-  latest(@Param('amount') amount: number) {
-    return this.challengeRepository.findLastChallenges(amount);
+  latest(@Param('amount') amount: string) {
+    return this.challengeRepository.findLastChallenges(parseInt(amount));
   }
 
   @Patch(':id/supervisor')
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  changeSupervisor(@Param('id') id: Guid): void {
-    return;
+  async updateSupervisor(
+    @Param('id') id: Guid,
+    @Body() updateSupervisorDto: UpdateSupervisorDto
+  ): Promise<void> {
+    const challenge: Challenge = await this.challengeRepository.findUnique(id);
+    switch (updateSupervisorDto.supervisorStatus) {
+      case SupervisorEnum.accepted:
+        this.emailService.sendMail(
+          new SupervisorAccepted(challenge.player.emailAddress)
+        );
+        challenge.changeSupervisor(
+          updateSupervisorDto.supervisorName,
+          updateSupervisorDto.supervisorEmail
+        );
+        break;
+
+      case SupervisorEnum.rejected:
+        this.emailService.sendMail(
+          new SupervisorDenied(challenge.player.emailAddress)
+        );
+        break;
+
+      case SupervisorEnum.askedIfTheGoalIsAccomplished:
+        this.emailService.sendMail(
+          new DeadLineEmail(challenge.supervisorEmail)
+        ); // change to sup email
+        break;
+
+      case SupervisorEnum.repliedIfTheGoalWasAccomplished:
+        this.emailService.sendMail(new Congrats(challenge.player.emailAddress));
+        this.updateStatus(id, ChallengeStatus.Completed);
+        break;
+
+      case SupervisorEnum.repliedIfTheGoalWasNotAccomplished:
+        this.emailService.sendMail(
+          new PayThePrice(challenge.player.emailAddress)
+        );
+        this.updateStatus(id, ChallengeStatus.Failed);
+        break;
+    }
+    challenge.updateSupervisorStatus(updateSupervisorDto.supervisorStatus);
+    this.challengeRepository.update(challenge);
   }
 
   // TODO Implement change payment endpoint and fix return
@@ -154,7 +198,7 @@ export class ChallengeController {
       this.challengeRepository.update(challenge);
 
       if (challenge.status == ChallengeStatus.Completed) {
-        const email = new Congrats(challenge.player);
+        const email = new Congrats(challenge.player.emailAddress);
         this.emailService.sendMail(email);
       } else {
         throw new Error('challenge not updated');

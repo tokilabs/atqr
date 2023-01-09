@@ -10,11 +10,14 @@
     "Accomplished",
     "atqr",
     "dtos",
+    "Duvido",
+    "enduml",
     "mailgun",
     "meeta",
     "nestjs",
     "pagar",
     "pagseguro",
+    "plantuml",
     "supabase",
     "Supabase",
     "swiper",
@@ -38,5 +41,14 @@
   "liveServer.settings.port": 5501,
   "[jade]": {
     "editor.defaultFormatter": "ducfilan.pug-formatter"
-  }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[shellscript]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "conventionalCommits.scopes": [
+    "domain-spec"
+  ]
 }

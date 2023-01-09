@@ -1,4 +1,4 @@
-import { Challenge, IChallengeRepository } from '@atqr/domain';
+import { IChallengeRepository, Challenge } from '@atqr/domain';
 import { Injectable } from '@nestjs/common';
 import { Challenge as PrismaChallenge, ChallengeStatus } from '@prisma/client';
 import { Guid } from '@tokilabs/lang';
@@ -9,8 +9,8 @@ import { PrismaService } from '../infra/database/prisma.service';
 export class ChallengeRepository implements IChallengeRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  create(challenge: Challenge): void {
-    this.prismaService.challenge.create({
+  async create(challenge: Challenge): Promise<void> {
+    await this.prismaService.challenge.create({
       data: {
         id: challenge.id.valueOf(),
         deadline: challenge.deadline,
@@ -18,7 +18,7 @@ export class ChallengeRepository implements IChallengeRepository {
         price: challenge.price,
         paymentMethod: 'Not Finished', // TODO: Resolve entity
         supervisorName: challenge.supervisorName,
-        supervisorEmail: challenge.supervisorEmail,
+        supervisorEmail: challenge.supervisorEmail.value,
         status: ChallengeStatus[challenge.status], // TODO: Check if this assumption will always be true
         creditCardToken: challenge.paymentMethod.getToken(),
         player: {
@@ -40,7 +40,9 @@ export class ChallengeRepository implements IChallengeRepository {
       });
 
     return plainChallenges.map((challenge) => {
-      return plainToInstance(Challenge, challenge);
+      console.log(challenge)
+      return plainToInstance(Challenge, challenge,
+        );
     });
   }
 
@@ -48,9 +50,10 @@ export class ChallengeRepository implements IChallengeRepository {
     // Cursor or Offset based pagination?
     // As the change is quite easy i'll implement Offset based pagination and will change later if need arises
 
-    const plainChallenges: PrismaChallenge[] =
+    const plainChallenges =
       await this.prismaService.challenge.findMany({
         take: numberOfResults,
+        include: { player: true },
       });
 
     return plainChallenges.map((challenge) => {
@@ -90,8 +93,8 @@ export class ChallengeRepository implements IChallengeRepository {
     });
   }
 
-  update(challenge: Challenge) {
-    this.prismaService.challenge.update({
+  async update(challenge: Challenge) {
+    await this.prismaService.challenge.update({
       where: { id: challenge.id.valueOf() },
       data: {
         creditCardToken: challenge.paymentMethod.getToken(),

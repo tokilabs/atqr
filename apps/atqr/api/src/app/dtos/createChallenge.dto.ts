@@ -1,4 +1,4 @@
-import { PaymentMethodEnum, Player } from '@atqr/domain';
+import { EmailAddress, PaymentMethodEnum, Player } from '@atqr/domain';
 import {
   IsDate,
   IsEmail,
@@ -27,7 +27,7 @@ export class CreateChallengeDto {
   supervisorName: string;
 
   @IsEmail()
-  supervisorEmail: string;
+  supervisorEmail: EmailAddress;
 
   // TODO: @yfernandes Resolve with real interface
   paymentMethod?: {

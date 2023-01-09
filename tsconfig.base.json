@@ -15,8 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@atqr/api": ["apps/atqr/api/index.ts"],
       "@atqr/domain": ["libs/atqr/domain/src/index.ts"],
-      "@atqr/api": ["apps/atqr/api/index.ts"]
+      "@disl/lang": ["libs/@disl/lang/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

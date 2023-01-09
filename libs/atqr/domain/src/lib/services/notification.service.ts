@@ -1,7 +1,7 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge';
-import { IChallengeRepository } from '../challenge/challengeRepo.interface';
-import { Congrats, Email, IMailer, PayThePrice } from '../EmailService';
+import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
+import { IChallengeRepository } from '../challenge/challenge.repository.interface';
+import { Congrats, DeadLineEmail, IMailer, PayThePrice } from '../EmailService';
 
 export class NotificationService {
   constructor(
@@ -13,16 +13,18 @@ export class NotificationService {
     this.challengeRepository.findOverdueChallenges().then((challenges) => {
       Promise.all(
         challenges.map((c) => {
+          //return challenges that are filtered by findOverdueChallenges()
+          //in array format:
+          //[challenge1,challenge2, challenge3...]
           if (c.updateOverdueStatus() === true) {
+            // challenge status updated to overdue
             try {
-              const player = c.player;
-              const email = new Email(
-                player,
-                'OverdueChallenge',
-                'Your time is over'
-              );
-              this.mailer.sendMail(email);
+              const email = new DeadLineEmail(c.supervisorEmail);
+              //create email to send to sup
+              this.mailer.send(email);
+              //sends that email
               this.challengeRepository.update(c);
+              //do challenge update that are overdue
             } catch (err) {
               throw new Exception(
                 `Error updating overdue status of Challenge ${c.id}: ${
@@ -37,12 +39,13 @@ export class NotificationService {
   }
   public notifyCompletedChallenges(challenge: Challenge) {
     if (challenge.status == ChallengeStatus.Completed) {
-      const email = new Congrats(challenge.player);
+      //challenge status = completed
+      const player = challenge.player;
+      const email = new Congrats(player.emailAddress);
       this.mailer.sendMail(email);
     } else {
-      const email = new PayThePrice(challenge.player);
+      const email = new PayThePrice(challenge.player.emailAddress);
       this.mailer.sendMail(email);
-      return true;
     }
     this.challengeRepository.update(challenge);
   }

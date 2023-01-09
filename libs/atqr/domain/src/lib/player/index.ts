@@ -1,2 +1,2 @@
+export * from './player.repository.interface';
 export * from './player.entity';
-export * from './playerRepo.interface'

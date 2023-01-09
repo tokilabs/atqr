@@ -1,0 +1,34 @@
+.meeta-testimonial.section-padding()
+  img.testimonial-shape-02(src='../../assets/images/shape/shape-11.png' alt='Shape')
+  .container
+    // Section Title Start
+    .meeta-section-title.text-center
+      h4.sub-title
+      h2.main-title Sugest&otilde;es de desafios
+    // Section Title End
+  .container-fluid.custom-container
+    .meeta-testimonial-active
+      .swiper
+        .swiper-wrapper
+          mixin swiper-slide (path, name)
+            // Single Testimonial Start
+            .swiper-slide
+              .single-testimonial
+                .testimonial-quote
+                  .testimonial-shape
+                    object(data=path)
+                  img(src='../../assets/images/quote.svg' alt='Quote')
+                  p= name
+                h3.testimonial-name
+                  span
+                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestion(this, true)') Se desafie!
+                h3.testimonial-name
+                  span
+                    a.register-btn.btn.btn-3.btn-outline-primary(onclick='challengeSuggestion(this, false)') Desafie alguém!
+              // Single Testimonial End
+          +swiper-slide("../../components/challengeSuggestions/suggestion-2.svg", "Parar de tomar café")
+          +swiper-slide("../../components/challengeSuggestions/suggestion-2.svg", "Pular de paraquedas")
+          +swiper-slide("../../components/challengeSuggestions/suggestion-3.svg", "começar um empreendimento")
+        .swiper-button-next(tabindex='0' role='button' aria-label='Next slide' aria-controls='swiper-wrapper-f82eda24dbb23354')
+        .swiper-button-prev(tabindex='0' role='button' aria-label='Previous slide' aria-controls='swiper-wrapper-f82eda24dbb23354')
+script(src='../../components/challengeSuggestions/suggestionFunction.ts')

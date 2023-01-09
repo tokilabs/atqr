@@ -1,17 +1,17 @@
-import { Player } from '../../player/player.entity';
 import { Email } from '../email.service';
 import * as pug from 'pug';
-import path = require('path');
+import * as path from 'path';
+import { pathToTemplates } from './includes/pathToTemplates';
+import { Challenge } from '../../../lib/challenge';
 
 const compileTemplate = pug.compileFile(
-  path.join(__dirname, 'deadLineEmail.pug')
+  path.join(pathToTemplates, 'deadLineEmail.pug')
 );
 
 export class DeadLineEmail extends Email {
-  constructor(to: Player) {
+  constructor(to: Challenge["supervisorEmail"]) {
     super(to, 'E aí?', compileTemplate({
       player: to,
     }));
   }
 }
-
