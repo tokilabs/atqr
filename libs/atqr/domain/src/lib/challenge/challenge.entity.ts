@@ -1,6 +1,6 @@
 import { Guid } from '@tokilabs/lang/';
 import { Transform } from 'class-transformer';
-import { dateDiff } from '../../utils/date-difference';
+import { dateDiff } from '../../utils/dateDifference';
 import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
