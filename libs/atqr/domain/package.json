@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "devDependencies": {
     "@types/pug": "2.0.6",
-    "parcel": "8.1.2"
+    "parcel": "8.1.2",
+    "class-validator": "0.13.2"
   }
 }
