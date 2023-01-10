@@ -1,37 +1,43 @@
-import { RegEx } from 'regex';
+import { IsEmail } from 'class-validator';
+import { validate } from '../services/validateOrReject';
 
+abstract class ValueObject<EmailAddress> {
+  type: EmailAddress;
+  value: string;
+}
+export class EmailAddress extends ValueObject<EmailAddress> {
+  type: EmailAddress;
+  value: string;
+  @IsEmail()
+  emailAddress: string;
+
+  constructor(emailAddress: string) {
+    super();
+    this.emailAddress = emailAddress;
+  }
+  static createEmailAddress(emailAddress: string): EmailAddress {
+    return new EmailAddress(emailAddress);
+  }
+}
 export interface IEmail {
   to: EmailAddress;
   subject: string;
   message?: string;
 }
-
-function validateEmailAddress(emailAddress: string): EmailAddress {
-  const regex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
-  const emails = emailAddress[''];
-  const testEmails = emails.forEach((emailAddress) => {
-    regex.test(emailAddress);
-    console.log(regex.test(emailAddress));
-  });
-  console.log(testEmails);
-  return testEmails;
-}
-
-validateEmailAddress('gabi@toki.life');
-export interface EmailAddress {
-  emailAddress: string;
-  validateEmailAddress(): typeof validateEmailAddress;
-}
-
 export class Email implements IEmail {
   constructor(
     public to: EmailAddress,
     public subject: string,
-    public body: string,
+    public body?: string
   ) {
     this.to = to;
     this.subject = subject;
     this.body = body;
+    return new Email(
+      (to = this.to),
+      (subject = this.subject),
+      (body = this.body)
+    );
   }
 
   public get email() {
@@ -46,7 +52,8 @@ export class Email implements IEmail {
     return this.subject;
   }
 
-  public get Message() {
-    return this.message;
+  public get Body() {
+    return this.body;
   }
 }
+validate(Email); //uses validateOrReject from class-validator
