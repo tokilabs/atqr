@@ -5,36 +5,25 @@ export enum NotificationChannel {
 }
 
 export enum MessageTemplateId {
-  Challenge = 'Challenge',
+  ChallengeCreated = 'ChallengeCreated',
+  ChallengeCanceled = 'ChallengeCanceled',
+  ChallengeOngoing = 'ChallengeOngoing',
+  ChallengeCompleted = 'ChallengeCompleted',
+  ChallengeFailed = 'ChallengeFailed',
   YourOfficiationHaveBeenRequested = 'YourOfficiationHaveBeenRequested',
-  YourOfficiationRequestHaveBeen = 'YourOfficiationRequestHaveBeen',
+  YourOfficiationRequestHaveBeenAccepted = 'YourOfficiationRequestHaveBeenAccepted',
+  YourOfficiationRequestHaveBeenRejected = 'YourOfficiationRequestHaveBeenRejected',
+  YourOfficiationRequestHaveBeenIgnored = 'YourOfficiationRequestHaveBeenIgnored',
   YouHaveBeenChallenged = 'YouHaveBeenChallenged',
-  YourContender = 'YourContender',
+  YourContenderAcceptedTheChallenge = 'YourContenderAcceptedTheChallenge',
+  YourContenderRejectedTheChallenge = 'YourContenderRejectedTheChallenge ',
+  YourContenderIgnored = 'YourContenderIgnored',
+  YourContenderRemovedYouFromJudgeRole = 'YourContenderRemovedYouFromJudgeRole',
+  YourContenderCanceledTheChallenge = 'YourContenderCanceledTheChallenge',
+  YourContenderWereTheySuccessful = 'YourContenderWereTheySuccessful',
   TimeToOfficiateArrived = 'TimeToOfficiateArrived',
   YourJudgeDidNotAnswered = 'YourJudgeDidNotAnswered',
 }
 
-export enum Challenge {
-  Created = 'Created',
-  Canceled = 'Canceled',
-  Ongoing = 'Ongoing',
-  Completed = 'Completed',
-  Failed = 'Failed',
-}
-
-export enum YourOfficiationRequestHaveBeen {
-  Accepted = 'Accepted',
-  Rejected = 'Rejected',
-  Ignored = 'Ignored',
-}
-
-export enum YourContender {
-  AcceptedTheChallenge = 'AcceptedTheChallenge',
-  RejectedTheChallenge = 'RejectedTheChallenge',
-  Ignored = 'Ignored',
-  RemovedYouFromJudgeRole = 'RemovedYouFromJudgeRole',
-  CanceledTheChallenge = 'CanceledTheChallenge',
-  WereTheySuccessful = 'WereTheySuccessful',
-}
 
 
