@@ -36,25 +36,54 @@ domain ATQR
 
     YourJudgeDidNotAnswered
 
-  concept TemplateDataTypes correlates MessageTemplateId to a DataType
-    ChallengeCreated: { challenge: Challenge }
-    ChallengeCanceled: { challenge: Challenge }
-    ChallengeOngoing: { challenge: Challenge }
-    ChallengeCompleted: { challenge: Challenge }
-    ChallengeFailed: { challenge: Challenge }
-    YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee }
-    YourOfficiationRequestHaveBeenAccepted: { challenge: Challenge, invitee: Invitee }
-    YourOfficiationRequestHaveBeenRejected: { challenge: Challenge, invitee: Invitee }
-    YourOfficiationRequestHaveBeenIgnored: { challenge: Challenge, invitee: Invitee }
-    YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee }
-    YourContenderAcceptedTheChallenge: { challenge: Challenge, invitee: Invitee }
-    YourContenderRejectedTheChallenge: { challenge: Challenge, invitee: Invitee }
-    YourContenderIgnored: { challenge: Challenge, invitee: Invitee }
-    YourContenterRemovedYouFromJudgeRole: { challenge: Challenge, invitee: Invitee }
-    YourContenderCanceledTheChallenge: { challenge: Challenge, invitee: Invitee }
-    YourContenderWereTheySuccessful: { challenge: Challenge, invitee: Invitee }
-    ReminderToOfficiate: { challenge: Challenge, invitee: Invitee }
-    YourJudgeDidNotAnswered: { challenge: Challenge, invitee: Invitee }
+  concept MessageTemplate
+    @channel: NotificationChannel
+    @content: Paragraph
+
+  concept EmailMessageTemplate expands on MessageTemplate
+    @channel: NotificationChannel.Email
+    @subject: Phrase
+
+  concept PushMessageTemplate expands on MessageTemplate
+    @channel: NotificationChannel.Push
+
+  concept ChallengeEnvelope
+    @challenge: Challenge
+
+  concept ChallengeAndInviteeEnvelope
+    @challenge: Challenge
+    @invitee: Invitee
+
+  concept TemplateDataTypes maps MessageTemplateId to a MessageTemplate
+    MessageTemplateId. ...
+      Challenge... expands on ChallengeEnvelope
+        ~Created: { challenge: Challenge }
+        ~Canceled: { challenge: Challenge }
+        ~Ongoing: { challenge: Challenge }
+        ~Completed: { challenge: Challenge }
+        ~Failed: { challenge: Challenge }
+
+      YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope
+
+      YourOfficiationRequestHaveBeen. ... expands on ChallengeAndInviteeEnvelope
+        ~Accepted: { challenge: Challenge, invitee: Invitee }
+        ~Rejected: { challenge: Challenge, invitee: Invitee }
+        ~Ignored: { challenge: Challenge, invitee: Invitee }
+
+      YouHaveBeenChallenged: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope
+
+      YourContender. ... expands on ChallengeAndInviteeEnvelope
+        ~AcceptedTheChallenge: { challenge: Challenge, invitee: Invitee }
+        ~RejectedTheChallenge: { challenge: Challenge, invitee: Invitee }
+        ~Ignored: { challenge: Challenge, invitee: Invitee }
+        ~RemovedYouFromJudgeRole: { challenge: Challenge, invitee: Invitee }
+        ~CanceledTheChallenge: { challenge: Challenge, invitee: Invitee }
+        ~WereTheySuccessful: { challenge: Challenge, invitee: Invitee }
+
+      ReminderToOfficiate: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope
+
+      YourJudgeDidNotAnswered: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope
+
   /**
    * Represents an email address to which we CANNOT send any emails.
    */
@@ -97,14 +126,4 @@ domain ATQR
     @to: User
     @visualized: yes or no
 
-  concept MessageTemplate
-    @channel: NotificationChannel
-    @content: Paragraph
-
-  concept EmailMessageTemplate expands on MessageTemplate
-    @channel: NotificationChannel.Email
-    @subject: Phrase
-
-  concept PushMessageTemplate expands on MessageTemplate
-    @channel: NotificationChannel.Push
 
