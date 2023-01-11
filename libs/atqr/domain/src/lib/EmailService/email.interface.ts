@@ -1,35 +1,23 @@
 import { IsEmail } from 'class-validator';
 import { validate } from '../services/validateOrReject';
+import { ValueObject } from '../../utils/valueObject';
 
-abstract class ValueObject<EmailAddress> {
-  type: EmailAddress;
-  value: string;
-}
-export class EmailAddress extends ValueObject<EmailAddress> {
-  type: EmailAddress;
-  value: string;
+export class EmailAddress {
   @IsEmail()
   emailAddress: string;
-
-  constructor(emailAddress: string) {
-    super();
-    this.emailAddress = emailAddress;
-  }
-  static createEmailAddress(emailAddress: string): EmailAddress {
-    return new EmailAddress(emailAddress);
-  }
 }
 export interface IEmail {
   to: EmailAddress;
   subject: string;
   message?: string;
 }
-export class Email implements IEmail {
+export class Email extends ValueObject<Email> implements IEmail {
   constructor(
     public to: EmailAddress,
     public subject: string,
     public body?: string
   ) {
+    super(Email, Email[to.toString()][subject][body]);
     this.to = to;
     this.subject = subject;
     this.body = body;

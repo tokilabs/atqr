@@ -1,10 +1,8 @@
-import { Contact } from '../contact/contact.valueObject';
+import { Contact, ParticipationRole } from '../contact/contact.valueObject';
 import { validate } from '../services/validateOrReject';
+import { ValueObject } from '../../utils/valueObject';
+import { EmailAddress } from '../EmailService';
 
-abstract class ValueObject<Invitee> {
-  type: Invitee;
-  value: string;
-}
 enum ParticipationStatus {
   NotRequested,
   Requested,
@@ -13,14 +11,18 @@ enum ParticipationStatus {
   Ignored,
   CanceledByContender,
 }
-class Invitee extends ValueObject<Contact> {
+interface IInvitee extends Contact {
   status: ParticipationStatus;
+}
+class Invitee extends ValueObject<Invitee> implements IInvitee {
+  status: ParticipationStatus;
+  name: string;
+  email: EmailAddress;
+  role: ParticipationRole;
 
-  constructor(status: ParticipationStatus.NotRequested) {
-    super();
-    this.status = status;
-
-    return new Invitee((status = this.status));
+  constructor(status: ParticipationStatus) {
+    super(Invitee, Invitee[status]);
+    return new Invitee(status);
   }
 }
 validate(Invitee); //uses validateOrReject from class-validator
