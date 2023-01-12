@@ -1,4 +1,4 @@
-import { ValueObject } from '@atqr/domain';
+import { ValueObject } from '../../utils/valueObject';
 import { EmailAddress } from '../EmailService/email.interface'
 
 export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
@@ -7,10 +7,7 @@ export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
   public createdAt: Date;
 
   constructor(email: EmailAddress, reason: string, createdAt = new Date() ) {
-    super(ForbiddenEmailAddress, Object.keys({email, reason, createdAt}) as (keyof ForbiddenEmailAddress)[])
-    this.email = email;
-    this.reason = reason;
-    this.createdAt = createdAt;
+    super(ForbiddenEmailAddress, [email, reason, createdAt])
   }
 
   public getEmail(): string {
@@ -23,6 +20,14 @@ export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
 
   public getCreatedAt(): Date {
     return this.createdAt;
+  }
+
+  public equals(other: ForbiddenEmailAddress): boolean {
+    return (
+      this.email === other.email &&
+      this.reason === other.reason &&
+      this.createdAt === other.createdAt
+    )
   }
 
 }
