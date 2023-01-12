@@ -17,66 +17,82 @@ export enum NotificationChannel {
 }
 
 export class Notification extends ValueObject<Notification> {
-  private id: Guid;
-
   constructor(
-    private category: NotificationCategory,
-    private templateId: MessageTemplateId,
-    private allowedChannels: NotificationChannel[],
-    private createdAt: Date,
-    private requiresUserAction: boolean,
-    private actionTaken: boolean,
-    private contactLog: NotificationLogEntry[],
-    private nextContactDate: Date
+    public readonly category: NotificationCategory,
+    public readonly templateId: MessageTemplateId,
+    public readonly allowedChannels: NotificationChannel[],
+    public readonly createdAt: Date,
+    public readonly requiresUserAction: boolean,
+    public readonly actionTaken: boolean,
+    public readonly contactLog: NotificationLogEntry[],
+    public readonly nextContactDate: Date,
+    public readonly id = new Guid()
   ) {
     super(Notification, [
-      category,
-      templateId,
-      allowedChannels,
-      createdAt,
-      requiresUserAction,
-      actionTaken,
-      contactLog,
-      nextContactDate,
+      'category',
+      'templateId',
+      'allowedChannels',
+      'createdAt',
+      'requiresUserAction',
+      'actionTaken',
+      'contactLog',
+      'nextContactDate',
+      'id'
     ]);
-
-    this.id = new Guid();
   }
 
-  getId() {
-    return this.id;
+  public setId(newId: Guid) {
+    return this.newInstanceWith({
+      id: newId
+    });
   }
 
-  getCategory() {
-    return this.category;
+  public setCategory(newCategory: NotificationCategory) {
+    return this.newInstanceWith({
+      category: newCategory
+    });
   }
 
-  getTemplateId() {
-    return this.templateId;
+  public setTemplateId(newTemplateId: MessageTemplateId) {
+    return this.newInstanceWith({
+      templateId: newTemplateId
+    });
   }
 
-  getAllowedChannels() {
-    return this.allowedChannels;
+  public setAllowedChannels(newAllowedChannels: NotificationChannel[]) {
+    return this.newInstanceWith({
+      allowedChannels: newAllowedChannels
+    });
   }
 
-  getCreatedAt() {
-    return this.createdAt;
+  public setCreatedAt(newCreatedAt: Date) {
+    return this.newInstanceWith({
+      createdAt: newCreatedAt
+    });
   }
 
-  getRequiresUserAction() {
-    return this.requiresUserAction;
+  public setRequiresUserAction(newRequiresUserAction:boolean) {
+    return this.newInstanceWith({
+      requiresUserAction: newRequiresUserAction
+    });
   }
 
-  getActionTaken() {
-    return this.actionTaken;
+  public setActionTaken(newActionTaken: boolean) {
+    return this.newInstanceWith({
+      actionTaken: newActionTaken
+    });
   }
 
-  getNextContactDate() {
-    return this.nextContactDate;
+  public setNextContactDate(newNextContactDate: Date) {
+    return this.newInstanceWith({
+      nextContactDate: newNextContactDate
+    });
   }
 
-  getContactLog() {
-    return this.contactLog;
+  public setContactLog(newContactLog: NotificationLogEntry[]) {
+    return this.newInstanceWith({
+      contactLog: newContactLog
+    });
   }
 
   waitingForUserAction(date: Date): boolean {
@@ -89,13 +105,5 @@ export class Notification extends ValueObject<Notification> {
 
   messageSent() {
     return this.contactLog.length;
-  }
-
-  public equals(other: Notification): boolean {
-    return super.equals(other)
-  }
-
-  protected newInstanceWith(updatedProps: Notification): Notification{
-    return super.newInstanceWith(updatedProps)
   }
 }

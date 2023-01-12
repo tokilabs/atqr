@@ -2,33 +2,32 @@ import { ValueObject } from '../../utils/valueObject';
 import { EmailAddress } from '../EmailService/emailAddress'
 
 export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
-  private email: EmailAddress;
-  private reason: string;
-  public createdAt: Date;
-
-  constructor(email: EmailAddress, reason: string, createdAt = new Date() ) {
-    super(ForbiddenEmailAddress, [email, reason, createdAt])
+  constructor(
+    public readonly email: EmailAddress,
+    public readonly reason: string,
+    public readonly createdAt = new Date() ) {
+    super(ForbiddenEmailAddress, ['email', 'reason', 'createdAt'])
   }
 
-  public getEmail(): string {
-    return this.email;
+  public setEmail(newEmail: EmailAddress) {
+    return this.newInstanceWith({
+      email: newEmail
+    });
   }
 
-  public getReason(): string {
-    return this.reason;
+  public setReason(newReason: string) {
+    return this.newInstanceWith({
+      reason: newReason
+    });
   }
 
-  public getCreatedAt(): Date {
-    return this.createdAt;
+  public setCreatedAt(newCreatedAt: Date) {
+    return this.newInstanceWith({
+      createdAt: newCreatedAt
+    });
   }
 
-  public equals(other: ForbiddenEmailAddress): boolean {
-    return super.equals(other)
-  }
 
-  protected newInstanceWith(updatedProps: ForbiddenEmailAddress): ForbiddenEmailAddress {
-    return super.newInstanceWith(updatedProps)
-  }
 
 }
 
