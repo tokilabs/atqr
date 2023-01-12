@@ -1,5 +1,4 @@
 import { IsEmail } from 'class-validator';
-import { validate } from '../services/validateOrReject';
 import { ValueObject } from '../../utils/valueObject';
 
 export class EmailAddress {
@@ -9,39 +8,34 @@ export class EmailAddress {
 export interface IEmail {
   to: EmailAddress;
   subject: string;
-  message?: string;
+  body: string;
 }
 export class Email extends ValueObject<Email> implements IEmail {
   constructor(
-    public to: EmailAddress,
+    public readonly to: EmailAddress,
     public subject: string,
-    public body?: string
+    public body: string
   ) {
-    super(Email, Email[to.toString()][subject][body]);
-    this.to = to;
-    this.subject = subject;
-    this.body = body;
-    return new Email(
-      (to = this.to),
-      (subject = this.subject),
-      (body = this.body)
-    );
+    super(Email, ['to', 'subject', 'body']);
   }
-
-  public get email() {
-    return this.to;
+  
+  public setTo(newTo: EmailAddress): Email{
+    return this.newInstanceWith({
+      to: newTo
+    })
   }
-
-  public get from() {
-    return process.env.FROM_EMAIL;
+  public setSubject(newSubject: string): Email{
+    return this.newInstanceWith({
+      subject: newSubject
+    })
   }
-
-  public get Subject() {
-    return this.subject;
-  }
-
-  public get Body() {
-    return this.body;
+  public setBody(newBody: string): Email{
+    return this.newInstanceWith({
+      body: newBody
+    })
   }
 }
-validate(Email); //uses validateOrReject from class-validator
+  
+    
+  
+

@@ -1,6 +1,5 @@
 import { MaxLength, MinLength } from 'class-validator';
 import { EmailAddress } from '../EmailService';
-import { validate } from '../services/validateOrReject';
 import { ValueObject } from '../../utils/valueObject';
 
 export enum ParticipationRole {
@@ -15,16 +14,25 @@ export class Contact extends ValueObject<Contact> {
   role: ParticipationRole;
 
   constructor(name: string, email: EmailAddress, role: ParticipationRole) {
-    super(Contact, Contact[name][email][role]);
-    this.name = name;
-    this.email = email;
-    this.role = role;
+    super(Contact, ['name', 'email', 'role']);
+    this.name = name
+    this.email = email
+    this.role = role
+  }
 
-    return new Contact(
-      (name = this.name),
-      (email = this.email),
-      (role = this.role)
-    );
+  public setName(newName: string): Contact {
+    return this.newInstanceWith({
+      name: newName,
+    });
+  }
+  public setEmail(newEmail: EmailAddress): Contact {
+    return this.newInstanceWith({
+      email: newEmail,
+    });
+  }
+  public setRole(newRole: ParticipationRole): Contact {
+    return this.newInstanceWith({
+      role: newRole,
+    });
   }
 }
-validate(Contact); //uses validateOrReject from class-validator
