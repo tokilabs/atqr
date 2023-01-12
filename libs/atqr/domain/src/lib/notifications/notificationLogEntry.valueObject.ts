@@ -1,7 +1,13 @@
-import { ValueObject } from '@atqr/domain';
+import { ValueObject } from '../../utils/valueObject';
 import { Guid } from '@tokilabs/lang';
 import { NotificationChannel } from './notification.valueObject';
 
+interface INotificationLogEntry {
+  notification?: Notification;
+  channel?: NotificationChannel;
+  to?: User;
+  visualized?: boolean;
+}
 export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
   private id: Guid;
   private sentAt: Date;
@@ -12,7 +18,7 @@ export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
     private to: User,
     private visualized: boolean
   ) {
-    super(NotificationLogEntry, [notification, channel, to, visualized]);
+    super(NotificationLogEntry, ['notification', 'channel', 'to', 'visualized']);
 
     this.id = new Guid();
     this.sentAt = new Date();
@@ -42,14 +48,16 @@ export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
     return this.visualized;
   }
 
-  public equals(other: NotificationLogEntry): boolean {
-    return (
-      this.id === other.id &&
-      this.notification === other.notification &&
-      this.channel === other.channel &&
-      this.sentAt.getTime() === other.sentAt.getTime() &&
-      this.to === other.to &&
-      this.visualized === other.visualized
-    );
+  public equals(other: INotificationLogEntry): boolean {
+    return super.equals(other as ValueObject<NotificationLogEntry>);
   }
+
+  protected newInstanceWith(updatedProps: INotificationLogEntry): NotificationLogEntry {
+    return super.newInstanceWith({
+      ...updatedProps,
+      id: this.id,
+      sentAt: this.sentAt
+    });
+  }
+
 }
