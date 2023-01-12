@@ -1,5 +1,5 @@
 import { ValueObject } from '../../utils/valueObject';
-import { EmailAddress } from '../EmailService/email.interface'
+import { EmailAddress } from '../EmailService/emailAddress'
 
 export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
   private email: EmailAddress;
@@ -23,11 +23,11 @@ export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
   }
 
   public equals(other: ForbiddenEmailAddress): boolean {
-    return (
-      this.email === other.email &&
-      this.reason === other.reason &&
-      this.createdAt === other.createdAt
-    )
+    return super.equals(other)
+  }
+
+  protected newInstanceWith(updatedProps: ForbiddenEmailAddress): ForbiddenEmailAddress {
+    return super.newInstanceWith(updatedProps)
   }
 
 }

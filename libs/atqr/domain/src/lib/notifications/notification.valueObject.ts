@@ -1,4 +1,4 @@
-import { ValueObject } from '@atqr/domain';
+import { ValueObject } from '../../utils/valueObject';
 import { Guid } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { isBeforeDay } from '../../utils/isBeforeDay';
@@ -92,16 +92,10 @@ export class Notification extends ValueObject<Notification> {
   }
 
   public equals(other: Notification): boolean {
-    return (
-      this.id === other.id &&
-      this.category === other.category &&
-      this.templateId === other.templateId &&
-      this.allowedChannels === other.allowedChannels &&
-      this.createdAt === other.createdAt &&
-      this.requiresUserAction === other.requiresUserAction &&
-      this.actionTaken === other.actionTaken &&
-      this.contactLog === other.contactLog &&
-      this.nextContactDate === other.nextContactDate
-    );
+    return super.equals(other)
+  }
+
+  protected newInstanceWith(updatedProps: Notification): Notification{
+    return super.newInstanceWith(updatedProps)
   }
 }
