@@ -1,5 +1,5 @@
 import { Guid } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '.';
+import { Challenge } from '.';
 import { Player } from '../player';
 
 export interface IChallengeRepository {
