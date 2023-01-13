@@ -3,21 +3,18 @@ import { Challenge, ChallengeStatus } from '.';
 import { Player } from '../player';
 
 export interface IChallengeRepository {
-  private create(data: Challenge);
+  create(data: Challenge);
 
   ContenderCreateChallenge(challenge: Challenge): Promise<void>;
   JudgeCreateTheChallenge(challenge: Challenge): Promise<void>;
 
-  private read(
-    id: Guid,
-    fieldsToRead: Partial<Challenge>
-  ): Promise<Challenge[]>;
+  read(id: Guid, fieldsToRead: Partial<Challenge>): Promise<Challenge[]>;
 
   findChallengeById(id: Guid): Promise<Challenge[]>;
   getLatestChallengesCreated(amount: number): Promise<Challenge[]>;
   getOverdueChallenges(): Promise<Challenge[]>;
 
-  private update(id: Guid, fieldsToUpdate: Partial<Challenge>): Promise<void>;
+  update(id: Guid, fieldsToUpdate: Partial<Challenge>): Promise<void>;
 
   addContenderToChallenge(challengeId: Guid, contender: Player): Promise<void>;
   addJudgeToChallenge(challengeId: Guid, judge): Promise<void>;
@@ -60,7 +57,7 @@ export interface IChallengeRepository {
   recordChallengeFailure(id: Guid): Promise<void>;
   recordChallengeCanceled(id: Guid): Promise<void>;
 
-  private delete(id: Guid, fieldsToDelete: Partial<Challenge>): Promise<void>;
+  delete(id: Guid, fieldsToDelete: Partial<Challenge>): Promise<void>;
 
   removeJudgeFromChallenge(challengeId: Guid, judge): Promise<void>;
 }
