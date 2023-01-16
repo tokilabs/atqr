@@ -6,10 +6,11 @@ import { Player } from '../player/player.entity';
 import { ChallengeStatus, ParticipationStatus } from '../types/enums';
 
 export class Challenge {
-  private _id: Guid;
-  private _price: number;
-  private _deadline: Date;
+  private _contenders: Enrollment[];
+  private _judges: Officiation[];
+  @Transform(({ value }) => ChallengeStatus[value])
   private _status?: ChallengeStatus;
+  private _createdAt: Date;
 
   constructor(
     private _goal: string,
