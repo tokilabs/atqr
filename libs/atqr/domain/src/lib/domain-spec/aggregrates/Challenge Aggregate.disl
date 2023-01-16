@@ -103,10 +103,10 @@ domain ATQR
               paymentMethod: PaymentMethod
 
           PaymentService.verifyFunds for @pledge and paymentMethod
-
-            if returned PaymentFundsStatus is .Available
+            // TODO: Available does not exists on PaymentFundsStatus
+            if returned PaymentFundsStatus is .Available 
               publish FundsAvailable! :challengeId :paymentMethod
-
+            // TODO: FundsAvailable! and FundsDenied! are not implemented anywhere
             if returned PaymentFundsStatus is .Denied
               //TODO: Check if we should remove this event
               publish FundsDenied! :challengeId
@@ -114,11 +114,12 @@ domain ATQR
             // if Judge has accepted the request then
 
         // #region Commands
-
+        // TODO: Payment does not exist anywhere . Is it supose to be PreAuthorization ?
+        // paymentInfo param is not been used on this command
         -> AcceptChallenge? paymentInfo: Payment, inviteeEmail: Invitee.email
           rules:
             when Challenge @status is not .Unverified do nothing
-
+          // invitee is not been expected in the function above
           find ^invitee in @invitees where invitee.email is ^inviteeEmail
 
           if ^invitee is not found

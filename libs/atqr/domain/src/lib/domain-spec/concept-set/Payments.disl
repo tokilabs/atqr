@@ -19,7 +19,7 @@ domain ATQR
     Refunded
     RefundRequested
 
-  enum PaymentMethodType
+  enum PaymentMethod
     CreditCard
     DebitCard
 

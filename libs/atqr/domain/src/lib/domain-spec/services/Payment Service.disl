@@ -13,3 +13,7 @@
       capturePayment futurePaymentId
         // return SUCCESS or FAILURE
         return Whether it succeeded or not
+
+      // TODO: verifyFunds function
+      // TODO: FundsAvailable! and FundsDenied! are inside verifyFunds function according to Challenge Agregate
+ 
