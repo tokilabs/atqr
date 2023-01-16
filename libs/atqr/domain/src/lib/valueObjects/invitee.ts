@@ -1,6 +1,6 @@
 import { Contact } from './contact';
 import { ValueObject } from '../../utils/valueObject';
-import { EmailAddress } from './email';
+import { EmailAddress } from './emailAddress';
 import { ParticipationRole, ParticipationStatus } from '../types';
 
 interface IInvitee extends Contact {

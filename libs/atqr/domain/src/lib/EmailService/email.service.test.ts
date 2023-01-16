@@ -1,5 +1,6 @@
 import { EmailService } from './email.service';
-import { Email ,EmailAddress } from './email';
+import { Email } from '../valueObjects/email';
+import { EmailAddress } from '../valueObjects/emailAddress';
 describe('EmailService', () => {
   it('should call sendMail with the correct params', () => {
     const mailer = {

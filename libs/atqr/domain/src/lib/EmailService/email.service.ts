@@ -1,4 +1,4 @@
-import { Email } from './email';
+import { Email } from '../valueObjects/email';
 import { IMailer } from './interfaces/mailer.interface';
 
 export class EmailService {

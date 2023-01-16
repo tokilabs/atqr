@@ -1,5 +1,5 @@
 import { MaxLength, MinLength } from 'class-validator';
-import { EmailAddress } from './email';
+import { EmailAddress } from './emailAddress';
 import { ValueObject } from '../../utils/valueObject';
 import { ParticipationRole } from '../types';
 
