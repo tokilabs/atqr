@@ -3,7 +3,7 @@ import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/dateDifference';
 import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
-import { Player } from '../player/player.entity';
+//import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
   notInvited ='notInvited',
@@ -29,30 +29,32 @@ export class Challenge {
   private _status?: ChallengeStatus;
 
   constructor(
-    private _goal: string,
-    private _supervisorName: string,
-    private _supervisorEmail: EmailAddress,
-    private _player: Player,
-    price: number,
-    deadline: Date,
-    private _paymentMethod?: PaymentMethodEntity,
-    _status: ChallengeStatus = ChallengeStatus.Ongoing,
-    private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
+    private _goalId: GoalId,
+    private _owner: User,
+    private _invitees: Invitee[],
+    private _deadline: Date,
+    private _pledge: number,
+    private _requiredProof?: string,
+    private _enrollmentDeadline: Date
   ) {
-    this._id = new Guid();
-    if (price >= 25) {
-      this._price = price;
+    // challengeId is in challenge's updated proprieties on issue 120, already pull requested
+    this._challengeId = new ChallengeId();
+    if (_pledge >= 25) {
+      this._pledge = _pledge;
     } else {
       throw new Error('Selecione um valor acima de 25 reais');
     }
     const today = new Date();
-    if (dateDiff(today, deadline) > 1) {
-      this._deadline = deadline;
+    if (dateDiff(today, _deadline) > 1) {
+      this._deadline = _deadline;
     } else {
       throw Error('Selecione uma data futura');
     }
-
-    this._status = _status;
+    if (dateDiff(_deadline, _enrollmentDeadline) < 1) {
+      this._deadline = _enrollmentDeadline;
+    } else {
+      throw Error('_enrollmentDeadline has to be before _deadline');
+    }
   }
   get id() {
     return this._id;
