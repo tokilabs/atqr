@@ -1,11 +1,10 @@
 import { IEmail } from './interfaces';
 
 export class Email implements IEmail {
-  constructor(
-    public to: EmailAddress,
-    public subject: string,
-    public message?: string
-  ) {
+  to: EmailAddress;
+  subject: string;
+  message?: string;
+  constructor(to: EmailAddress, subject: string, message?: string) {
     this.to = to;
     this.subject = subject;
     this.message = message;
@@ -13,10 +12,6 @@ export class Email implements IEmail {
 
   public get email() {
     return this.to;
-  }
-
-  public get from() {
-    return process.env.FROM_EMAIL;
   }
 
   public get Subject() {
