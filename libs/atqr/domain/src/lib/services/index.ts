@@ -1,2 +1,3 @@
 export * from './deadlineMonitor.service';
-export * from './notification/';
+export * from './notification.service';
+export * from './payment';
