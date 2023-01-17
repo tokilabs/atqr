@@ -3,7 +3,7 @@ domain ATQR
   //--------------------------------//
   // Contacts
   //--------------------------------//
-  concept Email extends on EmailAddress
+  concept Email 
     @to: EmailAddress
     @subject: string
     @body: string
@@ -13,7 +13,7 @@ domain ATQR
     @email: DISL.EmailAddress
     @role: ParticipationRole
 
-  concept Invitee extends on Contact
+  concept Invitee expands on Contact
     @status: ParticipationStatus = ParticipationStatus.NotRequested
 
   concept EmailAddress
