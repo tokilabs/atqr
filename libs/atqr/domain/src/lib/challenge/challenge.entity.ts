@@ -4,9 +4,10 @@ import { dateDiff } from '../../utils/dateDifference';
 import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
+import { ChallengeStatus } from '../types/enums';
 
 export enum SupervisorEnum {
-  notInvited ='notInvited',
+  notInvited = 'notInvited',
   invited = 'invited',
   accepted = 'accepted',
   rejected = 'rejected',
@@ -15,12 +16,6 @@ export enum SupervisorEnum {
   repliedIfTheGoalWasNotAccomplished = 'repliedIfTheGoalWasNotAccomplished',
 }
 
-export enum ChallengeStatus {
-  Ongoing = 'Ongoing',
-  Completed = 'Completed',
-  Failed = 'Failed',
-  Overdue = 'Overdue',
-}
 export class Challenge {
   private _id: Guid;
   private _price: number;
