@@ -1,0 +1,87 @@
+@startuml ChallengeConstructor
+  skinparam zoom 1.5
+
+  title Challenge Constructor
+
+  ' Creole syntax: https://plantuml.com/creole
+
+  start
+
+  floating note right
+    **Pre-conditions**
+    ----
+      * User is logged in
+    ====
+    **Params**
+    ----
+    |=  Name  |=  Type  |=  Example  |
+    |  ""@invitees""  |  ""Invitee[]""  |  [ {
+        invitees:"saulo@toki.life"
+        } ]  |
+
+        ""goalId""  |  ""GoalId""  |  {
+            goalId: "4518844"
+        }   | 
+        ""owner""  |  ""Contact""  |  {
+            owner: "25"
+        }   |
+        ""deadline""  | ""DateTime""  | {
+            deadline:"22/12/2023"
+        }   |
+        ""pledge""   |  ""number""   |  {
+            pledge: 100 
+        }   |
+        ""requiredProof""   |   ""string""   |  {
+            requiredProof?:"" 
+        }   |
+        ""enrollmentDeadline""   |  ""Date""   |    {
+            enrollmentDeadline: "12/04/2022"
+        }
+
+                            
+    | | | |
+  end note
+
+partition """**constructor**""" {
+
+  :Copy parameters to properties;
+
+  note right
+    Parameters prefixed with ""@""
+    become properties with the same name
+  end note
+
+  split
+    :Create ChallengeId;
+  split again
+    split
+      if (deadline < today) then (yes)
+        ' goto continue
+      else (no)
+        #pink:throw Error;
+        kill
+      endif
+
+    split again
+      if (pledge is < 25) then (yes)
+        ' goto continue
+      else (no)
+        #pink:throw Error;
+        kill
+      endif
+    
+    split again
+        if (deadline > enrollmentDeadline) then (yes)
+        else (no)
+             #pink:throw Error;
+        kill
+      endif
+    end split
+
+  end split
+
+  label finish
+  stop
+}
+
+@enduml
