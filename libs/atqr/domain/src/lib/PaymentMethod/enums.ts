@@ -1,4 +1,4 @@
-enum PaymentFundsStatus {
+export enum PaymentFundsStatus {
   Unverified = 'Unverified',
   Authorized = 'Authorized',
   Denied = 'Denied',
@@ -7,7 +7,7 @@ enum PaymentFundsStatus {
  * The status of a challenge payment.
  * Here's
  */
-enum PaymentStatus {
+export enum PaymentStatus {
   NotDueYet = 'NotDueYet',
   Defaulted = 'Defaulted',
   Failed = 'Failed',
@@ -18,7 +18,7 @@ enum PaymentStatus {
   RefundRequested = 'RefundRequested',
 }
 
-enum PaymentMethodType {
+export enum PaymentMethodType {
   CreditCard = 'CreditCard',
   DebitCard = 'DebitCard',
 }
