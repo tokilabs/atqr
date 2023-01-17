@@ -1,5 +1,5 @@
 import { CronJob } from 'cron';
-import { NotificationService } from './notification.service';
+import { NotificationService } from './notification/notification.service';
 
 export class DeadlineMonitorService {
 

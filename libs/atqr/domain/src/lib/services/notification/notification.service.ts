@@ -1,7 +1,13 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
-import { IChallengeRepository } from '../challenge/challenge.repository.interface';
-import { Congrats, DeadLineEmail, IMailer, PayThePrice } from '../EmailService';
+import { Challenge } from '../../challenge/challenge.entity';
+import { IChallengeRepository } from '../../challenge/challenge.repository.interface';
+import {
+  Congrats,
+  DeadLineEmail,
+  IMailer,
+  PayThePrice,
+} from '../../EmailService';
+import { ChallengeStatus } from '../../types';
 
 export class NotificationService {
   constructor(
@@ -38,7 +44,7 @@ export class NotificationService {
     });
   }
   public notifyCompletedChallenges(challenge: Challenge) {
-    if (challenge.status == ChallengeStatus.Completed) {
+    if (challenge.status == ChallengeStatus.Finished) {
       //challenge status = completed
       const player = challenge.player;
       const email = new Congrats(player.emailAddress);

@@ -1,4 +1,8 @@
-import { ITemplateDataTypes } from './interfaces/templateDataType.interface';
+import { ITemplateDataTypes } from './templateDataType.interface';
+
+export type TemplateDataTypes = {
+  [K in keyof ITemplateDataTypes]: ITemplateDataTypes[K];
+};
 
 export enum MessageTemplateId {
   ChallengeCreated = 'ChallengeCreated',
@@ -18,8 +22,11 @@ export enum MessageTemplateId {
   YourContenderCanceledTheChallenge = 'YourContenderCanceledTheChallenge',
   YourContenderWereTheySuccessful = 'YourContenderWereTheySuccessful',
   ReminderToOfficiate = 'ReminderToOfficiate',
-  YourJudgeDidNotAnswered = 'YourJudgeDidNotAnswered',
+  YourJudgeDidNotAnswer = 'YourJudgeDidNotAnswer',
 }
-export type TemplateDataTypes = {
-  [K in keyof ITemplateDataTypes]: ITemplateDataTypes[K];
-};
+
+export enum NotificationChannel {
+  Email = 'Email',
+  SMS = 'SMS',
+  Push = 'Push',
+}
