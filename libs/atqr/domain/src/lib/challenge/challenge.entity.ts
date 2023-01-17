@@ -1,26 +1,14 @@
 import { Guid } from '@tokilabs/lang/';
-import { Transform } from 'class-transformer';
 import { dateDiff } from '../../utils/dateDifference';
 import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
-import { ChallengeStatus } from '../types/enums';
-
-export enum SupervisorEnum {
-  notInvited = 'notInvited',
-  invited = 'invited',
-  accepted = 'accepted',
-  rejected = 'rejected',
-  askedIfTheGoalIsAccomplished = 'askedIfTheGoalIsAccomplished',
-  repliedIfTheGoalWasAccomplished = 'repliedIfTheGoalWasAccomplished',
-  repliedIfTheGoalWasNotAccomplished = 'repliedIfTheGoalWasNotAccomplished',
-}
+import { ChallengeStatus, ParticipationStatus } from '../types/enums';
 
 export class Challenge {
   private _id: Guid;
   private _price: number;
   private _deadline: Date;
-  @Transform(({ value }) => ChallengeStatus[value])
   private _status?: ChallengeStatus;
 
   constructor(
@@ -32,7 +20,7 @@ export class Challenge {
     deadline: Date,
     private _paymentMethod?: PaymentMethodEntity,
     _status: ChallengeStatus = ChallengeStatus.Ongoing,
-    private _supervisorStatus: SupervisorEnum = SupervisorEnum.notInvited
+    private _supervisorStatus: ParticipationStatus = ParticipationStatus.NotRequested
   ) {
     this._id = new Guid();
     if (price >= 25) {
@@ -110,7 +98,7 @@ export class Challenge {
     return true;
   }
 
-  updateSupervisorStatus(status: SupervisorEnum) {
+  updateSupervisorStatus(status: ParticipationStatus) {
     this._supervisorStatus = status;
   }
 }
