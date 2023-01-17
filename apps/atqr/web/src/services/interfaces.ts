@@ -1,10 +1,5 @@
 import { ChallengeStatus, JudgmentStatus } from '@atqr/domain';
 
-export enum PaymentMethodEnum {
-  'creditCard' = 'creditCard',
-  'debitCard' = 'debitCard',
-}
-
 export const updateStatus = (id: string, status: ChallengeStatus) => {
   if (status == ChallengeStatus.Overdue) {
     return false;
