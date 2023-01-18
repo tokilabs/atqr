@@ -5,16 +5,12 @@ export class EmailAddress {
   @IsEmail()
   emailAddress: string;
 }
-export interface IEmail {
-  to: EmailAddress;
-  subject: string;
-  body: string;
-}
-export class Email extends ValueObject<Email> implements IEmail {
+
+export class Email extends ValueObject<Email>{
   constructor(
     public readonly to: EmailAddress,
-    public subject: string,
-    public body: string
+    public readonly subject: string,
+    public readonly body: string
   ) {
     super(Email, ['to', 'subject', 'body']);
   }
@@ -35,7 +31,3 @@ export class Email extends ValueObject<Email> implements IEmail {
     })
   }
 }
-  
-    
-  
-

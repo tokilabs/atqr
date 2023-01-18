@@ -1,38 +1,35 @@
 import { MaxLength, MinLength } from 'class-validator';
-import { EmailAddress } from '../EmailService';
+import { EmailAddress } from './email';
 import { ValueObject } from '../../utils/valueObject';
+import { ParticipationRole } from '../types';
 
-export enum ParticipationRole {
-  Contender,
-  Judge,
-}
 export class Contact extends ValueObject<Contact> {
   @MinLength(5)
   @MaxLength(20)
-  name: string;
-  email: EmailAddress;
-  role: ParticipationRole;
+  public readonly name: string;
+  public readonly email: EmailAddress;
+  public readonly role: ParticipationRole;
 
   constructor(name: string, email: EmailAddress, role: ParticipationRole) {
     super(Contact, ['name', 'email', 'role']);
-    this.name = name
-    this.email = email
-    this.role = role
+    this.name = name;
+    this.email = email;
+    this.role = role;
   }
 
-  public setName(newName: string): Contact {
+  public setName(name: string): Contact {
     return this.newInstanceWith({
-      name: newName,
+      name,
     });
   }
-  public setEmail(newEmail: EmailAddress): Contact {
+  public setEmail(email: EmailAddress): Contact {
     return this.newInstanceWith({
-      email: newEmail,
+      email,
     });
   }
-  public setRole(newRole: ParticipationRole): Contact {
+  public setRole(role: ParticipationRole): Contact {
     return this.newInstanceWith({
-      role: newRole,
+      role,
     });
   }
 }
