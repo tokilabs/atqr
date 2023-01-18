@@ -1,13 +1,23 @@
 import { Exception } from '@tokilabs/lang';
+<<<<<<< HEAD
 import { ChallengeStatus } from '../../types/enums';
 import { IChallengeRepository } from '../../challenge/IChallenge.repository'
 import { Challenge } from '../../challenge'
+=======
+import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
+import { IChallengeRepository } from '../challenge/IChallenge.repository';
+>>>>>>> 78be758 (style(emailservice folder is no emailtemplates): email service stuff is implemented else where)
 import {
   Congrats,
   DeadLineEmail,
   PayThePrice,
+<<<<<<< HEAD
 } from '../../templates';
 import { IMailer } from './mailer.interface'
+=======
+} from '../emailTemplates';
+
+>>>>>>> 78be758 (style(emailservice folder is no emailtemplates): email service stuff is implemented else where)
 export class NotificationService {
   constructor(
     private mailer: IMailer,

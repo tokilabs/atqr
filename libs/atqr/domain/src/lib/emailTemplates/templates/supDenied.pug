@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+      include includes/styleImports.pug
+
+  //- extra non-base style
+  style.
+
+  body
+    include includes/baseTemplate.pug
+
+    +emailContent('Ooooooorra, não deixava!',
+    '#{supervisor.name} teve a cara lavada de ler seu convite de camaradagem e friamente recusou ser sua babá 🤡',
+    './imgs/sup-denied.gif', 'Não precisa encerrar a amizade, pra tudo tem uma explicação, temos certeza. Mas precisamos que você convide alguém disponível para te supervisionar nesse desafio ✨')
+
+    +button('', 'Convide Outro')(class="btn")
