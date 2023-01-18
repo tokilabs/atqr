@@ -2,7 +2,7 @@ import {
   ChallengeAndInviteeEnvelope,
   ChallengeEnvelope,
 } from '../../templates/dtos';
-import { MessageTemplateId } from '../templateDataType';
+import { MessageTemplateId } from './notification.types';
 
 export interface ITemplateDataTypes extends Record<MessageTemplateId, object> {
   [MessageTemplateId.ChallengeCreated]: ChallengeEnvelope;
@@ -22,5 +22,5 @@ export interface ITemplateDataTypes extends Record<MessageTemplateId, object> {
   [MessageTemplateId.YourContenderCanceledTheChallenge]: ChallengeAndInviteeEnvelope;
   [MessageTemplateId.YourContenderWereTheySuccessful]: ChallengeAndInviteeEnvelope;
   [MessageTemplateId.ReminderToOfficiate]: ChallengeAndInviteeEnvelope;
-  [MessageTemplateId.YourJudgeDidNotAnswered]: ChallengeAndInviteeEnvelope;
+  [MessageTemplateId.YourJudgeDidNotAnswer]: ChallengeAndInviteeEnvelope;
 }

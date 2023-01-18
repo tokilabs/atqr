@@ -1,8 +1,13 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge, ChallengeStatus } from '../challenge/challenge.entity';
-import { IChallengeRepository } from '../challenge/IChallenge.repository';
-import { Congrats, DeadLineEmail, IMailer, PayThePrice } from '../templates';
-
+import { ChallengeStatus } from '../../types/enums';
+import { IChallengeRepository } from '../../challenge/IChallenge.repository'
+import { Challenge } from '../../challenge'
+import {
+  Congrats,
+  DeadLineEmail,
+  PayThePrice,
+} from '../../templates';
+import { IMailer } from './mailer.interface'
 export class NotificationService {
   constructor(
     private mailer: IMailer,
@@ -21,7 +26,7 @@ export class NotificationService {
             try {
               const email = new DeadLineEmail(c.supervisorEmail);
               //create email to send to sup
-              this.mailer.send(email);
+              this.mailer.sendMail(email);
               //sends that email
               this.challengeRepository.update(c);
               //do challenge update that are overdue
@@ -38,7 +43,7 @@ export class NotificationService {
     });
   }
   public notifyCompletedChallenges(challenge: Challenge) {
-    if (challenge.status == ChallengeStatus.Completed) {
+    if (challenge.status == ChallengeStatus.Finished) {
       //challenge status = completed
       const player = challenge.player;
       const email = new Congrats(player.emailAddress);
