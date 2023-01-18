@@ -1,6 +1,6 @@
 import { Guid } from '@tokilabs/lang/';
 import { dateDiff } from '../../utils/dateDifference';
-import { EmailAddress } from '../EmailService';
+import { EmailAddress } from '../emailTemplates';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
 import { ChallengeStatus, ParticipationStatus } from '../types/enums';

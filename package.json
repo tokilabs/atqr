@@ -9,7 +9,7 @@
     "atqr:start:api": "nx serve api",
     "postatqr:start:api": "docker compose down",
     "atqr:start:web": "yarn parcel apps/atqr/web/src/pages/**/*.pug --open",
-    "atqr:start:test": "yarn run jest",
+    "atqr:test": "yarn run jest",
     "_________ATQR PROD_________": "_________________",
     "atqr:build:web": "yarn parcel build apps/atqr/web/src/pages/**/*.pug",
     "_________ATQR DB_________": "_________________",
