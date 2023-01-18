@@ -1,0 +1,47 @@
+@startuml allJudgesAccepted
+  skinparam zoom 1.5
+
+  title allContendersAccepted()
+
+  ' Creole syntax: https://plantuml.com/creole
+
+  start
+
+  floating note right
+    **Pre-conditions**
+    ----
+      * User is logged in 
+    ====
+    **Params**
+    ----
+    |=  Name  |=  Type  |=  Example  |
+    |  ""@invitees""  |  ""Invitee[]""  |  [ {
+        invitee:"saulo@toki.life"
+        } ]                
+    | | | |
+  end note
+
+partition """**allContendersAccepted()**""" {
+
+  :receive propriety of type Invitee[];
+
+  note right
+    Parameters prefixed with ""@""
+    become properties with the same name
+  end note
+
+    split
+      if (invitee.role = ParticipationRole.Contender 
+      & invitee.status = ParticipationStatus.Accepted) then (yes)
+        :return invitee = this._contender;
+      else (no) 
+        #pink:throw Error;
+        kill
+        
+      endif
+    end split
+label finish
+stop
+}
+
+@enduml
