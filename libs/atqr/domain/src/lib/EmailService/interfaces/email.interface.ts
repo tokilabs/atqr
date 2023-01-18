@@ -1,4 +1,4 @@
-import { EmailAddress } from '../email';
+import { EmailAddress } from '../../valueObjects';
 
 export interface IEmail {
   to: EmailAddress;
