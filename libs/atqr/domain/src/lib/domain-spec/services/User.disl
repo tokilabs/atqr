@@ -13,37 +13,3 @@ domain ATQR
 
       findUserByEmail :email
         ⮐ User or null
-
-      updateUser :user
-        rules:
-          - User.email does not exist in UserRepository.users.email
-
-        update User and return
-
-
-    service UserService
-      depends on UserRepository
-
-      -> CreateUser? :contact
-          either createUser :contact using UserRepository
-              or show UserAlreadyExists screen
-
-      -> GetUser? :userId
-          either findUserById :usereId using UserRepository
-              or show UserNotFound screen
-
-      -> GetUserByEmail? :email
-          either findUserByEmail :email using UserRepository
-              or show UserNotFound screen
-
-      -> UserCreateChallenge? :userId
-          either challenge :user using UserRepository
-              or show UserNotFound screen
-
-      -> UserPlayChallenge? :userId
-          either up Enrollment :user using UserRepository
-              or show UserNotFound screen
-
-      -> UserOfficiateChallenge? :userId
-          either officiate :user using UserRepository
-              or show UserNotFound screen
