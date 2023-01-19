@@ -38,8 +38,9 @@ export class Challenge {
     private _enrollmentDeadline: Date,
     private _inviteByLink: boolean
   ) {
-    // challengeId is in challenge's updated proprieties on issue 120, already pull requested
-    this._goalId = new GoalId();
+    // challengeId, _createdByContender and _createdByJudge are in challenge's updated proprieties on issue 120, already pull requested
+    this._challengeId = new ChallengeId();
+    //  are props updated on issue 120
     if ((_owner.role = ParticipationRole.Contender)) {
       this._createdByContender = true;
     }
