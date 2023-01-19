@@ -22,7 +22,7 @@ domain ATQR
         ⚙️ recipe:
           @challengeId: ChallengeId
           @goalId: GoalId
-          @owner: User
+          @owner: Contact
           /**
           * Holds all users ever invited to this challenge
           * and their participation status
