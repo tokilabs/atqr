@@ -30,40 +30,41 @@ domain ATQR
           @deadline: Date
           @pledge: DISL.Money
             greater than 0
-          @deadline: FutureDate
           @requiredProof?: DISL.Paragraph
           /**
            * Allows contenders to enroll using a link instead of being invited
            * @param {yes or no} yes if contenders can enroll using a link
            */
           @inviteByLink: yes or no
-          @enrollmentDeadline: FutureDate
-            before @deadline
-          @owner: Contact
-
-          //TODO: this "property" below was added to User entity as a property. Can it now be deleted from here?
-          ownerPaymentMethod: PaymentMethod | null
+          @paymentMethod: PaymentMethod | null
 
           when @createdByContender
-
-            ⚙️ registerContender :name :email
-              rules:
-                when Challenge @status is not .Unverified do nothing
-
-              find_or_create new User
+          ⚙️ registerPlayer :name :email
+            rules:
+              find_or_create User with ^email
                 it's paymentMethod = PaymentMethod
                 createEnrollmentFor User
 
-                  on SUCCESS:
-                    show ui
-                      CheckEmailToConfirmParticipation
+                on SUCCESS:
+                  return "Player registered"
 
-                  on FAILURE:
-                    throw "Could not create contender"
+                on FAILURE:
+                  throw "Could not create player"
+
+          when @createdByJudge
+          ⚙️ registerPlayer :name :email
+            rules:
+              find_or_create User with ^email
+                it's paymentMethod = null
+                createOfficiationFor User
+
+                on SUCCESS:
+                  return "Player registered"
+
+                on FAILURE:
+                  throw "Could not create player"
 
         ⚙️ verifyIfChallengeCanBegin :contenders :judges :paymentMethods
-
-
           return ⚙️ allJudgesAccepted
             and  ⚙️ allContendersAccepted
             and  ⚙️ allPaymentMethodsVerified
@@ -72,12 +73,10 @@ domain ATQR
             ChallengeAccepted!
               OfficiationRequestAccepted!
 
-
         ⚙️ allContendersAccepted
           for each invitee with .role equals Contender in @invitees
             if it's participationStatus is not Accepted
               return false
-
           return true
 
         ⚙️ allJudgesAccepted
@@ -92,6 +91,13 @@ domain ATQR
 
         ⚙️ createEnrollmentFor invitee
           create [new Enrollment] in @contenders for ^invitee
+            it's pledge = 0
+            it's paymentMethod = null
+            it's paymentStatus = PaymentStatus.NotRequested
+            it's paymentFundsStatus = PaymentFundsStatus.NotRequested
+
+        ⚙️ createOfficiatioinFor invitee
+          create [new Officiation] in @judges for ^invitee
             it's pledge = 0
             it's paymentMethod = null
             it's paymentStatus = PaymentStatus.NotRequested
