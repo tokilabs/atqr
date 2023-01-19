@@ -34,7 +34,7 @@ export class Challenge {
     private _invitees: Invitee[],
     private _deadline: Date,
     private _pledge: number,
-    private _requiredProof?: string,
+    private _requiresProof?: string,
     private _enrollmentDeadline: Date,
     private _inviteByLink: boolean
   ) {
