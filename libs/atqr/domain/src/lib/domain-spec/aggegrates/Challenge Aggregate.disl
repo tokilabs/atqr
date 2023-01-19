@@ -31,11 +31,12 @@ domain ATQR
           @pledge: DISL.Money
             greater than 0
           @deadline: FutureDate
-          @requiredProof?: DISL.Paragraph
+          @requiresProof?: DISL.Paragraph
           /**
            * Allows contenders to enroll using a link instead of being invited
            * @param {yes or no} yes if contenders can enroll using a link
            */
+          // TODO: inviteByLink is not been used anywhere
           @inviteByLink: yes or no
           @enrollmentDeadline: FutureDate
             before @deadline
@@ -46,20 +47,20 @@ domain ATQR
 
           when @createdByContender
             // TODO: should this function be inside ⚙️recipe ? 
-            ⚙️ registerContender :name :email
-              rules:
-                when Challenge @status is not .Unverified do nothing
+          ⚙️ registerContender :name :email
+            rules:
+              when Challenge @status is not .Unverified do nothing
 
-              find_or_create new User
-                it's paymentMethod = PaymentMethod
-                createEnrollmentFor User
+            find_or_create new User
+              it's paymentMethod = PaymentMethod
+              createEnrollmentFor User
 
-                  on SUCCESS:
-                    show ui
-                      CheckEmailToConfirmParticipation
+                on SUCCESS:
+                  show ui
+                    CheckEmailToConfirmParticipation
 
-                  on FAILURE:
-                    throw "Could not create contender"
+                on FAILURE:
+                  throw "Could not create contender"
 
         ⚙️ verifyIfChallengeCanBegin :contenders :judges :paymentMethods
 

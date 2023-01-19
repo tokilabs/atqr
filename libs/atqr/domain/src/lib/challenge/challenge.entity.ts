@@ -6,7 +6,7 @@ import { PaymentMethodEntity } from '../PaymentMethod';
 //import { Player } from '../player/player.entity';
 
 export enum SupervisorEnum {
-  notInvited ='notInvited',
+  notInvited = 'notInvited',
   invited = 'invited',
   accepted = 'accepted',
   rejected = 'rejected',
@@ -35,10 +35,11 @@ export class Challenge {
     private _deadline: Date,
     private _pledge: number,
     private _requiredProof?: string,
-    private _enrollmentDeadline: Date
+    private _enrollmentDeadline: Date,
+    private _inviteByLink: boolean
   ) {
     // challengeId is in challenge's updated proprieties on issue 120, already pull requested
-    this._challengeId = new ChallengeId();
+    this._goalId = new GoalId();
     if (_pledge >= 25) {
       this._pledge = _pledge;
     } else {
@@ -56,8 +57,8 @@ export class Challenge {
       throw Error('_enrollmentDeadline has to be before _deadline');
     }
   }
-  get id() {
-    return this._id;
+  get goalId() {
+    return this._goalId;
   }
   get goal() {
     return this._goal;
