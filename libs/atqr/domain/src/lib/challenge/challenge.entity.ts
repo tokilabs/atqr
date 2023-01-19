@@ -30,7 +30,7 @@ export class Challenge {
 
   constructor(
     private _goalId: GoalId,
-    private _owner: User,
+    private _owner: Contact,
     private _invitees: Invitee[],
     private _deadline: Date,
     private _pledge: number,
@@ -40,6 +40,12 @@ export class Challenge {
   ) {
     // challengeId is in challenge's updated proprieties on issue 120, already pull requested
     this._goalId = new GoalId();
+    if ((_owner.role = ParticipationRole.Contender)) {
+      this._createdByContender = true;
+    }
+    if ((_owner.role = ParticipationRole.Judge)) {
+      this._createdByJudge = true;
+    }
     if (_pledge >= 25) {
       this._pledge = _pledge;
     } else {
