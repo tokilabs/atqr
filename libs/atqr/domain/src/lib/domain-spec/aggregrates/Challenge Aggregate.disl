@@ -20,6 +20,7 @@ domain ATQR
           auto: Today
 
         ⚙️ recipe:
+          @challengeId: ChallengeId
           @goalId: GoalId
           @owner: User
           /**
