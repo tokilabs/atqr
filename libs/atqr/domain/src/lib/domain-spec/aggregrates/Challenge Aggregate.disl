@@ -13,6 +13,7 @@ domain ATQR
         @createdByJudge: yes or no
           returns @owner's role as .Judge
 
+        @challengeId: ChallengeId
         @contenders: Enrollment[]
         @judges: Officiation[]
         @status: ChallengeStatus = .Unverified

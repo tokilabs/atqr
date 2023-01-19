@@ -1,4 +1,3 @@
-import { Guid } from '@tokilabs/lang/';
 import { dateDiff } from '../../utils/dateDifference';
 import { EmailAddress } from '../EmailService';
 import { PaymentMethodEntity } from '../PaymentMethod';
@@ -6,11 +5,14 @@ import { Player } from '../player/player.entity';
 import { ChallengeStatus, ParticipationStatus } from '../types/enums';
 
 export class Challenge {
+  private _challengeId: ChallengeId;
   private _contenders: Enrollment[];
   private _judges: Officiation[];
   @Transform(({ value }) => ChallengeStatus[value])
   private _status?: ChallengeStatus;
   private _createdAt: Date;
+  private _createdByJudge: boolean;
+  private _createdByContender: boolean;
 
   constructor(
     private _goal: string,
