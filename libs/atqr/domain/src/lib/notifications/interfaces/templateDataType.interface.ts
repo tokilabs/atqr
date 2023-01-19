@@ -1,7 +1,7 @@
 import {
   ChallengeAndInviteeEnvelope,
   ChallengeEnvelope,
-} from '../../emailTemplates/dtos';
+} from '../../templates/dtos';
 import { MessageTemplateId } from '../templateDataType';
 
 export interface ITemplateDataTypes extends Record<MessageTemplateId, object> {

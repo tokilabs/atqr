@@ -1,6 +1,6 @@
 import { Guid, isEmpty } from '@tokilabs/lang';
 import { Challenge } from '../challenge/challenge.entity';
-import { EmailAddress } from '../emailTemplates';
+import { EmailAddress } from '../templates';
 import {
   InvalidParameterInfo,
   InvalidParametersException,

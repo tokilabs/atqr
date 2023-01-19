@@ -1,6 +1,6 @@
 import { Guid } from '@tokilabs/lang';
 import { Player } from './player.entity';
-import { EmailAddress } from '../emailTemplates';
+import { EmailAddress } from '../templates';
 
 export interface IPlayerRepository {
   findUnique(id: Guid): Promise<Player>;

@@ -1,4 +1,4 @@
-export * from './emailTemplates';
+export * from './templates';
 export * from './PaymentMethod';
 export * from './challenge';
 export * from './exceptions';
