@@ -6,5 +6,36 @@
   "plantuml.diagramsRoot": "/uml/src",
   "plantuml.exportFormat": "svg",
   "plantuml.exportOutDir": "/uml/lib",
-  "cSpell.words": ["atqr"]
+  "cSpell.words": [
+    "Accomplished",
+    "atqr",
+    "dtos",
+    "mailgun",
+    "meeta",
+    "nestjs",
+    "pagar",
+    "pagseguro",
+    "supabase",
+    "Supabase",
+    "swiper",
+    "tokilabs"
+  ],
+  "todo-tree.general.statusBar": "total",
+  "todo-tree.general.enableFileWatcher": true,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "[ ]",
+    "[x]",
+    "QUESTION"
+  ],
+  "todo-tree.tree.showCountsInTree": true,
+  "todo-tree.regex.regexCaseSensitive": false,
+  "liveServer.settings.port": 5501,
+  "[jade]": {
+    "editor.defaultFormatter": "ducfilan.pug-formatter"
+  }
 }

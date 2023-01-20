@@ -1,0 +1,27 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(http-equiv='x-ua-compatible' content='ie=edge')
+  title Eu Duvido
+  meta(name='robots' content='noindex, follow')
+  meta(name='description' content='')
+  meta(name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+// Single Pricing Start
+.single-pricing.color-3
+  .pricing-header
+    p.price_title Eu Duvido
+    h3#player-name
+  .pricing-body
+    ul
+      li#challenge-description
+      li#challenge-deadline
+      li
+    .price-challenge
+      h3#challenge-price
+        sup $
+    a.btn.btn-primary() Aceitar o Desafio
+// Single Pricing End
+
+script(src='https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js')
+script(type='module' src='./acceptChallenge.ts')

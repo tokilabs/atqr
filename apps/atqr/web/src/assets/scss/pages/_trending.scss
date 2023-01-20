@@ -1,0 +1,122 @@
+/*--
+/*  26 - Trending CSS
+/*----------------------------------------*/
+
+.meeta-trending-section {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+
+    & .trending-shape-1 {
+        position: absolute;
+        top: 30%;
+        left: -120px;
+        width: 240px;
+        height: 240px;
+        border: 30px solid #00bef0;
+        border-radius: 50%;
+        z-index: -1;
+    }
+    & .trending-shape-2 {
+        position: absolute;
+        left: 240px;
+        top: 28%;
+        z-index: -1;
+        animation: round-01 5s linear infinite;
+    }
+    & .trending-shape-3 {
+        position: absolute;
+        left: 140px;
+        bottom: 30%;
+        z-index: -1;
+    }
+    & .trending-shape-4 {
+        position: absolute;
+        right: 170px;
+        top: 40%;
+        z-index: -1;
+        animation: rotate-style 10s linear infinite;
+    }
+    & .trending-shape-5 {
+        position: absolute;
+        right: -40px;
+        bottom: 30%;
+        z-index: -1;
+        animation: round-01 5s linear infinite;
+    }
+}
+
+.meeta-trending-content-wrap {
+    padding-top: 30px;
+}
+.trending-item {
+    
+    & .trending-thumb {
+        position: relative;
+        overflow: hidden;
+        border-radius: 5px;
+        z-index: 1;
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(#0b0e48, 0.3);
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        & img {
+            width: 100%;
+        }
+
+        & .trending-city {
+            position: absolute;
+            top: 35px;
+            left: 25px;
+
+           & .city {
+            font-size: 14px;
+            font-family: $heading-font2;
+            font-weight: 500;
+            color: $white;
+            background: rgba(#000000, 0.3);
+            display: block;
+            margin: 5px 0;
+            height: 25px;
+            padding: 0 10px;
+            line-height: 25px;
+            border-radius: 30px;
+           }
+        }
+
+        & .trending-content {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            padding-right: 40px;
+            @media #{$desktop-device}{
+                padding-right: 20px;
+            }
+
+            & .title {
+                font-size: 18px;
+                line-height: 24px;
+                color: $white;
+                font-family: $heading-font2;
+                font-weight: 700;
+            }
+    
+            & .date {
+                font-size: 13px;
+                line-height: 30px;
+                color: #d8d8d9;
+                padding-top: 12px;
+            }
+        }
+    }
+
+   
+}

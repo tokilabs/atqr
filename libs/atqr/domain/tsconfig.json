@@ -1,4 +1,8 @@
 {
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
   "extends": "../../../tsconfig.base.json",
   "files": [],
   "include": [],
@@ -9,5 +13,8 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "emitDecoratorMetadata": true
+  }
 }

@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// TODO: Solve challenge status already exists error on second migration
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ChallengeStatus {
+  Ongoing
+  Completed
+  Failed
+}
+
+model Challenge {
+  id              String          @id @db.Uuid
+  goal            String
+  deadline        DateTime
+  price           Int // in cents
+  player          Player          @relation(fields: [playerId], references: [id])
+  playerId        String          @db.Uuid
+  supervisorName  String
+  supervisorEmail String
+  status          ChallengeStatus @default(Ongoing)
+  paymentMethod   String
+  creditCardToken String?
+}
+
+model Player {
+  id         String      @id @db.Uuid
+  name       String
+  email      String      @unique
+  Challenges Challenge[]
+}

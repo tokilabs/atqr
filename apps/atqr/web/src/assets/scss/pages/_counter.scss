@@ -1,0 +1,138 @@
+/*--
+/*  12 - Counter CSS
+/*----------------------------------------*/
+
+.meeta-counter-section {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: rgba($black, 0.8);
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    & .shape-1 {
+        position: absolute;
+        left: 0;
+        top: -25px;
+        z-index: -1;
+    }
+    & .shape-2 {
+        position: absolute;
+        left: -75px;
+        top: 135px;
+        z-index: -1;
+    }
+    & .shape-3 {
+        position: absolute;
+        right: 220px;
+        top: 90px;
+        z-index: 0;
+        @media #{$desktop-device} {
+            right: 70px;
+            top: 75px;
+        }
+    }
+    & .shape-4 {
+        position: absolute;
+        right: 80px;
+        top: 90px;
+        z-index: -1;
+        animation: round-01 5s linear infinite;
+        @media #{$desktop-device} {
+            right: 0;
+        }
+    }
+}
+
+.counter-wrap {
+    margin-top: -40px;
+}
+
+.single-counter {
+    margin-top: 30px;
+    position: relative;
+
+    &::before {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 50%;
+        background: #383838;
+        width: 1px;
+        height: 410px;
+        transform: translateY(-50%);
+        @media #{$tablet-device} {
+            display: none;
+        }
+    }
+
+    &.counter-item-1 {
+        
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            background: #383838;
+            width: 1px;
+            height: 410px;
+            transform: translateY(-50%);
+            @media #{$tablet-device} {
+                display: none;
+            }
+        }
+        & .counter-text {
+            & .counter {
+                color: #f9d464;
+            }
+        }
+    }
+    &.counter-item-2 {
+        & .counter-text {
+            & .counter {
+                color: #00acee;
+            }
+        }
+    }
+    &.counter-item-3 {
+        & .counter-text {
+            & .counter {
+                color: #fc097c;
+            }
+        }
+    }
+    
+    & .counter-text {
+
+        & .counter {
+            font-size: 60px;
+            line-height: 70px;
+            font-family: $heading-font2;
+            font-weight: 700;
+            color: #554bb9;
+            @media #{$large-mobile} {
+                font-size: 45px;
+                line-height: 58px;
+            }
+        }
+
+        & p {
+            font-size: 16px;
+            line-height: 30px;
+            color: $white;
+        }
+    }
+}
+
+  

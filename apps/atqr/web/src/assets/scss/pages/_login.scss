@@ -1,0 +1,92 @@
+/*--
+/*  30 - Login CSS
+/*----------------------------------------*/
+
+
+.login-register-section {
+
+    & .login-register-wrap {
+        margin-top: -50px;
+        & .section-title {
+
+            & .title {
+                font-size: 36px;
+                font-family: $heading-font2;
+                font-weight: 700;
+                color: $heading-color;
+                line-height: 1.2;
+                margin-top: -8px;
+            }
+        }
+        & .login-register-box {
+            border: 1px solid #ebebeb;
+            padding: 40px;
+            border-radius: 10px;
+            margin-top: 50px;
+
+            & .login-register-form {
+
+                & .single-form {
+                    margin-top: 20px;
+                    & .form-control {
+                        border: 1px solid transparent;
+                        background: #f6f7f9;
+                        border-radius: 0;
+                        @include placeholder{
+                            opacity: 0.95;
+                            font-size: 14px;
+                            font-family: $heading-font2;
+                            color: #787884;
+                            font-weight: 400;
+                        }
+                        &:focus{
+                            outline: none;
+                            border-color: $primary;
+                            box-shadow: none;
+                        }
+                    }
+                    & textarea {
+                        &.form-control {
+                            height: 135px;
+                            font-size: 13px;
+                            color: #415674;
+                            font-weight: 600;
+                            padding: 10px 25px;
+                            padding-top: 15px;
+                            resize: none;
+                            &:focus{
+                                outline: none;
+                                box-shadow: none;
+                            }
+                        }
+                    }
+                    & .form-check-input {
+                        margin-right: 8px;
+                        margin-top: 5px;
+
+                        &:focus {
+                            box-shadow: none;
+                        }
+                    }
+                    & .form-check-label {
+                        display: inline;
+                        font-size: 15px;
+                        line-height: 22px;
+                        margin-bottom: 0;
+                        text-transform: none;
+                    }
+                }
+                & .form-btn {
+                    margin-top: 30px;
+
+                    & .btn {
+                        height: 50px;
+                        line-height: 45px;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,8 @@
+###
+GET http://localhost:3333/api/stripe/public-key
+
+###
+POST http://localhost:3333/api/stripe/setup-intent
+
+###
+POST http://localhost:3333/api/stripe/webhook
