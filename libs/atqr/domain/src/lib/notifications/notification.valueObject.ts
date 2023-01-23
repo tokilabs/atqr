@@ -3,19 +3,6 @@ import { Guid } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { isBeforeDay } from '../../utils/isBeforeDay';
 
-enum NotificationCategory {
-  EuDuvidoProductUpdates = 'EuDuvidoProductUpdates',
-  EuDuvidoPromotions = 'EuDuvidoPromotions',
-  NewInvitations = 'NewInvitations',
-  ChallengeUpdates = 'ChallengeUpdates',
-}
-
-export enum NotificationChannel {
-  Email = 'Email',
-  SMS = 'SMS',
-  Push = 'Push',
-}
-
 export class Notification extends ValueObject<Notification> {
   constructor(
     public readonly category: NotificationCategory,
