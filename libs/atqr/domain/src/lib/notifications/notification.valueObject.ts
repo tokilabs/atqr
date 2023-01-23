@@ -1,4 +1,4 @@
-import { ValueObject } from '../../utils/valueObject';
+import { ValueObject } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { isBeforeDay } from '../../utils/isBeforeDay';
