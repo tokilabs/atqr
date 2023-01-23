@@ -5,6 +5,7 @@ import { isBeforeDay } from '../../utils/isBeforeDay';
 
 export class Notification extends ValueObject<Notification> {
   constructor(
+    public readonly id = new Guid(),
     public readonly category: NotificationCategory,
     public readonly templateId: MessageTemplateId,
     public readonly allowedChannels: NotificationChannel[],
@@ -13,9 +14,9 @@ export class Notification extends ValueObject<Notification> {
     public readonly actionTaken: boolean,
     public readonly contactLog: NotificationLogEntry[],
     public readonly nextContactDate: Date,
-    public readonly id = new Guid()
   ) {
     super(Notification, [
+      'id',
       'category',
       'templateId',
       'allowedChannels',
@@ -24,7 +25,6 @@ export class Notification extends ValueObject<Notification> {
       'actionTaken',
       'contactLog',
       'nextContactDate',
-      'id'
     ]);
   }
 
