@@ -1,4 +1,4 @@
-import { ValueObject } from '../../utils/valueObject';
+import { ValueObject } from '@atqr/domain';
 import { Guid } from '@tokilabs/lang';
 import { NotificationChannel } from './notification.valueObject';
 
