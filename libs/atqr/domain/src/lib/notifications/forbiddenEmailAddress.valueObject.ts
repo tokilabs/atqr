@@ -1,4 +1,4 @@
-import { ValueObject } from '../../utils/valueObject';
+import { ValueObject } from '@atqr/domain';
 import { EmailAddress } from '../EmailService/emailAddress'
 
 export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
@@ -26,9 +26,4 @@ export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
       createdAt: newCreatedAt
     });
   }
-
-
-
 }
-
-
