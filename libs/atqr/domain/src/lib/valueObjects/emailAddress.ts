@@ -1,7 +1,6 @@
-import { ValueObject } from "../../utils/valueObject";
+import { ValueObject } from '../../';
 
 export class EmailAddress extends ValueObject<EmailAddress> {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   constructor(public readonly value: string) {
     super(EmailAddress, ['value'])
   }

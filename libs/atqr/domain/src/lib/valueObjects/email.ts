@@ -1,4 +1,4 @@
-import { ValueObject } from '../../utils/valueObject';
+import { ValueObject } from '../../';
 import { IEmail } from '../EmailService/interfaces';
 import { EmailAddress } from './emailAddress';
 
