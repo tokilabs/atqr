@@ -4,20 +4,16 @@ import { IPaymentService } from './interfaces';
 export class PaymentService {
   constructor(private payment: IPaymentService) {}
 
-  createCostumer(costumerId: string) {
-    return this.payment.createCostumer(costumerId);
+  createCustomer(customerId: string) {
+    return this.payment.createCustomer(customerId);
   }
-  createPaymentMethod(costumerId: string, paymentMethod: PaymentMethodEntity) {
-    return this.payment.createPaymentMethod(costumerId, paymentMethod);
+  createPaymentMethod(customerId: string, paymentMethod: PaymentMethodEntity) {
+    return this.payment.createPaymentMethod(customerId, paymentMethod);
   }
-  setupFuturePayment(
-    costumerId: string,
-    amount: number,
-    date: Date
-  ) {
-    return this.payment.setupFuturePayment(costumerId, amount, date);
+  setupFuturePayment(customerId: string, amount: number, date: Date) {
+    return this.payment.setupFuturePayment(customerId, amount, date);
   }
-  capturePayment(costumerId: string) {
-    return this.payment.capturePayment(costumerId);
+  capturePayment(customerId: string) {
+    return this.payment.capturePayment(customerId);
   }
 }
