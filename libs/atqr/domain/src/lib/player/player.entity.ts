@@ -1,10 +1,6 @@
 import { Guid, isEmpty } from '@tokilabs/lang';
 import { Challenge } from '../challenge/challenge.entity';
-<<<<<<< HEAD
-import { EmailAddress } from '../templates';
-=======
-import { EmailAddress } from '../emailTemplates';
->>>>>>> 78be758 (style(emailservice folder is no emailtemplates): email service stuff is implemented else where)
+import { EmailAddress } from '../valueObjects';
 import {
   InvalidParameterInfo,
   InvalidParametersException,

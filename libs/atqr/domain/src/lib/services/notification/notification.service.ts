@@ -1,5 +1,4 @@
 import { Exception } from '@tokilabs/lang';
-import { ChallengeStatus } from '../../types/enums';
 import { IChallengeRepository } from '../../challenge/IChallenge.repository'
 import { Challenge } from '../../challenge'
 import {
