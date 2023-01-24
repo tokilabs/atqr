@@ -3,7 +3,7 @@ domain ATQR
   //--------------------------------//
   // Contacts
   //--------------------------------//
-  concept Email
+  concept Email 
     @to: EmailAddress
     @subject: string
     @body: string
@@ -15,3 +15,8 @@ domain ATQR
 
   concept Invitee expands on Contact
     @status: ParticipationStatus = ParticipationStatus.NotRequested
+
+  concept EmailAddress
+    @emailAddress : string
+    ⚙️ validateEmailAddress  :^emailAddress
+        return EmailValidated!

@@ -1,4 +1,4 @@
-import { EmailAddress } from '../EmailService';
+import { EmailAddress } from '../emailTemplates';
 import { Player } from './player.entity';
 
 describe('Testing the Player class', () => {

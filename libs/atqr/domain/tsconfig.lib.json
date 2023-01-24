@@ -9,8 +9,8 @@
   "exclude": ["**/*.spec.ts", "**/*.test.ts"],
   "include": [
     "**/*.ts",
-    "src/lib/EmailService/configs.ts.env",
-    "src/lib/EmailService/email-service.ts",
+    "src/lib/templates/configs.ts.env",
+    "src/lib/templates/email-service.ts",
     "../../../apps/atqr/api/src/app/challenge-entity.controller.ts"
   ]
 }

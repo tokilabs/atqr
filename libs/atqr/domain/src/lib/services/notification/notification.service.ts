@@ -1,13 +1,14 @@
 import { Exception } from '@tokilabs/lang';
-import { Challenge } from '../../challenge/challenge.entity';
-import { IChallengeRepository } from '../../challenge/challenge.repository.interface';
+import { IChallengeRepository } from '../../challenge/IChallenge.repository'
+import { Challenge } from '../../challenge'
 import {
   Congrats,
   DeadLineEmail,
-  IMailer,
   PayThePrice,
-} from '../../EmailService';
+} from '../../templates';
+import { IMailer } from './mailer.interface'
 import { ChallengeStatus } from '../../types';
+
 
 export class NotificationService {
   constructor(
@@ -27,7 +28,7 @@ export class NotificationService {
             try {
               const email = new DeadLineEmail(c.supervisorEmail);
               //create email to send to sup
-              this.mailer.send(email);
+              this.mailer.sendMail(email);
               //sends that email
               this.challengeRepository.update(c);
               //do challenge update that are overdue

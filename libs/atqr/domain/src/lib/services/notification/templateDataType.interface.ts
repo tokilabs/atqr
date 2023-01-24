@@ -1,8 +1,9 @@
 import {
   ChallengeAndInviteeEnvelope,
   ChallengeEnvelope,
-} from '../../EmailService/dtos';
+} from '../../templates/dtos';
 import { MessageTemplateId } from './notification.types';
+
 
 export interface ITemplateDataTypes extends Record<MessageTemplateId, object> {
   [MessageTemplateId.ChallengeCreated]: ChallengeEnvelope;

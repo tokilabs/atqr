@@ -1,3 +1,2 @@
 export * from './challenge.entity';
-export * from './challenge.repository.interface';
-
+export * from './IChallenge.repository';

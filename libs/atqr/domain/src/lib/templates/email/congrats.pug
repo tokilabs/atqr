@@ -1,0 +1,11 @@
+doctype html
+html
+  head
+    include includes/styleImports.pug
+
+  body
+    include includes/baseTemplate.pug
+
+    +emailContent('Só queremos que fique claro que:', 'Sempre acreditamos no seu potencial e que um dia você ia tomar jeito nessa vida. Tu cumpriu com tua promessa! Tu se honrou, mermão! Tu é demais! 🥳', '../imgs/congrats.gif','Saboreie esse momento como se fosse uma ceia de fim de ano, mas saiba que no campo de batalha da vida sempre haverá uma uva passa à espreita 💀 não dorme no ponto!')
+
+    +button('', 'Desafie De Novo')(class="btn")

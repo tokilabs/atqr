@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    include includes/styleImports.pug
+
+  body
+    include includes/baseTemplate.pug
+
+    +emailContent('Dizemos por meio desta...',
+    'Que você é a última esperança de #{player.name} se endireitar na vida, por isso o/a senhor/ra digníssimo foi escolhido como o grande e importante supervisor dessa criatura perdida 🦄', './imgs/sup-confirmation.jpg', 'Sua função é simples: dedurar pra gente se #{player.name} cumpriu ou não cumpriu com a tarefa que esse anjo de deus iluminado está tentando alcançar. Pra você eu só desejo boa sorte (e talvez outro círculo social no futuro 🤡)',
+    'Você aceita esse desafio? (Por favor, diz que sim, teu amigo só tem você, cara 🥺)')
+
+    .btn-container
+      +button('', 'Aceito 🥰')(class="btn")
+      +button('', 'Passo 🤡')(class="btn")
+
