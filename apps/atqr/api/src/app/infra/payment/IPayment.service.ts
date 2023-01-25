@@ -1,4 +1,4 @@
-import { PaymentMethodEntity } from '../../../PaymentMethod';
+import { PaymentMethodEntity } from '@atqr/domain';
 
 export interface IPaymentService {
   createCustomer(customerId: string): string;
