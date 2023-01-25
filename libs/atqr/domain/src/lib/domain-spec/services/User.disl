@@ -1,0 +1,15 @@
+domain ATQR
+
+  context User
+    repository UserRepository
+
+      createUser: Contact
+        rules:
+          - Contact.email does not exist in UserRepository.users.email
+        create User and return
+
+      findUserById :userId
+        ⮐ User or null
+
+      findUserByEmail :email
+        ⮐ User or null
