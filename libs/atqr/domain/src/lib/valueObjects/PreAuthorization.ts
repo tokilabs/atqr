@@ -1,32 +1,52 @@
 import { ValueObject } from '../../utils/valueObject';
 
 class PreAuthorization extends ValueObject<PreAuthorization> {
-  public readonly createdAt: Date = new Date();
-  public readonly expiresAt: Date = new Date();
-
-  constructor(public readonly authId: string, public readonly amount: number) {
-    super(PreAuthorization, ['authId', 'amount']);
-
-    this.expiresAt.setMonth(this.expiresAt.getMonth() + 1);
-  }
-  setCreatedAt(date: Date): PreAuthorization {
-    return this.newInstanceWith({
-      createdAt: date,
-    });
-  }
-  setExpiresAt(date: Date): PreAuthorization {
-    return this.newInstanceWith({
-      expiresAt: date,
-    });
+  constructor(
+    public readonly authId: string,
+    public readonly amountCents: number,
+    public readonly approved: boolean,
+    public readonly createdAt: Date,
+    public readonly expiresAt: Date,
+    public readonly currency: string
+  ) {
+    super(PreAuthorization, [
+      'authId',
+      'amountCents',
+      'approved',
+      'createdAt',
+      'expiresAt',
+      'currency',
+    ]);
   }
   setAuthId(authId: string): PreAuthorization {
     return this.newInstanceWith({
       authId,
     });
   }
-  setAmount(amount: number): PreAuthorization {
+  setAmountCents(amountCents: number): PreAuthorization {
     return this.newInstanceWith({
-      amount,
+      amountCents,
+    });
+  }
+  setApproved(approved: boolean): PreAuthorization {
+    return this.newInstanceWith({
+      approved,
+    });
+  }
+  setCreatedAt(createdAt: Date): PreAuthorization {
+    return this.newInstanceWith({
+      createdAt,
+    });
+  }
+  setExpiresAt(expiresAt: Date): PreAuthorization {
+    return this.newInstanceWith({
+      expiresAt,
+    });
+  }
+  setCurrency(currency: string): PreAuthorization {
+    return this.newInstanceWith({
+      currency,
     });
   }
 }
+// id, amountCents, createdAt, expiresAt, currency,
