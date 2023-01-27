@@ -23,14 +23,13 @@ domain ATQR
     YouHaveBeenChallenged
 
     YourContender...
-      TODO://AcceptedTheChallenge Email must have the "The Challenge is now Ongoing" information
-      ~AcceptedTheChallenge
+      //TODO:AcceptedTheChallenge Email must have the "The Challenge is now Ongoing" information
       ~AcceptedTheChallenge
       ~RejectedTheChallenge
       ~Ignored
       ~RemovedYouFromJudgeRole
       ~CanceledTheChallenge
-      ~WereTheySuccessful
+      ~WasSuccessful
 
     TimeToOfficiateArrived
 
@@ -94,8 +93,8 @@ domain ATQR
       auto: Today
 
   enum NotificationCategory
-    EuDuvidoProductUpdates
-    EuDuvidoPromotions
+    ProductUpdates
+    Promotions
     NewInvitations
     ChallengeUpdates
 
@@ -112,10 +111,10 @@ domain ATQR
     @contactLog: NotificationLogEntry[]
     @nextContactDate: Date
 
-    @waitingForUserAction:
+    @isWaitingForUserAction:
       @actionTaken === no and @nextContactDate <= Today
 
-    @messagesSent:
+    @sentMessagesCount:
       return @contactLog.length
 
   concept NotificationLogEntry

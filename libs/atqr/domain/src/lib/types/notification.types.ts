@@ -4,6 +4,13 @@ export type TemplateDataTypes = {
   [K in keyof ITemplateDataTypes]: ITemplateDataTypes[K];
 };
 
+export enum NotificationCategory {
+  ProductUpdates = 'ProductUpdates',
+  Promotions = 'Promotions',
+  NewInvitations = 'NewInvitations',
+  ChallengeUpdates = 'ChallengeUpdates',
+}
+
 export enum MessageTemplateId {
   ChallengeCreated = 'ChallengeCreated',
   ChallengeCanceled = 'ChallengeCanceled',
@@ -17,12 +24,12 @@ export enum MessageTemplateId {
   YouHaveBeenChallenged = 'YouHaveBeenChallenged',
   YourContenderAcceptedTheChallenge = 'YourContenderAcceptedTheChallenge',
   YourContenderRejectedTheChallenge = 'YourContenderRejectedTheChallenge',
-  YourContenderIgnored = 'YourContenderIgnored',
+  YourContenderIgnoredTheChallenge = 'YourContenderIgnoredTheChallenge',
   YourContenderRemovedYouFromJudgeRole = 'YourContenderRemovedYouFromJudgeRole',
   YourContenderCanceledTheChallenge = 'YourContenderCanceledTheChallenge',
-  YourContenderWereTheySuccessful = 'YourContenderWereTheySuccessful',
-  ReminderToOfficiate = 'ReminderToOfficiate',
-  YourJudgeDidNotAnswer = 'YourJudgeDidNotAnswer',
+  YourContenderWasSuccessful = 'YourContenderWasSuccessful',
+  TimeToOfficiateArrived = 'TimeToOfficiateArrived',
+  YourJudgeDidNotAnswered = 'YourJudgeDidNotAnswered',
 }
 
 export enum NotificationChannel {

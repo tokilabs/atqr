@@ -2,20 +2,10 @@ import { ValueObject } from '../../utils/valueObject';
 import { Guid } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { MessageTemplateId } from '../services';
-
-enum NotificationCategory {
-  EuDuvidoProductUpdates = 'EuDuvidoProductUpdates',
-  EuDuvidoPromotions = 'EuDuvidoPromotions',
-  NewInvitations = 'NewInvitations',
-  ChallengeUpdates = 'ChallengeUpdates',
-}
-
-export enum NotificationChannel {
-  Email = 'Email',
-  SMS = 'SMS',
-  Push = 'Push',
-}
-
+import {
+  NotificationChannel,
+  NotificationCategory,
+} from '../types/notification.types';
 export class Notification extends ValueObject<Notification> {
   constructor(
     public readonly id: Guid,
@@ -27,10 +17,11 @@ export class Notification extends ValueObject<Notification> {
     public readonly actionTaken: boolean,
     public readonly contactLog: NotificationLogEntry[],
     public readonly nextContactDate: Date,
-    public readonly waitingForUserAction: boolean,
-    public messagesSent: number
+    public readonly isWaitingForUserAction: boolean,
+    public readonly sentMessagesCount: number
   ) {
     super(Notification, [
+      'id',
       'category',
       'templateId',
       'allowedChannels',
@@ -39,23 +30,11 @@ export class Notification extends ValueObject<Notification> {
       'actionTaken',
       'contactLog',
       'nextContactDate',
-      'waitingForUserAction',
-      'messagesSent',
+      'isWaitingForUserAction',
+      'sentMessagesCount',
     ]);
-
-    this.id = new Guid();
-  }
-
-  IsWaitingForUserAction(waitingForUserAction: boolean): boolean {
-    if (this.actionTaken === false && this.nextContactDate < new Date()) {
-      return waitingForUserAction == true;
-    } else {
-      return false;
-    }
-  }
-
-  MessagesSent(): number {
-    return (this.messagesSent = this.contactLog.length);
+    
+    this.createdAt = new Date()
   }
 
   public setId(id: Guid): Notification {
@@ -110,5 +89,17 @@ export class Notification extends ValueObject<Notification> {
     return this.newInstanceWith({
       nextContactDate,
     });
+  }
+
+  public get setWaitingForUserAction() {
+    if (this.actionTaken === false && this.nextContactDate < new Date()) {
+      return this.isWaitingForUserAction == true;
+    } else {
+      return false;
+    }
+  }
+
+  public get setSentMessagesCount() {
+    return this.contactLog.length;
   }
 }

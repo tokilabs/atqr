@@ -1,7 +1,6 @@
 import { ValueObject } from '../../utils/valueObject';
 import { Guid } from '@tokilabs/lang';
-import { NotificationChannel } from './notification';
-
+import { NotificationChannel } from '../types/notification.types';
 export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
   constructor(
     public readonly id: Guid,
@@ -9,7 +8,7 @@ export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
     public readonly notification: Notification,
     public readonly channel: NotificationChannel,
     public readonly to: User,
-    public readonly visualized: boolean
+    public readonly isSeen: boolean
   ) {
     super(NotificationLogEntry, [
       'id',
@@ -17,7 +16,7 @@ export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
       'notification',
       'channel',
       'to',
-      'visualized',
+      'isSeen',
     ]);
     this.id = new Guid();
     this.sentAt = new Date();
@@ -47,9 +46,9 @@ export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
       to,
     });
   }
-  public setVisualized(visualized: boolean): NotificationLogEntry {
+  public setSeen(isSeen: boolean): NotificationLogEntry {
     return this.newInstanceWith({
-      visualized,
+      isSeen,
     });
   }
 }
