@@ -1,7 +1,7 @@
 import { ValueObject } from '../../utils/valueObject';
 import { Challenge } from '../challenge';
 import { JudgementStatus, User } from '../types';
-import { Enrollment } from './Enrollment';
+import { Enrollment } from './enrollment';
 
 export class Officiation extends ValueObject<Officiation> {
   constructor(
