@@ -17,7 +17,15 @@ export class Notification extends ValueObject<Notification> {
     public readonly actionTaken: boolean,
     public readonly contactLog: NotificationLogEntry[],
     public readonly nextContactDate: Date,
+    /**
+     * This a calculated property based on
+     * (campos que ela usa)
+     */
     public readonly isWaitingForUserAction: boolean,
+    /**
+     * This a calculated property based on
+     * (campos que ela usa)
+     */
     public readonly sentMessagesCount: number
   ) {
     super(Notification, [
@@ -33,8 +41,8 @@ export class Notification extends ValueObject<Notification> {
       'isWaitingForUserAction',
       'sentMessagesCount',
     ]);
-    
-    this.createdAt = new Date()
+
+    this.createdAt = new Date();
   }
 
   public setId(id: Guid): Notification {
