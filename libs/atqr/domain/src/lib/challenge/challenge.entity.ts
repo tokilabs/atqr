@@ -1,6 +1,6 @@
 import { Guid } from '@tokilabs/lang/';
 import { dateDiff } from '../../utils/dateDifference';
-import { EmailAddress } from '../valueObjects';
+import { EmailAddress, Invitee } from '../valueObjects';
 import { PaymentMethodEntity } from '../PaymentMethod';
 import { Player } from '../player/player.entity';
 import { ChallengeStatus, ParticipationStatus } from '../types/enums';
@@ -18,6 +18,7 @@ export class Challenge {
     private _player: Player,
     price: number,
     deadline: Date,
+    private _invitees: Invitee[],
     private _paymentMethod?: PaymentMethodEntity,
     _status: ChallengeStatus = ChallengeStatus.Ongoing,
     private _supervisorStatus: ParticipationStatus = ParticipationStatus.NotRequested
