@@ -1,6 +1,7 @@
-import { Challenge, ContenderOutcome } from '@atqr/domain';
 import { ValueObject } from '../../utils/valueObject';
+import { Challenge } from '../challenge';
 import { PaymentStatus, PaymentFundsStatus } from '../PaymentMethod/enums';
+import { ContenderOutcome } from '../types';
 import { PaymentMethod, User } from '../types/stubs';
 
 export class Enrollment extends ValueObject<Enrollment> {

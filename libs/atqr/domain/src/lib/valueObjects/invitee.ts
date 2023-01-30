@@ -6,7 +6,7 @@ import { ParticipationRole, ParticipationStatus } from '../types';
 interface IInvitee extends Contact {
   status: ParticipationStatus;
 }
-class Invitee extends ValueObject<Invitee> implements IInvitee {
+export class Invitee extends ValueObject<Invitee> implements IInvitee {
   constructor(
     public readonly status: ParticipationStatus,
     public readonly name: string,
