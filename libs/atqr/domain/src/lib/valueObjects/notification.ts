@@ -1,5 +1,5 @@
 import { ValueObject } from '../../utils/valueObject';
-import { Guid } from '@tokilabs/lang';
+import { Guid, today } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { MessageTemplateId } from '../services';
 import {
@@ -7,29 +7,36 @@ import {
   NotificationCategory,
 } from '../types/notification.types';
 export class Notification extends ValueObject<Notification> {
+  /**
+   * This a calculated property based on
+   *
+   */
+  public get isWaitingForUserAction() {
+    return this.actionTaken === false && this.nextContactDate < today();
+  }
+  /**
+   * This a calculated property based on
+   *
+   */
+  public get sentMessagesCount() {
+    return this.contactLog.length;
+  }
+
+  public get id() {
+    return this._hash;
+  }
+
   constructor(
-    public readonly id: Guid,
     public readonly category: NotificationCategory,
     public readonly templateId: MessageTemplateId,
     public readonly allowedChannels: NotificationChannel[],
-    public readonly createdAt: Date,
     public readonly requiresUserAction: boolean,
     public readonly actionTaken: boolean,
     public readonly contactLog: NotificationLogEntry[],
     public readonly nextContactDate: Date,
-    /**
-     * This a calculated property based on
-     * (campos que ela usa)
-     */
-    public readonly isWaitingForUserAction: boolean,
-    /**
-     * This a calculated property based on
-     * (campos que ela usa)
-     */
-    public readonly sentMessagesCount: number
+    public readonly createdAt: Date = today()
   ) {
     super(Notification, [
-      'id',
       'category',
       'templateId',
       'allowedChannels',
@@ -41,16 +48,12 @@ export class Notification extends ValueObject<Notification> {
       'isWaitingForUserAction',
       'sentMessagesCount',
     ]);
-
-    this.excludeFromEquals = ['id'];
-
-    this.createdAt = new Date();
+    
+    this.excludeFromEquals = ['id', 'isWaitingForUserAction', 'sentMessagesCount'];
   }
 
-  public setId(id: Guid): Notification {
-    return this.newInstanceWith({
-      id,
-    });
+  public equals(other: Notification): boolean {
+    return this.hashEquals(other);
   }
 
   public setCategory(category: NotificationCategory): Notification {
@@ -90,26 +93,16 @@ export class Notification extends ValueObject<Notification> {
       actionTaken,
     });
   }
+
   public setContactLog(contactLog: NotificationLogEntry[]): Notification {
     return this.newInstanceWith({
       contactLog,
     });
   }
+
   public setNextContactDate(nextContactDate: Date): Notification {
     return this.newInstanceWith({
       nextContactDate,
     });
-  }
-
-  public get setWaitingForUserAction() {
-    if (this.actionTaken === false && this.nextContactDate < new Date()) {
-      return this.isWaitingForUserAction == true;
-    } else {
-      return false;
-    }
-  }
-
-  public get setSentMessagesCount() {
-    return this.contactLog.length;
   }
 }

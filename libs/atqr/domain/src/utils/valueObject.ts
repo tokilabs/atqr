@@ -1,3 +1,4 @@
+import * as hash from 'object-hash';
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-prototype-builtins */
@@ -22,6 +23,7 @@ export class ValueObject<TObject> {
    * from identity comparison, add them here.
    */
   protected excludeFromEquals: (keyof TObject)[] = [];
+  protected _hash: string;
 
   /**
    * @param construct Your value object's constructor
@@ -54,10 +56,34 @@ export class ValueObject<TObject> {
   }
 
   protected newInstanceWith(updatedProps: Partial<TObject>): TObject {
-    return new this[Constructor](
+    const newInstance = new this[Constructor](
       ...(<any[]>this[ConstructorParams]).map((p) =>
         updatedProps.hasOwnProperty(p) ? updatedProps[p] : (<any>this)[p]
       )
     );
+    newInstance.hash();
+    return newInstance;
+  }
+
+  public hash() {
+    this._hash = hash(this as ValueObject<TObject>, {
+      algorithm: 'md5',
+      excludeKeys: (key: string) =>
+        this.excludeFromEquals.includes(key as keyof TObject),
+    });
+
+    return this._hash;
+  }
+
+  protected hashEquals(other: ValueObject<TObject>) {
+    if (!this._hash) {
+      this.hash();
+    }
+
+    if (!other._hash) {
+      this.hash();
+    }
+
+    return this._hash === other._hash;
   }
 }

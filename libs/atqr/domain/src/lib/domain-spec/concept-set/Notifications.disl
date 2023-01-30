@@ -123,6 +123,6 @@ domain ATQR
     @channel: NotificationChannel
     @sentAt: DateTime
     @to: User
-    @visualized: yes or no
+    @isSeen: yes or no
 
 

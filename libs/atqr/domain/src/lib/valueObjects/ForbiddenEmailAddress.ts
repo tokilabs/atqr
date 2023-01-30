@@ -2,6 +2,7 @@ import { ValueObject } from '../../utils/valueObject';
 import { EmailAddress } from './email';
 
 export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
+  
   constructor(
     public readonly email: EmailAddress,
     public readonly reason: string,
@@ -15,11 +16,13 @@ export class ForbiddenEmailAddress extends ValueObject<ForbiddenEmailAddress> {
       email,
     });
   }
+  
   public setEmail(reason: string): ForbiddenEmailAddress {
     return this.newInstanceWith({
       reason,
     });
   }
+
   public setRole(createdAt: Date): ForbiddenEmailAddress {
     return this.newInstanceWith({
       createdAt,
