@@ -42,6 +42,8 @@ export class Notification extends ValueObject<Notification> {
       'sentMessagesCount',
     ]);
 
+    this.excludeFromEquals = ['id'];
+
     this.createdAt = new Date();
   }
 

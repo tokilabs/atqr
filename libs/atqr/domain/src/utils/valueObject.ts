@@ -7,69 +7,29 @@ const Constructor = Symbol.for('plow:ValueObject.Constructor');
 /**
  * Base class for ValueObject's
  *
- * How to extend this class:
- * 
- *  1. Declare all properties in the Constructor
- *      They must all be `public readonly`
- *  2. Call super passing the arguments:
- *      - The instance type of the class you are creating
- *      - An array of string with the names of the constructor parameters in the same order the constructor receives them
- *  3. Create a `setPROP` for each property of your Value Object
- *      - Replace PROP is the name of the function by the property name
- *      - Use the base class' {@link newInstanceWith } method to create new instances without boilerplate
- * 
- * @example
- * 
- * <code>
- *  class SomeVO extends ValueObject<SomeVO> {
- *    constructor(
- *      public readonly propA: string,
- *      public readonly propB: number,
- *      public readonly propC: boolean) {
- *        super(
- *          SomeVO, [
- *            "propA",
- *            "propB",
- *            "propC"
- *          ]
- *        );
- *    }
- * 
- *    // Set Methods
- * 
- *    ...other set methods
- * 
- *    public setPropB(propB: number) {
- *      return this.newInstanceWith({
- *        propB
- *      });
- *    }
- *    ...other set methods
- *  }
- * </code>
- * 
- * @remarks
  * A value object is an object whose identity is
  * determined by it's properties values.
  *
- * To achieve that, Value Objects MUST:
+ * Value objects MUST:
  * - Be immutable
  * - Be compared by value-equality
- * 
  * @export
  * @class ValueObject
  */
-export abstract class ValueObject<TObject> {
+export class ValueObject<TObject> {
   /**
-   * See class documentation for a "how to" on extending 
-   * this class
-   * 
-   * @param construct Your Value Object's instance type
-   * @param constructParams Name of the parameters passed to your  value object's constructor IN ORDER
+   * If you want to exclude some properties
+   * from identity comparison, add them here.
+   */
+  protected excludeFromEquals: (keyof TObject)[] = [];
+
+  /**
+   * @param construct Your value object's constructor
+   * @param constructParams Name of the properties to pass to constructor IN ORDER
    */
   constructor(
     private construct: new (...args: any[]) => TObject,
-    constructParams:  (keyof TObject)[]
+    constructParams: (keyof TObject)[]
   ) {
     this[Constructor] = construct;
     this[ConstructorParams] = constructParams;
@@ -77,7 +37,14 @@ export abstract class ValueObject<TObject> {
 
   public equals(other: ValueObject<TObject>): boolean {
     return !Object.keys(this).some((prop) => {
-      // return true if prop is different
+      // Code below should return TRUE
+      // when properties DO NOT match
+
+      // skip excluded props
+      if (this.excludeFromEquals.includes(prop as keyof TObject)) {
+        return false;
+      }
+
       if (typeof this[prop].equals === 'function') {
         return !this[prop].equals(other[prop]);
       }

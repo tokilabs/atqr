@@ -49,6 +49,7 @@
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
   "conventionalCommits.scopes": [
-    "domain-spec"
+    "domain-spec",
+    "utils"
   ]
 }
