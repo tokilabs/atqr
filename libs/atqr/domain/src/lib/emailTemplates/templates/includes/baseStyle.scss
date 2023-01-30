@@ -1,0 +1,71 @@
+$fontDarkGrey: #272727;
+$fontBrightOrange: #cd4522;
+$fontLightGrey: #f7f7ff;
+$fontBlack: rgba(0, 0, 0, 0.65);
+$workSansFontFamily: 'Work Sans', sans-serif;
+$backgroundWhite: #ffffff;
+$backgroundLightGrey: #f7f7f7;
+$btnBackgroundMaroon: #900c3f;
+$borderBlack: rgba(0, 0, 0, 0.15);
+
+.content-frame {
+  background-color: $backgroundWhite;
+  padding: 1.25rem;
+  max-width: 46.25rem;
+}
+.content-wrapper {
+  pointer-events: none;
+  font-family: $workSansFontFamily;
+  color: $fontDarkGrey;
+  background-color: $backgroundLightGrey;
+  max-width: 46.25rem;
+  border-radius: 0.8rem;
+  padding: 2.5rem;
+  margin-left: 1.875rem;
+}
+h1 {
+  color: $fontBrightOrange;
+}
+.image {
+  text-align: center;
+  margin: 2.5rem 1.875rem;
+}
+.btn-container {
+  margin-left: 1.875rem;
+  padding: 1.25rem;
+  max-width: 46.25rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.btn-wrapper {
+  padding: 3.125rem;
+  max-width: 46.25rem;
+  margin-left: 1.875rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.btn {
+  background-color: $btnBackgroundMaroon;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.8rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  color: $fontLightGrey;
+  cursor: pointer;
+  font-family: $workSansFontFamily;
+  font-size: 16px;
+  padding: 1.25rem;
+  text-decoration: none;
+  &:hover {
+    border-color: $borderBlack;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: $fontBlack;
+    transform: translateY(-1px);
+  }
+  &:focus {
+    border-color: $borderBlack;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: $fontBlack;
+  }
+}
