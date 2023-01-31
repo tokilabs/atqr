@@ -4,5 +4,7 @@ export * from './challenge';
 export * from './exceptions';
 export * from './player';
 export * from './services';
+export * from './user/user.entity';
+export * from './user/IUserRepository';
 export * from './types';
 export * from './valueObjects';
