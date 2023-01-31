@@ -17,11 +17,6 @@ domain ATQR
           set it's @status to .Overdue
             publish TimeToOfficiateArrived! :challengeId
 
-          // TODO: Check which logic is better for sending emails
-          // This or the one inside NotificationService (aren't they both the same?)
-
-          //TODO: add logic for JudgeForgotToAcceptRequest and JudgesLastChancetoAccepRequest AND 2 more logics: JudgeForgotToOfficiate and JudgesLastChanceToOfficiate
-
           when .enrollmentDeadline is after Today
             and .createdAt is before 2 days ago
             list all .invitees that
