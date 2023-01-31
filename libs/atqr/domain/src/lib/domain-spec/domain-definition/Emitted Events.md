@@ -1,11 +1,11 @@
 Events emitted by:
-  Goal Aggregate (depends on Challenge Repository):
+  Goal Aggregate root (depends on Challenge Repository):
 
     - GoalCreated! (goal: Goal)
     - ChargeAuthorized! (owner: Contact, pledge: number, ownerPaymentMethod: PaymentMethod )
     - ChallengeCreated! (params?)
 
-  root Challenge (depends on Payment Service)
+  Challenge Aggregate root (depends on Payment Service)
 
     - ChallengeAccepted!
     - OfficiationRequestAccepted!
@@ -23,4 +23,11 @@ Events emitted by:
     - ContenderParticipationRequested!
     - JudgeRequested!
     - OfficiationRequested!
+
+    User entity
+      - UserCreated! :user
+    
+    PaymentMethod entity
+      - 📧 CardCharged! :auth :amountInCents ?
+      - CardChargeFailed! :auth :amountInCents
 
