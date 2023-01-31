@@ -3,12 +3,17 @@ import {
   IChallengeRepository,
   IPlayerRepository,
   NotificationService,
+  IUserRepository,
 } from '@atqr/domain';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ChallengeController } from './challenge.controller';
 import { Mailer, PrismaService, StripeService } from './infra';
-import { ChallengeRepository, PlayerRepository } from './repositories';
+import {
+  ChallengeRepository,
+  PlayerRepository,
+  UserRepository,
+} from './repositories';
 
 @Module({
   imports: [ConfigModule.forRoot({ isGlobal: true })],
@@ -20,6 +25,7 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
     Mailer,
     ChallengeRepository,
     PlayerRepository,
+    UserRepository,
     {
       provide: IChallengeRepository,
       useClass: ChallengeRepository,
@@ -41,6 +47,10 @@ import { ChallengeRepository, PlayerRepository } from './repositories';
       useFactory: (NotificationService) => {
         return new DeadlineMonitorService(NotificationService);
       },
+    },
+    {
+      provide: IUserRepository,
+      useClass: UserRepository,
     },
   ],
 })
