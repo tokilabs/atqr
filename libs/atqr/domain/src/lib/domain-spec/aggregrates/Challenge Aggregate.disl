@@ -246,11 +246,6 @@ domain ATQR
         -> JudgeRequested!
           set invited judge's participationStatus to .Requested
 
-        ⌛ DeadlineReached! :challengeId
-          @status = ChallengeStatus.Overdue
-
-          publish TimeToOfficiateArrived! :challenge
-
         -> OfficiationRequested!
           set @judgementStatus to .Requested
 
