@@ -1,33 +1,24 @@
-import { IsEmail } from 'class-validator';
-import { ValueObject } from '../../utils/valueObject';
+import { ValueObject } from '../../';
+import { EmailAddress } from './';
 
-export class EmailAddress {
-  @IsEmail()
-  emailAddress: string;
-}
-
-export class Email extends ValueObject<Email>{
+export class Email extends ValueObject<Email> {
   constructor(
     public readonly to: EmailAddress,
     public readonly subject: string,
-    public readonly body: string
+    public readonly message?: string
   ) {
-    super(Email, ['to', 'subject', 'body']);
+    super(Email, ['to', 'subject', 'message']);
   }
-  
-  public setTo(newTo: EmailAddress): Email{
-    return this.newInstanceWith({
-      to: newTo
-    })
+
+  setEmailAddress(to: EmailAddress) {
+    return this.newInstanceWith({ to });
   }
-  public setSubject(newSubject: string): Email{
-    return this.newInstanceWith({
-      subject: newSubject
-    })
+
+  setSubject(subject: string) {
+    return this.newInstanceWith({ subject });
   }
-  public setBody(newBody: string): Email{
-    return this.newInstanceWith({
-      body: newBody
-    })
+
+  setMessage(message: string) {
+    return this.newInstanceWith({ message });
   }
 }
