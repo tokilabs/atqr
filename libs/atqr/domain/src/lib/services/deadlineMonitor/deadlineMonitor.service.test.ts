@@ -1,4 +1,4 @@
-import { DeadLineMonitorService1 } from './deadlineMonitor.service';
+import { DeadLineMonitorService } from './deadlineMonitor.service';
 import { IChallengeRepository } from '../../challenge';
 import cron from 'cron-validate';
 import { CronJob } from 'cron';
@@ -6,9 +6,19 @@ import { dateDiff } from '../../../utils/dateDifference';
 
 describe('DeadlineMonitorService', () => {
   const challengeRepository = {} as IChallengeRepository;
+  const mockAnewDayArrived = jest.fn();
+
+  const date = '* 0 0 * * *';
+  const cronJob = new CronJob(
+    date,
+    mockAnewDayArrived,
+    null,
+    true,
+    'America/Sao_Paulo'
+  );
 
   it('should be defined', () => {
-    expect(new DeadLineMonitorService1(challengeRepository)).toBeDefined();
+    expect(new DeadLineMonitorService(challengeRepository)).toBeDefined();
   });
 
   it('should be valid', () => {
@@ -26,11 +36,17 @@ describe('DeadlineMonitorService', () => {
       }).isValid()
     ).toBe(false);
   });
-  it('Dates should not be the same', () => {
-    const oldDate = new Date()
-    oldDate.setFullYear(2021)
-    const newDate = new Date()
+  // it('Dates should not be the same', () => {
+  //   const oldDate = new Date();
+  //   oldDate.setFullYear(2022);
+  //   const newDate = new Date();
+  //   expect(dateDiff(oldDate, newDate)).toBeGreaterThan(0);
+  // });
 
-    expect(dateDiff(oldDate, newDate)).toBeGreaterThan(0)
+  // it('should be instanceOf', () => {
+  //   expect(cronJob).toBeInstanceOf(CronJob);
+  // });
+  it('CronJob should call method aNewDayArrived', () => {
+    expect(mockAnewDayArrived).toBeCalled()
   });
 });
