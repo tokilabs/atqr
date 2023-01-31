@@ -1,6 +1,6 @@
 import { ValueObject } from '../../utils/valueObject';
-import { NotificationChannel } from '../types/notification.types';
-import { User } from '@atqr/domain/user';
+import { NotificationChannel } from '../services';
+import { User } from '../user';
 
 export class NotificationLogEntry extends ValueObject<NotificationLogEntry> {
   public get id() {

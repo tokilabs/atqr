@@ -1,4 +1,4 @@
-import { ValueObject } from '../../';
+import { ValueObject } from '../../utils';
 import { EmailAddress } from './';
 
 export class Email extends ValueObject<Email> {
