@@ -1,8 +1,7 @@
 import { ValueObject } from '../../';
-import { IEmail } from '../EmailService/interfaces';
-import { EmailAddress } from './emailAddress';
+import { EmailAddress } from './';
 
-export class Email extends ValueObject<Email> implements IEmail {
+export class Email extends ValueObject<Email> {
   constructor(
     public readonly to: EmailAddress,
     public readonly subject: string,
