@@ -29,6 +29,8 @@ model Challenge {
   status          ChallengeStatus @default(Ongoing)
   paymentMethod   String
   creditCardToken String?
+  User            User?           @relation(fields: [userId], references: [id])
+  userId          String?
 }
 
 model Player {
@@ -36,4 +38,40 @@ model Player {
   name       String
   email      String      @unique
   Challenges Challenge[]
+}
+
+model User {
+  emitter              String
+  id                   String              @unique
+  userName             String
+  email                String
+  emailConfirmed       Boolean
+  playedChallenges     Enrollment[]
+  officiatedChallenges Officiation[]
+  organizedChallenges  Challenge[]
+  paymentMethod        PaymentMethod       @relation(fields: [paymentMethodId], references: [id])
+  challengeRepository  ChallengeRepository
+  paymentMethodId      String
+}
+
+model Enrollment {
+  id     String  @unique
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model Officiation {
+  id     String  @unique
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+}
+
+model PaymentMethod {
+  id   String @unique
+  User User[]
+}
+
+enum ChallengeRepository {
+  challenge 
+  user
 }
