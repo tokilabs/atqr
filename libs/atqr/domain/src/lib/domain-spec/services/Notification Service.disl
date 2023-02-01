@@ -75,13 +75,25 @@ domain ATQR
 
             📢 publish ContenderParticipationRequested!
 
-    -> ChallengeRejected! :challenge
-        sendEmail with params:
-          template: YourContenderRejectedTheChallenge
-          data: ^challenge
-          to: ^challenge.owner.email
+    ->  ChallengeRejected!
+    //TODO: check templates' names
+      when :challenge.createdByContender
 
-          📢 publish ContenderRejectedTheChallenge!
+        for each [contact] in :challenge's invitees
+          if it's ParticipationStatus is Rejected    
+          sendEmail with params:
+            template: YourOfficiationRequestHaveBeenRejected
+            data: ^challenge
+            to: ^challenge.owner.email
+
+      when :challenge.createdByJudge
+
+        for each [contact] in :challenge's invitees
+          if it's ParticipationStatus is Rejected    
+          sendEmail with params:
+            template: ContenderRejectedTheChallenge
+            data: ^challenge
+            to: ^challenge.owner.email
 
     -> ChallengeIgnored! :challenge
         sendEmail with params:
@@ -148,13 +160,6 @@ domain ATQR
               to: :contact.email
           📢 publish LastChanceToPlayArrived!
 
-    -> YourOfficiationRequestHaveBeenIgnored! :challenge
-        sendEmail with params:
-          template: YourOfficiationRequestHaveBeenIgnored
-          data: ^challenge
-          to: ^challenge.enrollments[0].contender.email
-          //TODO: add this one to deadline monitor
-
     -> YourContenderIgnoredTheChallenge! :challenge
         sendEmail with params:
           template: YourContenderIgnoredTheChallenge
@@ -195,6 +200,12 @@ domain ATQR
     -> JudgeRequestAccepted! :enrollment
         sendEmail with params:
           template: YourOfficiationRequestHaveBeenAccepted
+          data: ^enrollment
+          to: ^enrollment.contender.email
+
+    -> YourOfficiationRequestHaveBeenIgnored! :enrollment
+        sendEmail with params:
+          template: //TODO: put on right template
           data: ^enrollment
           to: ^enrollment.contender.email
 

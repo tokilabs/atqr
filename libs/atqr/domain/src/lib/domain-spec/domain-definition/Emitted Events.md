@@ -25,12 +25,12 @@ Events emitted by:
     - ReminderToPlay! :challengeId :list
     - LastChanceToPlay! :challengeId :list
     - YourContenderIgnoredTheChallenge! :challenge
-    - YourJudgeRequestHaveBeenIgnored *WHERE IS IT IN DEADLINE MONITOR
     - YourOfficiationRequestHaveBeenIgnored! :challenge
     - TimeToOfficiateArrived! :challenge
     - YourJudgeIgnored! :challengeId :list
     - ChallengeFailed! :challenge
-    - LastChanceToOfficiateArrived WHERE IS IT
+    - LastChanceToOfficiateArrived! WHERE IS IT
+    - ChallengeIgnored! WHERE IS IT
 
 
 
