@@ -137,8 +137,7 @@ domain ATQR
             data:
               challenge: ^challenge
               invitee: ^invitee
-          📢 publish LastChanceToOfficiateArrived!
-          // TODO: last time to officiate or to be judge?
+          📢 publish LastChanceToBeJudgeArrived!
 
         else
           sendEmail with ^params
@@ -149,7 +148,7 @@ domain ATQR
               to: :contact.email
           📢 publish LastChanceToPlayArrived!
 
-    -> YourJudgeRequestHaveBeenIgnored! :challenge
+    -> YourOfficiationRequestHaveBeenIgnored! :challenge
         sendEmail with params:
           template: YourOfficiationRequestHaveBeenIgnored
           data: ^challenge

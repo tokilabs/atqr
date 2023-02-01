@@ -39,15 +39,15 @@ Events emitted by:
     - EmailSent! :notification
     - ChallengeAccepted!
     - JudgeRequested!
+    - LastChanceToBeJudgeArrived
     - JudgeForgotToPlay!
     - OfficiationRequested!
-    - OfficiationRequestAccepted!
     - LastChanceToOfficiateArrived!
     - ContenderParticipationRequested!
     - ContenderRejectedTheChallenge!
     - ContenderIgnoredTheChallenge!
+    - LastChanceToPlayArrived!
     - ContenderForgotToPlay!
-    - OfficiationRequestAccepted! :challengeId :judgeId
     - YourJudgeRequestHaveBeenRejected! :challengeId :judgeId
     - ContenderSucceeded!
     - ContenderFailed!

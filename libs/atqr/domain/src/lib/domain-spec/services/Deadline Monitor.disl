@@ -112,4 +112,4 @@ domain ATQR
                 - have not been notified
 
               if list is not empty
-                publish ChallengeFailed! :challenge
+                publish ContenderFailed! :challenge
