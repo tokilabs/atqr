@@ -5,6 +5,10 @@ import { ContenderOutcome } from '../types';
 import { PaymentMethod, User } from '../types/stubs';
 
 export class Enrollment extends ValueObject<Enrollment> {
+  public get id(){
+    return this._hash
+  }
+  
   constructor(
     public readonly contender: User,
     public readonly judge: User,

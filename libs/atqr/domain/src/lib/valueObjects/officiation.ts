@@ -4,6 +4,10 @@ import { JudgementStatus, User } from '../types';
 import { Enrollment } from './enrollment';
 
 export class Officiation extends ValueObject<Officiation> {
+  public get id() {
+    return this._hash;
+  }
+
   constructor(
     public readonly challenge: Challenge,
     public readonly judge: User,
