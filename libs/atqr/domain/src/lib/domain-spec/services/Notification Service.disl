@@ -81,11 +81,15 @@ domain ATQR
           data: ^challenge
           to: ^challenge.owner.email
 
+          📢 publish ContenderRejectedTheChallenge!
+
     -> ChallengeIgnored! :challenge
         sendEmail with params:
           template: YourContenterIgnoredTheChallenge
           data: ^challenge
           to: ^challenge.owner.email
+
+          📢 publish ContenderIgnoredTheChallenge!
 
     -> ChallengeGotANewInvitee! :challenge, invitee: Invitee
         if invitee's role is .Judge
@@ -134,6 +138,7 @@ domain ATQR
               challenge: ^challenge
               invitee: ^invitee
           📢 publish LastChanceToOfficiateArrived!
+          // TODO: last time to officiate or to be judge?
 
         else
           sendEmail with ^params
