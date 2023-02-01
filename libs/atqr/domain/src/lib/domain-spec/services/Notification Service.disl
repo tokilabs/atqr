@@ -233,3 +233,5 @@ domain ATQR
           template: ChallengeFailed
           data: ^challenge
           to: ^challenge.enrollments[0].contender.email
+
+    //TODO: TimeToOfficiateArrived! :challenge and LastChanceToOfficiateArrived! are missing
