@@ -1,2 +1,2 @@
-export * from './deadlineMonitor.service';
+export * from './deadlineMonitor';
 export * from './notification/';

@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "devDependencies": {
     "@types/pug": "2.0.6",
-    "parcel": "8.1.2",
-    "class-validator": "0.13.2"
+    "class-validator": "0.13.2",
+    "cron": "1.8.2",
+    "@types/cron": "2.0.0",
+    "cron-validate": "1.4.5"
   }
 }

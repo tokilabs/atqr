@@ -17,6 +17,7 @@
     "nestjs",
     "pagar",
     "pagseguro",
+    "Paulo",
     "plantuml",
     "supabase",
     "Supabase",
@@ -48,8 +49,5 @@
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
   },
-  "conventionalCommits.scopes": [
-    "domain-spec",
-    "utils"
-  ]
+  "conventionalCommits.scopes": ["domain-spec"]
 }
