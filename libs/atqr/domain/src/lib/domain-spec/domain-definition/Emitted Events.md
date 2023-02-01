@@ -5,7 +5,7 @@ Events emitted by:
     - ChargeAuthorized! (owner: Contact, pledge: number, ownerPaymentMethod: PaymentMethod )
     - ChallengeCreated! (params?)
 
-  Challenge Aggregate root (depends on Payment Service)
+  Challenge Aggregate root (depends on Payment Service):
 
     - ChallengeAccepted!
     - OfficiationRequestAccepted!
@@ -24,10 +24,12 @@ Events emitted by:
     - JudgeRequested!
     - OfficiationRequested!
 
-    User entity
+    User entity:
       - UserCreated! :user
     
-    PaymentMethod entity
+    PaymentMethod entity:
       - 📧 CardCharged! :auth :amountInCents ?
       - CardChargeFailed! :auth :amountInCents
 
+  DeadlineMonitor service (Depends on ChallengesService)
+    - 
