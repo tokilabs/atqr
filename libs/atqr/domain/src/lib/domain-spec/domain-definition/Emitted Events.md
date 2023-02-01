@@ -7,22 +7,11 @@ Events emitted by:
 
   Challenge Aggregate root (depends on Payment Service):
 
-    - ChallengeAccepted!
-    - OfficiationRequestAccepted!
     - FundsAvailable! :challengeId :paymentMethod
     - FundsDenied! :challengeId
-    - ChallengeAccepted!
-    - ContenderRejectedTheChallenge!
     - ChallengeCanceled!
     - ChallengeGotANewInvitee! :challenge, invitee: Invitee
     - ContenderRemovedJudge! :judgeEmail
-    - OfficiationRequestAccepted! :challengeId :judgeId
-    - YourJudgeRequestHaveBeenRejected! :challengeId :judgeId
-    - ChallengeAccomplished!
-    - ChallengeFailed!
-    - ContenderParticipationRequested!
-    - JudgeRequested!
-    - OfficiationRequested!
 
     User entity:
       - UserCreated! :user
@@ -40,3 +29,18 @@ Events emitted by:
     - TimeToOfficiateArrived! :challenge
     - YourJudgeDidNotAnswered! :challengeId :list
     - ChallengeFailed! :challenge
+
+  Notification service (depends on EmailService
+    and ChallengeRepository)
+    - EmailSent! :notification
+    - ChallengeAccepted!
+    - OfficiationRequested!
+    - OfficiationRequestAccepted!
+    - ContenderParticipationRequested!
+    - ContenderRejectedTheChallenge!
+    - OfficiationRequestAccepted! :challengeId :judgeId
+    - YourJudgeRequestHaveBeenRejected! :challengeId :judgeId
+    - ChallengeAccomplished!
+    - ChallengeFailed!
+    - JudgeRequested!
+    
