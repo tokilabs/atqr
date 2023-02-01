@@ -104,7 +104,7 @@ domain ATQR
               if list is not empty
                 publish YourJudgeIgnored! :challengeId :list
 
-        -> OfficiateIgnoredTheChallenge! :challenge
+        -> JudgeIgnoredTheChallenge! :challenge
             when .officiationDeadline is Today
               and .createdAt is before x days ago
               list all .invitees that

@@ -29,7 +29,7 @@ domain ATQR
       ~Ignored
       ~RemovedYouFromJudgeRole
       ~CanceledTheChallenge
-      ~WasSuccessful
+      ~Succeeded
 
     TimeToOfficiateArrived
 
@@ -59,7 +59,7 @@ domain ATQR
         ~Created: { challenge: Challenge }
         ~Canceled: { challenge: Challenge }
         ~Ongoing: { challenge: Challenge }
-        ~Completed: { challenge: Challenge }
+        ~Successful: { challenge: Challenge }
         ~Failed: { challenge: Challenge }
 
       YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope

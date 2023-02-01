@@ -30,6 +30,9 @@ Events emitted by:
     - TimeToOfficiateArrived! :challenge
     - YourJudgeIgnored! :challengeId :list
     - ChallengeFailed! :challenge
+    - LastChanceToOfficiateArrived WHERE IS IT
+
+
 
   Notification service (depends on EmailService
     and ChallengeRepository)
@@ -46,7 +49,7 @@ Events emitted by:
     - ContenderForgotToPlay!
     - OfficiationRequestAccepted! :challengeId :judgeId
     - YourJudgeRequestHaveBeenRejected! :challengeId :judgeId
-    - ChallengeAccomplished!
-    - ChallengeFailed!
+    - ContenderSucceeded!
+    - ContenderFailed!
    
     

@@ -211,13 +211,14 @@ domain ATQR
           data: ^challenge
           to: ^challenge.owner.email
 
-    -> ChallengeCompleted! :challenge
+    -> ContenderSucceeded! :challenge
         sendEmail with params:
-          template: ChallengeCompleted
+          template: ChallengeSuccessful
           data: ^challenge
           to: ^challenge.enrollments[0].contender.email
+          //TODO: where is it listening from???
 
-    -> ChallengeFailed! :challenge
+    -> ContenderFailed! :challenge
         sendEmail with params:
           template: ChallengeFailed
           data: ^challenge
