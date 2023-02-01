@@ -13,13 +13,12 @@ domain ATQR
       ~Completed
       ~Failed
 
-    YourOfficiationHaveBeenRequested
-
-    YourOfficiationRequestHaveBeen...
+    YourJudgeRequestHaveBeen...
       ~Accepted
       ~Rejected
       ~Ignored
 
+    YourOfficiationHaveBeenRequested
     YouHaveBeenChallenged
 
     YourContender...
@@ -29,9 +28,7 @@ domain ATQR
       ~Ignored
       ~RemovedYouFromJudgeRole
       ~CanceledTheChallenge
-      ~WasSuccessful
-
-    TimeToOfficiateArrived
+      ~Succeeded
 
     YourJudgeDidNotAnswered
 
@@ -53,18 +50,19 @@ domain ATQR
     @challenge: Challenge
     @invitee: Invitee
 
+  //TODO: below we need a "LastChanceToBeJudgeArrived" 
   concept TemplateDataTypes maps MessageTemplateId to a MessageTemplate
     MessageTemplateId. ...
       Challenge... expands on ChallengeEnvelope
         ~Created: { challenge: Challenge }
         ~Canceled: { challenge: Challenge }
         ~Ongoing: { challenge: Challenge }
-        ~Completed: { challenge: Challenge }
+        ~Successful: { challenge: Challenge }
         ~Failed: { challenge: Challenge }
 
       YourOfficiationHaveBeenRequested: { challenge: Challenge, invitee: Invitee } expands on ChallengeAndInviteeEnvelope
 
-      YourOfficiationRequestHaveBeen. ... expands on ChallengeAndInviteeEnvelope
+      YourJudgeRequestHaveBeen. ... expands on ChallengeAndInviteeEnvelope
         ~Accepted: { challenge: Challenge, invitee: Invitee }
         ~Rejected: { challenge: Challenge, invitee: Invitee }
         ~Ignored: { challenge: Challenge, invitee: Invitee }

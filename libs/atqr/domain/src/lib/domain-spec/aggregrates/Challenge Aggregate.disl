@@ -214,7 +214,7 @@ domain ATQR
 
           set invited Judge's participationStatus to .Rejected
 
-          publish YourJudgeRequestHaveBeenIgnored! :challengeId :judgeId
+          publish YourJudgeRequestHaveBeenRejected! :challengeId :judgeId
 
         -> OfficiateChallenge? :userId, accomplished: yes or no
 

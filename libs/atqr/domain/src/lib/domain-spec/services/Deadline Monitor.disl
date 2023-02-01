@@ -69,6 +69,7 @@ domain ATQR
               - have not been notified
 
             if list is not empty
+
               publish JudgeIgnoredTheChallenge! :challenge
 
           when .officiationDeadline is after Today
@@ -97,3 +98,4 @@ domain ATQR
 
             if list is not empty
               publish JudgeIgnoredTheChallenge! :challenge
+
