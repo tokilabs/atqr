@@ -1,4 +1,4 @@
-import { ITemplateDataTypes } from './templateDataType.interface';
+import { ITemplateDataTypes } from './interfaces/templateDataType.interface';
 
 export type TemplateDataTypes = {
   [K in keyof ITemplateDataTypes]: ITemplateDataTypes[K];
@@ -29,4 +29,11 @@ export enum NotificationChannel {
   Email = 'Email',
   SMS = 'SMS',
   Push = 'Push',
+}
+
+export enum NotificationCategory {
+  ProductUpdates = 'ProductUpdates',
+  Promotions = 'Promotions',
+  NewInvitations = 'NewInvitations',
+  ChallengeUpdates = 'ChallengeUpdates',
 }

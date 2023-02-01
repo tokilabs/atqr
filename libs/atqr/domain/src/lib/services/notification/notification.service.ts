@@ -6,7 +6,7 @@ import {
   DeadLineEmail,
   PayThePrice,
 } from '../../templates';
-import { IMailer } from './mailer.interface'
+import { IMailer } from './interfaces'
 import { ChallengeStatus } from '../../types';
 
 

@@ -1,11 +1,8 @@
-import { ValueObject } from '../../utils/valueObject';
-import { Guid, today } from '@tokilabs/lang';
+import { ValueObject } from '../../utils';
+import { today } from '@tokilabs/lang';
 import { NotificationLogEntry } from './notificationLogEntry.valueObject';
 import { MessageTemplateId } from '../services';
-import {
-  NotificationChannel,
-  NotificationCategory,
-} from '../types/notification.types';
+import { NotificationChannel, NotificationCategory } from '../services';
 export class Notification extends ValueObject<Notification> {
   /**
    * This a calculated property based on
@@ -48,8 +45,12 @@ export class Notification extends ValueObject<Notification> {
       'isWaitingForUserAction',
       'sentMessagesCount',
     ]);
-    
-    this.excludeFromEquals = ['id', 'isWaitingForUserAction', 'sentMessagesCount'];
+
+    this.excludeFromEquals = [
+      'id',
+      'isWaitingForUserAction',
+      'sentMessagesCount',
+    ];
   }
 
   public equals(other: Notification): boolean {
