@@ -102,7 +102,7 @@ domain ATQR
                 - have not been notified
 
               if list is not empty
-                publish YourJudgeDidNotAnswered! :challengeId :list
+                publish YourJudgeIgnored! :challengeId :list
 
         -> OfficiateIgnoredTheChallenge! :challenge
             when .officiationDeadline is Today

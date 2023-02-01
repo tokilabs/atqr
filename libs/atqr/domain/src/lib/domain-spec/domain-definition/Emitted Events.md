@@ -25,9 +25,10 @@ Events emitted by:
     - ReminderToPlay! :challengeId :list
     - LastChanceToPlay! :challengeId :list
     - YourContenderIgnoredTheChallenge! :challenge
+    - YourJudgeRequestHaveBeenIgnored *WHERE IS IT IN DEADLINE MONITOR
     - YourOfficiationRequestHaveBeenIgnored! :challenge
     - TimeToOfficiateArrived! :challenge
-    - YourJudgeDidNotAnswered! :challengeId :list
+    - YourJudgeIgnored! :challengeId :list
     - ChallengeFailed! :challenge
 
   Notification service (depends on EmailService

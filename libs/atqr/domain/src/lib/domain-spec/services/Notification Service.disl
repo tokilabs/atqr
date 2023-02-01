@@ -154,6 +154,7 @@ domain ATQR
           template: YourOfficiationRequestHaveBeenIgnored
           data: ^challenge
           to: ^challenge.enrollments[0].contender.email
+          //TODO: add this one to deadline monitor
 
     -> YourContenderIgnoredTheChallenge! :challenge
         sendEmail with params:
@@ -169,7 +170,7 @@ domain ATQR
 
         publish OfficiationRequested!
 
-    -> YourJudgeDidNotAnswered! :challenge
+    -> YourJudgeIgnored! :challenge
 
         sendEmail with params:
           template: YourJudgeDidNotAnswered
