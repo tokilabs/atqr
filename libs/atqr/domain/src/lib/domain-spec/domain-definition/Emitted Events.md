@@ -32,4 +32,11 @@ Events emitted by:
       - CardChargeFailed! :auth :amountInCents
 
   DeadlineMonitor service (Depends on ChallengesService)
-    - 
+    - DeadlineReached! :challengeId
+    - ReminderToPlay! :challengeId :list
+    - LastChanceToPlay! :challengeId :list
+    - YourContenderIgnoredTheChallenge! :challenge
+    - YourOfficiationRequestHaveBeenIgnored! :challenge
+    - TimeToOfficiateArrived! :challenge
+    - YourJudgeDidNotAnswered! :challengeId :list
+    - ChallengeFailed! :challenge
