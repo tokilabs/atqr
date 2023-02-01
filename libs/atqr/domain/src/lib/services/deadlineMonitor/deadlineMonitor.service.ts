@@ -3,6 +3,8 @@ import { CronJob } from 'cron';
 import cron from 'cron-validate';
 
 export class DeadlineMonitorService {
+  private _cronJob: CronJob;
+
   constructor(private challengeRepository: IChallengeRepository) {
     const date = '* 0 0 * * *';
     if (
@@ -10,10 +12,20 @@ export class DeadlineMonitorService {
         preset: 'npm-cron-schedule',
       }).isValid()
     ) {
-      new CronJob(date, this.aNewDayArrived(), null, false, 'America/Sao_Paulo');
+      this._cronJob = new CronJob(
+        date,
+        this.aNewDayArrived(),
+        null,
+        false,
+        'America/Sao_Paulo'
+      );
     } else {
       throw new Error(cron(date).getError().join(' '));
     }
+  }
+
+  get cronJob() {
+    return this._cronJob;
   }
 
   aNewDayArrived() {

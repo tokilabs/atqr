@@ -30,7 +30,7 @@ describe('DeadlineMonitorService', () => {
     const mockFn = jest.fn().mockImplementation(() => {
       return 'test';
     });
-
+    let cronJob: CronJob;
     const date = '0 * * * * *';
 
     if (
@@ -38,7 +38,8 @@ describe('DeadlineMonitorService', () => {
         preset: 'npm-cron-schedule',
       }).isValid()
     ) {
-      new CronJob(date, mockFn(), null, false, 'America/Sao_Paulo');
+      cronJob = new CronJob(date, mockFn(), null, false, 'America/Sao_Paulo');
+      cronJob.start();
     } else {
       throw new Error(cron(date).getError().join(' '));
     }
