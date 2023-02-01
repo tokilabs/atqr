@@ -31,6 +31,7 @@ model Challenge {
   creditCardToken String?
   User            User?           @relation(fields: [userId], references: [id])
   userId          String?
+  Enrollment      Enrollment[]
 }
 
 model Player {
@@ -41,37 +42,77 @@ model Player {
 }
 
 model User {
-  emitter              String
-  id                   String              @unique
+  id                   String        @unique
   userName             String
   email                String
   emailConfirmed       Boolean
   playedChallenges     Enrollment[]
   officiatedChallenges Officiation[]
   organizedChallenges  Challenge[]
-  paymentMethod        PaymentMethod       @relation(fields: [paymentMethodId], references: [id])
-  challengeRepository  ChallengeRepository
-  paymentMethodId      String
+  paymentMethod        PaymentMethod @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String
 }
 
 model Enrollment {
-  id     String  @unique
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id                 String             @unique
+  contender          User?              @relation(fields: [userId], references: [id])
+  challenge          Challenge          @relation(fields: [challengeId], references: [id])
+  userId             String?
+  pledge             Int
+  outcome            ContenderOutcome
+  paymentStatus      PaymentStatus
+  paymentMethod      PaymentMethod      @relation(fields: [paymentMethodId], references: [id])
+  paymentFundsStatus PaymentFundsStatus
+  challengeId        String             @db.Uuid
+  paymentMethodId    String
 }
 
 model Officiation {
-  id     String  @unique
-  User   User?   @relation(fields: [userId], references: [id])
-  userId String?
+  id              String           @unique
+  User            User?            @relation(fields: [userId], references: [id])
+  userId          String?
+  outcome         ContenderOutcome
+  paymentStatus   PaymentStatus
+  paymentMethod   PaymentMethod    @relation(fields: [paymentMethodId], references: [id])
+  paymentMethodId String
 }
 
 model PaymentMethod {
-  id   String @unique
-  User User[]
+  id          String        @unique
+  User        User[]
+  Officiation Officiation[]
+  Enrollment  Enrollment[]
 }
 
 enum ChallengeRepository {
-  challenge 
+  challenge
   user
+}
+
+enum ContenderOutcome {
+  StillPlaying
+  Succeeded
+  Failed
+}
+
+enum PaymentStatus {
+  NotDueYet
+  Defaulted
+  Failed
+  Forgiven
+  Paid
+  Pending
+  Refunded
+  RefundRequested
+}
+
+enum PaymentFundsStatus {
+  NotDueYet
+  Defaulted
+  Failed
+  Forgiven
+  Paid
+  Pending
+  Refunded
+  RefundRequested
 }
