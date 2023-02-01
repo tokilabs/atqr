@@ -19,7 +19,6 @@ domain ATQR
           // TODO: Check which logic is better for sending emails
           // This or the one inside NotificationService (aren't they both the same?)
 
-          //TODO: add logic for JudgeForgotToAcceptRequest and JudgesLastChancetoAccepRequest AND 2 more logics: JudgeForgotToOfficiate and JudgesLastChanceToOfficiate
         ->ContenderForgotToPlay! :challenge
             when .enrollmentDeadline is Today
               and .createdAt is before 2 days ago
@@ -80,7 +79,6 @@ domain ATQR
               if list is not empty
                 publish YourOfficiationRequestHaveBeenIgnored! :challenge
 
-
         -> ChallengeDeadlineReached! :challenge
           set's @status to .Overdue
 
@@ -115,4 +113,3 @@ domain ATQR
 
               if list is not empty
                 publish ChallengeFailed! :challenge
-
