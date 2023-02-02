@@ -1,21 +1,46 @@
 import { Guid } from '@tokilabs/lang';
-import { Challenge } from './challenge.entity';
-
+import { Challenge } from './';
+import { Email } from '../valueObjects';
 export interface IChallengeRepository {
-  create(challenge: Challenge): Promise<void>;
+  ContenderCreatesTheChallenge(challenge: Challenge): Promise<void>;
+  JudgeCreatesTheChallenge(challenge: Challenge): Promise<void>;
 
-  findLastChallenges(amount: number): Promise<Challenge[]>;
+  findChallengeById(id: Guid): Promise<Challenge>;
+  findChallengeByEmail(email: Email): Promise<Challenge>;
+  findLastChallenges(): Promise<Challenge>;
+  findManyChallenges(amount: number): Promise<Challenge[]>;
+  findOverdueChallenges(): Promise<Challenge[]>;
 
-  findMany(numberOfResults?: number): Promise<Challenge[]>;
+  challengeStatusChangedToOngoing(id: Guid, challenge: Challenge): Promise<void>;
+  challengeStatusChangedToOverdue(id: Guid, challenge: Challenge): Promise<void>;
+  challengeStatusChangedToAbandoned(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
+  challengeStatusChangedToCanceled(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
+  challengeStatusChangedToFinished(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
 
-  findUnique(id: Guid): Promise<Challenge>;
+  inviteeAcceptsPlayChallengeAsContender(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
+  inviteeAcceptsPlayChallengeAsJudge(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
+  ownerAddsNewInvitee(id: Guid, challenge: Challenge): Promise<void>;
+  ownerAddsPaymentMethod(id: Guid, challenge: Challenge): Promise<void>;
 
-  findOverdueChallenges(
-    numberOfResults?: number,
-    skip?: number
-  ): Promise<Challenge[]>;
-
-  update(challenge: Challenge): Promise<void>;
+  contenderRemovedTheJudgeFromChallenge(
+    id: Guid,
+    challenge: Challenge
+  ): Promise<void>;
 }
 
 export const IChallengeRepository = Symbol.for('IChallengeRepository');
