@@ -67,7 +67,7 @@ export class UserRepository implements IUserRepository {
 
   async findManyUsersOrganizingChallenges(
     user: User,
-    numberOfResults?: 100
+    numberOfResults = 100
   ): Promise<User[]> {
     try {
       const challenges = user.organizedChallenges[numberOfResults];
