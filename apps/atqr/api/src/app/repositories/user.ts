@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Guid } from '@tokilabs/lang';
 import { plainToInstance } from 'class-transformer';
-import { IUserRepository, User } from '@atqr/domain';
+import { Challenge, IUserRepository, User } from '@atqr/domain';
 import { PrismaService } from '../infra';
 
 @Injectable()
@@ -67,11 +67,12 @@ export class UserRepository implements IUserRepository {
 
   async findManyUsersOrganizingChallenges(
     user: User,
-    numberOfResults?: number
+    numberOfResults?: 100
   ): Promise<User[]> {
     try {
+      const challenges = user.organizedChallenges[numberOfResults];
       const plainUser = await this.prismaService.user.findMany({
-        where: user.officiatedChallenges[numberOfResults],
+        where: challenges[numberOfResults],
         orderBy: {
           id: 'desc',
         },
