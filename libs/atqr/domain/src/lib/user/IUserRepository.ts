@@ -1,15 +1,29 @@
-
 import { Guid } from '@tokilabs/lang';
+import { EmailAddress } from '../valueObjects';
 import { User } from './user.entity';
 
 export interface IUserRepository {
-  create(user: User): Promise<void>;
+  createUser(user: User): Promise<void>;
 
-  findMany(numberOfResults?: number): Promise<User[]>;
+  findUniqueUser(id: Guid): Promise<User>;
 
-  findUnique(id: Guid): Promise<User>;
+  findManyUsersContenders(
+    user: User,
+    numberOfResults?: number
+  ): Promise<User[]>;
 
-  update(user: User): Promise<void>;
+  findManyUsersJudges(user: User, numberOfResults: number): Promise<User[]>;
+
+  findManyUsersOrganizingChallenges(
+    user: User,
+    numberOfResults?: number
+  ): Promise<User[]>;
+
+  findUniqueUserPaymentMethod(user: User): Promise<User>;
+
+  findUniqueUserEmail(user: User, email: EmailAddress): Promise<User>;
+
+  updateUserPaymentMethod(user: User): Promise<void>;
 }
 
 export const IUserRepository = Symbol.for('IUserRepository');
