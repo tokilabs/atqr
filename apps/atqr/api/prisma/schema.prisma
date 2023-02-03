@@ -44,10 +44,10 @@ model Player {
 model User {
   id                   String        @unique
   userName             String
-  email                String
+  email                String        @unique
   emailConfirmed       Boolean
   playedChallenges     Enrollment[]
-  officiatedChallenges Officiation[]
+  officiatedChallenges Officiation[] 
   organizedChallenges  Challenge[]
   paymentMethod        PaymentMethod @relation(fields: [paymentMethodId], references: [id])
   paymentMethodId String
@@ -57,6 +57,7 @@ model Enrollment {
   id                 String             @unique
   contender          User?              @relation(fields: [userId], references: [id])
   challenge          Challenge          @relation(fields: [challengeId], references: [id])
+  judge              ParticipationRole      
   userId             String?
   pledge             Int
   outcome            ContenderOutcome
@@ -68,6 +69,8 @@ model Enrollment {
 }
 
 model Officiation {
+  enrollmentId    String
+  judge           ParticipationRole  
   id              String           @unique
   User            User?            @relation(fields: [userId], references: [id])
   userId          String?
@@ -115,4 +118,9 @@ enum PaymentFundsStatus {
   Pending
   Refunded
   RefundRequested
+}
+
+ enum ParticipationRole {
+  Contender 
+  Judge 
 }
